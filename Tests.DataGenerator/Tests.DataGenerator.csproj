@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExpressionToString\ExpressionToString.csproj" />
+    <ProjectReference Include="..\ExpressionToString\ExpressionTreeToString.csproj" />
     <ProjectReference Include="..\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj" />
     <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj" />
   </ItemGroup>
