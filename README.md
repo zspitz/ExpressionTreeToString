@@ -2,7 +2,7 @@
 
 [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeToString/) 
 
-This project provides a `ToString` extension method which returns a string representation of an expression tree (an object inheriting from `System.Linq.Expressions.Expression`, or from another type in `System.Linq.Expressions`).
+Provides a `ToString` extension method which returns a string representation of an expression tree (an object inheriting from `System.Linq.Expressions.Expression`).
 
 ```csharp
 Expression<Func<bool>> expr = () => true;
@@ -84,7 +84,16 @@ Features:
     ```
 
 * Supports the full range of types in `System.Linq.Expressions`, including .NET 4 expression types, and `DynamicExpression`
+
+  * [Expression](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression) (and derived types)
+  * [ElementInit](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.elementinit)
+  * [MemberBinding](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.memberbinding) (and derived types)
+  * [SwitchCase](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.switchcase)
+  * [CatchBlock](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.catchblock)
+  * [LabelTarget](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.labeltarget)
   
+For more information, see the [wiki](https://github.com/zspitz/ExpressionToString/wiki/String-rendering-library-overview).
+
 ## Feedback
 
 * Star the project
