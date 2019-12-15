@@ -23,8 +23,6 @@
     <Configurations>Debug;Release;ReleaseCI</Configurations>
   </PropertyGroup>
 
-  <Import Project="..\Shared\Shared.projitems" Label="Shared" />
-
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
   </ItemGroup>

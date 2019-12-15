@@ -18,30 +18,15 @@ namespace Tests.DataGenerator {
             var lines = new List<string>();
             foreach (var (category, source, name, o) in Objects.Get()) {
                 lines.Add($"---- {source}.{name}");
-
-                string toWrite;
-                switch (o) {
-                    case Expression expr:
-                        toWrite = expr.ToString(formatter, language);
-                        break;
-                    case MemberBinding mbind:
-                        toWrite = mbind.ToString(formatter, language);
-                        break;
-                    case ElementInit init:
-                        toWrite = init.ToString(formatter, language);
-                        break;
-                    case SwitchCase switchCase:
-                        toWrite = switchCase.ToString(formatter, language);
-                        break;
-                    case CatchBlock catchBlock:
-                        toWrite = catchBlock.ToString(formatter, language);
-                        break;
-                    case LabelTarget labelTarget:
-                        toWrite = labelTarget.ToString(formatter, language);
-                        break;
-                    default:
-                        throw new NotImplementedException();
-                }
+                var toWrite = o switch {
+                    Expression expr => expr.ToString(formatter, language),
+                    MemberBinding mbind => mbind.ToString(formatter, language),
+                    ElementInit init => init.ToString(formatter, language),
+                    SwitchCase switchCase => switchCase.ToString(formatter, language),
+                    CatchBlock catchBlock => catchBlock.ToString(formatter, language),
+                    LabelTarget labelTarget => labelTarget.ToString(formatter, language),
+                    _ => throw new NotImplementedException(),
+                };
                 lines.Add(toWrite);
             }
 
