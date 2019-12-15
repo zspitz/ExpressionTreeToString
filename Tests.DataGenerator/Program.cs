@@ -1,10 +1,10 @@
-﻿using ExpressionToString;
+﻿using ExpressionTreeToString;
 using ExpressionTreeTestObjects;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
-using static ExpressionToString.FormatterNames;
+using static ExpressionTreeToString.FormatterNames;
 using ExpressionTreeTestObjects.VB;
 
 namespace Tests.DataGenerator {

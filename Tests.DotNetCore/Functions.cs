@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using ExpressionToString.Util;
+using ExpressionTreeToString.Util;
 
-namespace ExpressionToString.Tests {
+namespace ExpressionTreeToString.Tests {
     public static class Functions {
         public static string GetFullFilename(string filename) {
             var codeBase = Assembly.GetExecutingAssembly().CodeBase;

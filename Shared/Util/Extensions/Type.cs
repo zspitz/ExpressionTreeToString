@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using static ExpressionToString.FormatterNames;
+using static ExpressionTreeToString.FormatterNames;
 using static System.Linq.Enumerable;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class TypeExtensions {
         public static Type UnderlyingIfNullable(this Type type) => Nullable.GetUnderlyingType(type) ?? type;
 

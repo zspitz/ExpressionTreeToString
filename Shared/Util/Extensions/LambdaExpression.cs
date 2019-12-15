@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class LambdaExpressionExtensions {
         public static object GetTarget(this LambdaExpression expr) => expr.Compile().Target;
     }

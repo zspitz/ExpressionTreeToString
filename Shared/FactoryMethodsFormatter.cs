@@ -1,19 +1,19 @@
-﻿using ExpressionToString.Util;
+﻿using ExpressionTreeToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
-using static ExpressionToString.Globals;
-using static ExpressionToString.Util.Functions;
-using static ExpressionToString.FormatterNames;
+using static ExpressionTreeToString.Globals;
+using static ExpressionTreeToString.Util.Functions;
+using static ExpressionTreeToString.FormatterNames;
 using static System.Linq.Expressions.Expression;
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using static System.Linq.Enumerable;
 
-namespace ExpressionToString {
+namespace ExpressionTreeToString {
     public class FactoryMethodsFormatter : WriterBase {
         public const string CSharpUsing = "// using static System.Linq.Expressions.Expression";
         public const string VisualBasicUsing = "' Imports System.Linq.Expressions.Expression";

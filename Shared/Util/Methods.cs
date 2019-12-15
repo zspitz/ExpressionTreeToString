@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class Methods {
         public static void VerifyCount<T>(IList<T> lst, int count) {
             if (lst.Count == count) { return; }

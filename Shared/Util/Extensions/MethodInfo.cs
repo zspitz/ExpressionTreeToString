@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class MethodInfoExtensions {
         public static bool IsIndexerMethod(this MethodInfo mi) =>
             mi.In(

@@ -1,4 +1,4 @@
-﻿using ExpressionToString.Util;
+﻿using ExpressionTreeToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -7,11 +7,11 @@ using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using static ExpressionToString.Util.Functions;
-using static ExpressionToString.Globals;
+using static ExpressionTreeToString.Util.Functions;
+using static ExpressionTreeToString.Globals;
 using System.Collections;
 
-namespace ExpressionToString {
+namespace ExpressionTreeToString {
     public class TextualTreeFormatter : WriterBase {
         public TextualTreeFormatter(object o, string language) : base(o, language) { }
 

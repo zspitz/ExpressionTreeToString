@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using static ExpressionToString.FormatterNames;
+using static ExpressionTreeToString.FormatterNames;
 using System.Diagnostics.CodeAnalysis;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class StringExtensions {
         public static bool IsNullOrWhitespace([NotNullWhen(false)]this string? s) => string.IsNullOrWhiteSpace(s);
         public static bool ContainsAny(this string s, params string[] testStrings) => testStrings.Any(x => s.Contains(x));

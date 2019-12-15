@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpressionToString {
+namespace ExpressionTreeToString {
     internal class VBExpressionMetadata {
         internal bool IsInMutiline { get; private set; } = false;
         internal ExpressionType? ExpressionType { get; private set; } = null;

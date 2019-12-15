@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class StringBuilderExtensions {
         //https://stackoverflow.com/a/24769702/111794
         public static StringBuilder TrimEnd(this StringBuilder sb, bool trimEOL = true) {

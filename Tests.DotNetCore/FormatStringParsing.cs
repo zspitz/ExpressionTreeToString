@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xunit;
-using static ExpressionToString.Util.Functions;
+using static ExpressionTreeToString.Util.Functions;
 
-namespace ExpressionToString.Tests {
+namespace ExpressionTreeToString.Tests {
     [Trait("Type", "FormatStringParsing")]
     public class FormatStringParsing {
         private static void RunTest(string format, List<(string, int?, int?, string?)> expected) =>

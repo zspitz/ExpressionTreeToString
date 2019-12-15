@@ -1,7 +1,7 @@
 ﻿using Xunit;
 using static ExpressionTreeTestObjects.Functions;
 
-namespace ExpressionToString.Tests {
+namespace ExpressionTreeToString.Tests {
     public class Tests {
         [Fact]
         public void EscapedString() {

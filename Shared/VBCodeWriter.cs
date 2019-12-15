@@ -1,4 +1,4 @@
-﻿using ExpressionToString.Util;
+﻿using ExpressionTreeToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -6,15 +6,15 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using static ExpressionToString.Globals;
-using static ExpressionToString.Util.Functions;
+using static ExpressionTreeToString.Globals;
+using static ExpressionTreeToString.Util.Functions;
 using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
-using static ExpressionToString.Util.Methods;
-using static ExpressionToString.VBExpressionMetadata;
+using static ExpressionTreeToString.Util.Methods;
+using static ExpressionTreeToString.VBExpressionMetadata;
 
-namespace ExpressionToString {
+namespace ExpressionTreeToString {
     public class VBCodeWriter : WriterBase {
         public VBCodeWriter(object o) : base(o, FormatterNames.VisualBasic) { }
         public VBCodeWriter(object o, out Dictionary<string, (int start, int length)> pathSpans) : base(o, FormatterNames.VisualBasic, out pathSpans) { }

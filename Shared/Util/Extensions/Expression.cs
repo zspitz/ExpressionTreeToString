@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using static System.Linq.Expressions.Expression;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class ExpressionExtensions {
         // TODO what about expressions which contain ParameterExpressions?
         // we'd have to pass in the values to use when calling the compiled lambda, and also which name corresponds to which value

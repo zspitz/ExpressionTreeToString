@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static ExpressionToString.CSharpMultilineBlockTypes;
+using static ExpressionTreeToString.CSharpMultilineBlockTypes;
 
-namespace ExpressionToString {
+namespace ExpressionTreeToString {
     internal class CSharpBlockMetadata {
         internal CSharpMultilineBlockTypes BlockType { get; private set; } = Inline;
         internal bool ParentIsBlock { get; private set; } = false;

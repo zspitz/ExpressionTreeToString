@@ -7,9 +7,9 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Xunit;
-using static ExpressionToString.FormatterNames;
+using static ExpressionTreeToString.FormatterNames;
 
-namespace ExpressionToString.Tests {
+namespace ExpressionTreeToString.Tests {
     public class TestContainer : IClassFixture<ExpectedDataFixture> {
         public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
 

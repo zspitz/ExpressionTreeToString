@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class IEnumerableExtensions {
         public static bool Any(this IEnumerable src) {
             if (src == null) { return false; }

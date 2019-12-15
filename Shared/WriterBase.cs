@@ -1,15 +1,15 @@
-﻿using ExpressionToString.Util;
+﻿using ExpressionTreeToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using static ExpressionToString.FormatterNames;
+using static ExpressionTreeToString.FormatterNames;
 using static System.Linq.Expressions.ExpressionType;
-using static ExpressionToString.Util.Functions;
+using static ExpressionTreeToString.Util.Functions;
 
-namespace ExpressionToString {
+namespace ExpressionTreeToString {
     public abstract class WriterBase {
         internal static WriterBase Create(object o, string formatterName, string language) =>
             formatterName == CSharp ? new CSharpCodeWriter(o) :

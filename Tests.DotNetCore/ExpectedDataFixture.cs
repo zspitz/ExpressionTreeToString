@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ExpressionToString.Util;
-using static ExpressionToString.FormatterNames;
-using static ExpressionToString.Tests.Functions;
+using ExpressionTreeToString.Util;
+using static ExpressionTreeToString.FormatterNames;
+using static ExpressionTreeToString.Tests.Functions;
 using static System.Environment;
-using static ExpressionToString.Util.Functions;
+using static ExpressionTreeToString.Util.Functions;
 using System.IO;
 using Xunit;
 
-namespace ExpressionToString.Tests {
+namespace ExpressionTreeToString.Tests {
     public class ExpectedDataFixture {
         public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
 

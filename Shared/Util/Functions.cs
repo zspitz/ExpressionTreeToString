@@ -5,9 +5,9 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
-using static ExpressionToString.FormatterNames;
+using static ExpressionTreeToString.FormatterNames;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class Functions {
         public static (bool isLiteral, string repr) TryRenderLiteral(object? o, string language) {
             bool rendered = true;

@@ -2,7 +2,7 @@
 using System.Dynamic;
 using System.Runtime.CompilerServices;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class CallSiteBinderExtensions {
         public static string BinderType(this CallSiteBinder callSiteBinder) {
             switch (callSiteBinder) {

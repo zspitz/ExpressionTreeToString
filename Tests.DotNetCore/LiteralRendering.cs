@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Xunit;
-using static ExpressionToString.Util.Functions;
-using ExpressionToString.Util;
-using static ExpressionToString.FormatterNames;
+using static ExpressionTreeToString.Util.Functions;
+using ExpressionTreeToString.Util;
+using static ExpressionTreeToString.FormatterNames;
 using static ExpressionTreeTestObjects.Functions;
 
-namespace ExpressionToString.Tests {
+namespace ExpressionTreeToString.Tests {
     [Trait("Type", "Literal rendering")]
     public class LiteralRendering {
         [Theory]

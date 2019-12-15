@@ -1,4 +1,4 @@
-﻿using ExpressionToString.Util;
+﻿using ExpressionTreeToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using static System.Linq.Expressions.ExpressionType;
 
-namespace ExpressionToString {
+namespace ExpressionTreeToString {
     public static class FormatterNames {
         public const string CSharp = "C#";
         public const string VisualBasic = "Visual Basic";

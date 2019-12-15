@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace ExpressionToString {
+namespace ExpressionTreeToString {
     public static class ExpressionExtension {
         public static string ToString(this Expression expr, string formatter, string language = "Formatter default") =>
             WriterBase.Create(expr, formatter, language).ToString();

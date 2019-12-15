@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ExpressionToString.Util {
+namespace ExpressionTreeToString.Util {
     public static class ValueTupleExtensions {
         public static IEnumerable<T> Select<T>(this (T,T,T,T) src) {
             yield return src.Item1;

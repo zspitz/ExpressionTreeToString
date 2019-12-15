@@ -1,4 +1,4 @@
-﻿using ExpressionToString.Util;
+﻿using ExpressionTreeToString.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -6,13 +6,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
-using static ExpressionToString.Util.Functions;
-using static ExpressionToString.FormatterNames;
-using static ExpressionToString.Globals;
+using static ExpressionTreeToString.Util.Functions;
+using static ExpressionTreeToString.FormatterNames;
+using static ExpressionTreeToString.Globals;
 using System.Collections;
 using System.Reflection;
 
-namespace ExpressionToString {
+namespace ExpressionTreeToString {
     public class ObjectNotationFormatter : WriterBase {
         public ObjectNotationFormatter(object o, string language) : base(o, language) { }
 
@@ -96,7 +96,7 @@ namespace ExpressionToString {
 
                 if (x.PropertyType.InheritsFromOrImplementsAny(PropertyTypes)) {
 
-                    // https://github.com/zspitz/ExpressionToString/issues/91
+                    // https://github.com/zspitz/ExpressionTreeToString/issues/91
                     //var parameterDeclaration = o is LambdaExpression && x.Name == "Parameters";
                     //WriteCollection(value as IEnumerable, x.Name, parameterDeclaration);
 
@@ -124,7 +124,7 @@ namespace ExpressionToString {
             Indent();
             WriteEOL();
 
-            // https://github.com/zspitz/ExpressionToString/issues/91
+            // https://github.com/zspitz/ExpressionTreeToString/issues/91
             //WriteNodes(pathSegment, items, true, ",", parameterDeclaration)
             ;
             WriteNodes(pathSegment, items, true);
@@ -147,7 +147,7 @@ namespace ExpressionToString {
         protected override void WriteUnary(UnaryExpression expr) => WriteObjectCreation(expr);
         protected override void WriteLambda(LambdaExpression expr) => WriteObjectCreation(expr);
 
-        // https://github.com/zspitz/ExpressionToString/issues/91
+        // https://github.com/zspitz/ExpressionTreeToString/issues/91
         //protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
         protected override void WriteParameter(ParameterExpression expr) => WriteObjectCreation(expr);
 
@@ -193,7 +193,7 @@ namespace ExpressionToString {
         protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) => throw new NotImplementedException();
 
         // We can't use this yet
-        // https://github.com/zspitz/ExpressionToString/issues/91
+        // https://github.com/zspitz/ExpressionTreeToString/issues/91
         protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
             if (language == CSharp) {
                 Write($"var ");
