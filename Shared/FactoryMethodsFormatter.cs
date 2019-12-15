@@ -59,7 +59,7 @@ namespace ExpressionTreeToString {
                 } else if (arg is { }) {
                     if (
                         (
-                            argType?.InheritsFromOrImplementsAny(NodeTypes) ?? false ||
+                            argType!.InheritsFromOrImplementsAny(NodeTypes) ||
                             arg is MemberInfo || 
                             arg is CallSiteBinder
                         ) && !(

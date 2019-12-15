@@ -57,11 +57,9 @@ namespace ExpressionTreeToString.Tests {
         [Theory]
         [MemberData(nameof(TestObjectsData))]
         public void TestMethod(string formatter, string objectName, string category, object o) {
-            if (formatter != "Factory methods") { return; }
-            if (objectName != "CSCompiler.StaticMember") { return; }
-
             var expected = fixture.expectedStrings[(formatter, objectName)];
             var (actual, paths) = GetToString(formatter, o);
+
             // test that the string result is correct
             Assert.Equal(expected, actual);
 

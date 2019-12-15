@@ -1879,13 +1879,13 @@ Lambda (Func<string>)
         · Arguments[0] - Constant (string) = ","
         · Arguments[1] - NewArrayInit (string[])
             · Expressions[0] - New (string)
-                · Arguments[0] - MemberAccess (char[]) $VB$Local_arr = new[] {  }
+                · Arguments[0] - MemberAccess (char[]) $VB$Local_arr = new[] { 'a', 'b' }
                     · Expression - Constant (<closure>)
 ---- VBCompiler.StaticMethod2ArgumentsWithoutConversion
 Lambda (Func<string>)
     · Body - Call (string) stringJoin
         · Arguments[0] - Constant (string) = ","
-        · Arguments[1] - MemberAccess (IEnumerable<char>) $VB$Local_arr = new[] {  }
+        · Arguments[1] - MemberAccess (IEnumerable<char>) $VB$Local_arr = new[] { 'a', 'b' }
             · Expression - Constant (<closure>)
 ---- VBCompiler.ExtensionMethod2Arguments
 Lambda (Func<IOrderedEnumerable<string>>)

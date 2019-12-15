@@ -8,6 +8,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj" />
     <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj" />
+    <ProjectReference Include="..\Library\Library.csproj" />
   </ItemGroup>
 
 </Project>
