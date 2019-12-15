@@ -12,7 +12,7 @@ namespace Tests.DataGenerator {
         static void Main(string[] args) {
             Loader.Load();
 
-            var formatter = TextualTree;
+            var formatter = FactoryMethods;
             var language = CSharp;
 
             var lines = new List<string>();

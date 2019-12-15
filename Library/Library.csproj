@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <PackageId>ExpressionTreeToString</PackageId>
@@ -11,8 +11,8 @@
     <Description>String representations of expression trees or expression tree parts - C#, Visual Basic, Expression factory method calls, DebugView</Description>
     <Copyright>Copyright (c) 2019 Zev Spitz</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/zspitz/ExpressionToString</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/zspitz/ExpressionToString.git</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/zspitz/ExpressionTreeToString</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/zspitz/ExpressionTreeToString.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>expression-tree code-generation visual-basic.net vb.net csharp</PackageTags>
     <PackageReleaseNotes>Non-statement expression support is complete, escaped string literals, exceptions written into source</PackageReleaseNotes>

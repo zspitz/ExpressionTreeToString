@@ -77,7 +77,7 @@ namespace ExpressionToString.Util {
                     }
                 }
             } else if (type.IsArray && !type.GetElementType().IsArray && type.GetArrayRank() == 1 && language.In(CSharp, VisualBasic)) {
-                var values = ((dynamic[])o).Joined(", ", x => RenderLiteral(x, language));
+                var values = ((Array)o).Cast<object>().Joined(", ", x => RenderLiteral(x, language));
                 if (language == CSharp) {
                     ret = $"new[] {{ {values} }}";
                 } else {
