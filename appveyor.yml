@@ -32,7 +32,7 @@ matrix:
   fast_finish: true
 
 artifacts:
-  - path: ExpressionTreeToString\bin\ReleaseCI\*.nupkg
+  - path: Library\bin\ReleaseCI\*.nupkg
     type: NuGetPackage
 
 deploy:
