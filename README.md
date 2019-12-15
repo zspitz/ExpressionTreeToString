@@ -72,9 +72,9 @@ Features:
     // prints: () => i + j
     ```
 
-* Type names are rendered using language keywords, instead of just the type name; e.g. `List<string>` or `List(Of Date)` instead of ``List`1``
+* Type names are rendered using language syntax and keywords, instead of the [**Type.Name**](https://docs.microsoft.com/en-us/dotnet/api/system.type.name) property; e.g. `List<string>` or `List(Of Date)` instead of ``List`1``
 
-* Special handling of calls to `String.Concat` and `String.Format`
+* Calls to `String.Concat` and `String.Format` are mapped to the `+` operator and string interpolation (where possible):
 
     ```csharp
     var name = "World";
