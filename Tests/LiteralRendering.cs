@@ -52,10 +52,7 @@ namespace ExpressionTreeToString.Tests {
             }).AddRangeTo(testData);
 
            var dte = new DateTime(1981, 1, 1);
-           testData.Add(dte, ("#DateTime", "#DateTime", $"#{dte.ToString()}#"));
-
-           var ts = new TimeSpan(5, 4, 3, 2, 1);
-           testData.Add(ts, ("#TimeSpan", "#TimeSpan", $"#{ts.ToString()}#"));
+           testData.Add(dte, ("#DateTime", "#DateTime", $"#1981-01-01 00:00:00#"));
 
            var ret = new TheoryData<object?, string, string>();
            foreach (var (o, expected) in testData) {

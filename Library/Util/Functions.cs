@@ -33,8 +33,8 @@ namespace ExpressionTreeToString.Util {
                 } else if (language == VisualBasic) {
                     ret = $"\"{c}\"C";
                 }
-            } else if ((o is DateTime || o is TimeSpan) && language == VisualBasic) {
-                ret = $"#{o.ToString()}#";
+            } else if ((o is DateTime) && language == VisualBasic) {
+                ret = $"#{o:yyyy-MM-dd HH:mm:ss}#";
             } else if (o is string s) {
                 if (language.In(CSharp, VisualBasic)) {
                     ret = s.ToVerbatimString(language);
