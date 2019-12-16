@@ -224,17 +224,17 @@ Lambda (Func<string>)
         · Arguments[0] - Constant (int) = 3
 ---- CSCompiler.NoParametersVoidReturn
 Lambda (Action)
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
 ---- CSCompiler.OneParameterVoidReturn
 Lambda (Action<string>)
     · Parameters[0] - Parameter (string) s
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Parameter (string) s
 ---- CSCompiler.TwoParametersVoidReturn
 Lambda (Action<string, string>)
     · Parameters[0] - Parameter (string) s1
     · Parameters[1] - Parameter (string) s2
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Add (string)
             · Left - Parameter (string) s1
             · Right - Parameter (string) s2
@@ -272,7 +272,7 @@ Lambda (Func<string>)
     · Body - Constant (string) = "abcd"
 ---- CSCompiler.InterpolatedString
 Lambda (Func<string>)
-    · Body - Call (string) stringFormat
+    · Body - Call (string) string.Format
         · Arguments[0] - Constant (string) = "{0}"
         · Arguments[1] - Convert (object)
             · Operand - New (DateTime)
@@ -289,10 +289,10 @@ Lambda (Func<string>)
             · Expression - Constant (<closure>)
 ---- CSCompiler.StaticMethod0Arguments
 Lambda (Action)
-    · Body - Call (void) DummyDummyMethod
+    · Body - Call (void) Dummy.DummyMethod
 ---- CSCompiler.ExtensionMethod0Arguments
 Lambda (Func<int>)
-    · Body - Call (int) EnumerableCount
+    · Body - Call (int) Enumerable.Count
         · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
             · Expression - Constant (<closure>)
 ---- CSCompiler.InstanceMethod1Argument
@@ -303,11 +303,11 @@ Lambda (Func<int>)
         · Arguments[0] - Constant (string) = ""
 ---- CSCompiler.StaticMethod1Argument
 Lambda (Func<string>)
-    · Body - Call (string) stringIntern
+    · Body - Call (string) string.Intern
         · Arguments[0] - Constant (string) = ""
 ---- CSCompiler.ExtensionMethod1Argument
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) EnumerableTake
+    · Body - Call (IEnumerable<string>) Enumerable.Take
         · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
             · Expression - Constant (<closure>)
         · Arguments[1] - Constant (int) = 1
@@ -320,14 +320,14 @@ Lambda (Func<int>)
         · Arguments[1] - Constant (int) = 2
 ---- CSCompiler.StaticMethod2Arguments
 Lambda (Func<string>)
-    · Body - Call (string) stringJoin
+    · Body - Call (string) string.Join
         · Arguments[0] - Constant (string) = ","
         · Arguments[1] - NewArrayInit (string[])
             · Expressions[0] - Constant (string) = "a"
             · Expressions[1] - Constant (string) = "b"
 ---- CSCompiler.ExtensionMethod2Arguments
 Lambda (Func<IOrderedEnumerable<string>>)
-    · Body - Call (IOrderedEnumerable<string>) EnumerableOrderBy
+    · Body - Call (IOrderedEnumerable<string>) Enumerable.OrderBy
         · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
             · Expression - Constant (<closure>)
         · Arguments[1] - Lambda (Func<string, string>)
@@ -338,14 +338,14 @@ Lambda (Func<IOrderedEnumerable<string>>)
 Lambda (Func<string, string, string>)
     · Parameters[0] - Parameter (string) s1
     · Parameters[1] - Parameter (string) s2
-    · Body - Call (string) stringConcat
+    · Body - Call (string) string.Concat
         · Arguments[0] - Parameter (string) s1
         · Arguments[1] - Parameter (string) s2
 ---- CSCompiler.MathPow
 Lambda (Func<double, double, double>)
     · Parameters[0] - Parameter (double) x
     · Parameters[1] - Parameter (double) y
-    · Body - Call (double) MathPow
+    · Body - Call (double) Math.Pow
         · Arguments[0] - Parameter (double) x
         · Arguments[1] - Parameter (double) y
 ---- CSCompiler.SingleDimensionInit
@@ -548,18 +548,18 @@ Constant (IEnumerable) = #List<string>
 Block (Expression<Action>)
     · Result - Quote (Expression<Action>)
         · Operand - Lambda (Action)
-            · Body - Call (void) ConsoleWriteLine
+            · Body - Call (void) Console.WriteLine
                 · Arguments[0] - Constant (bool) = true
     · Variables[0] - Parameter (double) x
     · Expressions[0] - Quote (Expression<Action>)
         · Operand - Lambda (Action)
-            · Body - Call (void) ConsoleWriteLine
+            · Body - Call (void) Console.WriteLine
                 · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.MakeQuoted1
 Lambda (Func<Expression<Action>>)
     · Body - Quote (Expression<Action>)
         · Operand - Lambda (Action)
-            · Body - Call (void) ConsoleWriteLine
+            · Body - Call (void) Console.WriteLine
                 · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.MakeDebugInfo
 DebugInfo (void)
@@ -873,27 +873,27 @@ Conditional (void)
 ---- FactoryMethods.VoidConditionalWithElse
 Conditional (void)
     · Test - Constant (bool) = true
-    · IfTrue - Call (void) ConsoleWriteLine
+    · IfTrue - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
-    · IfFalse - Call (void) ConsoleWriteLine
+    · IfFalse - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = false
 ---- FactoryMethods.VoidConditional1WithElse
 Conditional (void)
     · Test - Constant (bool) = true
-    · IfTrue - Call (void) ConsoleWriteLine
+    · IfTrue - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
-    · IfFalse - Call (void) ConsoleWriteLine
+    · IfFalse - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = false
 ---- FactoryMethods.VoidConditionalWithoutElse
 Conditional (void)
     · Test - Constant (bool) = true
-    · IfTrue - Call (void) ConsoleWriteLine
+    · IfTrue - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
     · IfFalse - Default (void)
 ---- FactoryMethods.VoidConditional1WithoutElse
 Conditional (void)
     · Test - Constant (bool) = true
-    · IfTrue - Call (void) ConsoleWriteLine
+    · IfTrue - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
     · IfFalse - Default (void)
 ---- FactoryMethods.NonVoidConditionalWithElse
@@ -925,49 +925,49 @@ Conditional (void)
         · Result - Constant (bool) = true
         · Expressions[0] - Constant (bool) = true
         · Expressions[1] - Constant (bool) = true
-    · IfTrue - Call (void) ConsoleWriteLine
+    · IfTrue - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
     · IfFalse - Default (void)
 ---- FactoryMethods.MultilineIfTrue
 Conditional (void)
     · Test - Constant (bool) = true
     · IfTrue - Block (void)
-        · Result - Call (void) ConsoleWriteLine
+        · Result - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[0] - Call (void) ConsoleWriteLine
+        · Expressions[0] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[1] - Call (void) ConsoleWriteLine
+        · Expressions[1] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
     · IfFalse - Default (void)
 ---- FactoryMethods.MultilineIfFalse
 Conditional (void)
     · Test - Constant (bool) = true
-    · IfTrue - Call (void) ConsoleWriteLine
+    · IfTrue - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
     · IfFalse - Block (void)
-        · Result - Call (void) ConsoleWriteLine
+        · Result - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = false
-        · Expressions[0] - Call (void) ConsoleWriteLine
+        · Expressions[0] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = false
-        · Expressions[1] - Call (void) ConsoleWriteLine
+        · Expressions[1] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = false
 ---- FactoryMethods.NestedIfThen
 Conditional (void)
     · Test - Constant (bool) = true
     · IfTrue - Conditional (void)
         · Test - Constant (bool) = true
-        · IfTrue - Call (void) ConsoleWriteLine
+        · IfTrue - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
         · IfFalse - Default (void)
     · IfFalse - Default (void)
 ---- FactoryMethods.NestedElse
 Conditional (void)
     · Test - Constant (bool) = true
-    · IfTrue - Call (void) ConsoleWriteLine
+    · IfTrue - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
     · IfFalse - Conditional (void)
         · Test - Constant (bool) = true
-        · IfTrue - Call (void) ConsoleWriteLine
+        · IfTrue - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
         · IfFalse - Default (void)
 ---- FactoryMethods.MakeConditional
@@ -1084,17 +1084,17 @@ LabelTarget
 LabelTarget
 ---- FactoryMethods.NoParametersVoidReturn
 Lambda (Action)
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
 ---- FactoryMethods.OneParameterVoidReturn
 Lambda (Action<string>)
     · Parameters[0] - Parameter (string) s
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Parameter (string) s
 ---- FactoryMethods.TwoParametersVoidReturn
 Lambda (Action<string, string>)
     · Parameters[0] - Parameter (string) s1
     · Parameters[1] - Parameter (string) s2
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Add (string)
             · Left - Parameter (string) s1
             · Right - Parameter (string) s2
@@ -1123,7 +1123,7 @@ Lambda (Func<string, string, string>) name
 Lambda (Action)
     · Body - Conditional (void)
         · Test - Constant (bool) = true
-        · IfTrue - Call (void) ConsoleWriteLine
+        · IfTrue - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
         · IfFalse - Default (void)
 ---- FactoryMethods.NestedLambda
@@ -1184,19 +1184,19 @@ ListBinding Children
 Call (string) ToString
     · Object - Parameter (string) s
 ---- FactoryMethods.StaticMethod0Arguments
-Call (void) DummyDummyMethod
+Call (void) Dummy.DummyMethod
 ---- FactoryMethods.ExtensionMethod0Arguments
-Call (int) EnumerableCount
+Call (int) Enumerable.Count
     · Arguments[0] - Parameter (List<string>) lstString
 ---- FactoryMethods.InstanceMethod1Argument
 Call (int) CompareTo
     · Object - Parameter (string) s
     · Arguments[0] - Constant (string) = ""
 ---- FactoryMethods.StaticMethod1Argument
-Call (string) stringIntern
+Call (string) string.Intern
     · Arguments[0] - Constant (string) = ""
 ---- FactoryMethods.ExtensionMethod1Argument
-Call (IEnumerable<string>) EnumerableTake
+Call (IEnumerable<string>) Enumerable.Take
     · Arguments[0] - Parameter (List<string>) lstString
     · Arguments[1] - Constant (int) = 1
 ---- FactoryMethods.InstanceMethod2Arguments
@@ -1205,20 +1205,20 @@ Call (int) IndexOf
     · Arguments[0] - Constant (char) = 'a'
     · Arguments[1] - Constant (int) = 2
 ---- FactoryMethods.StaticMethod2Arguments
-Call (string) stringJoin
+Call (string) string.Join
     · Arguments[0] - Constant (string) = ","
     · Arguments[1] - NewArrayInit (string[])
         · Expressions[0] - Constant (string) = "a"
         · Expressions[1] - Constant (string) = "b"
 ---- FactoryMethods.ExtensionMethod2Arguments
-Call (IOrderedEnumerable<string>) EnumerableOrderBy
+Call (IOrderedEnumerable<string>) Enumerable.OrderBy
     · Arguments[0] - Parameter (List<string>) lstString
     · Arguments[1] - Lambda (Func<string, string>)
         · Parameters[0] - Parameter (string) x
         · Body - Parameter (string) x
     · Arguments[2] - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase
 ---- FactoryMethods.StringConcat
-Call (string) stringConcat
+Call (string) string.Concat
     · Arguments[0] - Parameter (string) s1
     · Arguments[1] - Parameter (string) s2
 ---- FactoryMethods.NamedType
@@ -1313,44 +1313,44 @@ NewArrayBounds (string[,][])
 SwitchCase
     · TestValues[0] - Constant (int) = 5
     · Body - Block (void)
-        · Result - Call (void) ConsoleWriteLine
+        · Result - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[0] - Call (void) ConsoleWriteLine
+        · Expressions[0] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[1] - Call (void) ConsoleWriteLine
+        · Expressions[1] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.MultiValueSwitchCase
 SwitchCase
     · TestValues[0] - Constant (int) = 5
     · TestValues[1] - Constant (int) = 6
     · Body - Block (void)
-        · Result - Call (void) ConsoleWriteLine
+        · Result - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[0] - Call (void) ConsoleWriteLine
+        · Expressions[0] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[1] - Call (void) ConsoleWriteLine
+        · Expressions[1] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.SingleValueSwitchCase1
 SwitchCase
     · TestValues[0] - Constant (int) = 5
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.MultiValueSwitchCase1
 SwitchCase
     · TestValues[0] - Constant (int) = 5
     · TestValues[1] - Constant (int) = 6
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.SwitchOnExpressionWithDefaultSingleStatement
 Switch (void)
     · SwitchValue - Parameter (int) i
     · Cases[0] - SwitchCase
         · TestValues[0] - Constant (int) = 4
-        · Body - Call (void) ConsoleWriteLine
+        · Body - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
     · Cases[1] - SwitchCase
         · TestValues[0] - Constant (int) = 5
-        · Body - Call (void) ConsoleWriteLine
+        · Body - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = false
     · DefaultBody - Default (void)
 ---- FactoryMethods.SwitchOnExpressionWithDefaultMultiStatement
@@ -1358,11 +1358,11 @@ Switch (void)
     · SwitchValue - Parameter (int) i
     · Cases[0] - SwitchCase
         · TestValues[0] - Constant (int) = 4
-        · Body - Call (void) ConsoleWriteLine
+        · Body - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
     · Cases[1] - SwitchCase
         · TestValues[0] - Constant (int) = 5
-        · Body - Call (void) ConsoleWriteLine
+        · Body - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = false
     · DefaultBody - Block (void)
         · Result - Constant (bool) = true
@@ -1376,11 +1376,11 @@ Switch (void)
         · Expressions[1] - Parameter (int) j
     · Cases[0] - SwitchCase
         · TestValues[0] - Constant (int) = 4
-        · Body - Call (void) ConsoleWriteLine
+        · Body - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
     · Cases[1] - SwitchCase
         · TestValues[0] - Constant (int) = 5
-        · Body - Call (void) ConsoleWriteLine
+        · Body - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = false
     · DefaultBody - Block (void)
         · Result - Constant (bool) = true
@@ -1391,11 +1391,11 @@ Switch (void)
     · SwitchValue - Parameter (int) i
     · Cases[0] - SwitchCase
         · TestValues[0] - Constant (int) = 4
-        · Body - Call (void) ConsoleWriteLine
+        · Body - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
     · Cases[1] - SwitchCase
         · TestValues[0] - Constant (int) = 5
-        · Body - Call (void) ConsoleWriteLine
+        · Body - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = false
 ---- FactoryMethods.SwitchOnMultipleStatementsWithoutDefault
 Switch (void)
@@ -1405,72 +1405,72 @@ Switch (void)
         · Expressions[1] - Parameter (int) j
     · Cases[0] - SwitchCase
         · TestValues[0] - Constant (int) = 4
-        · Body - Call (void) ConsoleWriteLine
+        · Body - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
     · Cases[1] - SwitchCase
         · TestValues[0] - Constant (int) = 5
-        · Body - Call (void) ConsoleWriteLine
+        · Body - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = false
 ---- FactoryMethods.ConstructTryFault
 Try (void)
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
-    · Fault - Call (void) ConsoleWriteLine
+    · Fault - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructTryFinally
 Try (void)
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
-    · Finally - Call (void) ConsoleWriteLine
+    · Finally - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructSimpleCatch
 CatchBlock
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructCatchSingleStatement
 CatchBlock
     · Variable - Parameter (Exception) ex
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructCatchMultiStatement
 CatchBlock
     · Variable - Parameter (Exception) ex
     · Body - Block (void)
-        · Result - Call (void) ConsoleWriteLine
+        · Result - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[0] - Call (void) ConsoleWriteLine
+        · Expressions[0] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[1] - Call (void) ConsoleWriteLine
+        · Expressions[1] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructCatchSingleStatementWithType
 CatchBlock
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructCatchMultiStatementWithType
 CatchBlock
     · Body - Block (void)
-        · Result - Call (void) ConsoleWriteLine
+        · Result - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[0] - Call (void) ConsoleWriteLine
+        · Expressions[0] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[1] - Call (void) ConsoleWriteLine
+        · Expressions[1] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructCatchSingleStatementWithFilter
 CatchBlock
     · Variable - Parameter (Exception) ex
     · Filter - Constant (bool) = true
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructCatchMultiStatementWithFilter
 CatchBlock
     · Variable - Parameter (Exception) ex
     · Filter - Constant (bool) = true
     · Body - Block (void)
-        · Result - Call (void) ConsoleWriteLine
+        · Result - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[0] - Call (void) ConsoleWriteLine
+        · Expressions[0] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
-        · Expressions[1] - Call (void) ConsoleWriteLine
+        · Expressions[1] - Call (void) Console.WriteLine
             · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructCatchWithMultiStatementFilter
 CatchBlock
@@ -1479,7 +1479,7 @@ CatchBlock
         · Result - Constant (bool) = true
         · Expressions[0] - Constant (bool) = true
         · Expressions[1] - Constant (bool) = true
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructTryCatch
 Try (bool)
@@ -1492,7 +1492,7 @@ Try (bool)
     · Handlers[0] - CatchBlock
         · Variable - Parameter (Exception) ex
         · Body - Constant (bool) = true
-    · Finally - Call (void) ConsoleWriteLine
+    · Finally - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructArrayLength
 ArrayLength (int)
@@ -1733,7 +1733,7 @@ Lambda (Func<string>)
         · Arguments[1] - Constant (int) = 6
 ---- VBCompiler.InterpolatedString
 Lambda (Func<string>)
-    · Body - Call (string) stringFormat
+    · Body - Call (string) string.Format
         · Arguments[0] - Constant (string) = "{0}"
         · Arguments[1] - Convert (object)
             · Operand - Constant (DateTime) = 01/01/1981 0:00:00
@@ -1751,18 +1751,18 @@ Lambda (Func<int>)
         · Arguments[0] - Constant (int) = 5
 ---- VBCompiler.NoParametersVoidReturn
 Lambda (Action)
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
 ---- VBCompiler.OneParameterVoidReturn
 Lambda (Action<string>)
     · Parameters[0] - Parameter (string) s
-    · Body - Call (void) ConsoleWriteLine
+    · Body - Call (void) Console.WriteLine
         · Arguments[0] - Parameter (string) s
 ---- VBCompiler.TwoParametersVoidReturn
 Lambda (Action<string, string>)
     · Parameters[0] - Parameter (string) s1
     · Parameters[1] - Parameter (string) s2
-    · Body - Call (void) ConsoleWriteLine
-        · Arguments[0] - Call (string) stringConcat
+    · Body - Call (void) Console.WriteLine
+        · Arguments[0] - Call (string) string.Concat
             · Arguments[0] - Parameter (string) s1
             · Arguments[1] - Parameter (string) s2
 ---- VBCompiler.NoParametersNonVoidReturn
@@ -1776,7 +1776,7 @@ Lambda (Func<string, string>)
 Lambda (Func<string, string, string>)
     · Parameters[0] - Parameter (string) s1
     · Parameters[1] - Parameter (string) s2
-    · Body - Call (string) stringConcat
+    · Body - Call (string) string.Concat
         · Arguments[0] - Parameter (string) s1
         · Arguments[1] - Parameter (string) s2
 ---- VBCompiler.True
@@ -1831,16 +1831,16 @@ Lambda (Func<string>)
             · Expression - Constant (<closure>)
 ---- VBCompiler.StaticMethod0Arguments
 Lambda (Action)
-    · Body - Call (void) DummyDummyMethod
+    · Body - Call (void) Dummy.DummyMethod
 ---- VBCompiler.ExtensionMethod0Arguments
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) EnumerableDistinct
+    · Body - Call (IEnumerable<string>) Enumerable.Distinct
         · Arguments[0] - Convert (IEnumerable<string>)
             · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
                 · Expression - Constant (<closure>)
 ---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) EnumerableDistinct
+    · Body - Call (IEnumerable<string>) Enumerable.Distinct
         · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
             · Expression - Constant (<closure>)
 ---- VBCompiler.InstanceMethod1Argument
@@ -1851,18 +1851,18 @@ Lambda (Func<int>)
         · Arguments[0] - Constant (string) = ""
 ---- VBCompiler.StaticMethod1Argument
 Lambda (Func<string>)
-    · Body - Call (string) stringIntern
+    · Body - Call (string) string.Intern
         · Arguments[0] - Constant (string) = ""
 ---- VBCompiler.ExtensionMethod1Argument
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) EnumerableTake
+    · Body - Call (IEnumerable<string>) Enumerable.Take
         · Arguments[0] - Convert (IEnumerable<string>)
             · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
                 · Expression - Constant (<closure>)
         · Arguments[1] - Constant (int) = 1
 ---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) EnumerableTake
+    · Body - Call (IEnumerable<string>) Enumerable.Take
         · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
             · Expression - Constant (<closure>)
         · Arguments[1] - Constant (int) = 1
@@ -1875,7 +1875,7 @@ Lambda (Func<int>)
         · Arguments[1] - Constant (int) = 2
 ---- VBCompiler.StaticMethod2Arguments
 Lambda (Func<string>)
-    · Body - Call (string) stringJoin
+    · Body - Call (string) string.Join
         · Arguments[0] - Constant (string) = ","
         · Arguments[1] - NewArrayInit (string[])
             · Expressions[0] - New (string)
@@ -1883,13 +1883,13 @@ Lambda (Func<string>)
                     · Expression - Constant (<closure>)
 ---- VBCompiler.StaticMethod2ArgumentsWithoutConversion
 Lambda (Func<string>)
-    · Body - Call (string) stringJoin
+    · Body - Call (string) string.Join
         · Arguments[0] - Constant (string) = ","
         · Arguments[1] - MemberAccess (IEnumerable<char>) $VB$Local_arr = new[] { 'a', 'b' }
             · Expression - Constant (<closure>)
 ---- VBCompiler.ExtensionMethod2Arguments
 Lambda (Func<IOrderedEnumerable<string>>)
-    · Body - Call (IOrderedEnumerable<string>) EnumerableOrderBy
+    · Body - Call (IOrderedEnumerable<string>) Enumerable.OrderBy
         · Arguments[0] - Convert (IEnumerable<string>)
             · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
                 · Expression - Constant (<closure>)
@@ -1900,7 +1900,7 @@ Lambda (Func<IOrderedEnumerable<string>>)
             · Operand - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase
 ---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
 Lambda (Func<IOrderedEnumerable<string>>)
-    · Body - Call (IOrderedEnumerable<string>) EnumerableOrderBy
+    · Body - Call (IOrderedEnumerable<string>) Enumerable.OrderBy
         · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
             · Expression - Constant (<closure>)
         · Arguments[1] - Lambda (Func<string, string>)
@@ -1912,21 +1912,21 @@ Lambda (Func<IOrderedEnumerable<string>>)
 Lambda (Func<string, string, string>)
     · Parameters[0] - Parameter (string) s1
     · Parameters[1] - Parameter (string) s2
-    · Body - Call (string) stringConcat
+    · Body - Call (string) string.Concat
         · Arguments[0] - Parameter (string) s1
         · Arguments[1] - Parameter (string) s2
 ---- VBCompiler.StringConcatOperator
 Lambda (Func<string, string, string>)
     · Parameters[0] - Parameter (string) s1
     · Parameters[1] - Parameter (string) s2
-    · Body - Call (string) stringConcat
+    · Body - Call (string) string.Concat
         · Arguments[0] - Parameter (string) s1
         · Arguments[1] - Parameter (string) s2
 ---- VBCompiler.StringConcatOperatorParamArray
 Lambda (Func<string, string, string>)
     · Parameters[0] - Parameter (string) s1
     · Parameters[1] - Parameter (string) s2
-    · Body - Call (string) stringConcat
+    · Body - Call (string) string.Concat
         · Arguments[0] - NewArrayInit (string[])
             · Expressions[0] - Parameter (string) s1
             · Expressions[1] - Parameter (string) s2
