@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using static System.Linq.Expressions.Expression;
 
 namespace ExpressionTreeToString.Util {
@@ -35,29 +36,16 @@ namespace ExpressionTreeToString.Util {
             expr is MemberExpression mexpr && (mexpr.Expression?.Type.IsClosureClass() ?? false);
 
         public static string Name(this Expression expr, string language = "C#") {
-            string ret = "";
-            string staticTypename = "";
-            switch (expr) {
-                case ParameterExpression pexpr:
-                    ret = pexpr.Name;
-                    break;
-                case MemberExpression mexpr:
-                    if (mexpr.Expression == null) {
-                        staticTypename = mexpr.Member.DeclaringType.FriendlyName(language) + ".";
-                    }
-                    ret = staticTypename + mexpr.Member.Name;
-                    break;
-                case MethodCallExpression callExpr:
-                    if (callExpr.Object == null) {
-                        staticTypename = callExpr.Method.DeclaringType.FriendlyName(language);
-                    }
-                    ret = staticTypename + callExpr.Method.Name;
-                    break;
-                case LambdaExpression lambdaExpr:
-                    ret = lambdaExpr.Name;
-                    break;
-            }
-            return ret;
+            string qualifiedName(Expression instance, MemberInfo mi) => 
+                (instance is null ? $"{mi.DeclaringType.FriendlyName(language)}." : "") + mi.Name;
+
+            return expr switch {
+                ParameterExpression pexpr => pexpr.Name,
+                MemberExpression mexpr => qualifiedName(mexpr.Expression, mexpr.Member),
+                MethodCallExpression callExpr => qualifiedName(callExpr.Object, callExpr.Method),
+                LambdaExpression lambdaExpr => lambdaExpr.Name,
+                _ => "",
+            };
         }
     }
 }

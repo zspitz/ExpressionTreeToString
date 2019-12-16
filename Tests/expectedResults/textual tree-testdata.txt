@@ -272,7 +272,7 @@ Lambda (Func<string>)
     · Body - Constant (string) = "abcd"
 ---- CSCompiler.InterpolatedString
 Lambda (Func<string>)
-    · Body - Call (string) stringFormat
+    · Body - Call (string) string.Format
         · Arguments[0] - Constant (string) = "{0}"
         · Arguments[1] - Convert (object)
             · Operand - New (DateTime)
@@ -1733,7 +1733,7 @@ Lambda (Func<string>)
         · Arguments[1] - Constant (int) = 6
 ---- VBCompiler.InterpolatedString
 Lambda (Func<string>)
-    · Body - Call (string) stringFormat
+    · Body - Call (string) string.Format
         · Arguments[0] - Constant (string) = "{0}"
         · Arguments[1] - Convert (object)
             · Operand - Constant (DateTime) = 01/01/1981 0:00:00
