@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <RootNamespace>ExpressionTreeTestObjects</RootNamespace>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>ExpressionTreeTestObjects.VB</AssemblyName>
+
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>ExpressionTreeTestObjects</PackageId>
     <Authors>Zev Spitz</Authors>
@@ -14,15 +17,18 @@
     <RepositoryUrl>https://github.com/zspitz/ExpressionTreeToString</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>expression-tree code-generation visual-basic.net vb.net csharp test-data tostring</PackageTags>
-
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    <IncludeBuildOutput>false</IncludeBuildOutput>
 
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj" PrivateAssets="all" />
-    <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj" PrivateAssetss="all" />
+    <Import Include="ExpressionTreeTestObjects.Categories" />
+    <Import Include="ExpressionTreeTestObjects.Functions" />
+    <Import Include="System.Linq.Expressions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TestObjects\TestObjects.csproj" />
   </ItemGroup>
 
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
