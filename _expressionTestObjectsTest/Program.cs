@@ -1,19 +1,17 @@
 ﻿using System;
 using ExpressionTreeTestObjects;
+using ExpressionTreeTestObjects.VB;
 using ExpressionTreeToString;
 using static System.Linq.Expressions.Expression;
 
 namespace _expressionTestObjectsTest {
     class Program {
         static void Main(string[] args) {
-            //var lst = Objects.Get();
+            Loader.Load();
 
-            //Console.WriteLine("Hello World!");
+            var lst = Objects.Get();
 
-            var expr = Lambda(
-                Constant(null, typeof(string))
-            );
-            Console.WriteLine(expr.ToString("Factory methods"));
+            Console.WriteLine("Hello World!");
         }
     }
 }
