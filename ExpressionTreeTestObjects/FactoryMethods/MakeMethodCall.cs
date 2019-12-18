@@ -9,25 +9,25 @@ using System.Linq;
 
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
-        [Category(Method)]
+        [TestObject(Method)]
         internal static readonly Expression InstanceMethod0Arguments = Call(s, GetMethod(() => "".ToString()));
 
-        [Category(Method)]
+        [TestObject(Method)]
         internal static readonly Expression StaticMethod0Arguments = Call(GetMethod(() => Dummy.DummyMethod()));
 
-        [Category(Method)]
-        internal static readonly Expression ExtensionMethod0Arguments = Call(GetMethod(() => ((List<string>)null).Count()), lstString);
+        [TestObject(Method)]
+        internal static readonly Expression ExtensionMethod0Arguments = Call(GetMethod(() => ((List<string>?)null)!.Count()), lstString);
 
-        [Category(Method)]
+        [TestObject(Method)]
         internal static readonly Expression InstanceMethod1Argument = Call(s, GetMethod(() => "".CompareTo("")), Constant(""));
 
-        [Category(Method)]
+        [TestObject(Method)]
         internal static readonly Expression StaticMethod1Argument = Call(GetMethod(() => string.Intern("")), Constant(""));
 
-        [Category(Method)]
+        [TestObject(Method)]
         internal static readonly Expression ExtensionMethod1Argument = Call(GetMethod(() => (null as List<string>).Take(1)), lstString, Constant(1));
 
-        [Category(Method)]
+        [TestObject(Method)]
         internal static readonly Expression InstanceMethod2Arguments = Call(
             s,
             GetMethod(() => "".IndexOf('a', 2)),
@@ -35,14 +35,14 @@ namespace ExpressionTreeTestObjects {
             Constant(2)
         );
 
-        [Category(Method)]
+        [TestObject(Method)]
         internal static readonly Expression StaticMethod2Arguments = Call(
             GetMethod(() => string.Join(",", new[] { "a", "b" })),
             Constant(","),
             NewArrayInit(typeof(string), Constant("a"), Constant("b"))
         );
 
-        [Category(Method)]
+        [TestObject(Method)]
         internal static readonly Expression ExtensionMethod2Arguments = IIFE(() => {
             var x = Parameter(typeof(string), "x");
             return Call(
@@ -53,7 +53,7 @@ namespace ExpressionTreeTestObjects {
             );
         });
 
-        [Category(Method)]
+        [TestObject(Method)]
         internal static readonly Expression StringConcat = Call(
             GetMethod(() => string.Concat("", "")),
             s1,

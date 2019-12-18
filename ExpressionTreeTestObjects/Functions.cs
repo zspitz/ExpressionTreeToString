@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace ExpressionTreeTestObjects {
     static public class Functions {
         internal static MethodInfo GetMethod(Expression<Action> expr, params Type[] typeargs) {
-            var ret = (expr.Body as MethodCallExpression).Method;
+            var ret = ((MethodCallExpression)expr.Body).Method;
             // TODO handle partially open generic methods
             if (typeargs.Any() && ret.IsGenericMethod) {
                 ret = ret.GetGenericMethodDefinition().MakeGenericMethod(typeargs);
@@ -18,7 +18,7 @@ namespace ExpressionTreeTestObjects {
         }
 
         internal static MemberInfo GetMember<T>(Expression<Func<T>> expr) =>
-            (expr.Body as MemberExpression).Member;
+            ((MemberExpression)expr.Body).Member;
 
         public static Expression Expr<T>(Expression<Func<T>> expr) => expr;
         public static Expression Expr<T, T1>(Expression<Func<T, T1>> expr) => expr;

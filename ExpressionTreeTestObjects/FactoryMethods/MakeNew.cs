@@ -13,49 +13,49 @@ namespace ExpressionTreeTestObjects {
         static readonly PropertyInfo bazProp = typeof(Foo).GetProperty("Baz");
         static readonly ConstructorInfo fooCtor1 = typeof(Foo).GetConstructor(new[] { typeof(string) });
         static readonly MethodInfo add1 = typeof(List<string>).GetMethod("Add");
-        static readonly MethodInfo add2 = GetMethod(() => (null as Wrapper).Add("", ""));
+        static readonly MethodInfo add2 = GetMethod(() => ((Wrapper?)null)!.Add("", ""));
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression NamedType = New(typeof(Random));
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression NamedTypeWithInitializer = MemberInit(
             New(fooType),
             Bind(barProp, Constant("abcd"))
         );
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression NamedTypeWithInitializers = MemberInit(
             New(fooType),
             Bind(barProp, Constant("abcd")),
             Bind(bazProp, Constant("efgh"))
         );
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression NamedTypeConstructorParameters = New(fooCtor1, Constant("ijkl"));
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression NamedTypeConstructorParametersWithInitializers = MemberInit(
             New(fooCtor1, Constant("ijkl")),
             Bind(barProp, Constant("abcd")),
             Bind(bazProp, Constant("efgh"))
         );
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression CollectionTypeWithInitializer = ListInit(
             New(typeof(List<string>)),
             ElementInit(add1, Constant("abcd")),
             ElementInit(add1, Constant("efgh"))
         );
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression CollectionTypeWithMultiElementInitializers = ListInit(
             New(typeof(Wrapper)),
             ElementInit(add2, Constant("ab"), Constant("cd")),
             ElementInit(add2, Constant("ef"), Constant("gh"))
         );
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression CollectionTypeWithSingleOrMultiElementInitializers = ListInit(
             New(typeof(Wrapper)),
             ElementInit(add2, Constant("ab"), Constant("cd")),

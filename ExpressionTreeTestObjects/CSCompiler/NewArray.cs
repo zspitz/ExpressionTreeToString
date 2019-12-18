@@ -7,37 +7,37 @@ using static ExpressionTreeTestObjects.Categories;
 namespace ExpressionTreeTestObjects {
     partial class CSCompiler {
 
-        [Category(NewArray)]
+        [TestObject(NewArray)]
         internal static readonly Expression SingleDimensionInit = Expr(() => new string[] { "" });
 
-        [Category(NewArray)]
+        [TestObject(NewArray)]
         internal static readonly Expression SingleDimensionInitExplicitType = Expr(() => new object[] { "" });
 
-        [Category(NewArray)]
+        [TestObject(NewArray)]
         internal static readonly Expression SingleDimensionWithBounds = Expr(() => new string[5]);
 
-        [Category(NewArray)]
+        [TestObject(NewArray)]
         internal static readonly Expression MultidimensionWithBounds = Expr(() => new string[2, 3]);
 
-        [Category(NewArray)]
+        [TestObject(NewArray)]
         internal static readonly Expression JaggedWithElementsImplicitType = Expr(() => new string[][] {
             new [] {"ab","cd" },
             new [] {"ef","gh"}
         });
 
-        [Category(NewArray)]
+        [TestObject(NewArray)]
         internal static readonly Expression JaggedWithElementsExplicitType = Expr(() => new object[][] {
             new [] {"ab","cd" },
             new [] {"ef","gh"}
         });
 
-        [Category(NewArray)]
+        [TestObject(NewArray)]
         internal static readonly Expression JaggedWithBounds = Expr(() => new string[5][]);
 
-        [Category(NewArray)]
+        [TestObject(NewArray)]
         internal static readonly Expression ArrayOfMultidimensionalArray = Expr(() => new string[5][,]);
 
-        [Category(NewArray)]
+        [TestObject(NewArray)]
         internal static readonly Expression MultidimensionalArrayOfArray = Expr(() => new string[3, 2][]);
     }
 }

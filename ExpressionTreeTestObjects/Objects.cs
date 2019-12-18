@@ -31,10 +31,14 @@ namespace ExpressionTreeTestObjects {
 
         public static void LoadType(Type t) {
             var source = t.Name;
-            t.GetFields(Static | NonPublic)
-                .Where(x => x.IsAssembly)
+            t.GetFields(Static | NonPublic | Public)
                 .Select(fld => (
-                    fld.GetCustomAttribute<CategoryAttribute>()?.Category,
+                    fld,
+                    attr: fld.GetCustomAttribute<TestObjectAttribute>()
+                ))
+                .WhereT((fld, attr) => attr is { })
+                .SelectT((fld, attr) => (
+                    attr.Category,
                     source,
                     fld.Name,
                     fld.GetValue(null)

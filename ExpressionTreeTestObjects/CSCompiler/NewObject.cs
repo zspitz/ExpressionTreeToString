@@ -6,8 +6,8 @@ using static ExpressionTreeTestObjects.Categories;
 
 namespace ExpressionTreeTestObjects {
     public class Foo {
-        public string Bar { get; set; }
-        public string Baz { get; set; }
+        public string? Bar { get; set; }
+        public string? Baz { get; set; }
         public Foo() { }
         public Foo(string baz) { }
     }
@@ -19,53 +19,53 @@ namespace ExpressionTreeTestObjects {
     // class used for MemberMemberBinding and ListBinding
     public class Node {
         internal NodeData Data { get; set; } = new NodeData();
-        internal IList<Node> Children { get; set; } = new List<Node>() { null };
+        internal IList<Node?> Children { get; set; } = new List<Node?>() { null };
     }
 
     public class NodeData {
-        internal string Name { get; set; }
+        internal string? Name { get; set; }
     }
 
     partial class CSCompiler {
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression NamedType = Expr(() => new Random());
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression NamedTypeWithInitializer = Expr(() => new Foo { Bar = "abcd" });
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression NamedTypeWithInitializers = Expr(() => new Foo { Bar = "abcd", Baz = "efgh" });
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression NamedTypeConstructorParameters = Expr(() => new Foo("ijkl"));
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression NamedTypeConstructorParametersWithInitializers = Expr(() => new Foo("ijkl") { Bar = "abcd", Baz = "efgh" });
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression AnonymousType = Expr(() => new { Bar = "abcd", Baz = "efgh" });
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression AnonymousTypeFromVariables = IIFE(() => {
             var Bar = "abcd";
             var Baz = "efgh";
             return Expr(() => new { Bar, Baz });
         });
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression CollectionTypeWithInitializer = Expr(() => new List<string> { "abcd", "efgh" });
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression CollectionTypeWithMultipleElementsInitializers = Expr(() => new Wrapper { { "ab", "cd" }, { "ef", "gh" } });
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression CollectionTypeWithSingleOrMultipleElementsInitializers = Expr(() => new Wrapper { { "ab", "cd" }, "ef" });
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression MemberMemberBinding = Expr(() => new Node { Data = { Name = "abcd" } });
 
-        [Category(NewObject)]
+        [TestObject(NewObject)]
         internal static readonly Expression ListBinding = Expr(() => new Node { Children = { new Node(), new Node() } });
     }
 }

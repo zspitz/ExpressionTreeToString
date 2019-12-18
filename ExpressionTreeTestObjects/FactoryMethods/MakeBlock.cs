@@ -8,27 +8,27 @@ using static ExpressionTreeTestObjects.Globals;
 
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
-        [Category(Blocks)]
+        [TestObject(Blocks)]
         internal static readonly Expression BlockNoVariables = Block(
             Constant(true),
             Constant(true)
         );
 
-        [Category(Blocks)]
+        [TestObject(Blocks)]
         internal static readonly Expression BlockSingleVariable = Block(
             new[] { i },
             Constant(true),
             Constant(true)
         );
 
-        [Category(Blocks)]
+        [TestObject(Blocks)]
         internal static readonly Expression BlockMultipleVariable = Block(
             new[] { i, s1 },
             Constant(true),
             Constant(true)
         );
 
-        [Category(Blocks)]
+        [TestObject(Blocks)]
         internal static readonly Expression NestedInlineBlock = Block(
             Constant(true),
             Block(
@@ -38,19 +38,19 @@ namespace ExpressionTreeTestObjects {
             Constant(true)
         );
 
-        [Category(Blocks)]
+        [TestObject(Blocks)]
         internal static readonly Expression NestedBlockInTest = IfThen(
             NestedInlineBlock,
             Constant(true)
         );
 
-        [Category(Blocks)]
+        [TestObject(Blocks)]
         internal static readonly Expression NestedBlockInBlockSyntax = IfThen(
             Constant(true),
             NestedInlineBlock
         );
 
-        [Category(Blocks)]
+        [TestObject(Blocks)]
         internal static readonly BlockExpression NestedInlineBlockWithVariable = Block(
             Constant(true),
             Block(
@@ -61,13 +61,13 @@ namespace ExpressionTreeTestObjects {
             Constant(true)
         );
 
-        [Category(Blocks)]
+        [TestObject(Blocks)]
         internal static readonly Expression NestedBlockInTestWithVariables = IfThen(
             NestedInlineBlockWithVariable,
             Constant(true)
         );
 
-        [Category(Blocks)]
+        [TestObject(Blocks)]
         internal static readonly Expression NestedBlockInBlockSyntaxWithVariable = IfThen(
             Constant(true),
             NestedInlineBlockWithVariable

@@ -8,26 +8,26 @@ using static ExpressionTreeTestObjects.Globals;
 
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
-        [Category(SwitchCases)]
+        [TestObject(SwitchCases)]
         internal static readonly SwitchCase SingleValueSwitchCase = SwitchCase(
             Block(writeLineTrue, writeLineTrue),
             Constant(5)
         );
 
-        [Category(SwitchCases)]
+        [TestObject(SwitchCases)]
         internal static readonly SwitchCase MultiValueSwitchCase = SwitchCase(
             Block(writeLineTrue, writeLineTrue),
             Constant(5),
             Constant(6)
         );
 
-        [Category(SwitchCases)]
+        [TestObject(SwitchCases)]
         internal static readonly SwitchCase SingleValueSwitchCase1 = SwitchCase(writeLineTrue, Constant(5));
 
-        [Category(SwitchCases)]
+        [TestObject(SwitchCases)]
         internal static readonly SwitchCase MultiValueSwitchCase1 = SwitchCase(writeLineTrue, Constant(5), Constant(6));
 
-        [Category(SwitchCases)]
+        [TestObject(SwitchCases)]
         internal static readonly Expression SwitchOnExpressionWithDefaultSingleStatement = Switch(i, Empty(),
             SwitchCase(
                 writeLineTrue,
@@ -38,7 +38,7 @@ namespace ExpressionTreeTestObjects {
             )
         );
 
-        [Category(SwitchCases)]
+        [TestObject(SwitchCases)]
         internal static readonly Expression SwitchOnExpressionWithDefaultMultiStatement = Switch(i,
             Block(
                 typeof(void),
@@ -53,7 +53,7 @@ namespace ExpressionTreeTestObjects {
             )
         );
 
-        [Category(SwitchCases)]
+        [TestObject(SwitchCases)]
         internal static readonly Expression SwitchOnMultipleStatementsWithDefault = Switch(Block(i, j), Block(
                 typeof(void),
                 Constant(true),
@@ -67,7 +67,7 @@ namespace ExpressionTreeTestObjects {
             )
         );
 
-        [Category(SwitchCases)]
+        [TestObject(SwitchCases)]
         internal static readonly Expression SwitchOnExpressionWithoutDefault = Switch(i, SwitchCase(
                 writeLineTrue,
                 Constant(4)
@@ -77,7 +77,7 @@ namespace ExpressionTreeTestObjects {
             )
         );
 
-        [Category(SwitchCases)]
+        [TestObject(SwitchCases)]
         internal static readonly Expression SwitchOnMultipleStatementsWithoutDefault = Switch(Block(i, j), SwitchCase(
                 writeLineTrue,
                 Constant(4)

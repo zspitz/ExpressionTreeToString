@@ -1,17 +1,17 @@
 ﻿Partial Module VBCompiler
 
-    <Category(Member)>
+    <TestObject(Member)>
     Friend InstanceMember As Expression = IIFE(Function()
                                                    Dim s = ""
                                                    Return Expr(Function() s.Length)
                                                End Function)
 
-    <Category(Member)>
+    <TestObject(Member)>
     Friend ClosedVariable As Expression = IIFE(Function()
                                                    Dim s = ""
                                                    Return Expr(Function() s)
                                                End Function)
 
-    <Category(Member)>
+    <TestObject(Member)>
     Friend StaticMember As Expression = Expr(Function() String.Empty)
 End Module

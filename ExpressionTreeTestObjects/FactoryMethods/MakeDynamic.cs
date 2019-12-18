@@ -29,61 +29,61 @@ namespace ExpressionTreeTestObjects {
 
         // TODO what about VB runtime binder?
 
-        [Category(Dynamics)]
+        [TestObject(Dynamics)]
         internal static readonly Expression ConstructMemberInvocationNoArguments = IIFE(() => {
             var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
             return Dynamic(binder, typeof(object), obj);
         });
 
-        [Category(Dynamics)]
+        [TestObject(Dynamics)]
         internal static readonly Expression ConstructMemberInvocationWithArguments = IIFE(() => {
             var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
             return Dynamic(binder, typeof(object), obj, arg1, arg2);
         });
 
-        [Category(Dynamics)]
+        [TestObject(Dynamics)]
         internal static readonly Expression ConstructSetIndex = IIFE(() => {
             var binder = SetIndex(flags, context, argInfos2);
             return Dynamic(binder, typeof(object), obj, value, key);
         });
 
-        [Category(Dynamics)]
+        [TestObject(Dynamics)]
         internal static readonly Expression ConstructSetIndexMultipleKeys = IIFE(() => {
             var binder = SetIndex(flags, context, argInfos2);
             return Dynamic(binder, typeof(object), obj, value, key, key1);
         });
 
-        [Category(Dynamics)]
+        [TestObject(Dynamics)]
         internal static readonly Expression ConstructSetMember = IIFE(() => {
             var binder = SetMember(flags, "Data", context, argInfos);
             return Dynamic(binder, typeof(object), obj, value);
         });
 
-    [Category(Dynamics)]
+    [TestObject(Dynamics)]
       internal static readonly Expression ConstructGetIndex = IIFE(() => {
           var binder = GetIndex(flags, context, argInfos);
           return Dynamic(binder, typeof(object), obj, key);
       });
 
-        [Category(Dynamics)]
+        [TestObject(Dynamics)]
       internal static readonly Expression ConstructGetIndexMultipleKeys = IIFE(() => {
           var binder = GetIndex(flags, context, argInfos);
           return Dynamic(binder, typeof(object), obj, key, key1);
       });
 
-        [Category(Dynamics)]
+        [TestObject(Dynamics)]
         internal static readonly Expression ConstructGetMember = IIFE(() => {
             var binder = GetMember(flags, "Data", context, argInfos);
             return Dynamic(binder, typeof(object), obj);
         });
 
-        [Category(Dynamics)]
+        [TestObject(Dynamics)]
         internal static readonly Expression ConstructInvocationNoArguments = IIFE(() => {
             var binder = Invoke(flags, context, argInfos);
             return Dynamic(binder, typeof(object), obj);
         });
 
-        [Category(Dynamics)]
+        [TestObject(Dynamics)]
         internal static readonly Expression ConstructInvocationWithArguments = IIFE(() => {
             var binder = Invoke(flags, context, argInfos);
             return Dynamic(binder, typeof(object), obj, arg1, arg2);

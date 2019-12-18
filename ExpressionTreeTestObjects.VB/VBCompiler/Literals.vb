@@ -1,37 +1,37 @@
 ﻿Partial Module VBCompiler
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend [True] As Expression = Expr(Function() True)
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend [False] As Expression = Expr(Function() False)
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend NothingString As Expression = Expr(Function() CType(Nothing, String))
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend [Nothing] As Expression = Expr(Function() Nothing)
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend [Integer] As Expression = Expr(Function() 5)
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend NonInteger As Expression = Expr(Function() 7.32)
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend [String] As Expression = Expr(Function() "abcd")
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend EscapedString As Expression = Expr(Function() """")
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend ConstantNothingToObject As Expression = Expr(Function() Nothing)
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend ConstantNothingToReferenceType As Expression = Expr(Of String)(Function() Nothing)
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend ConstantNothingToValueType As Expression = Expr(Of Integer)(Function() Nothing)
 
-    <Category(Literal)>
+    <TestObject(Literal)>
     Friend InterpolatedString As Expression = Expr(Function() $"{#1981-1-1#}")
 End Module

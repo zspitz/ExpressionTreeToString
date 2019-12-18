@@ -7,8 +7,8 @@ using static System.AttributeTargets;
 
 namespace ExpressionTreeTestObjects {
     [AttributeUsage(Field, Inherited = false, AllowMultiple = false)]
-    public class CategoryAttribute : Attribute {
-        public CategoryAttribute(string category) => Category = category;
+    public class TestObjectAttribute : Attribute {
+        public TestObjectAttribute(string category) => Category = category;
 
         public string Category { get; set; }
     }

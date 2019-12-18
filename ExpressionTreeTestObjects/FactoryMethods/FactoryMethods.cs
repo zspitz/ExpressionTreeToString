@@ -8,7 +8,7 @@ using System.Collections;
 namespace ExpressionTreeTestObjects {
     [ObjectContainer]
     internal static partial class FactoryMethods {
-        [Category(Quoted)]
+        [TestObject(Quoted)]
         internal static readonly Expression MakeQuoted = Block(
             new[] { x },
             Quote(
@@ -16,23 +16,23 @@ namespace ExpressionTreeTestObjects {
             )
         );
 
-        [Category(Quoted)]
+        [TestObject(Quoted)]
         internal static readonly Expression MakeQuoted1 = Lambda(
             Quote(
                 Lambda(writeLineTrue)
             )
         );
 
-        [Category(DebugInfos)]
+        [TestObject(DebugInfos)]
         internal static readonly Expression MakeDebugInfo = DebugInfo(document, 1, 2, 3, 4);
 
-        [Category(DebugInfos)]
+        [TestObject(DebugInfos)]
         internal static readonly Expression MakeClearDebugInfo = ClearDebugInfo(document);
 
-        [Category(Loops)]
+        [TestObject(Loops)]
         internal static readonly Expression EmptyLoop = Loop(Constant(true));
 
-        [Category(Loops)]
+        [TestObject(Loops)]
         internal static readonly Expression EmptyLoop1 = Loop(
              Block(
                  Constant(true),
@@ -40,44 +40,44 @@ namespace ExpressionTreeTestObjects {
              )
          );
 
-        [Category(Member)]
+        [TestObject(Member)]
         internal static readonly Expression InstanceMember = MakeMemberAccess(
             Constant(""),
             typeof(string).GetMember("Length").Single()
         );
 
-        [Category(Member)]
+        [TestObject(Member)]
         internal static readonly Expression StaticMember = MakeMemberAccess(null, typeof(string).GetMember("Empty").Single());
 
-        [Category(RuntimeVars)]
+        [TestObject(RuntimeVars)]
         internal static readonly Expression ConstructRuntimeVariables = RuntimeVariables(x, s1);
 
-        [Category(RuntimeVars)]
+        [TestObject(RuntimeVars)]
         internal static readonly Expression RuntimeVariablesWithinBlock = Block(
             new[] { s2 }, //forces an explicit block
             Constant(true),
             RuntimeVariables(x, s1)
         );
 
-        [Category(Defaults)]
+        [TestObject(Defaults)]
         internal static readonly Expression MakeDefaultRefType = Default(typeof(string));
 
-        [Category(Defaults)]
+        [TestObject(Defaults)]
         internal static readonly Expression MakeDefaultValueType = Default(typeof(int));
 
-        [Category(TypeChecks)]
+        [TestObject(TypeChecks)]
         internal static readonly Expression MakeTypeCheck = TypeIs(
             Constant(""),
             typeof(string)
         );
 
-        [Category(TypeChecks)]
+        [TestObject(TypeChecks)]
         internal static readonly Expression MakeTypeEqual = TypeEqual(
             Constant(""),
             typeof(IEnumerable)
         );
 
-        [Category(Invocation)]
+        [TestObject(Invocation)]
         internal static readonly Expression MakeInvocation = Invoke(
             Lambda(Constant(5))
         );

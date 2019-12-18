@@ -6,25 +6,25 @@ namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
         private static LabelTarget labelTarget = Label("target");
 
-        [Category(Gotos)]
+        [TestObject(Gotos)]
         internal static readonly Expression MakeBreak = Break(labelTarget);
 
-        [Category(Gotos)]
+        [TestObject(Gotos)]
         internal static readonly Expression MakeBreakWithValue = Break(labelTarget, Constant(5));
 
-        [Category(Gotos)]
+        [TestObject(Gotos)]
         internal static readonly Expression MakeContinue = Continue(labelTarget);
 
-        [Category(Gotos)]
+        [TestObject(Gotos)]
         internal static readonly Expression MakeGotoWithoutValue = Goto(labelTarget);
 
-        [Category(Gotos)]
+        [TestObject(Gotos)]
         internal static readonly Expression MakeGotoWithValue = Goto(labelTarget, Constant(5));
 
-        [Category(Gotos)]
+        [TestObject(Gotos)]
         internal static readonly Expression MakeReturn = Return(labelTarget);
 
-        [Category(Gotos)]
+        [TestObject(Gotos)]
         internal static readonly Expression MakeReturnWithValue = Return(labelTarget, Constant(5));
     }
 }

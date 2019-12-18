@@ -9,7 +9,7 @@ using static ExpressionTreeTestObjects.Globals;
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
 
-        [Category(Labels)]
+        [TestObject(Labels)]
         // we're using variables here to force explicit blocks, which have indentation
         // in order to verify that the label is written without indentation
         internal static readonly Expression ConstructLabel = Block(
@@ -22,7 +22,7 @@ namespace ExpressionTreeTestObjects {
             )
         );
 
-        [Category(Labels)]
+        [TestObject(Labels)]
         internal static readonly Expression ConstructLabel1 = Block(
             new[] { i },
             Block(
@@ -32,10 +32,10 @@ namespace ExpressionTreeTestObjects {
             )
         );
 
-        [Category(Labels)]
+        [TestObject(Labels)]
         internal static readonly LabelTarget ConstructLabelTarget = Label("target");
 
-        [Category(Labels)]
+        [TestObject(Labels)]
         internal static readonly LabelTarget ConstructEmptyLabelTarget = Label("");
 
     }

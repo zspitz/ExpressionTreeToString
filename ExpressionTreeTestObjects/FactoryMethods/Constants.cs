@@ -7,22 +7,22 @@ using System.Collections;
 
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
-        [Category(Constants)]
+        [TestObject(Constants)]
         internal static readonly Expression Random = Constant(new Random());
 
-        [Category(Constants)]
+        [TestObject(Constants)]
         internal static readonly Expression ValueTuple = Constant(("abcd", 5));
 
-        [Category(Constants)]
+        [TestObject(Constants)]
         internal static readonly Expression OldTuple = Constant(Tuple.Create("abcd", 5));
 
-        [Category(Constants)]
+        [TestObject(Constants)]
         internal static readonly Expression Array = Constant(new object[] { "abcd", 5, new Random() });
 
-        [Category(Constants)]
+        [TestObject(Constants)]
         internal static readonly Expression Type = Constant(typeof(string));
 
-        [Category(Constants)]
+        [TestObject(Constants)]
         internal static readonly Expression DifferentTypeForNodeAndValue = Constant(new List<string>(), typeof(IEnumerable));
     }
 }

@@ -24,5 +24,11 @@ namespace ExpressionTreeTestObjects {
 
         internal static bool HasAttribute<TAttribute>(this MemberInfo mi, bool inherit = false) where TAttribute : Attribute =>
             mi.GetCustomAttributes(typeof(TAttribute), inherit).Any();
+
+        internal static IEnumerable<TResult> SelectT<T1, T2, TResult>(this IEnumerable<ValueTuple<T1, T2>> src, Func<T1, T2, TResult> selector) =>
+            src.Select(x => selector(x.Item1, x.Item2));
+
+        internal static IEnumerable<(T1, T2)> WhereT<T1, T2>(this IEnumerable<(T1, T2)> src, Func<T1, T2, bool> predicate) => 
+            src.Where(x => predicate(x.Item1, x.Item2));
     }
 }

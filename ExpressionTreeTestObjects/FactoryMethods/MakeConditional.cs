@@ -11,48 +11,48 @@ namespace ExpressionTreeTestObjects {
 
     partial class FactoryMethods {
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression VoidConditionalWithElse = Condition(
             Constant(true),
             writeLineTrue,
             writeLineFalse
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression VoidConditional1WithElse = IfThenElse(
             Constant(true),
             writeLineTrue,
             writeLineFalse
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression VoidConditionalWithoutElse = Condition(
             Constant(true),
             writeLineTrue,
             Empty()
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression VoidConditional1WithoutElse = IfThen(
             Constant(true),
             writeLineTrue
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression NonVoidConditionalWithElse = Condition(
             Constant(true),
             trueLength,
             falseLength
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression NonVoidConditionalWithoutElse = Condition(
             Constant(true),
             trueLength,
             Default(typeof(int))
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression MultilineTestPart = Condition(
             Block(Constant(true), Constant(true)),
             trueLength,
@@ -60,26 +60,26 @@ namespace ExpressionTreeTestObjects {
         );
 
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression MultilineTestPart1 = IfThen(
             Block(Constant(true), Constant(true)),
             writeLineTrue
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression MultilineIfTrue = IfThen(
             Constant(true),
             Block(writeLineTrue, writeLineTrue)
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression MultilineIfFalse = IfThenElse(
             Constant(true),
             writeLineTrue,
             Block(writeLineFalse, writeLineFalse)
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression NestedIfThen = IfThen(
             Constant(true),
             IfThen(
@@ -88,7 +88,7 @@ namespace ExpressionTreeTestObjects {
             )
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression NestedElse = IfThenElse(
             Constant(true),
             writeLineTrue,
@@ -98,7 +98,7 @@ namespace ExpressionTreeTestObjects {
             )
         );
 
-        [Category(Conditionals)]
+        [TestObject(Conditionals)]
         internal static readonly Expression MakeConditional = IIFE(() => {
             var i = Parameter(typeof(int), "i");
             return Condition(
