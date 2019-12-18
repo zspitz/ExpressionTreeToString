@@ -28,7 +28,7 @@ matrix:
 artifacts:
   - path: Library\bin\ReleaseCI\*.nupkg
     type: NuGetPackage
-  - path: TestObjects.VB\bin\ReleaseCI\*.nupkg
+  - path: TestObjects.VB\bin\Release\*.nupkg
     type: NuGetPackage
 
 deploy:
