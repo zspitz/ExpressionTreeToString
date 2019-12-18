@@ -27,9 +27,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExpressionTreeTestObjects.VB\TestObjects.VB.vbproj" />
-    <ProjectReference Include="..\ExpressionTreeTestObjects\TestObjects.csproj" />
     <ProjectReference Include="..\Library\Library.csproj" />
+    <ProjectReference Include="..\TestObjects.VB\TestObjects.VB.vbproj" />
+    <ProjectReference Include="..\TestObjects\TestObjects.csproj" />
   </ItemGroup>
 
   <ItemGroup>
