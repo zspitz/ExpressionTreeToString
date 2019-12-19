@@ -23,7 +23,7 @@ namespace ExpressionTreeTestObjects {
             }
         }
 
-        private static List<(string category, string source, string name, object o)> _objects = new List<(string category, string source, string name, object o)>();
+        private static HashSet<(string category, string source, string name, object o)> _objects = new HashSet<(string category, string source, string name, object o)>();
         private static readonly Dictionary<string, object> _byName = new Dictionary<string, object>();
 
         public static (string category, string source, string name, object o)[] Get() => _objects.ToArray();
