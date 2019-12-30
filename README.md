@@ -2,7 +2,7 @@
 
 [![AppVeyor build status](https://img.shields.io/appveyor/ci/zspitz/expressiontreetostring?style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreetostring) [![Tests](https://img.shields.io/appveyor/tests/zspitz/expressiontreetostring?compact_message&style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreetostring) [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeToString/) 
 
-**ExpressionTreeTestObjects:** [![NuGet TestObjects Status](https://img.shields.io/nuget/v/ExpressionTreeTestObjects.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeTestObjects/) 
+[**ExpressionTreeTestObjects:**](https://github.com/zspitz/ExpressionTreeToString/wiki/ExpressionTreeTestObjects) [![NuGet TestObjects Status](https://img.shields.io/nuget/v/ExpressionTreeTestObjects.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeTestObjects/) 
 
 Provides a `ToString` extension method which returns a string representation of an expression tree (an object inheriting from `System.Linq.Expressions.Expression`).
 
