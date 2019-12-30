@@ -57,10 +57,6 @@ namespace ExpressionTreeToString.Tests {
         [Theory]
         [MemberData(nameof(TestObjectsData))]
         public void TestMethod(string formatter, string objectName, string category, object o) {
-            // this formatter uses ToString to render the date's value; ToString is called without a format string and is system-dependent
-            // it therefore cannot be tested
-            if (formatter == TextualTree && objectName == "VBCompiler.InterpolatedString") { return; }
-
             var expected = fixture.expectedStrings[(formatter, objectName)];
             var (actual, paths) = GetToString(formatter, o);
 

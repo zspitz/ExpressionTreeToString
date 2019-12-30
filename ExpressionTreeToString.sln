@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestObjects", "TestObjects\
 EndProject
 Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "TestObjects.VB", "TestObjects.VB\TestObjects.VB.vbproj", "{06A1B32B-4CD1-4FA2-91FB-BDA9F3707E66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_tests", "_tests\_tests.csproj", "{22AA3298-C416-4EBD-958C-1736332DC3E9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_tests", "_tests\_tests.csproj", "{22AA3298-C416-4EBD-958C-1736332DC3E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
