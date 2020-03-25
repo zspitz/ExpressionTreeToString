@@ -1,11 +1,11 @@
-﻿using ExpressionTreeToString.Util;
+﻿using ZSpitz.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using static ExpressionTreeToString.Globals;
-using static ExpressionTreeToString.Util.Functions;
+using static ZSpitz.Util.Functions;
 using static ExpressionTreeToString.FormatterNames;
 using static System.Linq.Expressions.Expression;
 using System.Collections;

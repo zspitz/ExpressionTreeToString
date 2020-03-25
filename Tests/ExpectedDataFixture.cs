@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ExpressionTreeToString.Util;
 using static ExpressionTreeToString.FormatterNames;
 using static ExpressionTreeToString.Tests.Functions;
 using static System.Environment;
-using static ExpressionTreeToString.Util.Functions;
+using static ZSpitz.Util.Functions;
 using System.IO;
-using Xunit;
 
 namespace ExpressionTreeToString.Tests {
     public class ExpectedDataFixture {

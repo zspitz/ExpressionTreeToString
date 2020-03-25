@@ -18,7 +18,7 @@ namespace _expressionTestObjectsTest {
             //};
             Console.WriteLine(lst.Length);
 
-            Expression<Func<int[], int[], int>> expr = (a, b) => a[0] + b[0] + a[1] + b[1] + a[2] + b[2];
+            Expression<Func<int[], int[], int>> expr = (c, d) => c[0] + d[0] + c[1] + d[1] + c[2] + d[2];
 
             Console.WriteLine(expr.ToString("Factory methods"));
 

@@ -1,4 +1,4 @@
-﻿using ExpressionTreeToString.Util;
+﻿using ZSpitz.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -7,11 +7,11 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using static ExpressionTreeToString.Globals;
-using static ExpressionTreeToString.Util.Functions;
+using static ZSpitz.Util.Functions;
 using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
-using static ExpressionTreeToString.Util.Methods;
+using static ZSpitz.Util.Methods;
 using static ExpressionTreeToString.VBExpressionMetadata;
 
 namespace ExpressionTreeToString {

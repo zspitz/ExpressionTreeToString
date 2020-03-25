@@ -1,4 +1,4 @@
-﻿using ExpressionTreeToString.Util;
+﻿using ZSpitz.Util;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 using System.Text;
 using static ExpressionTreeToString.FormatterNames;
 using static System.Linq.Expressions.ExpressionType;
-using static ExpressionTreeToString.Util.Functions;
+using static ZSpitz.Util.Functions;
 
 namespace ExpressionTreeToString {
     public abstract class WriterBase {
