@@ -1736,7 +1736,7 @@ Lambda (Func<string>)
     · Body - Call (string) string.Format
         · Arguments[0] - Constant (string) = "{0}"
         · Arguments[1] - Convert (object)
-            · Operand - Constant (DateTime) = 01/01/1981 0:00:00
+            · Operand - Constant (DateTime) = 03/25/2001 00:00:00
 ---- VBCompiler.TypeIndexer
 Lambda (Func<string>)
     · Body - Call (string) get_Item

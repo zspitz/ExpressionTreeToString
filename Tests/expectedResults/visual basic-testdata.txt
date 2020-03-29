@@ -945,7 +945,7 @@ Function() s.IndexOf("a"C, 2)
 ---- VBCompiler.Integer
 Function() 5
 ---- VBCompiler.InterpolatedString
-Function() $"{#1981-01-01 00:00:00#}"
+Function() $"{#2001-03-25 00:00:00#}"
 ---- VBCompiler.InvocationNoArguments
 Function() del()
 ---- VBCompiler.InvocationOneArgument
