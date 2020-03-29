@@ -47,7 +47,7 @@ Console.WriteLine(expr.ToString("Textual tree"));
 
 Features:
 
-* Multiple formatters ([with more planned](https://github.com/zspitz/ExpressionTreeToString/issues/38)):
+* Multiple formatters ([with more planned](https://github.com/zspitz/ExpressionTreeToString/issues/14)):
 
   * Pseudo-code in C# or VB.NET
   * Factory method calls which generate this expression
