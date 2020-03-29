@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 using static ExpressionTreeToString.FormatterNames;
+using static System.Globalization.CultureInfo;
 
 namespace ExpressionTreeToString.Tests {
     public class TestContainer : IClassFixture<ExpectedDataFixture> {
@@ -57,6 +58,8 @@ namespace ExpressionTreeToString.Tests {
         [Theory]
         [MemberData(nameof(TestObjectsData))]
         public void TestMethod(string formatter, string objectName, string category, object o) {
+            if (objectName == "InterpolatedString") { CurrentCulture = InvariantCulture; }
+
             var expected = fixture.expectedStrings[(formatter, objectName)];
             var (actual, paths) = GetToString(formatter, o);
 

@@ -277,8 +277,8 @@ Lambda (Func<string>)
         · Arguments[1] - Convert (object)
             · Operand - New (DateTime)
                 · Arguments[0] - Constant (int) = 2001
-                · Arguments[1] - Constant (int) = 1
-                · Arguments[2] - Constant (int) = 1
+                · Arguments[1] - Constant (int) = 3
+                · Arguments[2] - Constant (int) = 25
 ---- CSCompiler.Type
 Lambda (Func<Type>)
     · Body - Constant (Type) = typeof(string)

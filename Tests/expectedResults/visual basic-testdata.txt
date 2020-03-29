@@ -95,7 +95,7 @@ Function() s.IndexOf("a"C, 2)
 ---- CSCompiler.Integer
 Function() 5
 ---- CSCompiler.InterpolatedString
-Function() $"{New Date(2001, 1, 1)}"
+Function() $"{New Date(2001, 3, 25)}"
 ---- CSCompiler.InvocationNoArguments
 Function() del()
 ---- CSCompiler.InvocationOneArgument

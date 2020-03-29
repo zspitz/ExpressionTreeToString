@@ -95,7 +95,7 @@
 ---- CSCompiler.Integer
 () => 5
 ---- CSCompiler.InterpolatedString
-() => $"{new DateTime(2001, 1, 1)}"
+() => $"{new DateTime(2001, 3, 25)}"
 ---- CSCompiler.InvocationNoArguments
 () => del()
 ---- CSCompiler.InvocationOneArgument
