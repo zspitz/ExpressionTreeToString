@@ -37,6 +37,20 @@ Console.WriteLine(expr.ToString("Object notation"));
     }
 */
 
+Console.WriteLine(expr.ToString("Object notation", "Visual Basic"));
+// prints:
+/*
+    New Expression(Of Func(Of Boolean)) With {
+        .NodeType = ExpressionType.Lambda,
+        .Type = GetType(Func(Of Boolean)),
+        .Body = New ConstantExpression With {
+            .Type = GetType(Boolean),
+            .Value = True
+        },
+        .ReturnType = GetType(Boolean)
+    }
+*/
+
 Console.WriteLine(expr.ToString("Textual tree"));
 // prints:
 /*
