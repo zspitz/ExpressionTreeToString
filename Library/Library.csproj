@@ -21,7 +21,15 @@
     <Version>1.0.1</Version>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Configurations>Debug;Release;ReleaseCI</Configurations>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
