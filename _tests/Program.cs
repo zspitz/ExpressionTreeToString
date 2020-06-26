@@ -7,7 +7,7 @@ using ExpressionTreeToString;
 namespace _tests {
     class Program {
         static void Main(string[] args) {
-            Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
+            //Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
 
             //Console.WriteLine(expr.ToString("C#"));
 
@@ -31,17 +31,20 @@ namespace _tests {
             //Console.WriteLine(equal.ToString("Factory methods"));
 
 
-string s = expr.ToString("C#", out Dictionary<string, (int start, int length)> pathSpans);
-const int firstColumnAlignment = -45;
-Console.WriteLine($"{"Path",firstColumnAlignment}Substring");
-Console.WriteLine(new string('-', 85));
-foreach (var kvp in pathSpans) {
-    var path = kvp.Key;
-    var (start, length) = kvp.Value;
-    Console.WriteLine(
-        $"{path,firstColumnAlignment}{new string(' ', start)}{s.Substring(start, length)}"
-    );
-}
+            //string s = expr.ToString("C#", out Dictionary<string, (int start, int length)> pathSpans);
+            //const int firstColumnAlignment = -45;
+            //Console.WriteLine($"{"Path",firstColumnAlignment}Substring");
+            //Console.WriteLine(new string('-', 85));
+            //foreach (var kvp in pathSpans) {
+            //    var path = kvp.Key;
+            //    var (start, length) = kvp.Value;
+            //    Console.WriteLine(
+            //        $"{path,firstColumnAlignment}{new string(' ', start)}{s.Substring(start, length)}"
+            //    );
+            //}
+
+            Expression<Func<bool>> expr = () => true;
+            Console.WriteLine(expr.ToString("Object notation", "Visual Basic"));
 
 
 

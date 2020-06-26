@@ -25,7 +25,7 @@ namespace ExpressionTreeToString {
             formatterName == FactoryMethods ? new FactoryMethodsFormatter(o, ResolveLanguage(language), out pathSpans) :
             formatterName == ObjectNotation ? new ObjectNotationFormatter(o, ResolveLanguage(language), out pathSpans) :
             formatterName == TextualTree ? (WriterBase)new TextualTreeFormatter(o, ResolveLanguage(language), out pathSpans) :
-            throw new NotImplementedException("Unknown language");
+            throw new NotImplementedException("Unknown formatter");
 
         private readonly StringBuilder sb = new StringBuilder();
         private readonly Dictionary<string, (int start, int length)>? pathSpans;
