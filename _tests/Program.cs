@@ -12,17 +12,6 @@ namespace _tests {
             //Console.WriteLine(expr.ToString("C#"));
 
 
-            //var source = new List<Entidade>();
-
-            //Expression<Action> expr = () => source.Select<Entidade, Resultado>(
-            //    s =>
-            //    new Resultado {
-            //        Detalhes =
-            //                new List<DetalheResultado>(
-            //                s.Detalhes.Select<Detalhe, DetalheResultado>(
-            //                    t => new DetalheResultado { Id = t.Id, Valor = t.Valor }))
-            //    });
-
             //Console.WriteLine(expr.ToString("Factory methods"));
 
 
@@ -52,28 +41,9 @@ namespace _tests {
         }
     }
 
-    internal class Detalhe {
-        public object Id { get; internal set; }
-        public object Valor { get; internal set; }
-    }
-
-    internal class DetalheResultado {
-        public object Id { get; internal set; }
-        public object Valor { get; internal set; }
-    }
-
-    internal class Resultado {
-        public List<DetalheResultado> Detalhes { get; internal set; }
-    }
-
-    internal class Entidade {
-        public IEnumerable<Detalhe> Detalhes { get; internal set; }
-    }
-
     class Person {
         public string? LastName { get; set; }
         public string? FirstName { get; set; }
         public DateTime DOB { get; set; }
     }
-
 }

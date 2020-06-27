@@ -19,17 +19,17 @@
     <PackageTags>expression-tree code-generation visual-basic.net vb.net csharp test-data tostring</PackageTags>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <Version>1.0.2</Version>
-
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
   <ItemGroup>
     <Import Include="ExpressionTreeTestObjects.Categories" />
     <Import Include="ExpressionTreeTestObjects.Functions" />
     <Import Include="System.Linq.Expressions" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TestObjects\TestObjects.csproj" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
