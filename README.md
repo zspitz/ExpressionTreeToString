@@ -37,6 +37,20 @@ Console.WriteLine(expr.ToString("Object notation"));
     }
 */
 
+Console.WriteLine(expr.ToString("Object notation", "Visual Basic"));
+// prints:
+/*
+    New Expression(Of Func(Of Boolean)) With {
+        .NodeType = ExpressionType.Lambda,
+        .Type = GetType(Func(Of Boolean)),
+        .Body = New ConstantExpression With {
+            .Type = GetType(Boolean),
+            .Value = True
+        },
+        .ReturnType = GetType(Boolean)
+    }
+*/
+
 Console.WriteLine(expr.ToString("Textual tree"));
 // prints:
 /*
@@ -47,7 +61,7 @@ Console.WriteLine(expr.ToString("Textual tree"));
 
 Features:
 
-* Multiple formatters ([with more planned](https://github.com/zspitz/ExpressionTreeToString/issues/38)):
+* Multiple formatters ([with more planned](https://github.com/zspitz/ExpressionTreeToString/issues/14)):
 
   * Pseudo-code in C# or VB.NET
   * Factory method calls which generate this expression
@@ -92,7 +106,7 @@ Features:
   * [CatchBlock](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.catchblock)
   * [LabelTarget](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.labeltarget)
   
-For more information, see the [wiki](https://github.com/zspitz/ExpressionTreeToString/wiki/String-rendering-library-overview).
+For more information, see the [wiki](https://github.com/zspitz/ExpressionTreeToString/wiki).
 
 ## Feedback
 
