@@ -44,7 +44,7 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject(Method)]
         internal static readonly Expression InstanceMethod2Arguments = IIFE(() => {
-            var s = "";
+            var s = "abcde";
             return Expr(() => s.IndexOf('a', 2));
         });
 

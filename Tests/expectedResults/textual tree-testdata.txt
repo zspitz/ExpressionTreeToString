@@ -1,162 +1,162 @@
 ﻿---- CSCompiler.Add
 Lambda (Func<double>)
-    · Body - Add (double)
+    · Body - Add (double) = 0
         · Left - MemberAccess (double) x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.Divide
 Lambda (Func<double>)
-    · Body - Divide (double)
+    · Body - Divide (double) = NaN
         · Left - MemberAccess (double) x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.Modulo
 Lambda (Func<double>)
-    · Body - Modulo (double)
+    · Body - Modulo (double) = NaN
         · Left - MemberAccess (double) x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.Multiply
 Lambda (Func<double>)
-    · Body - Multiply (double)
+    · Body - Multiply (double) = 0
         · Left - MemberAccess (double) x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.Subtract
 Lambda (Func<double>)
-    · Body - Subtract (double)
+    · Body - Subtract (double) = 0
         · Left - MemberAccess (double) x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.AndBitwise
 Lambda (Func<int>)
-    · Body - And (int)
+    · Body - And (int) = 0
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.OrBitwise
 Lambda (Func<int>)
-    · Body - Or (int)
+    · Body - Or (int) = 0
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.ExclusiveOrBitwise
 Lambda (Func<int>)
-    · Body - ExclusiveOr (int)
+    · Body - ExclusiveOr (int) = 0
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.AndLogical
 Lambda (Func<bool>)
-    · Body - And (bool)
+    · Body - And (bool) = true
         · Left - MemberAccess (bool) b1 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (bool) b2 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.OrLogical
 Lambda (Func<bool>)
-    · Body - Or (bool)
+    · Body - Or (bool) = true
         · Left - MemberAccess (bool) b1 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (bool) b2 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.ExclusiveOrLogical
 Lambda (Func<bool>)
-    · Body - ExclusiveOr (bool)
+    · Body - ExclusiveOr (bool) = false
         · Left - MemberAccess (bool) b1 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (bool) b2 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.AndAlso
 Lambda (Func<bool>)
-    · Body - AndAlso (bool)
+    · Body - AndAlso (bool) = true
         · Left - MemberAccess (bool) b1 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (bool) b2 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.OrElse
 Lambda (Func<bool>)
-    · Body - OrElse (bool)
+    · Body - OrElse (bool) = true
         · Left - MemberAccess (bool) b1 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (bool) b2 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.Equal
 Lambda (Func<bool>)
-    · Body - Equal (bool)
+    · Body - Equal (bool) = true
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.NotEqual
 Lambda (Func<bool>)
-    · Body - NotEqual (bool)
+    · Body - NotEqual (bool) = false
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.GreaterThanOrEqual
 Lambda (Func<bool>)
-    · Body - GreaterThanOrEqual (bool)
+    · Body - GreaterThanOrEqual (bool) = true
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.GreaterThan
 Lambda (Func<bool>)
-    · Body - GreaterThan (bool)
+    · Body - GreaterThan (bool) = false
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.LessThan
 Lambda (Func<bool>)
-    · Body - LessThan (bool)
+    · Body - LessThan (bool) = false
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.LessThanOrEqual
 Lambda (Func<bool>)
-    · Body - LessThanOrEqual (bool)
+    · Body - LessThanOrEqual (bool) = true
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.Coalesce
 Lambda (Func<string>)
     · Body - Coalesce (string)
         · Left - MemberAccess (string) s1
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (string) s2
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.LeftShift
 Lambda (Func<int>)
-    · Body - LeftShift (int)
+    · Body - LeftShift (int) = 0
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.RightShift
 Lambda (Func<int>)
-    · Body - RightShift (int)
+    · Body - RightShift (int) = 0
         · Left - MemberAccess (int) i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.ArrayIndex
 Lambda (Func<string>)
-    · Body - ArrayIndex (string)
-        · Left - MemberAccess (string[]) arr = new[] {  }
-            · Expression - Constant (<closure>)
+    · Body - ArrayIndex (string) = "a"
+        · Left - MemberAccess (string[]) arr = new[] { "a" }
+            · Expression - Constant (<closure>) = #<closure>
         · Right - Constant (int) = 0
 ---- CSCompiler.DefaultRefType
 Lambda (Func<string>)
@@ -177,50 +177,50 @@ Lambda (Func<int, int>)
             · Right - Constant (int) = 10
 ---- CSCompiler.TypeCheck
 Lambda (Func<bool>)
-    · Body - TypeIs (bool)
+    · Body - TypeIs (bool) = true
         · Expression - MemberAccess (object) o = ""
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.InvocationNoArguments
 Lambda (Func<int>)
-    · Body - Invoke (int)
+    · Body - Invoke (int) = 16
         · Expression - MemberAccess (Func<int>) del = #Func<int>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.InvocationOneArgument
 Lambda (Func<int>)
-    · Body - Invoke (int)
+    · Body - Invoke (int) = 16
         · Arguments[0] - Constant (int) = 5
         · Expression - MemberAccess (Func<int, int>) del = #Func<int, int>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.InstanceMember
 Lambda (Func<int>)
-    · Body - MemberAccess (int) Length
+    · Body - MemberAccess (int) Length = 0
         · Expression - MemberAccess (string) s = ""
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.ClosedVariable
 Lambda (Func<string>)
     · Body - MemberAccess (string) s = ""
-        · Expression - Constant (<closure>)
+        · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.StaticMember
 Lambda (Func<string>)
-    · Body - MemberAccess (string) string.Empty
+    · Body - MemberAccess (string) string.Empty = ""
 ---- CSCompiler.ArraySingleIndex
 Lambda (Func<string>)
-    · Body - ArrayIndex (string)
-        · Left - MemberAccess (string[]) arr = new[] {  }
-            · Expression - Constant (<closure>)
+    · Body - ArrayIndex (string) = "5"
+        · Left - MemberAccess (string[]) arr = new[] { "0", "1", "2", "3", "4", "5" }
+            · Expression - Constant (<closure>) = #<closure>
         · Right - Constant (int) = 5
 ---- CSCompiler.ArrayMultipleIndex
 Lambda (Func<string>)
-    · Body - Call (string) Get
+    · Body - Call (string) Get = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
         · Object - MemberAccess (string[,]) arr = #string[,]
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[0] - Constant (int) = 5
         · Arguments[1] - Constant (int) = 6
 ---- CSCompiler.TypeIndexer
 Lambda (Func<string>)
-    · Body - Call (string) get_Item
+    · Body - Call (string) get_Item = "4"
         · Object - MemberAccess (List<string>) lst = #List<string>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[0] - Constant (int) = 3
 ---- CSCompiler.NoParametersVoidReturn
 Lambda (Action)
@@ -272,10 +272,10 @@ Lambda (Func<string>)
     · Body - Constant (string) = "abcd"
 ---- CSCompiler.InterpolatedString
 Lambda (Func<string>)
-    · Body - Call (string) string.Format
+    · Body - Call (string) string.Format = "25/03/2001 0:00:00"
         · Arguments[0] - Constant (string) = "{0}"
-        · Arguments[1] - Convert (object)
-            · Operand - New (DateTime)
+        · Arguments[1] - Convert (object) = 25/03/2001 0:00:00
+            · Operand - New (DateTime) = 25/03/2001 0:00:00
                 · Arguments[0] - Constant (int) = 2001
                 · Arguments[1] - Constant (int) = 3
                 · Arguments[2] - Constant (int) = 25
@@ -284,56 +284,56 @@ Lambda (Func<Type>)
     · Body - Constant (Type) = typeof(string)
 ---- CSCompiler.InstanceMethod0Arguments
 Lambda (Func<string>)
-    · Body - Call (string) ToString
+    · Body - Call (string) ToString = ""
         · Object - MemberAccess (string) s = ""
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.StaticMethod0Arguments
 Lambda (Action)
     · Body - Call (void) Dummy.DummyMethod
 ---- CSCompiler.ExtensionMethod0Arguments
 Lambda (Func<int>)
-    · Body - Call (int) Enumerable.Count
+    · Body - Call (int) Enumerable.Count = 0
         · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.InstanceMethod1Argument
 Lambda (Func<int>)
-    · Body - Call (int) CompareTo
+    · Body - Call (int) CompareTo = 0
         · Object - MemberAccess (string) s = ""
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[0] - Constant (string) = ""
 ---- CSCompiler.StaticMethod1Argument
 Lambda (Func<string>)
-    · Body - Call (string) string.Intern
+    · Body - Call (string) string.Intern = ""
         · Arguments[0] - Constant (string) = ""
 ---- CSCompiler.ExtensionMethod1Argument
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Enumerable.Take
+    · Body - Call (IEnumerable<string>) Enumerable.Take = #ListPartition<string>
         · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Constant (int) = 1
 ---- CSCompiler.InstanceMethod2Arguments
 Lambda (Func<int>)
-    · Body - Call (int) IndexOf
-        · Object - MemberAccess (string) s = ""
-            · Expression - Constant (<closure>)
+    · Body - Call (int) IndexOf = -1
+        · Object - MemberAccess (string) s = "abcde"
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[0] - Constant (char) = 'a'
         · Arguments[1] - Constant (int) = 2
 ---- CSCompiler.StaticMethod2Arguments
 Lambda (Func<string>)
-    · Body - Call (string) string.Join
+    · Body - Call (string) string.Join = "a,b"
         · Arguments[0] - Constant (string) = ","
-        · Arguments[1] - NewArrayInit (string[])
+        · Arguments[1] - NewArrayInit (string[]) = new[] { "a", "b" }
             · Expressions[0] - Constant (string) = "a"
             · Expressions[1] - Constant (string) = "b"
 ---- CSCompiler.ExtensionMethod2Arguments
 Lambda (Func<IOrderedEnumerable<string>>)
     · Body - Call (IOrderedEnumerable<string>) Enumerable.OrderBy
         · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Lambda (Func<string, string>)
             · Parameters[0] - Parameter (string) x
             · Body - Parameter (string) x
-        · Arguments[2] - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase
+        · Arguments[2] - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase = #OrdinalIgnoreCaseComparer
 ---- CSCompiler.StringConcat
 Lambda (Func<string, string, string>)
     · Parameters[0] - Parameter (string) s1
@@ -350,77 +350,77 @@ Lambda (Func<double, double, double>)
         · Arguments[1] - Parameter (double) y
 ---- CSCompiler.SingleDimensionInit
 Lambda (Func<string[]>)
-    · Body - NewArrayInit (string[])
+    · Body - NewArrayInit (string[]) = new[] { "" }
         · Expressions[0] - Constant (string) = ""
 ---- CSCompiler.SingleDimensionInitExplicitType
 Lambda (Func<object[]>)
-    · Body - NewArrayInit (object[])
+    · Body - NewArrayInit (object[]) = new[] { "" }
         · Expressions[0] - Constant (string) = ""
 ---- CSCompiler.SingleDimensionWithBounds
 Lambda (Func<string[]>)
-    · Body - NewArrayBounds (string[])
+    · Body - NewArrayBounds (string[]) = new[] { null, null, null, null, null }
         · Expressions[0] - Constant (int) = 5
 ---- CSCompiler.MultidimensionWithBounds
 Lambda (Func<string[,]>)
-    · Body - NewArrayBounds (string[,])
+    · Body - NewArrayBounds (string[,]) = #string[,]
         · Expressions[0] - Constant (int) = 2
         · Expressions[1] - Constant (int) = 3
 ---- CSCompiler.JaggedWithElementsImplicitType
 Lambda (Func<string[][]>)
-    · Body - NewArrayInit (string[][])
-        · Expressions[0] - NewArrayInit (string[])
+    · Body - NewArrayInit (string[][]) = #string[][]
+        · Expressions[0] - NewArrayInit (string[]) = new[] { "ab", "cd" }
             · Expressions[0] - Constant (string) = "ab"
             · Expressions[1] - Constant (string) = "cd"
-        · Expressions[1] - NewArrayInit (string[])
+        · Expressions[1] - NewArrayInit (string[]) = new[] { "ef", "gh" }
             · Expressions[0] - Constant (string) = "ef"
             · Expressions[1] - Constant (string) = "gh"
 ---- CSCompiler.JaggedWithElementsExplicitType
 Lambda (Func<object[][]>)
-    · Body - NewArrayInit (object[][])
-        · Expressions[0] - NewArrayInit (string[])
+    · Body - NewArrayInit (object[][]) = #object[][]
+        · Expressions[0] - NewArrayInit (string[]) = new[] { "ab", "cd" }
             · Expressions[0] - Constant (string) = "ab"
             · Expressions[1] - Constant (string) = "cd"
-        · Expressions[1] - NewArrayInit (string[])
+        · Expressions[1] - NewArrayInit (string[]) = new[] { "ef", "gh" }
             · Expressions[0] - Constant (string) = "ef"
             · Expressions[1] - Constant (string) = "gh"
 ---- CSCompiler.JaggedWithBounds
 Lambda (Func<string[][]>)
-    · Body - NewArrayBounds (string[][])
+    · Body - NewArrayBounds (string[][]) = #string[][]
         · Expressions[0] - Constant (int) = 5
 ---- CSCompiler.ArrayOfMultidimensionalArray
 Lambda (Func<string[][,]>)
-    · Body - NewArrayBounds (string[][,])
+    · Body - NewArrayBounds (string[][,]) = #string[][,]
         · Expressions[0] - Constant (int) = 5
 ---- CSCompiler.MultidimensionalArrayOfArray
 Lambda (Func<string[,][]>)
-    · Body - NewArrayBounds (string[,][])
+    · Body - NewArrayBounds (string[,][]) = #string[,][]
         · Expressions[0] - Constant (int) = 3
         · Expressions[1] - Constant (int) = 2
 ---- CSCompiler.NamedType
 Lambda (Func<Random>)
-    · Body - New (Random)
+    · Body - New (Random) = #Random
 ---- CSCompiler.NamedTypeWithInitializer
 Lambda (Func<Foo>)
-    · Body - MemberInit (Foo)
-        · NewExpression - New (Foo)
+    · Body - MemberInit (Foo) = #Foo
+        · NewExpression - New (Foo) = #Foo
         · Bindings[0] - Assignment Bar
             · Expression - Constant (string) = "abcd"
 ---- CSCompiler.NamedTypeWithInitializers
 Lambda (Func<Foo>)
-    · Body - MemberInit (Foo)
-        · NewExpression - New (Foo)
+    · Body - MemberInit (Foo) = #Foo
+        · NewExpression - New (Foo) = #Foo
         · Bindings[0] - Assignment Bar
             · Expression - Constant (string) = "abcd"
         · Bindings[1] - Assignment Baz
             · Expression - Constant (string) = "efgh"
 ---- CSCompiler.NamedTypeConstructorParameters
 Lambda (Func<Foo>)
-    · Body - New (Foo)
+    · Body - New (Foo) = #Foo
         · Arguments[0] - Constant (string) = "ijkl"
 ---- CSCompiler.NamedTypeConstructorParametersWithInitializers
 Lambda (Func<Foo>)
-    · Body - MemberInit (Foo)
-        · NewExpression - New (Foo)
+    · Body - MemberInit (Foo) = #Foo
+        · NewExpression - New (Foo) = #Foo
             · Arguments[0] - Constant (string) = "ijkl"
         · Bindings[0] - Assignment Bar
             · Expression - Constant (string) = "abcd"
@@ -428,28 +428,28 @@ Lambda (Func<Foo>)
             · Expression - Constant (string) = "efgh"
 ---- CSCompiler.AnonymousType
 Lambda (Func<{ string Bar, string Baz }>)
-    · Body - New ({ string Bar, string Baz })
+    · Body - New ({ string Bar, string Baz }) = { Bar = abcd, Baz = efgh }
         · Arguments[0] - Constant (string) = "abcd"
         · Arguments[1] - Constant (string) = "efgh"
 ---- CSCompiler.AnonymousTypeFromVariables
 Lambda (Func<{ string Bar, string Baz }>)
-    · Body - New ({ string Bar, string Baz })
+    · Body - New ({ string Bar, string Baz }) = { Bar = abcd, Baz = efgh }
         · Arguments[0] - MemberAccess (string) Bar = "abcd"
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - MemberAccess (string) Baz = "efgh"
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.CollectionTypeWithInitializer
 Lambda (Func<List<string>>)
-    · Body - ListInit (List<string>)
-        · NewExpression - New (List<string>)
+    · Body - ListInit (List<string>) = #List<string>
+        · NewExpression - New (List<string>) = #List<string>
         · Initializers[0] - ElementInit
             · Arguments[0] - Constant (string) = "abcd"
         · Initializers[1] - ElementInit
             · Arguments[0] - Constant (string) = "efgh"
 ---- CSCompiler.CollectionTypeWithMultipleElementsInitializers
 Lambda (Func<Wrapper>)
-    · Body - ListInit (Wrapper)
-        · NewExpression - New (Wrapper)
+    · Body - ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+        · NewExpression - New (Wrapper) = #Wrapper
         · Initializers[0] - ElementInit
             · Arguments[0] - Constant (string) = "ab"
             · Arguments[1] - Constant (string) = "cd"
@@ -458,8 +458,8 @@ Lambda (Func<Wrapper>)
             · Arguments[1] - Constant (string) = "gh"
 ---- CSCompiler.CollectionTypeWithSingleOrMultipleElementsInitializers
 Lambda (Func<Wrapper>)
-    · Body - ListInit (Wrapper)
-        · NewExpression - New (Wrapper)
+    · Body - ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+        · NewExpression - New (Wrapper) = #Wrapper
         · Initializers[0] - ElementInit
             · Arguments[0] - Constant (string) = "ab"
             · Arguments[1] - Constant (string) = "cd"
@@ -467,50 +467,50 @@ Lambda (Func<Wrapper>)
             · Arguments[0] - Constant (string) = "ef"
 ---- CSCompiler.MemberMemberBinding
 Lambda (Func<Node>)
-    · Body - MemberInit (Node)
-        · NewExpression - New (Node)
+    · Body - MemberInit (Node) = #Node
+        · NewExpression - New (Node) = #Node
         · Bindings[0] - MemberBinding Data
             · Bindings[0] - Assignment Name
                 · Expression - Constant (string) = "abcd"
 ---- CSCompiler.ListBinding
 Lambda (Func<Node>)
-    · Body - MemberInit (Node)
-        · NewExpression - New (Node)
+    · Body - MemberInit (Node) = #Node
+        · NewExpression - New (Node) = #Node
         · Bindings[0] - ListBinding Children
             · Initializers[0] - ElementInit
-                · Arguments[0] - New (Node)
+                · Arguments[0] - New (Node) = #Node
             · Initializers[1] - ElementInit
-                · Arguments[0] - New (Node)
+                · Arguments[0] - New (Node) = #Node
 ---- CSCompiler.Negate
 Lambda (Func<int>)
-    · Body - Negate (int)
+    · Body - Negate (int) = -1
         · Operand - MemberAccess (int) i = 1
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.BitwiseNot
 Lambda (Func<int>)
-    · Body - Not (int)
+    · Body - Not (int) = -2
         · Operand - MemberAccess (int) i = 1
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.LogicalNot
 Lambda (Func<bool>)
-    · Body - Not (bool)
+    · Body - Not (bool) = false
         · Operand - MemberAccess (bool) b = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.TypeAs
 Lambda (Func<string>)
     · Body - TypeAs (string)
         · Operand - MemberAccess (object) o
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.ArrayLength
 Lambda (Func<int>)
-    · Body - ArrayLength (int)
+    · Body - ArrayLength (int) = 0
         · Operand - MemberAccess (string[]) arr = new[] {  }
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.Convert
 Lambda (Func<object>)
-    · Body - Convert (object)
+    · Body - Convert (object) = #List<string>
         · Operand - MemberAccess (List<string>) lst = #List<string>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- FactoryMethods.MakeArrayIndex
 ArrayIndex (string)
     · Left - Parameter (string[]) arr
@@ -575,10 +575,10 @@ Loop (void)
         · Expressions[0] - Constant (bool) = true
         · Expressions[1] - Constant (bool) = true
 ---- FactoryMethods.InstanceMember
-MemberAccess (int) Length
+MemberAccess (int) Length = 0
     · Expression - Constant (string) = ""
 ---- FactoryMethods.StaticMember
-MemberAccess (string) string.Empty
+MemberAccess (string) string.Empty = ""
 ---- FactoryMethods.ConstructRuntimeVariables
 RuntimeVariables (IRuntimeVariables)
     · Variables[0] - Parameter (double) x
@@ -598,13 +598,13 @@ Default (string)
 ---- FactoryMethods.MakeDefaultValueType
 Default (int) = 0
 ---- FactoryMethods.MakeTypeCheck
-TypeIs (bool)
+TypeIs (bool) = true
     · Expression - Constant (string) = ""
 ---- FactoryMethods.MakeTypeEqual
-TypeEqual (bool)
+TypeEqual (bool) = false
     · Expression - Constant (string) = ""
 ---- FactoryMethods.MakeInvocation
-Invoke (int)
+Invoke (int) = 5
     · Expression - Lambda (Func<int>)
         · Body - Constant (int) = 5
 ---- FactoryMethods.ConstructAdd
@@ -897,27 +897,27 @@ Conditional (void)
         · Arguments[0] - Constant (bool) = true
     · IfFalse - Default (void)
 ---- FactoryMethods.NonVoidConditionalWithElse
-Conditional (int)
+Conditional (int) = 4
     · Test - Constant (bool) = true
-    · IfTrue - MemberAccess (int) Length
+    · IfTrue - MemberAccess (int) Length = 4
         · Expression - Constant (string) = "true"
-    · IfFalse - MemberAccess (int) Length
+    · IfFalse - MemberAccess (int) Length = 5
         · Expression - Constant (string) = "false"
 ---- FactoryMethods.NonVoidConditionalWithoutElse
-Conditional (int)
+Conditional (int) = 4
     · Test - Constant (bool) = true
-    · IfTrue - MemberAccess (int) Length
+    · IfTrue - MemberAccess (int) Length = 4
         · Expression - Constant (string) = "true"
     · IfFalse - Default (int) = 0
 ---- FactoryMethods.MultilineTestPart
-Conditional (int)
+Conditional (int) = 4
     · Test - Block (bool)
         · Result - Constant (bool) = true
         · Expressions[0] - Constant (bool) = true
         · Expressions[1] - Constant (bool) = true
-    · IfTrue - MemberAccess (int) Length
+    · IfTrue - MemberAccess (int) Length = 4
         · Expression - Constant (string) = "true"
-    · IfFalse - MemberAccess (int) Length
+    · IfFalse - MemberAccess (int) Length = 5
         · Expression - Constant (string) = "false"
 ---- FactoryMethods.MultilineTestPart1
 Conditional (void)
@@ -1177,9 +1177,9 @@ MemberBinding Data
 ---- FactoryMethods.MakeListBinding
 ListBinding Children
     · Initializers[0] - ElementInit
-        · Arguments[0] - New (Node)
+        · Arguments[0] - New (Node) = #Node
     · Initializers[1] - ElementInit
-        · Arguments[0] - New (Node)
+        · Arguments[0] - New (Node) = #Node
 ---- FactoryMethods.InstanceMethod0Arguments
 Call (string) ToString
     · Object - Parameter (string) s
@@ -1193,7 +1193,7 @@ Call (int) CompareTo
     · Object - Parameter (string) s
     · Arguments[0] - Constant (string) = ""
 ---- FactoryMethods.StaticMethod1Argument
-Call (string) string.Intern
+Call (string) string.Intern = ""
     · Arguments[0] - Constant (string) = ""
 ---- FactoryMethods.ExtensionMethod1Argument
 Call (IEnumerable<string>) Enumerable.Take
@@ -1205,9 +1205,9 @@ Call (int) IndexOf
     · Arguments[0] - Constant (char) = 'a'
     · Arguments[1] - Constant (int) = 2
 ---- FactoryMethods.StaticMethod2Arguments
-Call (string) string.Join
+Call (string) string.Join = "a,b"
     · Arguments[0] - Constant (string) = ","
-    · Arguments[1] - NewArrayInit (string[])
+    · Arguments[1] - NewArrayInit (string[]) = new[] { "a", "b" }
         · Expressions[0] - Constant (string) = "a"
         · Expressions[1] - Constant (string) = "b"
 ---- FactoryMethods.ExtensionMethod2Arguments
@@ -1216,46 +1216,46 @@ Call (IOrderedEnumerable<string>) Enumerable.OrderBy
     · Arguments[1] - Lambda (Func<string, string>)
         · Parameters[0] - Parameter (string) x
         · Body - Parameter (string) x
-    · Arguments[2] - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase
+    · Arguments[2] - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase = #OrdinalIgnoreCaseComparer
 ---- FactoryMethods.StringConcat
 Call (string) string.Concat
     · Arguments[0] - Parameter (string) s1
     · Arguments[1] - Parameter (string) s2
 ---- FactoryMethods.NamedType
-New (Random)
+New (Random) = #Random
 ---- FactoryMethods.NamedTypeWithInitializer
-MemberInit (Foo)
-    · NewExpression - New (Foo)
+MemberInit (Foo) = #Foo
+    · NewExpression - New (Foo) = #Foo
     · Bindings[0] - Assignment Bar
         · Expression - Constant (string) = "abcd"
 ---- FactoryMethods.NamedTypeWithInitializers
-MemberInit (Foo)
-    · NewExpression - New (Foo)
+MemberInit (Foo) = #Foo
+    · NewExpression - New (Foo) = #Foo
     · Bindings[0] - Assignment Bar
         · Expression - Constant (string) = "abcd"
     · Bindings[1] - Assignment Baz
         · Expression - Constant (string) = "efgh"
 ---- FactoryMethods.NamedTypeConstructorParameters
-New (Foo)
+New (Foo) = #Foo
     · Arguments[0] - Constant (string) = "ijkl"
 ---- FactoryMethods.NamedTypeConstructorParametersWithInitializers
-MemberInit (Foo)
-    · NewExpression - New (Foo)
+MemberInit (Foo) = #Foo
+    · NewExpression - New (Foo) = #Foo
         · Arguments[0] - Constant (string) = "ijkl"
     · Bindings[0] - Assignment Bar
         · Expression - Constant (string) = "abcd"
     · Bindings[1] - Assignment Baz
         · Expression - Constant (string) = "efgh"
 ---- FactoryMethods.CollectionTypeWithInitializer
-ListInit (List<string>)
-    · NewExpression - New (List<string>)
+ListInit (List<string>) = #List<string>
+    · NewExpression - New (List<string>) = #List<string>
     · Initializers[0] - ElementInit
         · Arguments[0] - Constant (string) = "abcd"
     · Initializers[1] - ElementInit
         · Arguments[0] - Constant (string) = "efgh"
 ---- FactoryMethods.CollectionTypeWithMultiElementInitializers
-ListInit (Wrapper)
-    · NewExpression - New (Wrapper)
+ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+    · NewExpression - New (Wrapper) = #Wrapper
     · Initializers[0] - ElementInit
         · Arguments[0] - Constant (string) = "ab"
         · Arguments[1] - Constant (string) = "cd"
@@ -1263,50 +1263,50 @@ ListInit (Wrapper)
         · Arguments[0] - Constant (string) = "ef"
         · Arguments[1] - Constant (string) = "gh"
 ---- FactoryMethods.CollectionTypeWithSingleOrMultiElementInitializers
-ListInit (Wrapper)
-    · NewExpression - New (Wrapper)
+ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+    · NewExpression - New (Wrapper) = #Wrapper
     · Initializers[0] - ElementInit
         · Arguments[0] - Constant (string) = "ab"
         · Arguments[1] - Constant (string) = "cd"
     · Initializers[1] - ElementInit
         · Arguments[0] - Constant (string) = "ef"
 ---- FactoryMethods.SingleDimensionInit
-NewArrayInit (string[])
+NewArrayInit (string[]) = new[] { "" }
     · Expressions[0] - Constant (string) = ""
 ---- FactoryMethods.SingleDimensionInitExplicitType
-NewArrayInit (object[])
+NewArrayInit (object[]) = new[] { "" }
     · Expressions[0] - Constant (string) = ""
 ---- FactoryMethods.SingleDimensionWithBounds
-NewArrayBounds (string[])
+NewArrayBounds (string[]) = new[] { null, null, null, null, null }
     · Expressions[0] - Constant (int) = 5
 ---- FactoryMethods.MultidimensionWithBounds
-NewArrayBounds (string[,])
+NewArrayBounds (string[,]) = #string[,]
     · Expressions[0] - Constant (int) = 2
     · Expressions[1] - Constant (int) = 3
 ---- FactoryMethods.JaggedWithElementsImplicitType
-NewArrayInit (string[][])
-    · Expressions[0] - NewArrayInit (string[])
+NewArrayInit (string[][]) = #string[][]
+    · Expressions[0] - NewArrayInit (string[]) = new[] { "ab", "cd" }
         · Expressions[0] - Constant (string) = "ab"
         · Expressions[1] - Constant (string) = "cd"
-    · Expressions[1] - NewArrayInit (string[])
+    · Expressions[1] - NewArrayInit (string[]) = new[] { "ef", "gh" }
         · Expressions[0] - Constant (string) = "ef"
         · Expressions[1] - Constant (string) = "gh"
 ---- FactoryMethods.JaggedWithElementsExplicitType
-NewArrayInit (object[][])
-    · Expressions[0] - NewArrayInit (string[])
+NewArrayInit (object[][]) = #object[][]
+    · Expressions[0] - NewArrayInit (string[]) = new[] { "ab", "cd" }
         · Expressions[0] - Constant (string) = "ab"
         · Expressions[1] - Constant (string) = "cd"
-    · Expressions[1] - NewArrayInit (string[])
+    · Expressions[1] - NewArrayInit (string[]) = new[] { "ef", "gh" }
         · Expressions[0] - Constant (string) = "ef"
         · Expressions[1] - Constant (string) = "gh"
 ---- FactoryMethods.JaggedWithBounds
-NewArrayBounds (string[][])
+NewArrayBounds (string[][]) = #string[][]
     · Expressions[0] - Constant (int) = 5
 ---- FactoryMethods.ArrayOfMultidimensionalArray
-NewArrayBounds (string[][,])
+NewArrayBounds (string[][,]) = #string[][,]
     · Expressions[0] - Constant (int) = 5
 ---- FactoryMethods.MultidimensionalArrayOfArray
-NewArrayBounds (string[,][])
+NewArrayBounds (string[,][]) = #string[,][]
     · Expressions[0] - Constant (int) = 3
     · Expressions[1] - Constant (int) = 2
 ---- FactoryMethods.SingleValueSwitchCase
@@ -1482,7 +1482,7 @@ CatchBlock
     · Body - Call (void) Console.WriteLine
         · Arguments[0] - Constant (bool) = true
 ---- FactoryMethods.ConstructTryCatch
-Try (bool)
+Try (bool) = true
     · Body - Constant (bool) = true
     · Handlers[0] - CatchBlock
         · Body - Constant (bool) = true
@@ -1501,7 +1501,7 @@ ArrayLength (int)
 Convert (object)
     · Operand - Parameter (string[]) arr
 ---- FactoryMethods.ConstructConvertChecked
-ConvertChecked (float)
+ConvertChecked (float) = 5
     · Operand - Constant (int) = 5
 ---- FactoryMethods.ConstructConvertCheckedForReferenceType
 Convert (object)
@@ -1549,205 +1549,205 @@ Throw (void)
 Throw (void)
 ---- VBCompiler.Add
 Lambda (Func<double>)
-    · Body - Add (double)
+    · Body - Add (double) = 0
         · Left - MemberAccess (double) $VB$Local_x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) $VB$Local_y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.Divide
 Lambda (Func<double>)
-    · Body - Divide (double)
+    · Body - Divide (double) = NaN
         · Left - MemberAccess (double) $VB$Local_x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) $VB$Local_y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.Modulo
 Lambda (Func<double>)
-    · Body - Modulo (double)
+    · Body - Modulo (double) = NaN
         · Left - MemberAccess (double) $VB$Local_x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) $VB$Local_y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.Multiply
 Lambda (Func<double>)
-    · Body - Multiply (double)
+    · Body - Multiply (double) = 0
         · Left - MemberAccess (double) $VB$Local_x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) $VB$Local_y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.Subtract
 Lambda (Func<double>)
-    · Body - Subtract (double)
+    · Body - Subtract (double) = 0
         · Left - MemberAccess (double) $VB$Local_x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) $VB$Local_y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.AndBitwise
 Lambda (Func<int>)
-    · Body - And (int)
+    · Body - And (int) = 0
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) $VB$Local_j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.OrBitwise
 Lambda (Func<int>)
-    · Body - Or (int)
+    · Body - Or (int) = 0
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) $VB$Local_j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.ExclusiveOrBitwise
 Lambda (Func<int>)
-    · Body - ExclusiveOr (int)
+    · Body - ExclusiveOr (int) = 0
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) $VB$Local_j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.AndLogical
 Lambda (Func<bool>)
-    · Body - And (bool)
+    · Body - And (bool) = true
         · Left - MemberAccess (bool) $VB$Local_b1 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (bool) $VB$Local_b2 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.OrLogical
 Lambda (Func<bool>)
-    · Body - Or (bool)
+    · Body - Or (bool) = true
         · Left - MemberAccess (bool) $VB$Local_b1 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (bool) $VB$Local_b2 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.ExclusiveOrLogical
 Lambda (Func<bool>)
-    · Body - ExclusiveOr (bool)
+    · Body - ExclusiveOr (bool) = false
         · Left - MemberAccess (bool) $VB$Local_b1 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (bool) $VB$Local_b2 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.AndAlso
 Lambda (Func<bool>)
-    · Body - AndAlso (bool)
+    · Body - AndAlso (bool) = true
         · Left - MemberAccess (bool) $VB$Local_b1 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (bool) $VB$Local_b2 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.OrElse
 Lambda (Func<bool>)
-    · Body - OrElse (bool)
+    · Body - OrElse (bool) = true
         · Left - MemberAccess (bool) $VB$Local_b1 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (bool) $VB$Local_b2 = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.Equal
 Lambda (Func<bool>)
-    · Body - Equal (bool)
+    · Body - Equal (bool) = true
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) $VB$Local_j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.NotEqual
 Lambda (Func<bool>)
-    · Body - NotEqual (bool)
+    · Body - NotEqual (bool) = false
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) $VB$Local_j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.GreaterThanOrEqual
 Lambda (Func<bool>)
-    · Body - GreaterThanOrEqual (bool)
+    · Body - GreaterThanOrEqual (bool) = true
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) $VB$Local_j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.GreaterThan
 Lambda (Func<bool>)
-    · Body - GreaterThan (bool)
+    · Body - GreaterThan (bool) = false
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) $VB$Local_j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.LessThan
 Lambda (Func<bool>)
-    · Body - LessThan (bool)
+    · Body - LessThan (bool) = false
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) $VB$Local_j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.LessThanOrEqual
 Lambda (Func<bool>)
-    · Body - LessThanOrEqual (bool)
+    · Body - LessThanOrEqual (bool) = true
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) $VB$Local_j = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.Coalesce
 Lambda (Func<string>)
     · Body - Coalesce (string)
         · Left - MemberAccess (string) $VB$Local_s1
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (string) $VB$Local_s2
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.LeftShift
 Lambda (Func<int>)
-    · Body - LeftShift (int)
+    · Body - LeftShift (int) = 0
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
-        · Right - And (int)
+            · Expression - Constant (<closure>) = #<closure>
+        · Right - And (int) = 0
             · Left - MemberAccess (int) $VB$Local_j = 0
-                · Expression - Constant (<closure>)
+                · Expression - Constant (<closure>) = #<closure>
             · Right - Constant (int) = 31
 ---- VBCompiler.RightShift
 Lambda (Func<int>)
-    · Body - RightShift (int)
+    · Body - RightShift (int) = 0
         · Left - MemberAccess (int) $VB$Local_i = 0
-            · Expression - Constant (<closure>)
-        · Right - And (int)
+            · Expression - Constant (<closure>) = #<closure>
+        · Right - And (int) = 0
             · Left - MemberAccess (int) $VB$Local_j = 0
-                · Expression - Constant (<closure>)
+                · Expression - Constant (<closure>) = #<closure>
             · Right - Constant (int) = 31
 ---- VBCompiler.ArrayIndex
 Lambda (Func<string>)
-    · Body - ArrayIndex (string)
-        · Left - MemberAccess (string[]) $VB$Local_arr = new[] {  }
-            · Expression - Constant (<closure>)
+    · Body - ArrayIndex (string) = "17"
+        · Left - MemberAccess (string[]) $VB$Local_arr = new[] { "17" }
+            · Expression - Constant (<closure>) = #<closure>
         · Right - Constant (int) = 0
 ---- VBCompiler.Power
 Lambda (Func<double>)
-    · Body - Power (double)
+    · Body - Power (double) = 1
         · Left - MemberAccess (double) $VB$Local_x = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (double) $VB$Local_y = 0
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.ArraySingleIndex
 Lambda (Func<string>)
-    · Body - ArrayIndex (string)
-        · Left - MemberAccess (string[]) $VB$Local_arr = new[] {  }
-            · Expression - Constant (<closure>)
+    · Body - ArrayIndex (string) = "6"
+        · Left - MemberAccess (string[]) $VB$Local_arr = new[] { "1", "2", "3", "4", "5", "6" }
+            · Expression - Constant (<closure>) = #<closure>
         · Right - Constant (int) = 5
 ---- VBCompiler.ArrayMultipleIndex
 Lambda (Func<string>)
-    · Body - Call (string) Get
+    · Body - Call (string) Get = "57"
         · Object - MemberAccess (string[,]) $VB$Local_arr = #string[,]
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[0] - Constant (int) = 5
         · Arguments[1] - Constant (int) = 6
 ---- VBCompiler.InterpolatedString
 Lambda (Func<string>)
-    · Body - Call (string) string.Format
+    · Body - Call (string) string.Format = "25/03/2001 0:00:00"
         · Arguments[0] - Constant (string) = "{0}"
-        · Arguments[1] - Convert (object)
-            · Operand - Constant (DateTime) = 03/25/2001 00:00:00
+        · Arguments[1] - Convert (object) = 25/03/2001 0:00:00
+            · Operand - Constant (DateTime) = 25/03/2001 0:00:00
 ---- VBCompiler.TypeIndexer
 Lambda (Func<string>)
-    · Body - Call (string) get_Item
+    · Body - Call (string) get_Item = "4"
         · Object - MemberAccess (List<string>) $VB$Local_lst = #List<string>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[0] - Constant (int) = 3
 ---- VBCompiler.VBDeclaredTypeIndexer
 Lambda (Func<int>)
-    · Body - Call (int) get_Item
+    · Body - Call (int) get_Item = 0
         · Object - MemberAccess (DummyWithDefault) $VB$Local_x = #DummyWithDefault
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[0] - Constant (int) = 5
 ---- VBCompiler.NoParametersVoidReturn
 Lambda (Action)
@@ -1814,100 +1814,100 @@ Lambda (Func<int>)
     · Body - Constant (int) = 0
 ---- VBCompiler.InstanceMember
 Lambda (Func<int>)
-    · Body - MemberAccess (int) Length
+    · Body - MemberAccess (int) Length = 0
         · Expression - MemberAccess (string) $VB$Local_s = ""
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.ClosedVariable
 Lambda (Func<string>)
     · Body - MemberAccess (string) $VB$Local_s = ""
-        · Expression - Constant (<closure>)
+        · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.StaticMember
 Lambda (Func<string>)
-    · Body - MemberAccess (string) string.Empty
+    · Body - MemberAccess (string) string.Empty = ""
 ---- VBCompiler.InstanceMethod0Arguments
 Lambda (Func<string>)
-    · Body - Call (string) ToString
+    · Body - Call (string) ToString = ""
         · Object - MemberAccess (string) $VB$Local_s = ""
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.StaticMethod0Arguments
 Lambda (Action)
     · Body - Call (void) Dummy.DummyMethod
 ---- VBCompiler.ExtensionMethod0Arguments
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Enumerable.Distinct
-        · Arguments[0] - Convert (IEnumerable<string>)
+    · Body - Call (IEnumerable<string>) Enumerable.Distinct = #DistinctIterator<string>
+        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
             · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
-                · Expression - Constant (<closure>)
+                · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Enumerable.Distinct
+    · Body - Call (IEnumerable<string>) Enumerable.Distinct = #DistinctIterator<string>
         · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.InstanceMethod1Argument
 Lambda (Func<int>)
-    · Body - Call (int) CompareTo
+    · Body - Call (int) CompareTo = 0
         · Object - MemberAccess (string) $VB$Local_s = ""
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[0] - Constant (string) = ""
 ---- VBCompiler.StaticMethod1Argument
 Lambda (Func<string>)
-    · Body - Call (string) string.Intern
+    · Body - Call (string) string.Intern = ""
         · Arguments[0] - Constant (string) = ""
 ---- VBCompiler.ExtensionMethod1Argument
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Enumerable.Take
-        · Arguments[0] - Convert (IEnumerable<string>)
+    · Body - Call (IEnumerable<string>) Enumerable.Take = #ListPartition<string>
+        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
             · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
-                · Expression - Constant (<closure>)
+                · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Constant (int) = 1
 ---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Enumerable.Take
+    · Body - Call (IEnumerable<string>) Enumerable.Take = #ListPartition<string>
         · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Constant (int) = 1
 ---- VBCompiler.InstanceMethod2Arguments
 Lambda (Func<int>)
-    · Body - Call (int) IndexOf
-        · Object - MemberAccess (string) $VB$Local_s = ""
-            · Expression - Constant (<closure>)
+    · Body - Call (int) IndexOf = -1
+        · Object - MemberAccess (string) $VB$Local_s = "abcde"
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[0] - Constant (char) = 'a'
         · Arguments[1] - Constant (int) = 2
 ---- VBCompiler.StaticMethod2Arguments
 Lambda (Func<string>)
-    · Body - Call (string) string.Join
+    · Body - Call (string) string.Join = "ab"
         · Arguments[0] - Constant (string) = ","
-        · Arguments[1] - NewArrayInit (string[])
-            · Expressions[0] - New (string)
+        · Arguments[1] - NewArrayInit (string[]) = new[] { "ab" }
+            · Expressions[0] - New (string) = "ab"
                 · Arguments[0] - MemberAccess (char[]) $VB$Local_arr = new[] { 'a', 'b' }
-                    · Expression - Constant (<closure>)
+                    · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.StaticMethod2ArgumentsWithoutConversion
 Lambda (Func<string>)
-    · Body - Call (string) string.Join
+    · Body - Call (string) string.Join = "a,b"
         · Arguments[0] - Constant (string) = ","
         · Arguments[1] - MemberAccess (IEnumerable<char>) $VB$Local_arr = new[] { 'a', 'b' }
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.ExtensionMethod2Arguments
 Lambda (Func<IOrderedEnumerable<string>>)
     · Body - Call (IOrderedEnumerable<string>) Enumerable.OrderBy
-        · Arguments[0] - Convert (IEnumerable<string>)
+        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
             · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
-                · Expression - Constant (<closure>)
+                · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Lambda (Func<string, string>)
             · Parameters[0] - Parameter (string) x
             · Body - Parameter (string) x
-        · Arguments[2] - Convert (IComparer<string>)
-            · Operand - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase
+        · Arguments[2] - Convert (IComparer<string>) = #OrdinalIgnoreCaseComparer
+            · Operand - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase = #OrdinalIgnoreCaseComparer
 ---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
 Lambda (Func<IOrderedEnumerable<string>>)
     · Body - Call (IOrderedEnumerable<string>) Enumerable.OrderBy
         · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Lambda (Func<string, string>)
             · Parameters[0] - Parameter (string) x
             · Body - Parameter (string) x
         · Arguments[2] - MemberAccess (IComparer<string>) $VB$Local_comparer = #OrdinalIgnoreCaseComparer
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.StringConcat
 Lambda (Func<string, string, string>)
     · Parameters[0] - Parameter (string) s1
@@ -1936,29 +1936,29 @@ Lambda (Func<string, string, string>)
             · Expressions[5] - Parameter (string) s2
 ---- VBCompiler.NamedType
 Lambda (Func<Random>)
-    · Body - New (Random)
+    · Body - New (Random) = #Random
 ---- VBCompiler.NamedTypeWithInitializer
 Lambda (Func<Foo>)
-    · Body - MemberInit (Foo)
-        · NewExpression - New (Foo)
+    · Body - MemberInit (Foo) = #Foo
+        · NewExpression - New (Foo) = #Foo
         · Bindings[0] - Assignment Bar
             · Expression - Constant (string) = "abcd"
 ---- VBCompiler.NamedTypeWithInitializers
 Lambda (Func<Foo>)
-    · Body - MemberInit (Foo)
-        · NewExpression - New (Foo)
+    · Body - MemberInit (Foo) = #Foo
+        · NewExpression - New (Foo) = #Foo
         · Bindings[0] - Assignment Bar
             · Expression - Constant (string) = "abcd"
         · Bindings[1] - Assignment Baz
             · Expression - Constant (string) = "efgh"
 ---- VBCompiler.NamedTypeConstructorParameters
 Lambda (Func<Foo>)
-    · Body - New (Foo)
+    · Body - New (Foo) = #Foo
         · Arguments[0] - Constant (string) = "ijkl"
 ---- VBCompiler.NamedTypeConstructorParametersWithInitializers
 Lambda (Func<Foo>)
-    · Body - MemberInit (Foo)
-        · NewExpression - New (Foo)
+    · Body - MemberInit (Foo) = #Foo
+        · NewExpression - New (Foo) = #Foo
             · Arguments[0] - Constant (string) = "ijkl"
         · Bindings[0] - Assignment Bar
             · Expression - Constant (string) = "abcd"
@@ -1966,28 +1966,28 @@ Lambda (Func<Foo>)
             · Expression - Constant (string) = "efgh"
 ---- VBCompiler.AnonymousType
 Lambda (Func<{ string Bar, string Baz }>)
-    · Body - New ({ string Bar, string Baz })
+    · Body - New ({ string Bar, string Baz }) = { Bar = abcd, Baz = efgh }
         · Arguments[0] - Constant (string) = "abcd"
         · Arguments[1] - Constant (string) = "efgh"
 ---- VBCompiler.AnonymousTypeFromVariables
 Lambda (Func<{ string Bar, string Baz }>)
-    · Body - New ({ string Bar, string Baz })
+    · Body - New ({ string Bar, string Baz }) = { Bar = abcd, Baz = efgh }
         · Arguments[0] - MemberAccess (string) $VB$Local_Bar = "abcd"
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - MemberAccess (string) $VB$Local_Baz = "efgh"
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.CollectionTypeWithInitializer
 Lambda (Func<List<string>>)
-    · Body - ListInit (List<string>)
-        · NewExpression - New (List<string>)
+    · Body - ListInit (List<string>) = #List<string>
+        · NewExpression - New (List<string>) = #List<string>
         · Initializers[0] - ElementInit
             · Arguments[0] - Constant (string) = "abcd"
         · Initializers[1] - ElementInit
             · Arguments[0] - Constant (string) = "efgh"
 ---- VBCompiler.CollectionTypeWithMultipleElementsInitializers
 Lambda (Func<Wrapper>)
-    · Body - ListInit (Wrapper)
-        · NewExpression - New (Wrapper)
+    · Body - ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+        · NewExpression - New (Wrapper) = #Wrapper
         · Initializers[0] - ElementInit
             · Arguments[0] - Constant (string) = "ab"
             · Arguments[1] - Constant (string) = "cd"
@@ -1996,8 +1996,8 @@ Lambda (Func<Wrapper>)
             · Arguments[1] - Constant (string) = "gh"
 ---- VBCompiler.CollectionTypeWithSingleOrMultipleElementsInitializers
 Lambda (Func<Wrapper>)
-    · Body - ListInit (Wrapper)
-        · NewExpression - New (Wrapper)
+    · Body - ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+        · NewExpression - New (Wrapper) = #Wrapper
         · Initializers[0] - ElementInit
             · Arguments[0] - Constant (string) = "ab"
             · Arguments[1] - Constant (string) = "cd"
@@ -2005,97 +2005,97 @@ Lambda (Func<Wrapper>)
             · Arguments[0] - Constant (string) = "ef"
 ---- VBCompiler.SingleDimensionInit
 Lambda (Func<string[]>)
-    · Body - NewArrayInit (string[])
+    · Body - NewArrayInit (string[]) = new[] { "" }
         · Expressions[0] - Constant (string) = ""
 ---- VBCompiler.SingleDimensionInitExplicitType
 Lambda (Func<object[]>)
-    · Body - NewArrayInit (object[])
-        · Expressions[0] - Convert (object)
+    · Body - NewArrayInit (object[]) = new[] { "" }
+        · Expressions[0] - Convert (object) = ""
             · Operand - Constant (string) = ""
 ---- VBCompiler.SingleDimensionWithBounds
 Lambda (Func<string[]>)
-    · Body - NewArrayBounds (string[])
+    · Body - NewArrayBounds (string[]) = new[] { null, null, null, null, null }
         · Expressions[0] - Constant (int) = 5
 ---- VBCompiler.MultidimensionWithBounds
 Lambda (Func<string[,]>)
-    · Body - NewArrayBounds (string[,])
+    · Body - NewArrayBounds (string[,]) = #string[,]
         · Expressions[0] - Constant (int) = 2
         · Expressions[1] - Constant (int) = 3
 ---- VBCompiler.JaggedWithElementsImplicitType
 Lambda (Func<string[][]>)
-    · Body - NewArrayInit (string[][])
-        · Expressions[0] - NewArrayInit (string[])
+    · Body - NewArrayInit (string[][]) = #string[][]
+        · Expressions[0] - NewArrayInit (string[]) = new[] { "ab", "cd" }
             · Expressions[0] - Constant (string) = "ab"
             · Expressions[1] - Constant (string) = "cd"
-        · Expressions[1] - NewArrayInit (string[])
+        · Expressions[1] - NewArrayInit (string[]) = new[] { "ef", "gh" }
             · Expressions[0] - Constant (string) = "ef"
             · Expressions[1] - Constant (string) = "gh"
 ---- VBCompiler.JaggedWithElementsImplicitTypeInnerNonLiteral
 Lambda (Func<string[][]>)
-    · Body - NewArrayInit (string[][])
+    · Body - NewArrayInit (string[][]) = #string[][]
         · Expressions[0] - MemberAccess (string[]) $VB$Local_arr1 = new[] { "ab", "cd" }
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
         · Expressions[1] - MemberAccess (string[]) $VB$Local_arr2 = new[] { "ef", "gh" }
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.JaggedWithElementsExplicitType
 Lambda (Func<object[][]>)
-    · Body - NewArrayInit (object[][])
-        · Expressions[0] - Convert (object[])
-            · Operand - NewArrayInit (string[])
+    · Body - NewArrayInit (object[][]) = #object[][]
+        · Expressions[0] - Convert (object[]) = new[] { "ab", "cd" }
+            · Operand - NewArrayInit (string[]) = new[] { "ab", "cd" }
                 · Expressions[0] - Constant (string) = "ab"
                 · Expressions[1] - Constant (string) = "cd"
-        · Expressions[1] - Convert (object[])
-            · Operand - NewArrayInit (string[])
+        · Expressions[1] - Convert (object[]) = new[] { "ef", "gh" }
+            · Operand - NewArrayInit (string[]) = new[] { "ef", "gh" }
                 · Expressions[0] - Constant (string) = "ef"
                 · Expressions[1] - Constant (string) = "gh"
 ---- VBCompiler.JaggedWithBounds
 Lambda (Func<string[][]>)
-    · Body - NewArrayBounds (string[][])
+    · Body - NewArrayBounds (string[][]) = #string[][]
         · Expressions[0] - Constant (int) = 5
 ---- VBCompiler.ArrayOfMultidimensionalArray
 Lambda (Func<string[][,]>)
-    · Body - NewArrayBounds (string[][,])
+    · Body - NewArrayBounds (string[][,]) = #string[][,]
         · Expressions[0] - Constant (int) = 5
 ---- VBCompiler.MultidimensionalArrayOfArray
 Lambda (Func<string[,][]>)
-    · Body - NewArrayBounds (string[,][])
+    · Body - NewArrayBounds (string[,][]) = #string[,][]
         · Expressions[0] - Constant (int) = 3
         · Expressions[1] - Constant (int) = 2
 ---- VBCompiler.ArrayLength
 Lambda (Func<int>)
-    · Body - ArrayLength (int)
+    · Body - ArrayLength (int) = 0
         · Operand - MemberAccess (string[]) $VB$Local_arr = new[] {  }
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.Convert
 Lambda (Func<Random>)
-    · Body - Convert (Random)
+    · Body - Convert (Random) = #Random
         · Operand - MemberAccess (object) $VB$Local_o = #Random
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.CObject
 Lambda (Func<object>)
-    · Body - Convert (object)
+    · Body - Convert (object) = #List<string>
         · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.Negate
 Lambda (Func<int>)
-    · Body - NegateChecked (int)
+    · Body - NegateChecked (int) = -1
         · Operand - MemberAccess (int) $VB$Local_i = 1
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.BitwiseNot
 Lambda (Func<int>)
-    · Body - Not (int)
+    · Body - Not (int) = -2
         · Operand - MemberAccess (int) $VB$Local_i = 1
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.LogicalNot
 Lambda (Func<bool>)
-    · Body - Not (bool)
+    · Body - Not (bool) = false
         · Operand - MemberAccess (bool) $VB$Local_b = true
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.TypeAs
 Lambda (Func<string>)
     · Body - TypeAs (string)
         · Operand - MemberAccess (object) $VB$Local_o
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.Conditional
 Lambda (Func<int, int>)
     · Parameters[0] - Parameter (int) i
@@ -2109,17 +2109,17 @@ Lambda (Func<int, int>)
             · Right - Constant (int) = 10
 ---- VBCompiler.TypeCheck
 Lambda (Func<bool>)
-    · Body - TypeIs (bool)
+    · Body - TypeIs (bool) = true
         · Expression - Constant (string) = ""
 ---- VBCompiler.InvocationNoArguments
 Lambda (Func<int>)
-    · Body - Invoke (int)
+    · Body - Invoke (int) = 16
         · Expression - MemberAccess (VB$AnonymousDelegate<int>) $VB$Local_del = #VB$AnonymousDelegate<int>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.InvocationOneArgument
 Lambda (Func<int>)
-    · Body - Invoke (int)
+    · Body - Invoke (int) = 16
         · Arguments[0] - Constant (int) = 5
         · Expression - MemberAccess (VB$AnonymousDelegate<int, int>) $VB$Local_del = #VB$AnonymousDelegate<int, int>
-            · Expression - Constant (<closure>)
+            · Expression - Constant (<closure>) = #<closure>
 ------

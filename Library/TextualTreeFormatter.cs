@@ -16,6 +16,8 @@ namespace ExpressionTreeToString {
 
         public TextualTreeFormatter(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) : base(o, language, out pathSpans) { }
 
+        private ValueExtractor valueExtractor = new ValueExtractor();
+
         private void WriteTextualNode(object o) {
             var nodeType = "";
             var typename = "";
@@ -27,16 +29,7 @@ namespace ExpressionTreeToString {
                     nodeType = expr.NodeType.ToString();
                     typename = $"({expr.Type.FriendlyName(language)})";
                     name = expr.Name();
-                    
-                    switch (expr) {
-                        case ConstantExpression cexpr when !expr.Type.IsClosureClass():
-                            value = cexpr.Value;
-                            break;
-                        case Expression _ when expr.IsClosedVariable():
-                        case DefaultExpression _:
-                            value = expr.ExtractValue();
-                            break;
-                    }
+                    value = valueExtractor.GetValue(expr).value;
                     break;
 
                 case MemberBinding mbind:

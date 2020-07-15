@@ -134,7 +134,7 @@
 
     <TestObject(Binary)>
     Friend ArrayIndex As Expression = IIFE(Function()
-                                               Dim arr = New String() {}
+                                               Dim arr = New String() {17}
                                                Return Expr(Function() arr(0))
                                            End Function)
 

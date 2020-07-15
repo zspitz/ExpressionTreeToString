@@ -32,7 +32,8 @@ namespace _tests {
             //    );
             //}
 
-            Expression<Func<bool>> expr = () => true;
+            var b = true;
+            Expression<Func<bool>> expr = () => b;
             Console.WriteLine(expr.ToString("Object notation", "Visual Basic"));
 
 

@@ -43,7 +43,7 @@
 
     <TestObject(Method)>
     Friend InstanceMethod2Arguments As Expression = IIFE(Function()
-                                                             Dim s = ""
+                                                             Dim s = "abcde"
                                                              Return Expr(Function() s.IndexOf("a"c, 2))
                                                          End Function)
 

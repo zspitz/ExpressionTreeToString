@@ -6,7 +6,7 @@ using static ExpressionTreeTestObjects.Categories;
 
 namespace ExpressionTreeTestObjects {
     [ObjectContainer]
-     static internal partial class CSCompiler {
+    static internal partial class CSCompiler {
         [TestObject(Defaults)]
         internal static readonly Expression DefaultRefType = Expr(() => default(string));
 
@@ -51,19 +51,27 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject(Indexer)]
         internal static readonly Expression ArraySingleIndex = IIFE(() => {
-            var arr = new string[] { };
+            var arr = new string[] { "0", "1", "2", "3", "4", "5" };
             return Expr(() => arr[5]);
         });
 
         [TestObject(Indexer)]
         internal static readonly Expression ArrayMultipleIndex = IIFE(() => {
-            var arr = new string[,] { };
+            var arr = new string[,] {
+                {"0","1","2","3","4","5" },
+                {"10","11","12","13","14","15" },
+                {"20","21","22","23","24","25" },
+                {"30","31","32","33","34","35" },
+                {"40","41","42","43","44","45" },
+                {"50","51","52","53","54","55" },
+                {"60","61","62","63","64","65" }
+            };
             return Expr(() => arr[5, 6]);
         });
 
         [TestObject(Indexer)]
         internal static readonly Expression TypeIndexer = IIFE(() => {
-            var lst = new List<string>();
+            var lst = new List<string>() { "1", "2", "3", "4" };
             return Expr(() => lst[3]);
         });
     }

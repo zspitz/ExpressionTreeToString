@@ -138,7 +138,7 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject(Binary)]
         internal static readonly Expression ArrayIndex = IIFE(() => {
-            var arr = new string[] { };
+            var arr = new string[] { "a" };
             return Expr(() => arr[0]);
         });
     }

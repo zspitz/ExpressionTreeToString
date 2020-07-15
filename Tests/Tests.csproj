@@ -24,7 +24,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ZSpitz.Util" Version="0.0.32" />
+    <PackageReference Include="ZSpitz.Util" Version="0.0.41" />
   </ItemGroup>
 
   <ItemGroup>
