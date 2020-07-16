@@ -95,7 +95,7 @@
 ---- CSCompiler.Integer
 () => 5
 ---- CSCompiler.InterpolatedString
-() => $"{new DateTime(2001, 3, 25)}"
+() => $"{new DateTime(2001, 3, 25):yyyy-MM-dd}"
 ---- CSCompiler.InvocationNoArguments
 () => del()
 ---- CSCompiler.InvocationOneArgument
@@ -994,7 +994,7 @@ if (true) {
 ---- VBCompiler.Integer
 () => 5
 ---- VBCompiler.InterpolatedString
-() => $"{#DateTime}"
+() => $"{#DateTime:yyyy-MM-dd}"
 ---- VBCompiler.InvocationNoArguments
 () => del()
 ---- VBCompiler.InvocationOneArgument

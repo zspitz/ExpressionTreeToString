@@ -246,7 +246,7 @@ Lambda(
 Lambda(
     Call(
         typeof(string).GetMethod("Format"),
-        Constant("{0}"),
+        Constant("{0:yyyy-MM-dd}"),
         Convert(
             New(
                 typeof(DateTime).GetConstructor(),
@@ -2228,7 +2228,7 @@ Lambda(
 Lambda(
     Call(
         typeof(string).GetMethod("Format"),
-        Constant("{0}"),
+        Constant("{0:yyyy-MM-dd}"),
         Convert(
             Constant(#DateTime),
             typeof(object)

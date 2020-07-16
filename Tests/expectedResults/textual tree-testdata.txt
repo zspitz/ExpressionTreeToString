@@ -182,12 +182,12 @@ Lambda (Func<bool>)
             · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.InvocationNoArguments
 Lambda (Func<int>)
-    · Body - Invoke (int) = 16
+    · Body - Invoke (int) = 1
         · Expression - MemberAccess (Func<int>) del = #Func<int>
             · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.InvocationOneArgument
 Lambda (Func<int>)
-    · Body - Invoke (int) = 16
+    · Body - Invoke (int) = 1
         · Arguments[0] - Constant (int) = 5
         · Expression - MemberAccess (Func<int, int>) del = #Func<int, int>
             · Expression - Constant (<closure>) = #<closure>
@@ -272,8 +272,8 @@ Lambda (Func<string>)
     · Body - Constant (string) = "abcd"
 ---- CSCompiler.InterpolatedString
 Lambda (Func<string>)
-    · Body - Call (string) string.Format = "25/03/2001 0:00:00"
-        · Arguments[0] - Constant (string) = "{0}"
+    · Body - Call (string) string.Format = "2001-03-25"
+        · Arguments[0] - Constant (string) = "{0:yyyy-MM-dd}"
         · Arguments[1] - Convert (object) = 25/03/2001 0:00:00
             · Operand - New (DateTime) = 25/03/2001 0:00:00
                 · Arguments[0] - Constant (int) = 2001
@@ -1733,8 +1733,8 @@ Lambda (Func<string>)
         · Arguments[1] - Constant (int) = 6
 ---- VBCompiler.InterpolatedString
 Lambda (Func<string>)
-    · Body - Call (string) string.Format = "25/03/2001 0:00:00"
-        · Arguments[0] - Constant (string) = "{0}"
+    · Body - Call (string) string.Format = "2001-03-25"
+        · Arguments[0] - Constant (string) = "{0:yyyy-MM-dd}"
         · Arguments[1] - Convert (object) = 25/03/2001 0:00:00
             · Operand - Constant (DateTime) = 25/03/2001 0:00:00
 ---- VBCompiler.TypeIndexer

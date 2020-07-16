@@ -24,13 +24,13 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject(Invocation)]
         internal static readonly Expression InvocationNoArguments = IIFE(() => {
-            Func<int> del = () => DateTime.Now.Day;
+            Func<int> del = () => new DateTime(2001,1,1).Day;
             return Expr(() => del());
         });
 
         [TestObject(Invocation)]
         internal static readonly Expression InvocationOneArgument = IIFE(() => {
-            Func<int, int> del = (int i) => DateTime.Now.Day;
+            Func<int, int> del = (int i) => new DateTime(2001, 1, 1).Day;
             return Expr(() => del(5));
         });
 

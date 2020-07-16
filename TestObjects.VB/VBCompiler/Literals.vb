@@ -33,5 +33,5 @@
     Friend ConstantNothingToValueType As Expression = Expr(Of Integer)(Function() Nothing)
 
     <TestObject(Literal)>
-    Friend InterpolatedString As Expression = Expr(Function() $"{#2001-3-25#}")
+    Friend InterpolatedString As Expression = Expr(Function() $"{#2001-3-25#:yyyy-MM-dd}")
 End Module

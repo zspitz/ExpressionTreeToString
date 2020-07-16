@@ -95,7 +95,7 @@ Function() s.IndexOf("a"C, 2)
 ---- CSCompiler.Integer
 Function() 5
 ---- CSCompiler.InterpolatedString
-Function() $"{New Date(2001, 3, 25)}"
+Function() $"{New Date(2001, 3, 25):yyyy-MM-dd}"
 ---- CSCompiler.InvocationNoArguments
 Function() del()
 ---- CSCompiler.InvocationOneArgument
@@ -945,7 +945,7 @@ Function() s.IndexOf("a"C, 2)
 ---- VBCompiler.Integer
 Function() 5
 ---- VBCompiler.InterpolatedString
-Function() $"{#2001-03-25 00:00:00#}"
+Function() $"{#2001-03-25 00:00:00#:yyyy-MM-dd}"
 ---- VBCompiler.InvocationNoArguments
 Function() del()
 ---- VBCompiler.InvocationOneArgument

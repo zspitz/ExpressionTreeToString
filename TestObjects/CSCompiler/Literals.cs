@@ -25,7 +25,7 @@ namespace ExpressionTreeTestObjects {
         internal static readonly Expression String = Expr(() => "abcd");
 
         [TestObject(Literal)]
-        internal static readonly Expression InterpolatedString = Expr(() => $"{new DateTime(2001, 3, 25)}");
+        internal static readonly Expression InterpolatedString = Expr(() => $"{new DateTime(2001, 3, 25):yyyy-MM-dd}");
 
         [TestObject(Literal)]
         internal static readonly Expression Type = Expr(() => typeof(string));

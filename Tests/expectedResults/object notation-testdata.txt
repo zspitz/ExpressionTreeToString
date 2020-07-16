@@ -868,7 +868,7 @@ new Expression<Func<string>> {
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
                 Type = typeof(string),
-                Value = "{0}"
+                Value = "{0:yyyy-MM-dd}"
             },
             new UnaryExpression {
                 NodeType = ExpressionType.Convert,
@@ -7058,7 +7058,7 @@ new Expression<Func<string>> {
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
                 Type = typeof(string),
-                Value = "{0}"
+                Value = "{0:yyyy-MM-dd}"
             },
             new UnaryExpression {
                 NodeType = ExpressionType.Convert,
