@@ -2657,4 +2657,62 @@ Lambda(
         Constant(5)
     )
 )
+---- VBCompiler.LeftEnumNonConstant
+Lambda(
+    GreaterThanOrEqual(
+        ConvertChecked(dow,
+            typeof(int)
+        ),
+        Constant(2)
+    )
+)
+---- VBCompiler.RightEnumNonConstant
+Lambda(
+    LessThanOrEqual(
+        Constant(2),
+        ConvertChecked(dow,
+            typeof(int)
+        )
+    )
+)
+---- VBCompiler.DualNonConstant
+Lambda(
+    Equal(
+        ConvertChecked(dow1,
+            typeof(int)
+        ),
+        ConvertChecked(dow2,
+            typeof(int)
+        )
+    )
+)
+---- CSCompiler.LeftEnumNonConstant
+Lambda(
+    GreaterThanOrEqual(
+        Convert(dow,
+            typeof(int)
+        ),
+        Constant(2)
+    )
+)
+---- CSCompiler.RightEnumNonConstant
+Lambda(
+    LessThanOrEqual(
+        Constant(2),
+        Convert(dow,
+            typeof(int)
+        )
+    )
+)
+---- CSCompiler.DualNonConstant
+Lambda(
+    Equal(
+        Convert(dow1,
+            typeof(int)
+        ),
+        Convert(dow2,
+            typeof(int)
+        )
+    )
+)
 ------

@@ -1109,4 +1109,16 @@ if (true) {
 () => lst[3]
 ---- VBCompiler.VBDeclaredTypeIndexer
 () => x[5]
+---- VBCompiler.LeftEnumNonConstant
+() => dow >= DayOfWeek.Tuesday
+---- VBCompiler.RightEnumNonConstant
+() => DayOfWeek.Tuesday <= dow
+---- VBCompiler.DualNonConstant
+() => dow1 == dow2
+---- CSCompiler.LeftEnumNonConstant
+() => dow >= DayOfWeek.Tuesday
+---- CSCompiler.RightEnumNonConstant
+() => DayOfWeek.Tuesday <= dow
+---- CSCompiler.DualNonConstant
+() => dow1 == dow2
 ------

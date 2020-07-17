@@ -155,5 +155,14 @@ namespace ExpressionTreeToString {
             (typeof(TryExpression), new [] {"Body", "Handlers", "Finally", "Fault"}),
             (typeof(DynamicExpression), new [] {"Binder", "Arguments"})
         };
+
+        public readonly static HashSet<ExpressionType> RelationalOperators = new HashSet<ExpressionType> {
+            Equal,
+            GreaterThan,
+            GreaterThanOrEqual,
+            LessThan,
+            LessThanOrEqual,
+            NotEqual
+        };
     }
 }

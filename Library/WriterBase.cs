@@ -8,6 +8,7 @@ using System.Text;
 using static ExpressionTreeToString.FormatterNames;
 using static System.Linq.Expressions.ExpressionType;
 using static ZSpitz.Util.Functions;
+using static ExpressionTreeToString.Globals;
 
 namespace ExpressionTreeToString {
     public abstract class WriterBase {

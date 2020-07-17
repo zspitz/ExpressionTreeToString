@@ -32,13 +32,12 @@ namespace _tests {
             //    );
             //}
 
-            var b = true;
-            Expression<Func<bool>> expr = () => b;
-            Console.WriteLine(expr.ToString("Object notation", "Visual Basic"));
+            //var b = true;
+            //Expression<Func<bool>> expr = () => b;
+            //Console.WriteLine(expr.ToString("Object notation", "Visual Basic"));
 
-
-
-            Console.WriteLine("Hello World!");
+            Expression<Func<bool>> expr = () => DateTime.Now.DayOfWeek == DayOfWeek.Monday;
+            Console.WriteLine(expr.ToString("Visual Basic"));
         }
     }
 

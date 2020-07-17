@@ -1060,4 +1060,16 @@ Function() TypeOf "" Is String
 Function() lst(3)
 ---- VBCompiler.VBDeclaredTypeIndexer
 Function() x(5)
+---- VBCompiler.LeftEnumNonConstant
+Function() dow >= DayOfWeek.Tuesday
+---- VBCompiler.RightEnumNonConstant
+Function() DayOfWeek.Tuesday <= dow
+---- VBCompiler.DualNonConstant
+Function() dow1 = dow2
+---- CSCompiler.LeftEnumNonConstant
+Function() dow >= DayOfWeek.Tuesday
+---- CSCompiler.RightEnumNonConstant
+Function() DayOfWeek.Tuesday <= dow
+---- CSCompiler.DualNonConstant
+Function() dow1 = dow2
 ------

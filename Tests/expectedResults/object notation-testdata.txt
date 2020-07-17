@@ -8304,4 +8304,176 @@ new Expression<Func<int>> {
     },
     ReturnType = typeof(int)
 }
+---- VBCompiler.LeftEnumNonConstant
+new Expression<Func<bool>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<bool>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.GreaterThanOrEqual,
+        Type = typeof(bool),
+        Left = new UnaryExpression {
+            NodeType = ExpressionType.ConvertChecked,
+            Type = typeof(int),
+            Operand = new MemberExpression {
+                Type = typeof(DayOfWeek),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_dow")
+            }
+        },
+        Right = new ConstantExpression {
+            Type = typeof(int),
+            Value = 2
+        }
+    },
+    ReturnType = typeof(bool)
+}
+---- VBCompiler.RightEnumNonConstant
+new Expression<Func<bool>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<bool>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.LessThanOrEqual,
+        Type = typeof(bool),
+        Left = new ConstantExpression {
+            Type = typeof(int),
+            Value = 2
+        },
+        Right = new UnaryExpression {
+            NodeType = ExpressionType.ConvertChecked,
+            Type = typeof(int),
+            Operand = new MemberExpression {
+                Type = typeof(DayOfWeek),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_dow")
+            }
+        }
+    },
+    ReturnType = typeof(bool)
+}
+---- VBCompiler.DualNonConstant
+new Expression<Func<bool>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<bool>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.Equal,
+        Type = typeof(bool),
+        Left = new UnaryExpression {
+            NodeType = ExpressionType.ConvertChecked,
+            Type = typeof(int),
+            Operand = new MemberExpression {
+                Type = typeof(DayOfWeek),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_dow1")
+            }
+        },
+        Right = new UnaryExpression {
+            NodeType = ExpressionType.ConvertChecked,
+            Type = typeof(int),
+            Operand = new MemberExpression {
+                Type = typeof(DayOfWeek),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_dow2")
+            }
+        }
+    },
+    ReturnType = typeof(bool)
+}
+---- CSCompiler.LeftEnumNonConstant
+new Expression<Func<bool>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<bool>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.GreaterThanOrEqual,
+        Type = typeof(bool),
+        Left = new UnaryExpression {
+            NodeType = ExpressionType.Convert,
+            Type = typeof(int),
+            Operand = new MemberExpression {
+                Type = typeof(DayOfWeek),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("dow")
+            }
+        },
+        Right = new ConstantExpression {
+            Type = typeof(int),
+            Value = 2
+        }
+    },
+    ReturnType = typeof(bool)
+}
+---- CSCompiler.RightEnumNonConstant
+new Expression<Func<bool>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<bool>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.LessThanOrEqual,
+        Type = typeof(bool),
+        Left = new ConstantExpression {
+            Type = typeof(int),
+            Value = 2
+        },
+        Right = new UnaryExpression {
+            NodeType = ExpressionType.Convert,
+            Type = typeof(int),
+            Operand = new MemberExpression {
+                Type = typeof(DayOfWeek),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("dow")
+            }
+        }
+    },
+    ReturnType = typeof(bool)
+}
+---- CSCompiler.DualNonConstant
+new Expression<Func<bool>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<bool>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.Equal,
+        Type = typeof(bool),
+        Left = new UnaryExpression {
+            NodeType = ExpressionType.Convert,
+            Type = typeof(int),
+            Operand = new MemberExpression {
+                Type = typeof(DayOfWeek),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("dow1")
+            }
+        },
+        Right = new UnaryExpression {
+            NodeType = ExpressionType.Convert,
+            Type = typeof(int),
+            Operand = new MemberExpression {
+                Type = typeof(DayOfWeek),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("dow2")
+            }
+        }
+    },
+    ReturnType = typeof(bool)
+}
 ------

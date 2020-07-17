@@ -544,7 +544,20 @@ namespace ExpressionTreeToString {
                             expr.Expressions.ForEach((x, index) => {
                                 if (index > 0) { Write(", "); }
 
-                                // because in VB.NET the upper bound of an array is specified, not the numbe of items
+                                // The value(s) for an array-bounds initialization expression refer to the number of elements in the array, for the specified dimension.
+                                // But in VB.NET code, the number in an array-bounds initialization is the upper bound, not the number of elements.
+                                // For example:
+                                //
+                                //    Dim arr = New String(5) {}
+                                //
+                                // produces an array with 6 elements; and the expression tree will be as follows:
+                                //
+                                //    NewArrayBounds(GetType(String), Constant(6))
+                                //
+                                // In order to get back the corresponding VB code, if the bounds is a constant, we can replace the constant.
+                                // If the bounds is another expression, we can wrap in a subtraction expression.
+                                // See also https://github.com/zspitz/ExpressionTreeToString/issues/32
+
                                 Expression newExpr;
                                 if (x is ConstantExpression cexpr) {
                                     object newValue = ((dynamic)cexpr.Value) - 1;

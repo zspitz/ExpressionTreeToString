@@ -74,5 +74,24 @@ namespace ExpressionTreeTestObjects {
             var lst = new List<string>() { "1", "2", "3", "4" };
             return Expr(() => lst[3]);
         });
+
+        [TestObject(EnumComparison)]
+        internal static readonly Expression LeftEnumNonConstant = IIFE(() => {
+            var dow = DayOfWeek.Wednesday;
+            return Expr(() => dow >= DayOfWeek.Tuesday);
+        });
+
+        [TestObject(EnumComparison)]
+        internal static readonly Expression RightEnumNonConstant = IIFE(() => {
+            var dow = DayOfWeek.Wednesday;
+            return Expr(() => DayOfWeek.Tuesday <= dow);
+        });
+
+        [TestObject(EnumComparison)]
+        internal static readonly Expression DualNonConstant = IIFE(() => {
+            var dow1 = DayOfWeek.Monday;
+            var dow2 = DayOfWeek.Friday;
+            return Expr(() => dow1 == dow2);
+        });
     }
 }

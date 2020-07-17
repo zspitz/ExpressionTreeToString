@@ -31,5 +31,6 @@ namespace ExpressionTreeTestObjects {
         public const string Blocks = "Blocks";
         public const string Constants = "Constants";
         public const string TypeChecks = "Type check";
+        public const string EnumComparison = "Enum comparison";
     }
 }

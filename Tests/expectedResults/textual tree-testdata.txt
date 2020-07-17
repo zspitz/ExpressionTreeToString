@@ -2113,13 +2113,59 @@ Lambda (Func<bool>)
         · Expression - Constant (string) = ""
 ---- VBCompiler.InvocationNoArguments
 Lambda (Func<int>)
-    · Body - Invoke (int) = 16
+    · Body - Invoke (int) = 1
         · Expression - MemberAccess (VB$AnonymousDelegate<int>) $VB$Local_del = #VB$AnonymousDelegate<int>
             · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.InvocationOneArgument
 Lambda (Func<int>)
-    · Body - Invoke (int) = 16
+    · Body - Invoke (int) = 1
         · Arguments[0] - Constant (int) = 5
         · Expression - MemberAccess (VB$AnonymousDelegate<int, int>) $VB$Local_del = #VB$AnonymousDelegate<int, int>
             · Expression - Constant (<closure>) = #<closure>
+---- VBCompiler.LeftEnumNonConstant
+Lambda (Func<bool>)
+    · Body - GreaterThanOrEqual (bool) = true
+        · Left - ConvertChecked (int) = 3
+            · Operand - MemberAccess (DayOfWeek) $VB$Local_dow = DayOfWeek.Wednesday
+                · Expression - Constant (<closure>) = #<closure>
+        · Right - Constant (int) = 2
+---- VBCompiler.RightEnumNonConstant
+Lambda (Func<bool>)
+    · Body - LessThanOrEqual (bool) = true
+        · Left - Constant (int) = 2
+        · Right - ConvertChecked (int) = 3
+            · Operand - MemberAccess (DayOfWeek) $VB$Local_dow = DayOfWeek.Wednesday
+                · Expression - Constant (<closure>) = #<closure>
+---- VBCompiler.DualNonConstant
+Lambda (Func<bool>)
+    · Body - Equal (bool) = false
+        · Left - ConvertChecked (int) = 1
+            · Operand - MemberAccess (DayOfWeek) $VB$Local_dow1 = DayOfWeek.Monday
+                · Expression - Constant (<closure>) = #<closure>
+        · Right - ConvertChecked (int) = 5
+            · Operand - MemberAccess (DayOfWeek) $VB$Local_dow2 = DayOfWeek.Friday
+                · Expression - Constant (<closure>) = #<closure>
+---- CSCompiler.LeftEnumNonConstant
+Lambda (Func<bool>)
+    · Body - GreaterThanOrEqual (bool) = true
+        · Left - Convert (int) = 3
+            · Operand - MemberAccess (DayOfWeek) dow = DayOfWeek.Wednesday
+                · Expression - Constant (<closure>) = #<closure>
+        · Right - Constant (int) = 2
+---- CSCompiler.RightEnumNonConstant
+Lambda (Func<bool>)
+    · Body - LessThanOrEqual (bool) = true
+        · Left - Constant (int) = 2
+        · Right - Convert (int) = 3
+            · Operand - MemberAccess (DayOfWeek) dow = DayOfWeek.Wednesday
+                · Expression - Constant (<closure>) = #<closure>
+---- CSCompiler.DualNonConstant
+Lambda (Func<bool>)
+    · Body - Equal (bool) = false
+        · Left - Convert (int) = 1
+            · Operand - MemberAccess (DayOfWeek) dow1 = DayOfWeek.Monday
+                · Expression - Constant (<closure>) = #<closure>
+        · Right - Convert (int) = 5
+            · Operand - MemberAccess (DayOfWeek) dow2 = DayOfWeek.Friday
+                · Expression - Constant (<closure>) = #<closure>
 ------
