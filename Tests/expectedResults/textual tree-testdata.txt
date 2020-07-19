@@ -537,7 +537,7 @@ Constant (Random) = #Random
 ---- FactoryMethods.ValueTuple
 Constant (ValueTuple<string, int>) = ("abcd", 5)
 ---- FactoryMethods.OldTuple
-Constant (Tuple<string, int>) = ("abcd", 5)
+Constant (Tuple<string, int>) = Tuple.Create("abcd", 5)
 ---- FactoryMethods.Array
 Constant (object[]) = new[] { "abcd", 5, #Random }
 ---- FactoryMethods.Type

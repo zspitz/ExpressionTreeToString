@@ -733,7 +733,7 @@ Function() "abcd"
 ---- FactoryMethods.NoParametersVoidReturn
 Sub() Console.WriteLine
 ---- FactoryMethods.OldTuple
-("abcd", 5)
+Tuple.Create("abcd", 5)
 ---- FactoryMethods.OneParameterNonVoidReturn
 Function(s As String) s
 ---- FactoryMethods.OneParameterVoidReturn

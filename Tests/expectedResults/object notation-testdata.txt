@@ -5296,7 +5296,7 @@ new Expression<Action> {
 ---- FactoryMethods.OldTuple
 new ConstantExpression {
     Type = typeof(Tuple<string, int>),
-    Value = ("abcd", 5)
+    Value = Tuple.Create("abcd", 5)
 }
 ---- FactoryMethods.OneParameterNonVoidReturn
 new Expression<Func<string, string>> {

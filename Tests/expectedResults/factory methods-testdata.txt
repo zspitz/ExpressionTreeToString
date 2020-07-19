@@ -1659,7 +1659,7 @@ Lambda(
     )
 )
 ---- FactoryMethods.OldTuple
-Constant(("abcd", 5))
+Constant(Tuple.Create("abcd", 5))
 ---- FactoryMethods.OneParameterNonVoidReturn
 Lambda(s,
     var s = Parameter(

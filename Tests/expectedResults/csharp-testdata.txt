@@ -755,7 +755,7 @@ true ? "true".Length : default(int)
 ---- FactoryMethods.NoParametersVoidReturn
 () => Console.WriteLine()
 ---- FactoryMethods.OldTuple
-("abcd", 5)
+Tuple.Create("abcd", 5)
 ---- FactoryMethods.OneParameterNonVoidReturn
 (string s) => s
 ---- FactoryMethods.OneParameterVoidReturn
