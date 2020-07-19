@@ -4,55 +4,50 @@ using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using static ExpressionTreeToString.Globals;
 using static ZSpitz.Util.Functions;
-using static ZSpitz.Util.Methods;
 using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
-using static ExpressionTreeToString.CSharpMultilineBlockTypes;
-using static ExpressionTreeToString.CSharpBlockMetadata;
+using static ZSpitz.Util.Methods;
+using static ExpressionTreeToString.VBExpressionMetadata;
 
 namespace ExpressionTreeToString {
-    public class CSharpCodeWriter : WriterBase {
-        public CSharpCodeWriter(object o) : base(o, FormatterNames.CSharp) { }
-        public CSharpCodeWriter(object o, out Dictionary<string, (int start, int length)> pathSpans) : base(o, FormatterNames.CSharp, out pathSpans) { }
+    public class VBCodeWriter : CodeWriterBase {
+        public VBCodeWriter(object o) : base(o, FormatterNames.VisualBasic) { }
+        public VBCodeWriter(object o, out Dictionary<string, (int start, int length)> pathSpans) : base(o, FormatterNames.VisualBasic, out pathSpans) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
             [Add] = "+",
             [AddChecked] = "+",
             [Divide] = "/",
-            [Modulo] = "%",
+            [Modulo] = "Mod",
             [Multiply] = "*",
             [MultiplyChecked] = "*",
             [Subtract] = "-",
             [SubtractChecked] = "-",
-            [And] = "&",
-            [Or] = "|",
-            [ExclusiveOr] = "^",
-            [AndAlso] = "&&",
-            [OrElse] = "||",
-            [Equal] = "==",
-            [NotEqual] = "!=",
+            [And] = "And",
+            [Or] = "Or",
+            [ExclusiveOr] = "Xor",
+            [AndAlso] = "AndAlso",
+            [OrElse] = "OrElse",
             [GreaterThanOrEqual] = ">=",
             [GreaterThan] = ">",
             [LessThan] = "<",
             [LessThanOrEqual] = "<=",
-            [Coalesce] = "??",
             [LeftShift] = "<<",
             [RightShift] = ">>",
+            [Power] = "^",
             [Assign] = "=",
             [AddAssign] = "+=",
             [AddAssignChecked] = "+=",
-            [AndAssign] = "&=",
             [DivideAssign] = "/=",
-            [ExclusiveOrAssign] = "^=",
             [LeftShiftAssign] = "<<=",
-            [ModuloAssign] = "%=",
             [MultiplyAssign] = "*=",
             [MultiplyAssignChecked] = "*=",
-            [OrAssign] = "|=",
+            [PowerAssign] = "^=",
             [RightShiftAssign] = ">>=",
             [SubtractAssign] = "-=",
             [SubtractAssignChecked] = "-="
@@ -60,14 +55,14 @@ namespace ExpressionTreeToString {
 
         private void WriteIndexerAccess(string instancePath, Expression instance, string argBasePath, params Expression[] keys) {
             WriteNode(instancePath, instance);
-            Write("[");
+            Write("(");
             WriteNodes(argBasePath, keys);
-            Write("]");
+            Write(")");
         }
         private void WriteIndexerAccess(string instancePath, Expression instance, string argBasePath, IEnumerable<Expression> keys) =>
             WriteIndexerAccess(instancePath, instance, argBasePath, keys.ToArray());
 
-        private void WriteBinary(ExpressionType nodeType, string leftPath, Expression left, string rightPath, Expression right) {
+        protected override void WriteBinary(ExpressionType nodeType, string leftPath, Expression left, string rightPath, Expression right) {
             if (simpleBinaryOperators.TryGetValue(nodeType, out var @operator)) {
                 WriteNode(leftPath, left);
                 Write($" {@operator} ");
@@ -78,25 +73,38 @@ namespace ExpressionTreeToString {
             switch (nodeType) {
                 case ArrayIndex:
                     WriteNode(leftPath, left);
-                    Write("[");
+                    Write("(");
                     WriteNode(rightPath, right);
-                    Write("]");
+                    Write(")");
                     return;
-                case Power:
-                    Write("Math.Pow(");
+                case Coalesce:
+                    Write("If(");
                     WriteNode(leftPath, left);
                     Write(", ");
                     WriteNode(rightPath, right);
                     Write(")");
                     return;
-                case PowerAssign:
+                case OrAssign:
+                case AndAssign:
+                case ExclusiveOrAssign:
+                case ModuloAssign:
+                    // these don't have a dedicated assigment operator
+                    var op = (ExpressionType)Enum.Parse(typeof(ExpressionType), nodeType.ToString().Replace("Assign", ""));
                     WriteNode($"{leftPath}_0", left);
                     Write(" = ");
-                    Write("Math.Pow(");
                     WriteNode(leftPath, left);
-                    Write(", ");
+                    Write($" {simpleBinaryOperators[op]} ");
                     WriteNode(rightPath, right);
-                    Write(")");
+                    return;
+                case Equal:
+                    WriteNode(leftPath, left);
+                    Write(" = "); // reference comparisons are handled in the WriterBase.WriteBinary overload
+                    WriteNode(rightPath, right);
+                    return;
+                case NotEqual:
+                    WriteNode(leftPath, left);
+                    Write(" <> "); // reference comparisons are handled in the WriterBase.WriteBinary overload
+                    WriteNode(rightPath, right);
                     return;
             }
 
@@ -104,42 +112,40 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteBinary(BinaryExpression expr) {
-            if (expr.NodeType.In(RelationalOperators)) {
-                (Expression?, string?) enumOperand(Expression operand, Expression other, string pathSegment) {
-                    (Expression?, string?) ret = (null, null);
-                    if (!(operand is UnaryExpression uexpr)) { return ret; }
-                    if (uexpr.NodeType.NotIn(ExpressionType.Convert, ConvertChecked)) { return ret; }
-                    var operandType = uexpr.Operand.Type;
-                    if (!operandType.IsEnum) { return ret; }
-                    if (operandType.GetEnumUnderlyingType() != other.Type) { return ret; }
-                    return (uexpr.Operand, $"{pathSegment}.Operand");
-                }
-
-                Expression? getEnumValue(Expression other, Type enumType) {
-                    if (!(other is ConstantExpression cexpr)) { return null; }
-                    if (!Enum.IsDefined(enumType, cexpr.Value)) { return null; }
-                    return Expression.Constant(Enum.Parse(enumType, cexpr.Value.ToString()));
-                }
-
-                var (leftOperand, leftPath) = enumOperand(expr.Left, expr.Right, "Left");
-                var (rightOperand, rightPath) = enumOperand(expr.Right, expr.Left, "Right");
-
-                if (leftOperand is { } && rightOperand is null) {
-                    rightOperand = getEnumValue(expr.Right, leftOperand.Type);
-                    rightPath = "Right";
-                } else if (leftOperand is null && rightOperand is { }) {
-                    leftOperand = getEnumValue(expr.Left, rightOperand.Type);
-                    leftPath = "Left";
-                }
-
-                if (leftOperand is { } && rightOperand is { }) {
-                    WriteBinary(expr.NodeType, leftPath!, leftOperand, rightPath!, rightOperand);
-                    return;
-                }
+            var isReferenceComparison = IsReferenceComparison(expr.NodeType, expr.Left, expr.Right, expr.Method is { });
+            if (isReferenceComparison) {
+                var op = expr.NodeType switch {
+                    Equal => " Is ",
+                    NotEqual => " IsNot ",
+                    _ => throw new NotImplementedException()
+                };
+                WriteNode("Left", expr.Left);
+                Write(op);
+                WriteNode("Right", expr.Right);
+                return;
             }
 
-            WriteBinary(expr.NodeType, "Left", expr.Left, "Right", expr.Right);
+            base.WriteBinary(expr);
         }
+
+        private static readonly Dictionary<Type, string> conversionFunctions = new Dictionary<Type, string>() {
+            {typeof(bool), "CBool"},
+            {typeof(byte), "CByte"},
+            {typeof(char), "CChar"},
+            {typeof(DateTime), "CDate"},
+            {typeof(double), "CDbl"},
+            {typeof(decimal), "CDec"},
+            {typeof(int), "CInt"},
+            {typeof(long), "CLng"},
+            {typeof(object), "CObj"},
+            {typeof(sbyte), "CSByte"},
+            {typeof(short), "CShort"},
+            {typeof(float), "CSng"},
+            {typeof(string), "CStr"},
+            {typeof(uint), "CUInt"},
+            {typeof(ulong), "CULng"},
+            {typeof(ushort), "CUShort" }
+        };
 
         private void WriteUnary(ExpressionType nodeType, string operandPath, Expression operand, Type type, string expressionTypename) {
             switch (nodeType) {
@@ -150,10 +156,18 @@ namespace ExpressionTreeToString {
                 case ExpressionType.Convert:
                 case ConvertChecked:
                 case Unbox:
-                    if (!type.IsAssignableFrom(operand.Type)) {
-                        Write($"({type.FriendlyName(language)})");
+                    if (type.IsAssignableFrom(operand.Type)) {
+                        WriteNode(operandPath, operand);
+                    } else if (conversionFunctions.TryGetValue(type, out var conversionFunction)) {
+                        Write(conversionFunction);
+                        Write("(");
+                        WriteNode(operandPath, operand);
+                        Write(")");
+                    } else {
+                        Write("CType(");
+                        WriteNode(operandPath, operand);
+                        Write($", {type.FriendlyName(language)})");
                     }
-                    WriteNode(operandPath, operand);
                     break;
                 case Negate:
                 case NegateChecked:
@@ -161,44 +175,52 @@ namespace ExpressionTreeToString {
                     WriteNode(operandPath, operand);
                     break;
                 case Not:
-                    if (type == typeof(bool)) {
-                        Write("!");
-                    } else {
-                        Write("~");
-                    }
-                    WriteNode(operandPath, operand);
-                    break;
-                case OnesComplement:
-                    Write("~");
+                    Write("Not ");
                     WriteNode(operandPath, operand);
                     break;
                 case TypeAs:
+                    Write("TryCast(");
                     WriteNode(operandPath, operand);
-                    Write($" as {type.FriendlyName(language)}");
+                    Write($", {type.FriendlyName(language)})");
                     break;
+
                 case PreIncrementAssign:
-                    Write("++");
+                    Write("(");
+                    WriteNode($"{operandPath}_0", operand);
+                    Write(" += 1 : ");
                     WriteNode(operandPath, operand);
-                    break;
+                    Write(")");
+                    return;
                 case PostIncrementAssign:
+                    Write("(");
+                    WriteNode($"{operandPath}_0", operand);
+                    Write(" += 1 : ");
                     WriteNode(operandPath, operand);
-                    Write("++");
-                    break;
+                    Write(" - 1)");
+                    return;
                 case PreDecrementAssign:
-                    Write("--");
+                    Write("(");
+                    WriteNode($"{operandPath}_0", operand);
+                    Write(" -= 1 : ");
                     WriteNode(operandPath, operand);
-                    break;
+                    Write(")");
+                    return;
                 case PostDecrementAssign:
+                    Write("(");
+                    WriteNode($"{operandPath}_0", operand);
+                    Write(" -= 1 : ");
                     WriteNode(operandPath, operand);
-                    Write("--");
-                    break;
+                    Write(" + 1)");
+                    return;
+
                 case IsTrue:
                     WriteNode(operandPath, operand);
                     break;
                 case IsFalse:
-                    Write("!");
+                    Write("Not ");
                     WriteNode(operandPath, operand);
                     break;
+
                 case Increment:
                     WriteNode(operandPath, operand);
                     Write(" += 1");
@@ -207,27 +229,31 @@ namespace ExpressionTreeToString {
                     WriteNode(operandPath, operand);
                     Write(" -= 1");
                     break;
+
                 case Throw:
-                    Write("throw");
+                    Write("Throw");
                     if (operand != null) {
                         Write(" ");
                         WriteNode(operandPath, operand);
                     }
                     break;
+
                 case Quote:
                     TrimEnd(true);
                     WriteEOL();
-                    Write("// --- Quoted - begin");
+                    Write("' --- Quoted - begin");
                     Indent();
                     WriteEOL();
                     WriteNode(operandPath, operand);
                     WriteEOL(true);
-                    Write("// --- Quoted - end");
+                    Write("' --- Quoted - end");
                     break;
+
                 case UnaryPlus:
                     Write("+");
                     WriteNode(operandPath, operand);
                     break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {nodeType}, Expression object type: {expressionTypename}");
             }
@@ -237,36 +263,39 @@ namespace ExpressionTreeToString {
             WriteUnary(expr.NodeType, "Operand", expr.Operand, expr.Type, expr.GetType().Name);
 
         protected override void WriteLambda(LambdaExpression expr) {
-            Write("(");
-            WriteNodes("Parameters", expr.Parameters, false, ", ", true);
-            Write(") => ");
+            var lambdaKeyword = expr.ReturnType == typeof(void) ? "Sub" : "Function";
+            Write($"{lambdaKeyword}(");
+            expr.Parameters.ForEach((prm, index) => {
+                if (index > 0) { Write(", "); }
+                WriteNode($"Parameters[{index}]", prm, true);
+            });
+            Write(")");
 
             if (CanInline(expr.Body)) {
+                Write(" ");
                 WriteNode("Body", expr.Body);
                 return;
             }
 
-            Write("{");
             Indent();
             WriteEOL();
 
-            CSharpMultilineBlockTypes blockType = CSharpMultilineBlockTypes.Block;
+            bool returnBlock = false;
             if (expr.Body.Type != typeof(void)) {
                 if (expr.Body is BlockExpression bexpr && bexpr.HasMultipleLines()) {
-                    blockType = CSharpMultilineBlockTypes.Return;
+                    returnBlock = true;
                 } else {
-                    Write("return ");
+                    Write("Return ");
                 }
             }
-            WriteNode("Body", expr.Body, CreateMetadata(blockType));
-            WriteStatementEnd(expr.Body);
+            WriteNode("Body", expr.Body, CreateMetadata(true, Lambda, returnBlock));
             WriteEOL(true);
-            Write("}");
+            Write($"End {lambdaKeyword}");
         }
 
         protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
-            if (prm.IsByRef) { Write("ref "); }
-            Write($"{prm.Type.FriendlyName(language)} {prm.Name}");
+            if (prm.IsByRef) { Write("ByRef "); }
+            Write($"{prm.Name} As {prm.Type.FriendlyName(language)}");
         }
 
         protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
@@ -291,18 +320,19 @@ namespace ExpressionTreeToString {
                     return;
             }
         }
-
         private void WriteNew(Type type, string argsPath, IList<Expression> args) {
-            Write("new ");
+            Write("New ");
             Write(type.FriendlyName(language));
-            Write("(");
-            WriteNodes(argsPath, args);
-            Write(")");
+            if (args.Count > 0) {
+                Write("(");
+                WriteNodes(argsPath, args);
+                Write(")");
+            }
         }
 
         protected override void WriteNew(NewExpression expr) {
             if (expr.Type.IsAnonymous()) {
-                Write("new {");
+                Write("New With {");
                 Indent();
                 WriteEOL();
                 expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
@@ -310,10 +340,10 @@ namespace ExpressionTreeToString {
                         Write(",");
                         WriteEOL();
                     }
-                    // write as `property = member` only if the source name is different from the target name
+                    // write as `.property = member` only if the source name is different from the target name
                     // otheriwse just write `member`
                     if (!(arg is MemberExpression mexpr && mexpr.Member.Name.Replace("$VB$Local_", "") == name)) {
-                        Write($"{name} = ");
+                        Write($".{name} = ");
                     }
                     WriteNode($"Arguments[{index}]", arg);
                 });
@@ -324,7 +354,16 @@ namespace ExpressionTreeToString {
             WriteNew(expr.Type, "Arguments", expr.Arguments);
         }
 
+        static readonly MethodInfo power = typeof(Math).GetMethod("Pow");
+
         protected override void WriteCall(MethodCallExpression expr) {
+            if (expr.Method.DeclaringType.FullName == "Microsoft.VisualBasic.CompilerServices.LikeOperator" && expr.Method.Name.StartsWith("Like")) {
+                WriteNode("Arguments[0]", expr.Arguments[0]);
+                Write(" Like ");
+                WriteNode("Arguments[1]", expr.Arguments[1]);
+                return;
+            }
+
             if (expr.Method.In(stringConcats)) {
                 var firstArg = expr.Arguments[0];
                 IEnumerable<Expression>? argsToWrite = null;
@@ -346,11 +385,11 @@ namespace ExpressionTreeToString {
             if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
                 isIndexer = true;
             } else {
-                isIndexer = expr.Method.IsIndexerMethod();
+                var indexerMethods = expr.Method.ReflectedType.GetIndexers(true).SelectMany(x => new[] { x.GetMethod, x.SetMethod }).ToList();
+                isIndexer = expr.Method.In(indexerMethods);
             }
             if (isIndexer) {
-                // if the instance is null; it usually means it's a static member access
-                // but there is no such thing as a static indexer
+                // no such thing as a static indexer; expr.Object will not be null
                 WriteIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
                 return;
             }
@@ -371,10 +410,25 @@ namespace ExpressionTreeToString {
                 return;
             }
 
+            if (expr.Method == power) {
+                WriteNode("Arguments[0]", expr.Arguments[0]);
+                Write(" ^ ");
+                WriteNode("Arguments[1]", expr.Arguments[1]);
+                return;
+            }
+
+            // Microsoft.VisualBasic.CompilerServices is not available to .NET Standard
+            if (expr.Method.DeclaringType.FullName == "Microsoft.VisualBasic.CompilerServices.LikeOperator") {
+                WriteNode("Arguments[0]", expr.Arguments[0]);
+                Write(" Like ");
+                WriteNode("Arguments[1]", expr.Arguments[1]);
+                return;
+            }
+
             var (path, o) = ("Object", expr.Object);
             var arguments = expr.Arguments.Select((x, index) => ($"Arguments[{index}]", x));
 
-            if (expr.Object is null && expr.Method.HasAttribute<ExtensionAttribute>()) {
+            if (expr.Object == null && expr.Method.HasAttribute<ExtensionAttribute>()) {
                 (path, o) = ("Arguments[0]", expr.Arguments[0]);
                 arguments = expr.Arguments.Skip(1).Select((x, index) => ($"Arguments[{index + 1}]", x));
             }
@@ -386,12 +440,16 @@ namespace ExpressionTreeToString {
                 // instance method, or extension method
                 WriteNode(path, o);
             }
-            Write($".{expr.Method.Name}(");
-            WriteNodes(arguments);
-            Write(")");
+            Write($".{expr.Method.Name}");
+            if (arguments.Any()) {
+                Write("(");
+                WriteNodes(arguments);
+                Write(")");
+            }
         }
 
         protected override void WriteBinding(MemberBinding binding) {
+            Write(".");
             Write(binding.Member.Name);
             Write(" = ");
             if (binding is MemberAssignment assignmentBinding) {
@@ -399,21 +457,25 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            Write("{");
-
             IEnumerable<object>? items = null;
+            string initializerKeyword = "";
             string itemsPath = "";
             switch (binding) {
                 case MemberListBinding listBinding when listBinding.Initializers.Count > 0:
                     items = listBinding.Initializers.Cast<object>();
+                    initializerKeyword = "From ";
                     itemsPath = "Initializers";
                     break;
                 case MemberMemberBinding memberBinding when memberBinding.Bindings.Count > 0:
                     items = memberBinding.Bindings.Cast<object>();
+                    initializerKeyword = "With ";
                     itemsPath = "Bindings";
                     break;
             }
-            if (items != null) {
+
+            Write($"{initializerKeyword}{{");
+
+            if (items is { }) {
                 Indent();
                 WriteEOL();
                 WriteNodes(itemsPath, items, true);
@@ -426,7 +488,7 @@ namespace ExpressionTreeToString {
         protected override void WriteMemberInit(MemberInitExpression expr) {
             WriteNode("NewExpression", expr.NewExpression);
             if (expr.Bindings.Count > 0) {
-                Write(" {");
+                Write(" With {");
                 Indent();
                 WriteEOL();
                 WriteNodes("Bindings", expr.Bindings, true);
@@ -437,7 +499,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteListInit(ListInitExpression expr) {
             WriteNode("NewExpression", expr.NewExpression);
-            Write(" {");
+            Write(" From {");
             Indent();
             WriteEOL();
             WriteNodes("Initializers", expr.Initializers, true);
@@ -468,33 +530,185 @@ namespace ExpressionTreeToString {
             switch (expr.NodeType) {
                 case NewArrayInit:
                     var elementType = expr.Type.GetElementType();
-                    Write("new");
-                    if (elementType.IsArray || expr.Expressions.None() || expr.Expressions.Any(x => x.Type != elementType)) {
-                        Write(" ");
-                        Write(expr.Type.FriendlyName(language));
-                    } else {
-                        Write("[]");
+                    if (expr.Expressions.None() || expr.Expressions.Any(x => x.Type != elementType)) {
+                        Write($"New {expr.Type.FriendlyName(language)} ");
                     }
-                    Write(" { ");
-                    WriteNodes("Expressions", expr.Expressions);
+                    Write("{ ");
+                    expr.Expressions.ForEach((arg, index) => {
+                        if (index > 0) { Write(", "); }
+                        if (arg.NodeType == NewArrayInit) { Write("("); }
+                        WriteNode($"Expressions[{index}]", arg);
+                        if (arg.NodeType == NewArrayInit) { Write(")"); }
+                    });
                     Write(" }");
                     break;
                 case NewArrayBounds:
-                    (string left, string right) = ("[", "]");
                     var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
-                    Write($"new {nestedArrayTypes.Last().root!.FriendlyName(language)}");
-                    nestedArrayTypes.ForEachT((current, _, index) => {
-                        Write(left);
-                        if (index == 0) {
-                            WriteNodes("Expressions", expr.Expressions);
+                    Write($"New {nestedArrayTypes.Last().root!.FriendlyName(language)}");
+                    nestedArrayTypes.ForEachT((current, _, arrayTypeIndex) => {
+                        Write("(");
+                        if (arrayTypeIndex == 0) {
+                            expr.Expressions.ForEach((x, index) => {
+                                if (index > 0) { Write(", "); }
+
+                                // The value(s) for an array-bounds initialization expression refer to the number of elements in the array, for the specified dimension.
+                                // But in VB.NET code, the number in an array-bounds initialization is the upper bound, not the number of elements.
+                                // For example:
+                                //
+                                //    Dim arr = New String(5) {}
+                                //
+                                // produces an array with 6 elements; and the expression tree will be as follows:
+                                //
+                                //    NewArrayBounds(GetType(String), Constant(6))
+                                //
+                                // In order to get back the corresponding VB code, if the bounds is a constant, we can replace the constant.
+                                // If the bounds is another expression, we can wrap in a subtraction expression.
+                                // See also https://github.com/zspitz/ExpressionTreeToString/issues/32
+
+                                Expression newExpr;
+                                if (x is ConstantExpression cexpr) {
+                                    object newValue = ((dynamic)cexpr.Value) - 1;
+                                    newExpr = Expression.Constant(newValue);
+                                } else {
+                                    newExpr = Expression.SubtractChecked(x, Expression.Constant(1));
+                                }
+
+                                WriteNode($"Expressions[{index}]", newExpr);
+                            });
                         } else {
                             Write(Repeat("", current.GetArrayRank()).Joined());
                         }
-                        Write(right);
+                        Write(")");
                     });
+                    Write(" {}");
                     break;
                 default:
                     throw new NotImplementedException();
+            }
+        }
+
+        protected override void WriteConditional(ConditionalExpression expr, object? metadata) {
+            var parentIsConditional = ((VBExpressionMetadata?)metadata ?? CreateMetadata(false, null)).ExpressionType == Conditional;
+
+            if (expr.Type != typeof(void)) {
+                Write("If(");
+                WriteNode("Test", expr.Test);
+                Write(", ");
+                WriteNode("IfTrue", expr.IfTrue);
+                Write(", ");
+                WriteNode("IfFalse", expr.IfFalse);
+                Write(")");
+                return;
+            }
+
+            var outgoingMetadata = CreateMetadata(true);
+
+            if (CanInline(expr.Test)) {
+                Write("If ");
+                WriteNode("Test", expr.Test);
+                Write(" Then");
+            } else {
+                Write("If");
+                Indent();
+                WriteEOL();
+                WriteNode("Test", expr.Test, outgoingMetadata);
+                WriteEOL(true);
+                Write("Then");
+            }
+
+            var canInline = new[] { expr.IfTrue, expr.IfFalse }.All(x => CanInline(x)) && !parentIsConditional;
+            if (canInline) {
+                Write(" ");
+                WriteNode("IfTrue", expr.IfTrue);
+                if (!expr.IfFalse.IsEmpty()) {
+                    Write(" Else ");
+                    WriteNode("IfFalse", expr.IfFalse);
+                }
+                return;
+            }
+
+            Indent();
+            WriteEOL();
+            WriteNode("IfTrue", expr.IfTrue, outgoingMetadata);
+            WriteEOL(true);
+            if (expr.IfFalse.IsEmpty()) {
+                Write("End If");
+                return;
+            }
+
+            Write("Else");
+            if (expr.IfFalse is ConditionalExpression) {
+                Write(" ");
+                WriteNode("IfFalse", expr.IfFalse, CreateMetadata(true, Conditional));
+            } else {
+                Indent();
+                WriteEOL();
+                WriteNode("IfFalse", expr.IfFalse, outgoingMetadata);
+                WriteEOL(true);
+                Write("End If");
+            }
+        }
+
+        protected override void WriteDefault(DefaultExpression expr) =>
+            Write($"CType(Nothing, {expr.Type.FriendlyName(language)})");
+
+        protected override void WriteTypeBinary(TypeBinaryExpression expr) {
+            switch (expr.NodeType) {
+                case TypeIs:
+                    Write("TypeOf ");
+                    WriteNode("Expression", expr.Expression);
+                    Write($" Is {expr.TypeOperand.FriendlyName(language)}");
+                    break;
+                case TypeEqual:
+                    WriteNode("Expression", expr.Expression);
+                    Write($".GetType = GetType({expr.TypeOperand.FriendlyName(language)})");
+                    break;
+            }
+        }
+
+        protected override void WriteInvocation(InvocationExpression expr) {
+            if (expr.Expression is LambdaExpression) { Write("("); }
+            WriteNode("Expression", expr.Expression);
+            if (expr.Expression is LambdaExpression) { Write(")"); }
+            Write("(");
+            WriteNodes("Arguments", expr.Arguments);
+            Write(")");
+        }
+
+        protected override void WriteIndex(IndexExpression expr) =>
+            WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
+
+        protected override void WriteBlock(BlockExpression expr, object? metadata) {
+            var (isInMultiline, parentType, returnBlock) = (VBExpressionMetadata?)metadata ?? CreateMetadata(false, null, false);
+            var useBlockConstruct = !isInMultiline ||
+                (expr.Variables.Any() && parentType == Block);
+            if (useBlockConstruct) {
+                Write("Block");
+                Indent();
+                WriteEOL();
+            }
+            expr.Variables.ForEach((v, index) => {
+                if (index > 0) { WriteEOL(); }
+                Write("Dim ");
+                WriteNode($"Variables[{index}]", v, true);
+            });
+            expr.Expressions.ForEach((subexpr, index) => {
+                if (index > 0 || expr.Variables.Count > 0) { WriteEOL(); }
+                if (subexpr is LabelExpression) { TrimEnd(); }
+
+                var outgoingMetadata = CreateMetadata(true, Block);
+                if (returnBlock && index == expr.Expressions.Count - 1) {
+                    if (subexpr is BlockExpression bexpr && bexpr.HasMultipleLines()) {
+                        outgoingMetadata = CreateMetadata(true, Block, true);
+                    } else {
+                        Write("Return ");
+                    }
+                }
+                WriteNode($"Expressions[{index}]", subexpr, outgoingMetadata);
+            });
+            if (useBlockConstruct) {
+                WriteEOL(true);
+                Write("End Block");
             }
         }
 
@@ -516,241 +730,75 @@ namespace ExpressionTreeToString {
             return true;
         }
 
-        protected override void WriteConditional(ConditionalExpression expr, object? metadata) {
-            if (expr.Type != typeof(void)) {
-                WriteNode("Test", expr.Test);
-                Write(" ? ");
-                WriteNode("IfTrue", expr.IfTrue);
-                Write(" : ");
-                WriteNode("IfFalse", expr.IfFalse);
-                return;
-            }
-
-            Write("if (");
-            WriteNode("Test", expr.Test, CreateMetadata(Test));
-            Write(") {");
-            Indent();
-            WriteEOL();
-            WriteNode("IfTrue", expr.IfTrue, CreateMetadata(CSharpMultilineBlockTypes.Block));
-            WriteStatementEnd(expr.IfTrue);
-            WriteEOL(true);
-            Write("}");
-            if (!expr.IfFalse.IsEmpty()) {
-                Write(" else ");
-                if (!(expr.IfFalse is ConditionalExpression)) {
-                    Write("{");
-                    Indent();
-                    WriteEOL();
-                }
-                WriteNode("IfFalse", expr.IfFalse, CreateMetadata(CSharpMultilineBlockTypes.Block));
-                WriteStatementEnd(expr.IfFalse);
-                if (!(expr.IfFalse is ConditionalExpression)) {
-                    WriteEOL(true);
-                    Write("}");
-                }
-            }
-        }
-
-        protected override void WriteDefault(DefaultExpression expr) =>
-            Write($"default({expr.Type.FriendlyName(language)})");
-
-        protected override void WriteTypeBinary(TypeBinaryExpression expr) {
-            WriteNode("Expression", expr.Expression);
-            var typeName = expr.TypeOperand.FriendlyName(language);
-            switch (expr.NodeType) {
-                case TypeIs:
-                    Write($" is {typeName}");
-                    break;
-                case TypeEqual:
-                    Write($".GetType() == typeof({typeName})");
-                    break;
-            }
-        }
-
-        protected override void WriteInvocation(InvocationExpression expr) {
-            if (expr.Expression is LambdaExpression) { Write("("); }
-            WriteNode("Expression", expr.Expression);
-            if (expr.Expression is LambdaExpression) { Write(")"); }
-            Write("(");
-            WriteNodes("Arguments", expr.Arguments);
-            Write(")");
-        }
-
-        protected override void WriteIndex(IndexExpression expr) =>
-            WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
-
-        protected override void WriteBlock(BlockExpression expr, object? metadata) {
-            var (blockType, parentIsBlock) = metadata as CSharpBlockMetadata ?? CreateMetadata(Inline, false);
-            bool introduceNewBlock;
-            if (blockType.In(CSharpMultilineBlockTypes.Block, CSharpMultilineBlockTypes.Return)) {
-                introduceNewBlock = expr.Variables.Any() && parentIsBlock;
-                if (introduceNewBlock) {
-                    Write("{");
-                    Indent();
-                    WriteEOL();
-                }
-                expr.Variables.ForEach((subexpr, index) => {
-                    WriteNode($"Variables[{index}]", subexpr, true);
-                    Write(";");
-                    WriteEOL();
-                });
-                expr.Expressions.ForEach((subexpr, index) => {
-                    if (index > 0) { WriteEOL(); }
-                    if (subexpr is LabelExpression) { TrimEnd(); }
-                    if (blockType == CSharpMultilineBlockTypes.Return && index == expr.Expressions.Count - 1) {
-                        if (subexpr is BlockExpression bexpr && bexpr.HasMultipleLines()) {
-                            WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(CSharpMultilineBlockTypes.Return, true));
-                        } else {
-                            Write("return ");
-                            WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(CSharpMultilineBlockTypes.Block, true));
-                        }
-                    } else {
-                        WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(CSharpMultilineBlockTypes.Block, true));
-                    }
-                    WriteStatementEnd(subexpr);
-                });
-                if (introduceNewBlock) {
-                    WriteEOL(true);
-                    Write("}");
-                }
-                return;
-            }
-
-            introduceNewBlock =
-                (expr.Expressions.Count > 1 && !parentIsBlock) ||
-                expr.Variables.Any();
-            if (introduceNewBlock) {
-                if (blockType == Inline || parentIsBlock) { Write("("); }
-                Indent();
-                WriteEOL();
-            }
-            WriteNodes("Variables", expr.Variables, true, ",", true);
-            expr.Expressions.ForEach((subexpr, index) => {
-                if (index > 0 || expr.Variables.Count > 0) {
-                    var previousExpr = index > 0 ? expr.Expressions[index - 1] : null;
-                    if (previousExpr is null || !(previousExpr is LabelExpression || subexpr is RuntimeVariablesExpression)) { Write(","); }
-                    WriteEOL();
-                }
-                if (subexpr is LabelExpression) { TrimEnd(); }
-                WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(Test, true));
-            });
-            if (introduceNewBlock) {
-                WriteEOL(true);
-                if (blockType == Inline || parentIsBlock) { Write(")"); }
-            }
-            return;
-        }
-
-        private void WriteStatementEnd(Expression expr) {
-            switch (expr) {
-                case ConditionalExpression cexpr when cexpr.Type == typeof(void):
-                case BlockExpression _:
-                case SwitchExpression _:
-                case LabelExpression _:
-                case TryExpression _:
-                case RuntimeVariablesExpression _:
-                case UnaryExpression bexpr when bexpr.NodeType == Quote:
-                    return;
-            }
-            Write(";");
-        }
-
         protected override void WriteSwitchCase(SwitchCase switchCase) {
-            switchCase.TestValues.ForEach((testValue, index) => {
-                if (index > 0) { WriteEOL(); }
-                Write("case ");
-                WriteNode($"TestValues[{index}]", testValue);
-                Write(":");
-            });
+            Write("Case ");
+            WriteNodes("TestValues", switchCase.TestValues);
             Indent();
             WriteEOL();
-            WriteNode("Body", switchCase.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
-            WriteStatementEnd(switchCase.Body);
-            WriteEOL();
-            Write("break;");
+            WriteNode("Body", switchCase.Body, CreateMetadata(true, null));
+            Dedent();
         }
 
         protected override void WriteSwitch(SwitchExpression expr) {
-            Write("switch (");
-            WriteNode("SwitchValue", expr.SwitchValue, CreateMetadata(Test));
-            Write(") {");
+            Write("Select Case ");
             Indent();
+            WriteNode("SwitchValue", expr.SwitchValue);
             WriteEOL();
-            expr.Cases.ForEach((switchCase, index) => {
-                if (index > 0) { WriteEOL(); }
-                WriteNode($"Cases[{index}]", switchCase);
-                Dedent();
-            });
+            WriteNodes("Cases", expr.Cases, true, "");
             if (expr.DefaultBody != null) {
-                WriteEOL();
-                Write("default:");
+                if (expr.Cases.Count > 0) { WriteEOL(); }
+                Write("Case Else");
                 Indent();
                 WriteEOL();
-                WriteNode("DefaultBody", expr.DefaultBody, CreateMetadata(CSharpMultilineBlockTypes.Block));
-                WriteStatementEnd(expr.DefaultBody);
-                WriteEOL();
-                Write("break;");
+                WriteNode("DefaultBody", expr.DefaultBody, CreateMetadata(true, Switch));
                 Dedent();
             }
             WriteEOL(true);
-            Write("}");
+            Write("End Select");
         }
 
         protected override void WriteCatchBlock(CatchBlock catchBlock) {
-            Write("catch ");
-            if (catchBlock.Variable != null || catchBlock.Test != typeof(Exception)) {
-                Write("(");
-                if (catchBlock.Variable != null) {
-                    WriteNode("Variable", catchBlock.Variable, true);
-                } else {
-                    Write(catchBlock.Test.FriendlyName(language));
-                }
-                Write(") ");
-                if (catchBlock.Filter != null) {
-                    Write("when (");
-                    WriteNode("Filter", catchBlock.Filter, CreateMetadata(Test));
-                    Write(") ");
-                }
+            Write("Catch");
+            if (catchBlock.Variable != null) {
+                Write(" ");
+                WriteNode("Variable", catchBlock.Variable, true);
+            } else if (catchBlock.Test != null && catchBlock.Test != typeof(Exception)) {
+                Write($" _ As {catchBlock.Test.FriendlyName(language)}");
             }
-            Write("{");
+            if (catchBlock.Filter != null) {
+                Write(" When ");
+                WriteNode("Filter", catchBlock.Filter);
+            }
             Indent();
             WriteEOL();
-            WriteNode("Body", catchBlock.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
-            WriteStatementEnd(catchBlock.Body);
-            WriteEOL(true);
-            Write("}");
+            WriteNode("Body", catchBlock.Body, CreateMetadata(true, null));
         }
 
         protected override void WriteTry(TryExpression expr) {
-            Write("try {");
+            Write("Try");
             Indent();
             WriteEOL();
-            WriteNode("Body", expr.Body);
-            WriteStatementEnd(expr.Body);
+            WriteNode("Body", expr.Body, CreateMetadata(true, Try));
             WriteEOL(true);
-            Write("}");
             expr.Handlers.ForEach((catchBlock, index) => {
-                Write(" ");
                 WriteNode($"Handlers[{index}]", catchBlock);
+                WriteEOL(true);
             });
             if (expr.Fault != null) {
-                Write(" fault {");
+                Write("Fault");
                 Indent();
                 WriteEOL();
-                WriteNode("Fault", expr.Fault);
-                WriteStatementEnd(expr.Fault);
+                WriteNode("Fault", expr.Fault, CreateMetadata(true, Try));
                 WriteEOL(true);
-                Write("}");
             }
             if (expr.Finally != null) {
-                Write(" finally {");
+                Write("Finally");
                 Indent();
                 WriteEOL();
-                WriteNode("Finally", expr.Finally);
-                WriteStatementEnd(expr.Finally);
+                WriteNode("Finally", expr.Finally, CreateMetadata(true, Try));
                 WriteEOL(true);
-                Write("}");
             }
+            Write("End Try");
         }
 
         protected override void WriteLabel(LabelExpression expr) {
@@ -759,12 +807,11 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteGoto(GotoExpression expr) {
-            var gotoKeyword = expr.Kind switch
-            {
-                Break => "break",
-                Continue => "continue",
-                GotoExpressionKind.Goto => "goto",
-                GotoExpressionKind.Return => "return",
+            var gotoKeyword = expr.Kind switch {
+                Break => "Exit",
+                Continue => "Continue",
+                GotoExpressionKind.Goto => "Goto",
+                Return => "Return",
                 _ => throw new NotImplementedException(),
             };
             Write(gotoKeyword);
@@ -781,17 +828,16 @@ namespace ExpressionTreeToString {
         protected override void WriteLabelTarget(LabelTarget labelTarget) => Write(labelTarget.Name);
 
         protected override void WriteLoop(LoopExpression expr) {
-            Write("while (true) {");
+            Write("Do");
             Indent();
             WriteEOL();
-            WriteNode("Body", expr.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
-            WriteStatementEnd(expr.Body);
+            WriteNode("Body", expr.Body, CreateMetadata(true, Loop));
             WriteEOL(true);
-            Write("}");
+            Write("Loop");
         }
 
         protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) {
-            Write("// variables -- ");
+            Write("' Variables -- ");
             expr.Variables.ForEach((x, index) => {
                 if (index > 0) { Write(", "); }
                 WriteNode($"Variables[{index}]", x, true);
@@ -800,7 +846,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteDebugInfo(DebugInfoExpression expr) {
             var filename = expr.Document.FileName;
-            Write("// ");
+            Write("' ");
             var comment =
                 expr.IsClear ?
                 $"Clear debug info from {filename}" :
@@ -829,9 +875,9 @@ namespace ExpressionTreeToString {
         protected override void WriteGetIndexBinder(GetIndexBinder binder, IList<Expression> args) {
             VerifyCount(args, 2, null);
             WriteNode("Arguments[0]", args[0]);
-            Write("[");
+            Write("(");
             WriteNodes(args.Skip(1).Select((arg, index) => ($"Arguments[{index + 1}]", arg)));
-            Write("]");
+            Write(")");
         }
 
         protected override void WriteGetMemberBinder(GetMemberBinder binder, IList<Expression> args) {
@@ -843,25 +889,30 @@ namespace ExpressionTreeToString {
         protected override void WriteInvokeBinder(InvokeBinder binder, IList<Expression> args) {
             VerifyCount(args, 1, null);
             WriteNode("Arguments[0]", args[0]);
-            Write("(");
-            WriteNodes(args.Skip(1).Select((arg, index) => ($"Arguments[{index + 1}]", arg)));
-            Write(")");
+            if (args.Count > 1) {
+                Write("(");
+                WriteNodes(args.Skip(1).Select((arg, index) => ($"Arguments[{index + 1}]", arg)));
+                Write(")");
+            }
         }
 
         protected override void WriteInvokeMemberBinder(InvokeMemberBinder binder, IList<Expression> args) {
             VerifyCount(args, 1, null);
             WriteNode("Arguments[0]", args[0]);
-            Write($".{binder.Name}(");
-            WriteNodes(args.Skip(1).Select((arg, index) => ($"Arguments[{index + 1}]", arg)));
-            Write(")");
+            Write($".{binder.Name}");
+            if (args.Count > 1) {
+                Write("(");
+                WriteNodes(args.Skip(1).Select((arg, index) => ($"Arguments[{index + 1}]", arg)));
+                Write(")");
+            }
         }
 
         protected override void WriteSetIndexBinder(SetIndexBinder binder, IList<Expression> args) {
             VerifyCount(args, 3, null);
             WriteNode("Arguments[0]", args[0]);
-            Write("[");
+            Write("(");
             WriteNodes(args.Skip(2).Select((arg, index) => ($"Arguments[{index + 2}]", arg)));
-            Write("] = ");
+            Write(") = ");
             WriteNode("Arguments[1]", args[1]);
         }
 
