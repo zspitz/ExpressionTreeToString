@@ -57,49 +57,6 @@ namespace ExpressionTreeToString {
             return ret;
         }
 
-        //protected override Expression VisitParameter(ParameterExpression node) {
-        //    markUnevaluable();
-        //    return base.VisitParameter(node);
-        //}
-
-        //protected override Expression VisitDefault(DefaultExpression node) {
-        //    markEvaluable();
-        //    return base.VisitDefault(node);
-        //}
-        //protected override Expression VisitConstant(ConstantExpression node) {
-        //    markEvaluable();
-        //    return base.VisitConstant(node);
-        //}
-        //protected override Expression VisitMethodCall(MethodCallExpression node) {
-        //    if (node.Arguments.None() && node.Object is null ) { 
-        //        if (node.Type == typeof(void)) {
-        //            markUnevaluable();
-        //        } else {
-        //            markEvaluable();
-        //        }
-        //    }
-        //    return base.VisitMethodCall(node);
-        //}
-        //protected override Expression VisitMember(MemberExpression node) {
-        //    if (node.Expression is null) { markEvaluable(); }
-        //    return base.VisitMember(node);
-        //}
-        //protected override Expression VisitNew(NewExpression node) {
-        //    if (node.Arguments.None() && node.Members.None()) { markEvaluable(); }
-        //    return base.VisitNew(node);
-        //}
-        //protected override Expression VisitDebugInfo(DebugInfoExpression node) {
-        //    markEvaluable();
-        //    return base.VisitDebugInfo(node);
-        //}
-
-        //private void markEvaluable() =>
-        //    expressionStack.ForEach(x => {
-        //        if (evaluables.ContainsKey(x)) { return; }
-        //        evaluables[x] = true;
-        //    });
-        //private void markUnevaluable() => expressionStack.ForEach(x => evaluables[x] = false);
-
         public (bool evaluated, object? value) GetValue(Expression node) {
             if (!evaluables.TryGetValue(node, out var canEvaluate)) {
                 Visit(node);

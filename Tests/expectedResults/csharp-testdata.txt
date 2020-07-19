@@ -75,9 +75,9 @@
 ---- CSCompiler.ExtensionMethod0Arguments
 () => lst.Count()
 ---- CSCompiler.ExtensionMethod1Argument
-() => lst.Take(1)
+() => lst.DummyExtensionMethod1Arguments(1)
 ---- CSCompiler.ExtensionMethod2Arguments
-() => lst.OrderBy((string x) => x, StringComparer.OrdinalIgnoreCase)
+() => lst.DummyExtensionMethod2Arguments(5, 17)
 ---- CSCompiler.False
 () => false
 ---- CSCompiler.GreaterThan
@@ -505,10 +505,6 @@ while (true) {
 }
 ---- FactoryMethods.ExtensionMethod0Arguments
 lstString.Count()
----- FactoryMethods.ExtensionMethod1Argument
-lstString.Take(1)
----- FactoryMethods.ExtensionMethod2Arguments
-lstString.OrderBy((string x) => x, StringComparer.OrdinalIgnoreCase)
 ---- FactoryMethods.InstanceIndexer
 lstString[0]
 ---- FactoryMethods.InstanceMember
@@ -965,18 +961,6 @@ if (true) {
 () => i ^ j
 ---- VBCompiler.ExclusiveOrLogical
 () => b1 ^ b2
----- VBCompiler.ExtensionMethod0Arguments
-() => lst.Distinct()
----- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
-() => lst.Distinct()
----- VBCompiler.ExtensionMethod1Argument
-() => lst.Take(1)
----- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
-() => lst.Take(1)
----- VBCompiler.ExtensionMethod2Arguments
-() => lst.OrderBy((string x) => x, StringComparer.OrdinalIgnoreCase)
----- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
-() => lst.OrderBy((string x) => x, comparer)
 ---- VBCompiler.False
 () => false
 ---- VBCompiler.GreaterThan
@@ -1121,4 +1105,24 @@ if (true) {
 () => DayOfWeek.Tuesday <= dow
 ---- CSCompiler.DualNonConstant
 () => dow1 == dow2
+---- VBCompiler.LikeOperatorStrings
+(string s1, string s2) => LikeOperator.LikeString(s1, s2, CompareMethod.Binary)
+---- VBCompiler.LikeOperatorObjects
+(object o1, object o2) => LikeOperator.LikeObject(o1, o2, CompareMethod.Binary)
+---- VBCompiler.ExtensionMethod1Argument
+() => lst.DummyExtensionMethod1Argument(1)
+---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
+() => lst.DummyExtensionMethod1Argument(1)
+---- VBCompiler.ExtensionMethod2Arguments
+() => lst.DummyExtensionMethod2Arguments(5, 17)
+---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
+() => lst.DummyExtensionMethod2Arguments(5, 6)
+---- FactoryMethods.ExtensionMethod1Argument
+lstString.DummyExtensionMethod1Arguments(1)
+---- FactoryMethods.ExtensionMethod2Arguments
+lstString.DummyExtensionMethod2Arguments(5, 17)
+---- VBCompiler.ExtensionMethod0Arguments
+() => lst.Count
+---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
+() => lst.Count()
 ------

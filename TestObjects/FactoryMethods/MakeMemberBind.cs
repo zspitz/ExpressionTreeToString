@@ -44,7 +44,7 @@ namespace ExpressionTreeTestObjects {
         );
 
         static readonly MethodInfo addMethod = GetMethod(() => ((IList<Node>?)null)!.Add(new Node()));
-        static readonly ConstructorInfo nodeConstructor = typeof(Node).GetConstructor(new Type[] { });
+        static readonly ConstructorInfo nodeConstructor = typeof(Node).GetConstructor(new Type[] { })!;
 
         [TestObject(MemberBindings)]
         internal static readonly MemberBinding MakeListBinding = ListBind(

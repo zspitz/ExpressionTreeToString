@@ -9,7 +9,7 @@ namespace ExpressionTreeTestObjects {
     public static class Objects {
         static Objects() {
             var safeTypes = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => x.FullName.StartsWith("ExpressionTreeTestObjects"))
+                .Where(x => (x.FullName ?? "").StartsWith("ExpressionTreeTestObjects"))
                 .SelectMany(x => {
                     var ret = Empty<Type>();
                     try {
@@ -38,10 +38,10 @@ namespace ExpressionTreeTestObjects {
                 ))
                 .WhereT((fld, attr) => attr is { })
                 .SelectT((fld, attr) => (
-                    attr.Category,
+                    attr!.Category,
                     source,
                     fld.Name,
-                    fld.GetValue(null)
+                    fld.GetValue(null)!
                 ))
                 .AddRangeTo(_objects);
 

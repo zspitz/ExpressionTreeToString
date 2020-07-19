@@ -74,10 +74,8 @@ Function() i Xor j
 Function() b1 Xor b2
 ---- CSCompiler.ExtensionMethod0Arguments
 Function() lst.Count
----- CSCompiler.ExtensionMethod1Argument
-Function() lst.Take(1)
 ---- CSCompiler.ExtensionMethod2Arguments
-Function() lst.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)
+Function() lst.DummyExtensionMethod2Arguments(5, 17)
 ---- CSCompiler.False
 Function() False
 ---- CSCompiler.GreaterThan
@@ -497,10 +495,6 @@ Do
 Loop
 ---- FactoryMethods.ExtensionMethod0Arguments
 lstString.Count
----- FactoryMethods.ExtensionMethod1Argument
-lstString.Take(1)
----- FactoryMethods.ExtensionMethod2Arguments
-lstString.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)
 ---- FactoryMethods.InstanceIndexer
 lstString(0)
 ---- FactoryMethods.InstanceMember
@@ -916,18 +910,6 @@ Function() """"
 Function() i Xor j
 ---- VBCompiler.ExclusiveOrLogical
 Function() b1 Xor b2
----- VBCompiler.ExtensionMethod0Arguments
-Function() lst.Distinct
----- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
-Function() lst.Distinct
----- VBCompiler.ExtensionMethod1Argument
-Function() lst.Take(1)
----- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
-Function() lst.Take(1)
----- VBCompiler.ExtensionMethod2Arguments
-Function() lst.OrderBy(Function(x As String) x, StringComparer.OrdinalIgnoreCase)
----- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
-Function() lst.OrderBy(Function(x As String) x, comparer)
 ---- VBCompiler.False
 Function() False
 ---- VBCompiler.GreaterThan
@@ -1072,4 +1054,26 @@ Function() dow >= DayOfWeek.Tuesday
 Function() DayOfWeek.Tuesday <= dow
 ---- CSCompiler.DualNonConstant
 Function() dow1 = dow2
+---- VBCompiler.LikeOperatorStrings
+Function(s1 As String, s2 As String) s1 Like s2
+---- VBCompiler.LikeOperatorObjects
+Function(o1 As Object, o2 As Object) o1 Like o2
+---- VBCompiler.ExtensionMethod1Argument
+Function() lst.DummyExtensionMethod1Argument(1)
+---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
+Function() lst.DummyExtensionMethod1Argument(1)
+---- VBCompiler.ExtensionMethod2Arguments
+Function() lst.DummyExtensionMethod2Arguments(5, 17)
+---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
+Function() lst.DummyExtensionMethod2Arguments(5, 6)
+---- CSCompiler.ExtensionMethod1Argument
+Function() lst.DummyExtensionMethod1Arguments(1)
+---- FactoryMethods.ExtensionMethod1Argument
+lstString.DummyExtensionMethod1Arguments(1)
+---- FactoryMethods.ExtensionMethod2Arguments
+lstString.DummyExtensionMethod2Arguments(5, 17)
+---- VBCompiler.ExtensionMethod0Arguments
+Function() lst.Count
+---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
+Function() lst.Count
 ------

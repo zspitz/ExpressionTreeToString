@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Xunit;
 
 namespace ExpressionTreeToString.Tests {
@@ -11,6 +12,10 @@ namespace ExpressionTreeToString.Tests {
             }
             return ret;
         }
+
+#if NETSTANDARD2_0
+        internal static HashSet<T> ToHashSet<T>(this IEnumerable<T> src) => new HashSet<T>(src);
+#endif
 
     }
 }

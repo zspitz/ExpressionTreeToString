@@ -8,6 +8,8 @@ using System.Linq;
 namespace ExpressionTreeTestObjects {
     internal static class Dummy {
         internal static void DummyMethod() { }
+        internal static List<T> DummyExtensionMethod1Arguments<T>(this List<T> lst, int n) => lst;
+        internal static List<T>? DummyExtensionMethod2Arguments<T>(this List<T>? lst, int n1, int n2) => lst;
     }
 
     partial class CSCompiler {
@@ -39,7 +41,7 @@ namespace ExpressionTreeTestObjects {
         [TestObject(Method)]
         internal static readonly Expression ExtensionMethod1Argument = IIFE(() => {
             var lst = new List<string>();
-            return Expr(() => lst.Take(1));
+            return Expr(() => lst.DummyExtensionMethod1Arguments(1));
         });
 
         [TestObject(Method)]
@@ -54,7 +56,7 @@ namespace ExpressionTreeTestObjects {
         [TestObject(Method)]
         internal static readonly Expression ExtensionMethod2Arguments = IIFE(() => {
             var lst = new List<string>();
-            return Expr(() => lst.OrderBy(x => x, StringComparer.OrdinalIgnoreCase));
+            return Expr(() => lst.DummyExtensionMethod2Arguments(5, 17));
         });
 
         [TestObject(Method)]

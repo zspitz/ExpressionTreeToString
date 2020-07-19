@@ -9,10 +9,10 @@ using System.Reflection;
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
         static readonly Type fooType = typeof(Foo);
-        static readonly PropertyInfo barProp = typeof(Foo).GetProperty("Bar");
-        static readonly PropertyInfo bazProp = typeof(Foo).GetProperty("Baz");
-        static readonly ConstructorInfo fooCtor1 = typeof(Foo).GetConstructor(new[] { typeof(string) });
-        static readonly MethodInfo add1 = typeof(List<string>).GetMethod("Add");
+        static readonly PropertyInfo barProp = typeof(Foo).GetProperty("Bar")!;
+        static readonly PropertyInfo bazProp = typeof(Foo).GetProperty("Baz")!;
+        static readonly ConstructorInfo fooCtor1 = typeof(Foo).GetConstructor(new[] { typeof(string) })!;
+        static readonly MethodInfo add1 = typeof(List<string>).GetMethod("Add")!;
         static readonly MethodInfo add2 = GetMethod(() => ((Wrapper?)null)!.Add("", ""));
 
         [TestObject(NewObject)]

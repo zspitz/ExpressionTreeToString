@@ -1,4 +1,6 @@
-﻿Friend Class Foo
+﻿Imports System.Runtime.CompilerServices
+
+Friend Class Foo
     Friend Property Bar As String
     Friend Property Baz As String
     Friend Sub New()
@@ -35,4 +37,12 @@ End Class
 Friend Module Dummy
     Friend Sub DummyMethod()
     End Sub
+
+    <Extension> Friend Function DummyExtensionMethod1Argument(Of T)(src As IEnumerable(Of T), n1 As Integer) As IEnumerable(Of T)
+        Return src
+    End Function
+
+    <Extension> Friend Function DummyExtensionMethod2Arguments(Of T)(src As IEnumerable(Of T), n1 As Integer, n2 As Integer) As IEnumerable(Of T)
+        Return src
+    End Function
 End Module

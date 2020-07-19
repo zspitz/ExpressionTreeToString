@@ -25,7 +25,11 @@ namespace ExpressionTreeTestObjects {
         internal static readonly Expression StaticMethod1Argument = Call(GetMethod(() => string.Intern("")), Constant(""));
 
         [TestObject(Method)]
-        internal static readonly Expression ExtensionMethod1Argument = Call(GetMethod(() => (null as List<string>).Take(1)), lstString, Constant(1));
+        internal static readonly Expression ExtensionMethod1Argument = Call(
+            GetMethod(() => (null as List<string>)!.DummyExtensionMethod1Arguments(0)), 
+            lstString, 
+            Constant(1)
+        );
 
         [TestObject(Method)]
         internal static readonly Expression InstanceMethod2Arguments = Call(
@@ -46,10 +50,10 @@ namespace ExpressionTreeTestObjects {
         internal static readonly Expression ExtensionMethod2Arguments = IIFE(() => {
             var x = Parameter(typeof(string), "x");
             return Call(
-                GetMethod(() => (null as List<string>).OrderBy(y => y, StringComparer.OrdinalIgnoreCase)),
+                GetMethod(() => (null as List<string>).DummyExtensionMethod2Arguments(0,0)),
                 lstString,
-                Lambda(x, x),
-                MakeMemberAccess(null, typeof(StringComparer).GetMember("OrdinalIgnoreCase").Single())
+                Constant(5),
+                Constant(17)
             );
         });
 

@@ -635,71 +635,6 @@ new Expression<Func<int>> {
     },
     ReturnType = typeof(int)
 }
----- CSCompiler.ExtensionMethod1Argument
-new Expression<Func<IEnumerable<string>>> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<IEnumerable<string>>),
-    Body = new MethodCallExpression {
-        Type = typeof(IEnumerable<string>),
-        Arguments = new ReadOnlyCollection<Expression> {
-            new MemberExpression {
-                Type = typeof(List<string>),
-                Expression = new ConstantExpression {
-                    Type = typeof(<closure>),
-                    Value = #<closure>
-                },
-                Member = typeof(<closure>).GetField("lst")
-            },
-            new ConstantExpression {
-                Type = typeof(int),
-                Value = 1
-            }
-        },
-        Method = typeof(Enumerable).GetMethod("Take")
-    },
-    ReturnType = typeof(IEnumerable<string>)
-}
----- CSCompiler.ExtensionMethod2Arguments
-new Expression<Func<IOrderedEnumerable<string>>> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<IOrderedEnumerable<string>>),
-    Body = new MethodCallExpression {
-        Type = typeof(IOrderedEnumerable<string>),
-        Arguments = new ReadOnlyCollection<Expression> {
-            new MemberExpression {
-                Type = typeof(List<string>),
-                Expression = new ConstantExpression {
-                    Type = typeof(<closure>),
-                    Value = #<closure>
-                },
-                Member = typeof(<closure>).GetField("lst")
-            },
-            new Expression<Func<string, string>> {
-                NodeType = ExpressionType.Lambda,
-                Type = typeof(Func<string, string>),
-                Parameters = new ReadOnlyCollection<ParameterExpression> {
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "x"
-                    }
-                },
-                Body = new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "x"
-                },
-                ReturnType = typeof(string)
-            },
-            new MemberExpression {
-                Type = typeof(StringComparer),
-                Member = typeof(StringComparer).GetProperty("OrdinalIgnoreCase")
-            }
-        },
-        Method = typeof(Enumerable).GetMethod("OrderBy")
-    },
-    ReturnType = typeof(IOrderedEnumerable<string>)
-}
 ---- CSCompiler.False
 new Expression<Func<bool>> {
     NodeType = ExpressionType.Lambda,
@@ -3750,55 +3685,6 @@ new MethodCallExpression {
     },
     Method = typeof(Enumerable).GetMethod("Count")
 }
----- FactoryMethods.ExtensionMethod1Argument
-new MethodCallExpression {
-    Type = typeof(IEnumerable<string>),
-    Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(List<string>),
-            IsByRef = false,
-            Name = "lstString"
-        },
-        new ConstantExpression {
-            Type = typeof(int),
-            Value = 1
-        }
-    },
-    Method = typeof(Enumerable).GetMethod("Take")
-}
----- FactoryMethods.ExtensionMethod2Arguments
-new MethodCallExpression {
-    Type = typeof(IOrderedEnumerable<string>),
-    Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(List<string>),
-            IsByRef = false,
-            Name = "lstString"
-        },
-        new Expression<Func<string, string>> {
-            NodeType = ExpressionType.Lambda,
-            Type = typeof(Func<string, string>),
-            Parameters = new ReadOnlyCollection<ParameterExpression> {
-                new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "x"
-                }
-            },
-            Body = new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "x"
-            },
-            ReturnType = typeof(string)
-        },
-        new MemberExpression {
-            Type = typeof(StringComparer),
-            Member = typeof(StringComparer).GetProperty("OrdinalIgnoreCase")
-        }
-    },
-    Method = typeof(Enumerable).GetMethod("OrderBy")
-}
 ---- FactoryMethods.InstanceIndexer
 new IndexExpression {
     Type = typeof(string),
@@ -6700,196 +6586,6 @@ new Expression<Func<bool>> {
     },
     ReturnType = typeof(bool)
 }
----- VBCompiler.ExtensionMethod0Arguments
-new Expression<Func<IEnumerable<string>>> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<IEnumerable<string>>),
-    Body = new MethodCallExpression {
-        Type = typeof(IEnumerable<string>),
-        Arguments = new ReadOnlyCollection<Expression> {
-            new UnaryExpression {
-                NodeType = ExpressionType.Convert,
-                Type = typeof(IEnumerable<string>),
-                Operand = new MemberExpression {
-                    Type = typeof(List<string>),
-                    Expression = new ConstantExpression {
-                        Type = typeof(<closure>),
-                        Value = #<closure>
-                    },
-                    Member = typeof(<closure>).GetField("$VB$Local_lst")
-                }
-            }
-        },
-        Method = typeof(Enumerable).GetMethod("Distinct")
-    },
-    ReturnType = typeof(IEnumerable<string>)
-}
----- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
-new Expression<Func<IEnumerable<string>>> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<IEnumerable<string>>),
-    Body = new MethodCallExpression {
-        Type = typeof(IEnumerable<string>),
-        Arguments = new ReadOnlyCollection<Expression> {
-            new MemberExpression {
-                Type = typeof(IEnumerable<string>),
-                Expression = new ConstantExpression {
-                    Type = typeof(<closure>),
-                    Value = #<closure>
-                },
-                Member = typeof(<closure>).GetField("$VB$Local_lst")
-            }
-        },
-        Method = typeof(Enumerable).GetMethod("Distinct")
-    },
-    ReturnType = typeof(IEnumerable<string>)
-}
----- VBCompiler.ExtensionMethod1Argument
-new Expression<Func<IEnumerable<string>>> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<IEnumerable<string>>),
-    Body = new MethodCallExpression {
-        Type = typeof(IEnumerable<string>),
-        Arguments = new ReadOnlyCollection<Expression> {
-            new UnaryExpression {
-                NodeType = ExpressionType.Convert,
-                Type = typeof(IEnumerable<string>),
-                Operand = new MemberExpression {
-                    Type = typeof(List<string>),
-                    Expression = new ConstantExpression {
-                        Type = typeof(<closure>),
-                        Value = #<closure>
-                    },
-                    Member = typeof(<closure>).GetField("$VB$Local_lst")
-                }
-            },
-            new ConstantExpression {
-                Type = typeof(int),
-                Value = 1
-            }
-        },
-        Method = typeof(Enumerable).GetMethod("Take")
-    },
-    ReturnType = typeof(IEnumerable<string>)
-}
----- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
-new Expression<Func<IEnumerable<string>>> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<IEnumerable<string>>),
-    Body = new MethodCallExpression {
-        Type = typeof(IEnumerable<string>),
-        Arguments = new ReadOnlyCollection<Expression> {
-            new MemberExpression {
-                Type = typeof(IEnumerable<string>),
-                Expression = new ConstantExpression {
-                    Type = typeof(<closure>),
-                    Value = #<closure>
-                },
-                Member = typeof(<closure>).GetField("$VB$Local_lst")
-            },
-            new ConstantExpression {
-                Type = typeof(int),
-                Value = 1
-            }
-        },
-        Method = typeof(Enumerable).GetMethod("Take")
-    },
-    ReturnType = typeof(IEnumerable<string>)
-}
----- VBCompiler.ExtensionMethod2Arguments
-new Expression<Func<IOrderedEnumerable<string>>> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<IOrderedEnumerable<string>>),
-    Body = new MethodCallExpression {
-        Type = typeof(IOrderedEnumerable<string>),
-        Arguments = new ReadOnlyCollection<Expression> {
-            new UnaryExpression {
-                NodeType = ExpressionType.Convert,
-                Type = typeof(IEnumerable<string>),
-                Operand = new MemberExpression {
-                    Type = typeof(List<string>),
-                    Expression = new ConstantExpression {
-                        Type = typeof(<closure>),
-                        Value = #<closure>
-                    },
-                    Member = typeof(<closure>).GetField("$VB$Local_lst")
-                }
-            },
-            new Expression<Func<string, string>> {
-                NodeType = ExpressionType.Lambda,
-                Type = typeof(Func<string, string>),
-                Parameters = new ReadOnlyCollection<ParameterExpression> {
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "x"
-                    }
-                },
-                Body = new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "x"
-                },
-                ReturnType = typeof(string)
-            },
-            new UnaryExpression {
-                NodeType = ExpressionType.Convert,
-                Type = typeof(IComparer<string>),
-                Operand = new MemberExpression {
-                    Type = typeof(StringComparer),
-                    Member = typeof(StringComparer).GetProperty("OrdinalIgnoreCase")
-                }
-            }
-        },
-        Method = typeof(Enumerable).GetMethod("OrderBy")
-    },
-    ReturnType = typeof(IOrderedEnumerable<string>)
-}
----- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
-new Expression<Func<IOrderedEnumerable<string>>> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<IOrderedEnumerable<string>>),
-    Body = new MethodCallExpression {
-        Type = typeof(IOrderedEnumerable<string>),
-        Arguments = new ReadOnlyCollection<Expression> {
-            new MemberExpression {
-                Type = typeof(IEnumerable<string>),
-                Expression = new ConstantExpression {
-                    Type = typeof(<closure>),
-                    Value = #<closure>
-                },
-                Member = typeof(<closure>).GetField("$VB$Local_lst")
-            },
-            new Expression<Func<string, string>> {
-                NodeType = ExpressionType.Lambda,
-                Type = typeof(Func<string, string>),
-                Parameters = new ReadOnlyCollection<ParameterExpression> {
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "x"
-                    }
-                },
-                Body = new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "x"
-                },
-                ReturnType = typeof(string)
-            },
-            new MemberExpression {
-                Type = typeof(IComparer<string>),
-                Expression = new ConstantExpression {
-                    Type = typeof(<closure>),
-                    Value = #<closure>
-                },
-                Member = typeof(<closure>).GetField("$VB$Local_comparer")
-            }
-        },
-        Method = typeof(Enumerable).GetMethod("OrderBy")
-    },
-    ReturnType = typeof(IOrderedEnumerable<string>)
-}
 ---- VBCompiler.False
 new Expression<Func<bool>> {
     NodeType = ExpressionType.Lambda,
@@ -8475,5 +8171,319 @@ new Expression<Func<bool>> {
         }
     },
     ReturnType = typeof(bool)
+}
+---- VBCompiler.LikeOperatorStrings
+new Expression<Func<string, string, bool>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<string, string, bool>),
+    Parameters = new ReadOnlyCollection<ParameterExpression> {
+        new ParameterExpression {
+            Type = typeof(string),
+            IsByRef = false,
+            Name = "s1"
+        },
+        new ParameterExpression {
+            Type = typeof(string),
+            IsByRef = false,
+            Name = "s2"
+        }
+    },
+    Body = new MethodCallExpression {
+        Type = typeof(bool),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new ParameterExpression {
+                Type = typeof(string),
+                IsByRef = false,
+                Name = "s1"
+            },
+            new ParameterExpression {
+                Type = typeof(string),
+                IsByRef = false,
+                Name = "s2"
+            },
+            new ConstantExpression {
+                Type = typeof(CompareMethod),
+                Value = CompareMethod.Binary
+            }
+        },
+        Method = typeof(LikeOperator).GetMethod("LikeString")
+    },
+    ReturnType = typeof(bool)
+}
+---- VBCompiler.LikeOperatorObjects
+new Expression<Func<object, object, object>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<object, object, object>),
+    Parameters = new ReadOnlyCollection<ParameterExpression> {
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "o1"
+        },
+        new ParameterExpression {
+            Type = typeof(object),
+            IsByRef = false,
+            Name = "o2"
+        }
+    },
+    Body = new MethodCallExpression {
+        Type = typeof(object),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new ParameterExpression {
+                Type = typeof(object),
+                IsByRef = false,
+                Name = "o1"
+            },
+            new ParameterExpression {
+                Type = typeof(object),
+                IsByRef = false,
+                Name = "o2"
+            },
+            new ConstantExpression {
+                Type = typeof(CompareMethod),
+                Value = CompareMethod.Binary
+            }
+        },
+        Method = typeof(LikeOperator).GetMethod("LikeObject")
+    },
+    ReturnType = typeof(object)
+}
+---- VBCompiler.ExtensionMethod1Argument
+new Expression<Func<IEnumerable<string>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<IEnumerable<string>>),
+    Body = new MethodCallExpression {
+        Type = typeof(IEnumerable<string>),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new UnaryExpression {
+                NodeType = ExpressionType.Convert,
+                Type = typeof(IEnumerable<string>),
+                Operand = new MemberExpression {
+                    Type = typeof(List<string>),
+                    Expression = new ConstantExpression {
+                        Type = typeof(<closure>),
+                        Value = #<closure>
+                    },
+                    Member = typeof(<closure>).GetField("$VB$Local_lst")
+                }
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 1
+            }
+        },
+        Method = typeof(Dummy).GetMethod("DummyExtensionMethod1Argument")
+    },
+    ReturnType = typeof(IEnumerable<string>)
+}
+---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
+new Expression<Func<IEnumerable<string>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<IEnumerable<string>>),
+    Body = new MethodCallExpression {
+        Type = typeof(IEnumerable<string>),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new MemberExpression {
+                Type = typeof(IEnumerable<string>),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_lst")
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 1
+            }
+        },
+        Method = typeof(Dummy).GetMethod("DummyExtensionMethod1Argument")
+    },
+    ReturnType = typeof(IEnumerable<string>)
+}
+---- VBCompiler.ExtensionMethod2Arguments
+new Expression<Func<IEnumerable<string>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<IEnumerable<string>>),
+    Body = new MethodCallExpression {
+        Type = typeof(IEnumerable<string>),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new UnaryExpression {
+                NodeType = ExpressionType.Convert,
+                Type = typeof(IEnumerable<string>),
+                Operand = new MemberExpression {
+                    Type = typeof(List<string>),
+                    Expression = new ConstantExpression {
+                        Type = typeof(<closure>),
+                        Value = #<closure>
+                    },
+                    Member = typeof(<closure>).GetField("$VB$Local_lst")
+                }
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 5
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 17
+            }
+        },
+        Method = typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments")
+    },
+    ReturnType = typeof(IEnumerable<string>)
+}
+---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
+new Expression<Func<IEnumerable<string>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<IEnumerable<string>>),
+    Body = new MethodCallExpression {
+        Type = typeof(IEnumerable<string>),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new MemberExpression {
+                Type = typeof(IEnumerable<string>),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_lst")
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 5
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 6
+            }
+        },
+        Method = typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments")
+    },
+    ReturnType = typeof(IEnumerable<string>)
+}
+---- CSCompiler.ExtensionMethod1Argument
+new Expression<Func<List<string>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<List<string>>),
+    Body = new MethodCallExpression {
+        Type = typeof(List<string>),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new MemberExpression {
+                Type = typeof(List<string>),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("lst")
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 1
+            }
+        },
+        Method = typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments")
+    },
+    ReturnType = typeof(List<string>)
+}
+---- CSCompiler.ExtensionMethod2Arguments
+new Expression<Func<List<string>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<List<string>>),
+    Body = new MethodCallExpression {
+        Type = typeof(List<string>),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new MemberExpression {
+                Type = typeof(List<string>),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("lst")
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 5
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 17
+            }
+        },
+        Method = typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments")
+    },
+    ReturnType = typeof(List<string>)
+}
+---- FactoryMethods.ExtensionMethod1Argument
+new MethodCallExpression {
+    Type = typeof(List<string>),
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(List<string>),
+            IsByRef = false,
+            Name = "lstString"
+        },
+        new ConstantExpression {
+            Type = typeof(int),
+            Value = 1
+        }
+    },
+    Method = typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments")
+}
+---- FactoryMethods.ExtensionMethod2Arguments
+new MethodCallExpression {
+    Type = typeof(List<string>),
+    Arguments = new ReadOnlyCollection<Expression> {
+        new ParameterExpression {
+            Type = typeof(List<string>),
+            IsByRef = false,
+            Name = "lstString"
+        },
+        new ConstantExpression {
+            Type = typeof(int),
+            Value = 5
+        },
+        new ConstantExpression {
+            Type = typeof(int),
+            Value = 17
+        }
+    },
+    Method = typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments")
+}
+---- VBCompiler.ExtensionMethod0Arguments
+new Expression<Func<int>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<int>),
+    Body = new MemberExpression {
+        Type = typeof(int),
+        Expression = new MemberExpression {
+            Type = typeof(List<string>),
+            Expression = new ConstantExpression {
+                Type = typeof(<closure>),
+                Value = #<closure>
+            },
+            Member = typeof(<closure>).GetField("$VB$Local_lst")
+        },
+        Member = typeof(List<string>).GetProperty("Count")
+    },
+    ReturnType = typeof(int)
+}
+---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
+new Expression<Func<int>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<int>),
+    Body = new MethodCallExpression {
+        Type = typeof(int),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new MemberExpression {
+                Type = typeof(IEnumerable<string>),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_lst")
+            }
+        },
+        Method = typeof(Enumerable).GetMethod("Count")
+    },
+    ReturnType = typeof(int)
 }
 ------

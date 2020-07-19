@@ -175,30 +175,6 @@ Lambda(
         lst
     )
 )
----- CSCompiler.ExtensionMethod1Argument
-Lambda(
-    Call(
-        typeof(Enumerable).GetMethod("Take"),
-        lst,
-        Constant(1)
-    )
-)
----- CSCompiler.ExtensionMethod2Arguments
-Lambda(
-    Call(
-        typeof(Enumerable).GetMethod("OrderBy"),
-        lst,
-        Lambda(x,
-            var x = Parameter(
-                typeof(string),
-                "x"
-            )
-        ),
-        MakeMemberAccess(null,
-            typeof(StringComparer).GetProperty("OrdinalIgnoreCase")
-        )
-    )
-)
 ---- CSCompiler.False
 Lambda(
     Constant(false)
@@ -1103,26 +1079,6 @@ Loop(
 Call(
     typeof(Enumerable).GetMethod("Count"),
     lstString
-)
----- FactoryMethods.ExtensionMethod1Argument
-Call(
-    typeof(Enumerable).GetMethod("Take"),
-    lstString,
-    Constant(1)
-)
----- FactoryMethods.ExtensionMethod2Arguments
-Call(
-    typeof(Enumerable).GetMethod("OrderBy"),
-    lstString,
-    Lambda(x,
-        var x = Parameter(
-            typeof(string),
-            "x"
-        )
-    ),
-    MakeMemberAccess(null,
-        typeof(StringComparer).GetProperty("OrdinalIgnoreCase")
-    )
 )
 ---- FactoryMethods.InstanceIndexer
 MakeIndex(lstString,
@@ -2112,75 +2068,6 @@ Lambda(
 Lambda(
     ExclusiveOr(b1, b2)
 )
----- VBCompiler.ExtensionMethod0Arguments
-Lambda(
-    Call(
-        typeof(Enumerable).GetMethod("Distinct"),
-        Convert(lst,
-            typeof(IEnumerable<string>)
-        )
-    )
-)
----- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
-Lambda(
-    Call(
-        typeof(Enumerable).GetMethod("Distinct"),
-        lst
-    )
-)
----- VBCompiler.ExtensionMethod1Argument
-Lambda(
-    Call(
-        typeof(Enumerable).GetMethod("Take"),
-        Convert(lst,
-            typeof(IEnumerable<string>)
-        ),
-        Constant(1)
-    )
-)
----- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
-Lambda(
-    Call(
-        typeof(Enumerable).GetMethod("Take"),
-        lst,
-        Constant(1)
-    )
-)
----- VBCompiler.ExtensionMethod2Arguments
-Lambda(
-    Call(
-        typeof(Enumerable).GetMethod("OrderBy"),
-        Convert(lst,
-            typeof(IEnumerable<string>)
-        ),
-        Lambda(x,
-            var x = Parameter(
-                typeof(string),
-                "x"
-            )
-        ),
-        Convert(
-            MakeMemberAccess(null,
-                typeof(StringComparer).GetProperty("OrdinalIgnoreCase")
-            ),
-            typeof(IComparer<string>)
-        )
-    )
-)
----- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
-Lambda(
-    Call(
-        typeof(Enumerable).GetMethod("OrderBy"),
-        lst,
-        Lambda(x,
-            var x = Parameter(
-                typeof(string),
-                "x"
-            )
-        ),
-        comparer
-    )
-)
 ---- VBCompiler.False
 Lambda(
     Constant(false)
@@ -2713,6 +2600,119 @@ Lambda(
         Convert(dow2,
             typeof(int)
         )
+    )
+)
+---- VBCompiler.LikeOperatorStrings
+Lambda(
+    Call(
+        typeof(LikeOperator).GetMethod("LikeString"),
+        s1, s2,
+        Constant(CompareMethod.Binary)
+    ),
+    var s1 = Parameter(
+        typeof(string),
+        "s1"
+    ),
+    var s2 = Parameter(
+        typeof(string),
+        "s2"
+    )
+)
+---- VBCompiler.LikeOperatorObjects
+Lambda(
+    Call(
+        typeof(LikeOperator).GetMethod("LikeObject"),
+        o1, o2,
+        Constant(CompareMethod.Binary)
+    ),
+    var o1 = Parameter(
+        typeof(object),
+        "o1"
+    ),
+    var o2 = Parameter(
+        typeof(object),
+        "o2"
+    )
+)
+---- VBCompiler.ExtensionMethod1Argument
+Lambda(
+    Call(
+        typeof(Dummy).GetMethod("DummyExtensionMethod1Argument"),
+        Convert(lst,
+            typeof(IEnumerable<string>)
+        ),
+        Constant(1)
+    )
+)
+---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
+Lambda(
+    Call(
+        typeof(Dummy).GetMethod("DummyExtensionMethod1Argument"),
+        lst,
+        Constant(1)
+    )
+)
+---- VBCompiler.ExtensionMethod2Arguments
+Lambda(
+    Call(
+        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments"),
+        Convert(lst,
+            typeof(IEnumerable<string>)
+        ),
+        Constant(5),
+        Constant(17)
+    )
+)
+---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
+Lambda(
+    Call(
+        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments"),
+        lst,
+        Constant(5),
+        Constant(6)
+    )
+)
+---- CSCompiler.ExtensionMethod1Argument
+Lambda(
+    Call(
+        typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments"),
+        lst,
+        Constant(1)
+    )
+)
+---- CSCompiler.ExtensionMethod2Arguments
+Lambda(
+    Call(
+        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments"),
+        lst,
+        Constant(5),
+        Constant(17)
+    )
+)
+---- FactoryMethods.ExtensionMethod1Argument
+Call(
+    typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments"),
+    lstString,
+    Constant(1)
+)
+---- FactoryMethods.ExtensionMethod2Arguments
+Call(
+    typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments"),
+    lstString,
+    Constant(5),
+    Constant(17)
+)
+---- VBCompiler.ExtensionMethod0Arguments
+Lambda(
+    MakeMemberAccess(lst,
+        typeof(List<string>).GetProperty("Count")
+    )
+)
+---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
+Lambda(
+    Call(
+        typeof(Enumerable).GetMethod("Count"),
+        lst
     )
 )
 ------

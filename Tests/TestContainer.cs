@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using Xunit;
 using static ExpressionTreeToString.FormatterNames;
 using static System.Globalization.CultureInfo;
+using ExpressionTreeTestObjects.VB;
 
 namespace ExpressionTreeToString.Tests {
     public class TestContainer : IClassFixture<ExpectedDataFixture> {
@@ -95,5 +96,7 @@ namespace ExpressionTreeToString.Tests {
                 var o = Objects.ByName(name);
             }
         }
+
+        static TestContainer() => Loader.Load();
     }
 }

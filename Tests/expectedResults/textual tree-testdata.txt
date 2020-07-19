@@ -305,12 +305,6 @@ Lambda (Func<int>)
 Lambda (Func<string>)
     · Body - Call (string) string.Intern = ""
         · Arguments[0] - Constant (string) = ""
----- CSCompiler.ExtensionMethod1Argument
-Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Enumerable.Take = #ListPartition<string>
-        · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
-            · Expression - Constant (<closure>) = #<closure>
-        · Arguments[1] - Constant (int) = 1
 ---- CSCompiler.InstanceMethod2Arguments
 Lambda (Func<int>)
     · Body - Call (int) IndexOf = -1
@@ -326,14 +320,12 @@ Lambda (Func<string>)
             · Expressions[0] - Constant (string) = "a"
             · Expressions[1] - Constant (string) = "b"
 ---- CSCompiler.ExtensionMethod2Arguments
-Lambda (Func<IOrderedEnumerable<string>>)
-    · Body - Call (IOrderedEnumerable<string>) Enumerable.OrderBy
+Lambda (Func<List<string>>)
+    · Body - Call (List<string>) Dummy.DummyExtensionMethod2Arguments = #List<string>
         · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
             · Expression - Constant (<closure>) = #<closure>
-        · Arguments[1] - Lambda (Func<string, string>)
-            · Parameters[0] - Parameter (string) x
-            · Body - Parameter (string) x
-        · Arguments[2] - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase = #OrdinalIgnoreCaseComparer
+        · Arguments[1] - Constant (int) = 5
+        · Arguments[2] - Constant (int) = 17
 ---- CSCompiler.StringConcat
 Lambda (Func<string, string, string>)
     · Parameters[0] - Parameter (string) s1
@@ -1195,10 +1187,6 @@ Call (int) CompareTo
 ---- FactoryMethods.StaticMethod1Argument
 Call (string) string.Intern = ""
     · Arguments[0] - Constant (string) = ""
----- FactoryMethods.ExtensionMethod1Argument
-Call (IEnumerable<string>) Enumerable.Take
-    · Arguments[0] - Parameter (List<string>) lstString
-    · Arguments[1] - Constant (int) = 1
 ---- FactoryMethods.InstanceMethod2Arguments
 Call (int) IndexOf
     · Object - Parameter (string) s
@@ -1210,13 +1198,6 @@ Call (string) string.Join = "a,b"
     · Arguments[1] - NewArrayInit (string[]) = new[] { "a", "b" }
         · Expressions[0] - Constant (string) = "a"
         · Expressions[1] - Constant (string) = "b"
----- FactoryMethods.ExtensionMethod2Arguments
-Call (IOrderedEnumerable<string>) Enumerable.OrderBy
-    · Arguments[0] - Parameter (List<string>) lstString
-    · Arguments[1] - Lambda (Func<string, string>)
-        · Parameters[0] - Parameter (string) x
-        · Body - Parameter (string) x
-    · Arguments[2] - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase = #OrdinalIgnoreCaseComparer
 ---- FactoryMethods.StringConcat
 Call (string) string.Concat
     · Arguments[0] - Parameter (string) s1
@@ -1832,17 +1813,6 @@ Lambda (Func<string>)
 ---- VBCompiler.StaticMethod0Arguments
 Lambda (Action)
     · Body - Call (void) Dummy.DummyMethod
----- VBCompiler.ExtensionMethod0Arguments
-Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Enumerable.Distinct = #DistinctIterator<string>
-        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
-            · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
-                · Expression - Constant (<closure>) = #<closure>
----- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
-Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Enumerable.Distinct = #DistinctIterator<string>
-        · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
-            · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.InstanceMethod1Argument
 Lambda (Func<int>)
     · Body - Call (int) CompareTo = 0
@@ -1853,19 +1823,6 @@ Lambda (Func<int>)
 Lambda (Func<string>)
     · Body - Call (string) string.Intern = ""
         · Arguments[0] - Constant (string) = ""
----- VBCompiler.ExtensionMethod1Argument
-Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Enumerable.Take = #ListPartition<string>
-        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
-            · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
-                · Expression - Constant (<closure>) = #<closure>
-        · Arguments[1] - Constant (int) = 1
----- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
-Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Enumerable.Take = #ListPartition<string>
-        · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
-            · Expression - Constant (<closure>) = #<closure>
-        · Arguments[1] - Constant (int) = 1
 ---- VBCompiler.InstanceMethod2Arguments
 Lambda (Func<int>)
     · Body - Call (int) IndexOf = -1
@@ -1886,27 +1843,6 @@ Lambda (Func<string>)
     · Body - Call (string) string.Join = "a,b"
         · Arguments[0] - Constant (string) = ","
         · Arguments[1] - MemberAccess (IEnumerable<char>) $VB$Local_arr = new[] { 'a', 'b' }
-            · Expression - Constant (<closure>) = #<closure>
----- VBCompiler.ExtensionMethod2Arguments
-Lambda (Func<IOrderedEnumerable<string>>)
-    · Body - Call (IOrderedEnumerable<string>) Enumerable.OrderBy
-        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
-            · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
-                · Expression - Constant (<closure>) = #<closure>
-        · Arguments[1] - Lambda (Func<string, string>)
-            · Parameters[0] - Parameter (string) x
-            · Body - Parameter (string) x
-        · Arguments[2] - Convert (IComparer<string>) = #OrdinalIgnoreCaseComparer
-            · Operand - MemberAccess (StringComparer) StringComparer.OrdinalIgnoreCase = #OrdinalIgnoreCaseComparer
----- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
-Lambda (Func<IOrderedEnumerable<string>>)
-    · Body - Call (IOrderedEnumerable<string>) Enumerable.OrderBy
-        · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
-            · Expression - Constant (<closure>) = #<closure>
-        · Arguments[1] - Lambda (Func<string, string>)
-            · Parameters[0] - Parameter (string) x
-            · Body - Parameter (string) x
-        · Arguments[2] - MemberAccess (IComparer<string>) $VB$Local_comparer = #OrdinalIgnoreCaseComparer
             · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.StringConcat
 Lambda (Func<string, string, string>)
@@ -2168,4 +2104,73 @@ Lambda (Func<bool>)
         · Right - Convert (int) = 5
             · Operand - MemberAccess (DayOfWeek) dow2 = DayOfWeek.Friday
                 · Expression - Constant (<closure>) = #<closure>
+---- VBCompiler.LikeOperatorStrings
+Lambda (Func<string, string, bool>)
+    · Parameters[0] - Parameter (string) s1
+    · Parameters[1] - Parameter (string) s2
+    · Body - Call (bool) LikeOperator.LikeString
+        · Arguments[0] - Parameter (string) s1
+        · Arguments[1] - Parameter (string) s2
+        · Arguments[2] - Constant (CompareMethod) = CompareMethod.Binary
+---- VBCompiler.LikeOperatorObjects
+Lambda (Func<object, object, object>)
+    · Parameters[0] - Parameter (object) o1
+    · Parameters[1] - Parameter (object) o2
+    · Body - Call (object) LikeOperator.LikeObject
+        · Arguments[0] - Parameter (object) o1
+        · Arguments[1] - Parameter (object) o2
+        · Arguments[2] - Constant (CompareMethod) = CompareMethod.Binary
+---- VBCompiler.ExtensionMethod1Argument
+Lambda (Func<IEnumerable<string>>)
+    · Body - Call (IEnumerable<string>) Dummy.DummyExtensionMethod1Argument = #List<string>
+        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
+            · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
+                · Expression - Constant (<closure>) = #<closure>
+        · Arguments[1] - Constant (int) = 1
+---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
+Lambda (Func<IEnumerable<string>>)
+    · Body - Call (IEnumerable<string>) Dummy.DummyExtensionMethod1Argument = #List<string>
+        · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
+            · Expression - Constant (<closure>) = #<closure>
+        · Arguments[1] - Constant (int) = 1
+---- VBCompiler.ExtensionMethod2Arguments
+Lambda (Func<IEnumerable<string>>)
+    · Body - Call (IEnumerable<string>) Dummy.DummyExtensionMethod2Arguments = #List<string>
+        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
+            · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
+                · Expression - Constant (<closure>) = #<closure>
+        · Arguments[1] - Constant (int) = 5
+        · Arguments[2] - Constant (int) = 17
+---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
+Lambda (Func<IEnumerable<string>>)
+    · Body - Call (IEnumerable<string>) Dummy.DummyExtensionMethod2Arguments = #List<string>
+        · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
+            · Expression - Constant (<closure>) = #<closure>
+        · Arguments[1] - Constant (int) = 5
+        · Arguments[2] - Constant (int) = 6
+---- CSCompiler.ExtensionMethod1Argument
+Lambda (Func<List<string>>)
+    · Body - Call (List<string>) Dummy.DummyExtensionMethod1Arguments = #List<string>
+        · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
+            · Expression - Constant (<closure>) = #<closure>
+        · Arguments[1] - Constant (int) = 1
+---- FactoryMethods.ExtensionMethod1Argument
+Call (List<string>) Dummy.DummyExtensionMethod1Arguments
+    · Arguments[0] - Parameter (List<string>) lstString
+    · Arguments[1] - Constant (int) = 1
+---- FactoryMethods.ExtensionMethod2Arguments
+Call (List<string>) Dummy.DummyExtensionMethod2Arguments
+    · Arguments[0] - Parameter (List<string>) lstString
+    · Arguments[1] - Constant (int) = 5
+    · Arguments[2] - Constant (int) = 17
+---- VBCompiler.ExtensionMethod0Arguments
+Lambda (Func<int>)
+    · Body - MemberAccess (int) Count = 0
+        · Expression - MemberAccess (List<string>) $VB$Local_lst = #List<string>
+            · Expression - Constant (<closure>) = #<closure>
+---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
+Lambda (Func<int>)
+    · Body - Call (int) Enumerable.Count = 0
+        · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
+            · Expression - Constant (<closure>) = #<closure>
 ------

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard2.0;netcoreapp3.1;net472</TargetFrameworks>
     <AssemblyName>ExpressionTreeTestObjects.CSharp</AssemblyName>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
