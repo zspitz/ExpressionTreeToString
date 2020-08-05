@@ -11,6 +11,7 @@ only_commits:
   files:
     - ExpressionTreeToString/
     - Shared/
+
 dotnet_csproj:
   patch: true
   file: '**\*.csproj'
@@ -19,6 +20,7 @@ dotnet_csproj:
   assembly_version: '{version}'
   file_version: '{version}'
   informational_version: '{version}'
+
 before_build:
 - cmd: nuget restore
 

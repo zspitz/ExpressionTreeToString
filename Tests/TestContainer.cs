@@ -18,32 +18,17 @@ namespace ExpressionTreeToString.Tests {
         public TestContainer(ExpectedDataFixture fixture) => this.fixture = fixture;
 
         private (string toString, HashSet<string> paths) GetToString(string formatter, object o) {
-            string ret;
             Dictionary<string, (int start, int length)> pathSpans;
-
-            switch (o) {
-                case Expression expr:
-                    ret = expr.ToString(formatter, out pathSpans);
-                    break;
-                case MemberBinding mbind:
-                    ret = mbind.ToString(formatter, out pathSpans);
-                    break;
-                case ElementInit init:
-                    ret = init.ToString(formatter, out pathSpans);
-                    break;
-                case SwitchCase switchCase:
-                    ret = switchCase.ToString(formatter, out pathSpans);
-                    break;
-                case CatchBlock catchBlock:
-                    ret = catchBlock.ToString(formatter, out pathSpans);
-                    break;
-                case LabelTarget labelTarget:
-                    ret = labelTarget.ToString(formatter, out pathSpans);
-                    break;
-                default:
-                    throw new InvalidOperationException();
-            }
-
+            string ret = o switch
+            {
+                Expression expr => expr.ToString(formatter, out pathSpans),
+                MemberBinding mbind => mbind.ToString(formatter, out pathSpans),
+                ElementInit init => init.ToString(formatter, out pathSpans),
+                SwitchCase switchCase => switchCase.ToString(formatter, out pathSpans),
+                CatchBlock catchBlock => catchBlock.ToString(formatter, out pathSpans),
+                LabelTarget labelTarget => labelTarget.ToString(formatter, out pathSpans),
+                _ => throw new InvalidOperationException(),
+            };
             return (
                 ret,
                 pathSpans.Keys.Select(x => {

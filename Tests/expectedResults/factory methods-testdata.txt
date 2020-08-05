@@ -17,7 +17,7 @@ Lambda(
 ---- CSCompiler.AnonymousType
 Lambda(
     New(
-        typeof({ string Bar, string Baz }).GetConstructor(),
+        typeof({ string Bar, string Baz }).GetConstructor(new[] { typeof(string), typeof(string) }),
         Constant("abcd"),
         Constant("efgh")
     )
@@ -25,7 +25,7 @@ Lambda(
 ---- CSCompiler.AnonymousTypeFromVariables
 Lambda(
     New(
-        typeof({ string Bar, string Baz }).GetConstructor(),
+        typeof({ string Bar, string Baz }).GetConstructor(new[] { typeof(string), typeof(string) }),
         Bar, Baz
     )
 )
@@ -73,7 +73,7 @@ Lambda(
 Lambda(
     ListInit(
         New(
-            typeof(List<string>).GetConstructor()
+            typeof(List<string>).GetConstructor(new Type[] { })
         ),
         ElementInit(
             typeof(List<string>).GetMethod("Add"),
@@ -89,15 +89,15 @@ Lambda(
 Lambda(
     ListInit(
         New(
-            typeof(Wrapper).GetConstructor()
+            typeof(Wrapper).GetConstructor(new Type[] { })
         ),
         ElementInit(
-            typeof(Wrapper).GetMethod("Add"),
+            typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic),
             Constant("ab"),
             Constant("cd")
         ),
         ElementInit(
-            typeof(Wrapper).GetMethod("Add"),
+            typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic),
             Constant("ef"),
             Constant("gh")
         )
@@ -107,10 +107,10 @@ Lambda(
 Lambda(
     ListInit(
         New(
-            typeof(Wrapper).GetConstructor()
+            typeof(Wrapper).GetConstructor(new Type[] { })
         ),
         ElementInit(
-            typeof(Wrapper).GetMethod("Add"),
+            typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic),
             Constant("ab"),
             Constant("cd")
         ),
@@ -171,7 +171,7 @@ Lambda(
 ---- CSCompiler.ExtensionMethod0Arguments
 Lambda(
     Call(
-        typeof(Enumerable).GetMethod("Count"),
+        typeof(Enumerable).GetMethod("Count", new[] { typeof(IEnumerable<string>) }),
         lst
     )
 )
@@ -202,14 +202,14 @@ Lambda(
 ---- CSCompiler.InstanceMethod1Argument
 Lambda(
     Call(s,
-        typeof(string).GetMethod("CompareTo"),
+        typeof(string).GetMethod("CompareTo", new[] { typeof(string) }),
         Constant("")
     )
 )
 ---- CSCompiler.InstanceMethod2Arguments
 Lambda(
     Call(s,
-        typeof(string).GetMethod("IndexOf"),
+        typeof(string).GetMethod("IndexOf", new[] { typeof(char), typeof(int) }),
         Constant('a'),
         Constant(2)
     )
@@ -221,11 +221,11 @@ Lambda(
 ---- CSCompiler.InterpolatedString
 Lambda(
     Call(
-        typeof(string).GetMethod("Format"),
+        typeof(string).GetMethod("Format", new[] { typeof(string), typeof(object) }),
         Constant("{0:yyyy-MM-dd}"),
         Convert(
             New(
-                typeof(DateTime).GetConstructor(),
+                typeof(DateTime).GetConstructor(new[] { typeof(int), typeof(int), typeof(int) }),
                 Constant(2001),
                 Constant(3),
                 Constant(25)
@@ -299,20 +299,20 @@ Lambda(
 Lambda(
     MemberInit(
         New(
-            typeof(Node).GetConstructor()
+            typeof(Node).GetConstructor(new Type[] { })
         ),
         ListBind(
-            typeof(Node).GetProperty("Children"),
+            typeof(Node).GetProperty("Children", BindingFlags.Instance | BindingFlags.NonPublic),
             ElementInit(
                 typeof(ICollection<Node>).GetMethod("Add"),
                 New(
-                    typeof(Node).GetConstructor()
+                    typeof(Node).GetConstructor(new Type[] { })
                 )
             ),
             ElementInit(
                 typeof(ICollection<Node>).GetMethod("Add"),
                 New(
-                    typeof(Node).GetConstructor()
+                    typeof(Node).GetConstructor(new Type[] { })
                 )
             )
         )
@@ -341,12 +341,12 @@ Lambda(
 Lambda(
     MemberInit(
         New(
-            typeof(Node).GetConstructor()
+            typeof(Node).GetConstructor(new Type[] { })
         ),
         MemberBind(
-            typeof(Node).GetProperty("Data"),
+            typeof(Node).GetProperty("Data", BindingFlags.Instance | BindingFlags.NonPublic),
             Bind(
-                typeof(NodeData).GetProperty("Name"),
+                typeof(NodeData).GetProperty("Name", BindingFlags.Instance | BindingFlags.NonPublic),
                 Constant("abcd")
             )
         )
@@ -379,13 +379,13 @@ Lambda(
 ---- CSCompiler.NamedType
 Lambda(
     New(
-        typeof(Random).GetConstructor()
+        typeof(Random).GetConstructor(new Type[] { })
     )
 )
 ---- CSCompiler.NamedTypeConstructorParameters
 Lambda(
     New(
-        typeof(Foo).GetConstructor(),
+        typeof(Foo).GetConstructor(new[] { typeof(string) }),
         Constant("ijkl")
     )
 )
@@ -393,7 +393,7 @@ Lambda(
 Lambda(
     MemberInit(
         New(
-            typeof(Foo).GetConstructor(),
+            typeof(Foo).GetConstructor(new[] { typeof(string) }),
             Constant("ijkl")
         ),
         Bind(
@@ -410,7 +410,7 @@ Lambda(
 Lambda(
     MemberInit(
         New(
-            typeof(Foo).GetConstructor()
+            typeof(Foo).GetConstructor(new Type[] { })
         ),
         Bind(
             typeof(Foo).GetProperty("Bar"),
@@ -422,7 +422,7 @@ Lambda(
 Lambda(
     MemberInit(
         New(
-            typeof(Foo).GetConstructor()
+            typeof(Foo).GetConstructor(new Type[] { })
         ),
         Bind(
             typeof(Foo).GetProperty("Bar"),
@@ -449,7 +449,7 @@ Lambda(
 ---- CSCompiler.NoParametersVoidReturn
 Lambda(
     Call(
-        typeof(Console).GetMethod("WriteLine")
+        typeof(Console).GetMethod("WriteLine", new Type[] { })
     )
 )
 ---- CSCompiler.NotEqual
@@ -472,7 +472,7 @@ Lambda(s,
 ---- CSCompiler.OneParameterVoidReturn
 Lambda(
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         s
     ),
     var s = Parameter(
@@ -526,7 +526,7 @@ Lambda(
 ---- CSCompiler.StaticMethod0Arguments
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyMethod")
+        typeof(Dummy).GetMethod("DummyMethod", BindingFlags.Static | BindingFlags.NonPublic)
     )
 )
 ---- CSCompiler.StaticMethod1Argument
@@ -539,7 +539,7 @@ Lambda(
 ---- CSCompiler.StaticMethod2Arguments
 Lambda(
     Call(
-        typeof(string).GetMethod("Join"),
+        typeof(string).GetMethod("Join", new[] { typeof(string), typeof(string[]) }),
         Constant(","),
         NewArrayInit(
             typeof(string),
@@ -555,7 +555,7 @@ Lambda(
 ---- CSCompiler.StringConcat
 Lambda(
     Call(
-        typeof(string).GetMethod("Concat"),
+        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
     var s1 = Parameter(
@@ -590,7 +590,7 @@ Lambda(
 ---- CSCompiler.TwoParametersVoidReturn
 Lambda(
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         Add(s1, s2)
     ),
     var s1 = Parameter(
@@ -653,7 +653,7 @@ Block(new[] { i },
 ---- FactoryMethods.CollectionTypeWithInitializer
 ListInit(
     New(
-        typeof(List<string>).GetConstructor()
+        typeof(List<string>).GetConstructor(new Type[] { })
     ),
     ElementInit(
         typeof(List<string>).GetMethod("Add"),
@@ -667,15 +667,15 @@ ListInit(
 ---- FactoryMethods.CollectionTypeWithMultiElementInitializers
 ListInit(
     New(
-        typeof(Wrapper).GetConstructor()
+        typeof(Wrapper).GetConstructor(new Type[] { })
     ),
     ElementInit(
-        typeof(Wrapper).GetMethod("Add"),
+        typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic),
         Constant("ab"),
         Constant("cd")
     ),
     ElementInit(
-        typeof(Wrapper).GetMethod("Add"),
+        typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic),
         Constant("ef"),
         Constant("gh")
     )
@@ -683,10 +683,10 @@ ListInit(
 ---- FactoryMethods.CollectionTypeWithSingleOrMultiElementInitializers
 ListInit(
     New(
-        typeof(Wrapper).GetConstructor()
+        typeof(Wrapper).GetConstructor(new Type[] { })
     ),
     ElementInit(
-        typeof(Wrapper).GetMethod("Add"),
+        typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic),
         Constant("ab"),
         Constant("cd")
     ),
@@ -725,11 +725,11 @@ Not(i)
 Catch(ex,
     Block(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         )
     )
@@ -738,11 +738,11 @@ Catch(ex,
 Catch(ex,
     Block(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         )
     ),
@@ -753,11 +753,11 @@ Catch(
     typeof(InvalidCastException),
     Block(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         )
     )
@@ -765,14 +765,14 @@ Catch(
 ---- FactoryMethods.ConstructCatchSingleStatement
 Catch(ex,
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     )
 )
 ---- FactoryMethods.ConstructCatchSingleStatementWithFilter
 Catch(ex,
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     Constant(true)
@@ -781,14 +781,14 @@ Catch(ex,
 Catch(
     typeof(InvalidCastException),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     )
 )
 ---- FactoryMethods.ConstructCatchWithMultiStatementFilter
 Catch(ex,
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     Block(
@@ -999,7 +999,7 @@ Dynamic(
 Catch(
     typeof(Exception),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     )
 )
@@ -1027,7 +1027,7 @@ TryCatch(
 TryCatchFinally(
     Constant(true),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     Catch(ex,
@@ -1037,22 +1037,22 @@ TryCatchFinally(
 ---- FactoryMethods.ConstructTryFault
 TryFault(
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     )
 )
 ---- FactoryMethods.ConstructTryFinally
 TryFinally(
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     )
 )
@@ -1077,7 +1077,7 @@ Loop(
 )
 ---- FactoryMethods.ExtensionMethod0Arguments
 Call(
-    typeof(Enumerable).GetMethod("Count"),
+    typeof(Enumerable).GetMethod("Count", new[] { typeof(IEnumerable<string>) }),
     lstString
 )
 ---- FactoryMethods.InstanceIndexer
@@ -1098,12 +1098,12 @@ Call(s,
 )
 ---- FactoryMethods.InstanceMethod1Argument
 Call(s,
-    typeof(string).GetMethod("CompareTo"),
+    typeof(string).GetMethod("CompareTo", new[] { typeof(string) }),
     Constant("")
 )
 ---- FactoryMethods.InstanceMethod2Arguments
 Call(s,
-    typeof(string).GetMethod("IndexOf"),
+    typeof(string).GetMethod("IndexOf", new[] { typeof(char), typeof(int) }),
     Constant('a'),
     Constant(2)
 )
@@ -1220,7 +1220,7 @@ ElementInit(
 )
 ---- FactoryMethods.MakeElementInit2Arguments
 ElementInit(
-    typeof(Wrapper).GetMethod("Add"),
+    typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic),
     Constant("abcd"),
     Constant("efgh")
 )
@@ -1241,30 +1241,30 @@ Invoke(
 )
 ---- FactoryMethods.MakeListBinding
 ListBind(
-    typeof(Node).GetProperty("Children"),
+    typeof(Node).GetProperty("Children", BindingFlags.Instance | BindingFlags.NonPublic),
     ElementInit(
         typeof(ICollection<Node>).GetMethod("Add"),
         New(
-            typeof(Node).GetConstructor()
+            typeof(Node).GetConstructor(new Type[] { })
         )
     ),
     ElementInit(
         typeof(ICollection<Node>).GetMethod("Add"),
         New(
-            typeof(Node).GetConstructor()
+            typeof(Node).GetConstructor(new Type[] { })
         )
     )
 )
 ---- FactoryMethods.MakeMemberBind
 Bind(
-    typeof(DummyMember).GetProperty("Foo"),
+    typeof(DummyMember).GetProperty("Foo", BindingFlags.Instance | BindingFlags.NonPublic),
     Constant("abcd")
 )
 ---- FactoryMethods.MakeMemberMemberBind
 MemberBind(
-    typeof(Node).GetProperty("Data"),
+    typeof(Node).GetProperty("Data", BindingFlags.Instance | BindingFlags.NonPublic),
     Bind(
-        typeof(NodeData).GetProperty("Name"),
+        typeof(NodeData).GetProperty("Name", BindingFlags.Instance | BindingFlags.NonPublic),
         Constant("abcd")
     )
 )
@@ -1273,7 +1273,7 @@ Block(new[] { x },
     Quote(
         Lambda(
             Call(
-                typeof(Console).GetMethod("WriteLine"),
+                typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
                 Constant(true)
             )
         )
@@ -1284,7 +1284,7 @@ Lambda(
     Quote(
         Lambda(
             Call(
-                typeof(Console).GetMethod("WriteLine"),
+                typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
                 Constant(true)
             )
         )
@@ -1325,16 +1325,16 @@ NewArrayBounds(
 IfThenElse(
     Constant(true),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     Block(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(false)
         ),
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(false)
         )
     )
@@ -1344,11 +1344,11 @@ IfThen(
     Constant(true),
     Block(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         )
     )
@@ -1358,7 +1358,7 @@ Lambda(
     IfThen(
         Constant(true),
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         )
     )
@@ -1385,7 +1385,7 @@ IfThen(
         Constant(true)
     ),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     )
 )
@@ -1393,11 +1393,11 @@ IfThen(
 SwitchCase(
     Block(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         )
     ),
@@ -1407,7 +1407,7 @@ SwitchCase(
 ---- FactoryMethods.MultiValueSwitchCase1
 SwitchCase(
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     Constant(5),
@@ -1429,17 +1429,17 @@ Lambda(
 )
 ---- FactoryMethods.NamedType
 New(
-    typeof(Random).GetConstructor()
+    typeof(Random).GetConstructor(new Type[] { })
 )
 ---- FactoryMethods.NamedTypeConstructorParameters
 New(
-    typeof(Foo).GetConstructor(),
+    typeof(Foo).GetConstructor(new[] { typeof(string) }),
     Constant("ijkl")
 )
 ---- FactoryMethods.NamedTypeConstructorParametersWithInitializers
 MemberInit(
     New(
-        typeof(Foo).GetConstructor(),
+        typeof(Foo).GetConstructor(new[] { typeof(string) }),
         Constant("ijkl")
     ),
     Bind(
@@ -1454,7 +1454,7 @@ MemberInit(
 ---- FactoryMethods.NamedTypeWithInitializer
 MemberInit(
     New(
-        typeof(Foo).GetConstructor()
+        typeof(Foo).GetConstructor(new Type[] { })
     ),
     Bind(
         typeof(Foo).GetProperty("Bar"),
@@ -1464,7 +1464,7 @@ MemberInit(
 ---- FactoryMethods.NamedTypeWithInitializers
 MemberInit(
     New(
-        typeof(Foo).GetConstructor()
+        typeof(Foo).GetConstructor(new Type[] { })
     ),
     Bind(
         typeof(Foo).GetProperty("Bar"),
@@ -1527,13 +1527,13 @@ IfThen(
 IfThenElse(
     Constant(true),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     IfThen(
         Constant(true),
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         )
     )
@@ -1544,7 +1544,7 @@ IfThen(
     IfThen(
         Constant(true),
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         )
     )
@@ -1611,7 +1611,7 @@ Lambda(
 ---- FactoryMethods.NoParametersVoidReturn
 Lambda(
     Call(
-        typeof(Console).GetMethod("WriteLine")
+        typeof(Console).GetMethod("WriteLine", new Type[] { })
     )
 )
 ---- FactoryMethods.OldTuple
@@ -1626,7 +1626,7 @@ Lambda(s,
 ---- FactoryMethods.OneParameterVoidReturn
 Lambda(
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         s
     ),
     var s = Parameter(
@@ -1667,11 +1667,11 @@ NewArrayBounds(
 SwitchCase(
     Block(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         )
     ),
@@ -1680,7 +1680,7 @@ SwitchCase(
 ---- FactoryMethods.SingleValueSwitchCase1
 SwitchCase(
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     Constant(5)
@@ -1691,7 +1691,7 @@ MakeMemberAccess(null,
 )
 ---- FactoryMethods.StaticMethod0Arguments
 Call(
-    typeof(Dummy).GetMethod("DummyMethod")
+    typeof(Dummy).GetMethod("DummyMethod", BindingFlags.Static | BindingFlags.NonPublic)
 )
 ---- FactoryMethods.StaticMethod1Argument
 Call(
@@ -1700,7 +1700,7 @@ Call(
 )
 ---- FactoryMethods.StaticMethod2Arguments
 Call(
-    typeof(string).GetMethod("Join"),
+    typeof(string).GetMethod("Join", new[] { typeof(string), typeof(string[]) }),
     Constant(","),
     NewArrayInit(
         typeof(string),
@@ -1710,7 +1710,7 @@ Call(
 )
 ---- FactoryMethods.StringConcat
 Call(
-    typeof(string).GetMethod("Concat"),
+    typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
     s1, s2
 )
 ---- FactoryMethods.SwitchOnExpressionWithDefaultMultiStatement
@@ -1722,14 +1722,14 @@ Switch(i,
     ),
     SwitchCase(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Constant(4)
     ),
     SwitchCase(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(false)
         ),
         Constant(5)
@@ -1740,14 +1740,14 @@ Switch(i,
     Empty(),
     SwitchCase(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Constant(4)
     ),
     SwitchCase(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(false)
         ),
         Constant(5)
@@ -1757,14 +1757,14 @@ Switch(i,
 Switch(i,
     SwitchCase(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Constant(4)
     ),
     SwitchCase(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(false)
         ),
         Constant(5)
@@ -1780,14 +1780,14 @@ Switch(
     ),
     SwitchCase(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Constant(4)
     ),
     SwitchCase(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(false)
         ),
         Constant(5)
@@ -1798,14 +1798,14 @@ Switch(
     Block(i, j),
     SwitchCase(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(true)
         ),
         Constant(4)
     ),
     SwitchCase(
         Call(
-            typeof(Console).GetMethod("WriteLine"),
+            typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
             Constant(false)
         ),
         Constant(5)
@@ -1826,7 +1826,7 @@ Lambda(
 ---- FactoryMethods.TwoParametersVoidReturn
 Lambda(
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         Add(s1, s2)
     ),
     var s1 = Parameter(
@@ -1848,11 +1848,11 @@ Constant(("abcd", 5))
 IfThenElse(
     Constant(true),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(false)
     )
 )
@@ -1860,7 +1860,7 @@ IfThenElse(
 IfThen(
     Constant(true),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     )
 )
@@ -1868,11 +1868,11 @@ IfThen(
 IfThenElse(
     Constant(true),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     ),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(false)
     )
 )
@@ -1880,7 +1880,7 @@ IfThenElse(
 IfThen(
     Constant(true),
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(bool) }),
         Constant(true)
     )
 )
@@ -1903,7 +1903,7 @@ Lambda(
 ---- VBCompiler.AnonymousType
 Lambda(
     New(
-        typeof({ string Bar, string Baz }).GetConstructor(),
+        typeof({ string Bar, string Baz }).GetConstructor(new[] { typeof(string), typeof(string) }),
         Constant("abcd"),
         Constant("efgh")
     )
@@ -1911,7 +1911,7 @@ Lambda(
 ---- VBCompiler.AnonymousTypeFromVariables
 Lambda(
     New(
-        typeof({ string Bar, string Baz }).GetConstructor(),
+        typeof({ string Bar, string Baz }).GetConstructor(new[] { typeof(string), typeof(string) }),
         Bar, Baz
     )
 )
@@ -1965,7 +1965,7 @@ Lambda(
 Lambda(
     ListInit(
         New(
-            typeof(List<string>).GetConstructor()
+            typeof(List<string>).GetConstructor(new Type[] { })
         ),
         ElementInit(
             typeof(List<string>).GetMethod("Add"),
@@ -1981,15 +1981,15 @@ Lambda(
 Lambda(
     ListInit(
         New(
-            typeof(Wrapper).GetConstructor()
+            typeof(Wrapper).GetConstructor(new Type[] { })
         ),
         ElementInit(
-            typeof(Wrapper).GetMethod("Add"),
+            typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(string), typeof(string) }, null),
             Constant("ab"),
             Constant("cd")
         ),
         ElementInit(
-            typeof(Wrapper).GetMethod("Add"),
+            typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(string), typeof(string) }, null),
             Constant("ef"),
             Constant("gh")
         )
@@ -1999,15 +1999,15 @@ Lambda(
 Lambda(
     ListInit(
         New(
-            typeof(Wrapper).GetConstructor()
+            typeof(Wrapper).GetConstructor(new Type[] { })
         ),
         ElementInit(
-            typeof(Wrapper).GetMethod("Add"),
+            typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(string), typeof(string) }, null),
             Constant("ab"),
             Constant("cd")
         ),
         ElementInit(
-            typeof(Wrapper).GetMethod("Add"),
+            typeof(Wrapper).GetMethod("Add", BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(string) }, null),
             Constant("ef")
         )
     )
@@ -2089,20 +2089,20 @@ Lambda(
 ---- VBCompiler.InstanceMethod0Arguments
 Lambda(
     Call(s,
-        typeof(string).GetMethod("ToString")
+        typeof(string).GetMethod("ToString", new Type[] { })
     )
 )
 ---- VBCompiler.InstanceMethod1Argument
 Lambda(
     Call(s,
-        typeof(string).GetMethod("CompareTo"),
+        typeof(string).GetMethod("CompareTo", new[] { typeof(string) }),
         Constant("")
     )
 )
 ---- VBCompiler.InstanceMethod2Arguments
 Lambda(
     Call(s,
-        typeof(string).GetMethod("IndexOf"),
+        typeof(string).GetMethod("IndexOf", new[] { typeof(char), typeof(int) }),
         Constant('a'),
         Constant(2)
     )
@@ -2114,7 +2114,7 @@ Lambda(
 ---- VBCompiler.InterpolatedString
 Lambda(
     Call(
-        typeof(string).GetMethod("Format"),
+        typeof(string).GetMethod("Format", new[] { typeof(string), typeof(object) }),
         Constant("{0:yyyy-MM-dd}"),
         Convert(
             Constant(#DateTime),
@@ -2231,13 +2231,13 @@ Lambda(
 ---- VBCompiler.NamedType
 Lambda(
     New(
-        typeof(Random).GetConstructor()
+        typeof(Random).GetConstructor(new Type[] { })
     )
 )
 ---- VBCompiler.NamedTypeConstructorParameters
 Lambda(
     New(
-        typeof(Foo).GetConstructor(),
+        typeof(Foo).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(string) }, null),
         Constant("ijkl")
     )
 )
@@ -2245,15 +2245,15 @@ Lambda(
 Lambda(
     MemberInit(
         New(
-            typeof(Foo).GetConstructor(),
+            typeof(Foo).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new[] { typeof(string) }, null),
             Constant("ijkl")
         ),
         Bind(
-            typeof(Foo).GetProperty("Bar"),
+            typeof(Foo).GetProperty("Bar", BindingFlags.Instance | BindingFlags.NonPublic),
             Constant("abcd")
         ),
         Bind(
-            typeof(Foo).GetProperty("Baz"),
+            typeof(Foo).GetProperty("Baz", BindingFlags.Instance | BindingFlags.NonPublic),
             Constant("efgh")
         )
     )
@@ -2262,10 +2262,10 @@ Lambda(
 Lambda(
     MemberInit(
         New(
-            typeof(Foo).GetConstructor()
+            typeof(Foo).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { }, null)
         ),
         Bind(
-            typeof(Foo).GetProperty("Bar"),
+            typeof(Foo).GetProperty("Bar", BindingFlags.Instance | BindingFlags.NonPublic),
             Constant("abcd")
         )
     )
@@ -2274,14 +2274,14 @@ Lambda(
 Lambda(
     MemberInit(
         New(
-            typeof(Foo).GetConstructor()
+            typeof(Foo).GetConstructor(BindingFlags.Instance | BindingFlags.NonPublic, null, new Type[] { }, null)
         ),
         Bind(
-            typeof(Foo).GetProperty("Bar"),
+            typeof(Foo).GetProperty("Bar", BindingFlags.Instance | BindingFlags.NonPublic),
             Constant("abcd")
         ),
         Bind(
-            typeof(Foo).GetProperty("Baz"),
+            typeof(Foo).GetProperty("Baz", BindingFlags.Instance | BindingFlags.NonPublic),
             Constant("efgh")
         )
     )
@@ -2301,7 +2301,7 @@ Lambda(
 ---- VBCompiler.NoParametersVoidReturn
 Lambda(
     Call(
-        typeof(Console).GetMethod("WriteLine")
+        typeof(Console).GetMethod("WriteLine", new Type[] { })
     )
 )
 ---- VBCompiler.NotEqual
@@ -2328,7 +2328,7 @@ Lambda(s,
 ---- VBCompiler.OneParameterVoidReturn
 Lambda(
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         s
     ),
     var s = Parameter(
@@ -2393,7 +2393,7 @@ Lambda(
 ---- VBCompiler.StaticMethod0Arguments
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyMethod")
+        typeof(Dummy).GetMethod("DummyMethod", BindingFlags.Static | BindingFlags.NonPublic)
     )
 )
 ---- VBCompiler.StaticMethod1Argument
@@ -2406,12 +2406,12 @@ Lambda(
 ---- VBCompiler.StaticMethod2Arguments
 Lambda(
     Call(
-        typeof(string).GetMethod("Join"),
+        typeof(string).GetMethod("Join", new[] { typeof(string), typeof(string[]) }),
         Constant(","),
         NewArrayInit(
             typeof(string),
             New(
-                typeof(string).GetConstructor(),
+                typeof(string).GetConstructor(new[] { typeof(char[]) }),
                 arr
             )
         )
@@ -2420,7 +2420,7 @@ Lambda(
 ---- VBCompiler.StaticMethod2ArgumentsWithoutConversion
 Lambda(
     Call(
-        typeof(string).GetMethod("Join"),
+        typeof(string).GetMethod("Join", new[] { typeof(string), typeof(IEnumerable<char>) }),
         Constant(","), arr
     )
 )
@@ -2431,7 +2431,7 @@ Lambda(
 ---- VBCompiler.StringConcat
 Lambda(
     Call(
-        typeof(string).GetMethod("Concat"),
+        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
     var s1 = Parameter(
@@ -2446,7 +2446,7 @@ Lambda(
 ---- VBCompiler.StringConcatOperator
 Lambda(
     Call(
-        typeof(string).GetMethod("Concat"),
+        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
     var s1 = Parameter(
@@ -2461,7 +2461,7 @@ Lambda(
 ---- VBCompiler.StringConcatOperatorParamArray
 Lambda(
     Call(
-        typeof(string).GetMethod("Concat"),
+        typeof(string).GetMethod("Concat", new[] { typeof(string[]) }),
         NewArrayInit(
             typeof(string),
             s1, s2, s1, s2, s1, s2
@@ -2487,7 +2487,7 @@ Lambda(
 ---- VBCompiler.TwoParametersNonVoidReturn
 Lambda(
     Call(
-        typeof(string).GetMethod("Concat"),
+        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
     var s1 = Parameter(
@@ -2502,9 +2502,9 @@ Lambda(
 ---- VBCompiler.TwoParametersVoidReturn
 Lambda(
     Call(
-        typeof(Console).GetMethod("WriteLine"),
+        typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         Call(
-            typeof(string).GetMethod("Concat"),
+            typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
             s1, s2
         )
     ),
@@ -2637,7 +2637,7 @@ Lambda(
 ---- VBCompiler.ExtensionMethod1Argument
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod1Argument"),
+        typeof(Dummy).GetMethod("DummyExtensionMethod1Argument", BindingFlags.Static | BindingFlags.NonPublic),
         Convert(lst,
             typeof(IEnumerable<string>)
         ),
@@ -2647,7 +2647,7 @@ Lambda(
 ---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod1Argument"),
+        typeof(Dummy).GetMethod("DummyExtensionMethod1Argument", BindingFlags.Static | BindingFlags.NonPublic),
         lst,
         Constant(1)
     )
@@ -2655,7 +2655,7 @@ Lambda(
 ---- VBCompiler.ExtensionMethod2Arguments
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments"),
+        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
         Convert(lst,
             typeof(IEnumerable<string>)
         ),
@@ -2666,7 +2666,7 @@ Lambda(
 ---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments"),
+        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
         lst,
         Constant(5),
         Constant(6)
@@ -2675,7 +2675,7 @@ Lambda(
 ---- CSCompiler.ExtensionMethod1Argument
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments"),
+        typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments", BindingFlags.Static | BindingFlags.NonPublic),
         lst,
         Constant(1)
     )
@@ -2683,7 +2683,7 @@ Lambda(
 ---- CSCompiler.ExtensionMethod2Arguments
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments"),
+        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
         lst,
         Constant(5),
         Constant(17)
@@ -2691,13 +2691,13 @@ Lambda(
 )
 ---- FactoryMethods.ExtensionMethod1Argument
 Call(
-    typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments"),
+    typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments", BindingFlags.Static | BindingFlags.NonPublic),
     lstString,
     Constant(1)
 )
 ---- FactoryMethods.ExtensionMethod2Arguments
 Call(
-    typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments"),
+    typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
     lstString,
     Constant(5),
     Constant(17)
@@ -2711,7 +2711,7 @@ Lambda(
 ---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
 Lambda(
     Call(
-        typeof(Enumerable).GetMethod("Count"),
+        typeof(Enumerable).GetMethod("Count", new[] { typeof(IEnumerable<string>) }),
         lst
     )
 )

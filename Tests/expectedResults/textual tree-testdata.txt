@@ -496,7 +496,7 @@ Lambda (Func<string>)
 ---- CSCompiler.ArrayLength
 Lambda (Func<int>)
     · Body - ArrayLength (int) = 0
-        · Operand - MemberAccess (string[]) arr = new[] {  }
+        · Operand - MemberAccess (string[]) arr = new string[] { }
             · Expression - Constant (<closure>) = #<closure>
 ---- CSCompiler.Convert
 Lambda (Func<object>)
@@ -2000,7 +2000,7 @@ Lambda (Func<string[,][]>)
 ---- VBCompiler.ArrayLength
 Lambda (Func<int>)
     · Body - ArrayLength (int) = 0
-        · Operand - MemberAccess (string[]) $VB$Local_arr = new[] {  }
+        · Operand - MemberAccess (string[]) $VB$Local_arr = new string[] { }
             · Expression - Constant (<closure>) = #<closure>
 ---- VBCompiler.Convert
 Lambda (Func<Random>)

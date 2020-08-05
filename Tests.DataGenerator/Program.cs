@@ -21,7 +21,7 @@ namespace Tests.DataGenerator {
 
                 var language = formatter == VisualBasic ? VisualBasic : CSharp;
 
-                foreach (var (category, source, name, o) in Objects.Get().Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"))) {
+                foreach (var (category, source, name, o) in Objects.Get().OrderBy(x => ordering[$"{x.source}.{x.name}"])) {
                     lines.Add($"---- {source}.{name}");
                     var toWrite = o switch
                     {
@@ -33,6 +33,11 @@ namespace Tests.DataGenerator {
                         LabelTarget labelTarget => labelTarget.ToString(formatter, language),
                         _ => throw new NotImplementedException(),
                     };
+                    if (formatter == FactoryMethods) {
+                        toWrite = toWrite.Replace(@"// using static System.Linq.Expressions.Expression
+
+", "");
+                    }
                     lines.Add(toWrite);
                 }
 
