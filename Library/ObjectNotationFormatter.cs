@@ -5,15 +5,18 @@ using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using static ZSpitz.Util.Functions;
-using static ExpressionTreeToString.FormatterNames;
 using static ExpressionTreeToString.Globals;
 using System.Collections;
+using OneOf;
+using static ZSpitz.Util.Language;
 
 namespace ExpressionTreeToString {
     public class ObjectNotationFormatter : WriterBase {
-        public ObjectNotationFormatter(object o, string language) : base(o, language) { }
+        public ObjectNotationFormatter(object o, OneOf<string, Language?> languageArg) : 
+            base(o, ResolveLanguage(languageArg) ?? throw new ArgumentException("Invalid language")) { }
 
-        public ObjectNotationFormatter(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) : base(o, language, out pathSpans) { }
+        public ObjectNotationFormatter(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : 
+            base(o, ResolveLanguage(languageArg) ?? throw new ArgumentException("Invalid language"), out pathSpans) { }
 
         // TODO represent parameters using variables, except for first usage where variable is defined
         // TODO if a given type always has the same node type, don't include

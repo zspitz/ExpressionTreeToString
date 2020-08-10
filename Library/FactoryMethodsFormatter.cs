@@ -6,12 +6,13 @@ using System.Linq;
 using System.Linq.Expressions;
 using static ExpressionTreeToString.Globals;
 using static ZSpitz.Util.Functions;
-using static ExpressionTreeToString.FormatterNames;
 using static System.Linq.Expressions.Expression;
 using System.Collections;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using static System.Linq.Enumerable;
+using OneOf;
+using static ZSpitz.Util.Language;
 
 namespace ExpressionTreeToString {
     public class FactoryMethodsFormatter : WriterBase {
@@ -35,8 +36,10 @@ namespace ExpressionTreeToString {
             WriteEOL();
         }
 
-        public FactoryMethodsFormatter(object o, string language) : base(o, ResolveLanguage(language)) { }
-        public FactoryMethodsFormatter(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) : base(o, ResolveLanguage(language), out pathSpans) { }
+        public FactoryMethodsFormatter(object o, OneOf<string, Language?> languageArg) : 
+            base(o, ResolveLanguage(languageArg) ?? throw new ArgumentException("Invalid language")) { }
+        public FactoryMethodsFormatter(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : 
+            base(o, ResolveLanguage(languageArg) ?? throw new ArgumentException("Invalid language"), out pathSpans) { }
 
         /// <param name="args">The arguments to write. If a tuple of string and node type, will write as single node. If a tuple of string and property type, will write as multiple nodes.</param>
         private void WriteMethodCall(string name, IEnumerable args) {

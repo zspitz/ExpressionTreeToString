@@ -6,33 +6,47 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
-using static ExpressionTreeToString.FormatterNames;
 using static System.Globalization.CultureInfo;
 using ExpressionTreeTestObjects.VB;
+using ZSpitz.Util;
 
 namespace ExpressionTreeToString.Tests {
     public class TestContainer : IClassFixture<ExpectedDataFixture> {
-        public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
+        public static readonly string[] Formatters = new[] {
+            FormatterNames.CSharp, 
+            FormatterNames.VisualBasic, 
+            FormatterNames.FactoryMethods, 
+            FormatterNames.ObjectNotation, 
+            FormatterNames.TextualTree 
+        };
 
         private readonly ExpectedDataFixture fixture;
         public TestContainer(ExpectedDataFixture fixture) => this.fixture = fixture;
 
         private (string toString, HashSet<string> paths) GetToString(string formatter, object o) {
+            Language? language = formatter switch
+            {
+                "Object notation" => Language.CSharp,
+                "Factory methods" => Language.CSharp,
+                "Textual tree" => Language.CSharp,
+                _ => null
+            };
+
             Dictionary<string, (int start, int length)> pathSpans;
             string ret = o switch
             {
-                Expression expr => expr.ToString(formatter, out pathSpans),
-                MemberBinding mbind => mbind.ToString(formatter, out pathSpans),
-                ElementInit init => init.ToString(formatter, out pathSpans),
-                SwitchCase switchCase => switchCase.ToString(formatter, out pathSpans),
-                CatchBlock catchBlock => catchBlock.ToString(formatter, out pathSpans),
-                LabelTarget labelTarget => labelTarget.ToString(formatter, out pathSpans),
+                Expression expr => expr.ToString(formatter, out pathSpans, language),
+                MemberBinding mbind => mbind.ToString(formatter, out pathSpans, language),
+                ElementInit init => init.ToString(formatter, out pathSpans, language),
+                SwitchCase switchCase => switchCase.ToString(formatter, out pathSpans, language),
+                CatchBlock catchBlock => catchBlock.ToString(formatter, out pathSpans, language),
+                LabelTarget labelTarget => labelTarget.ToString(formatter, out pathSpans, language),
                 _ => throw new InvalidOperationException(),
             };
             return (
                 ret,
                 pathSpans.Keys.Select(x => {
-                    if (formatter != ObjectNotation) {
+                    if (formatter != FormatterNames.ObjectNotation) {
                         x = x.Replace("_0", "");
                     }
                     return x;
@@ -57,13 +71,13 @@ namespace ExpressionTreeToString.Tests {
 
             // the paths from the Object Notation formatter serve as a reference for all the other formatters
 
-            if (formatter == ObjectNotation) {
+            if (formatter == FormatterNames.ObjectNotation) {
                 fixture.expectedPaths[objectName] = paths;
                 return;
             }
 
             if (!fixture.expectedPaths.TryGetValue(objectName, out var expectedPaths)) {
-                (_, expectedPaths) = GetToString(ObjectNotation, o);
+                (_, expectedPaths) = GetToString(FormatterNames.ObjectNotation, o);
                 fixture.expectedPaths[objectName] = expectedPaths;
             }
 

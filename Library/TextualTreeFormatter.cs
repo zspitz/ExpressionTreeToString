@@ -9,14 +9,15 @@ using static ZSpitz.Util.Functions;
 using static ExpressionTreeToString.Globals;
 using System.Collections;
 using ExpressionTreeToString.Util;
+using OneOf;
 
 namespace ExpressionTreeToString {
     public class TextualTreeFormatter : WriterBase {
-        public TextualTreeFormatter(object o, string language) : base(o, language) { }
+        public TextualTreeFormatter(object o, OneOf<string, Language?> languageArg) : base(o, languageArg) { }
 
-        public TextualTreeFormatter(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) : base(o, language, out pathSpans) { }
+        public TextualTreeFormatter(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : base(o, languageArg, out pathSpans) { }
 
-        private ValueExtractor valueExtractor = new ValueExtractor();
+        private readonly ValueExtractor valueExtractor = new ValueExtractor();
 
         private void WriteTextualNode(object o) {
             var nodeType = "";

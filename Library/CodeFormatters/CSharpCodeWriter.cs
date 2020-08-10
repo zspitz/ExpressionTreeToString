@@ -16,8 +16,8 @@ using static ExpressionTreeToString.CSharpBlockMetadata;
 
 namespace ExpressionTreeToString {
     public class CSharpCodeWriter : CodeWriterBase {
-        public CSharpCodeWriter(object o) : base(o, FormatterNames.CSharp) { }
-        public CSharpCodeWriter(object o, out Dictionary<string, (int start, int length)> pathSpans) : base(o, FormatterNames.CSharp, out pathSpans) { }
+        public CSharpCodeWriter(object o) : base(o, Language.CSharp) { }
+        public CSharpCodeWriter(object o, out Dictionary<string, (int start, int length)> pathSpans) : base(o, Language.CSharp, out pathSpans) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
             [Add] = "+",

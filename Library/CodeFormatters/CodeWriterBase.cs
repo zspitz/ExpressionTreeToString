@@ -4,11 +4,12 @@ using System.Linq.Expressions;
 using static ExpressionTreeToString.Globals;
 using static System.Linq.Expressions.ExpressionType;
 using ZSpitz.Util;
+using OneOf;
 
 namespace ExpressionTreeToString {
     public abstract class CodeWriterBase : WriterBase {
-        protected CodeWriterBase(object o, string language) : base(o, language) { }
-        protected CodeWriterBase(object o, string language, out Dictionary<string, (int start, int length)> pathSpans) : base(o, language, out pathSpans) { }
+        protected CodeWriterBase(object o, OneOf<string, Language?> languageArg) : base(o, languageArg) { }
+        protected CodeWriterBase(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : base(o, languageArg, out pathSpans) { }
 
         protected abstract void WriteBinary(ExpressionType nodeType, string leftPath, Expression left, string rightPath, Expression right);
 
