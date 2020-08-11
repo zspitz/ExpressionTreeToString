@@ -9,26 +9,27 @@ using Xunit;
 using static System.Globalization.CultureInfo;
 using ExpressionTreeTestObjects.VB;
 using ZSpitz.Util;
+using static ExpressionTreeToString.Formatter;
 
 namespace ExpressionTreeToString.Tests {
     public class TestContainer : IClassFixture<ExpectedDataFixture> {
-        public static readonly string[] Formatters = new[] {
-            FormatterNames.CSharp, 
-            FormatterNames.VisualBasic, 
-            FormatterNames.FactoryMethods, 
-            FormatterNames.ObjectNotation, 
-            FormatterNames.TextualTree 
+        public static readonly Formatter[] Formatters = new[] {
+            CSharp, 
+            VisualBasic, 
+            FactoryMethods, 
+            ObjectNotation, 
+            TextualTree 
         };
 
         private readonly ExpectedDataFixture fixture;
         public TestContainer(ExpectedDataFixture fixture) => this.fixture = fixture;
 
-        private (string toString, HashSet<string> paths) GetToString(string formatter, object o) {
+        private (string toString, HashSet<string> paths) GetToString(Formatter formatter, object o) {
             Language? language = formatter switch
             {
-                "Object notation" => Language.CSharp,
-                "Factory methods" => Language.CSharp,
-                "Textual tree" => Language.CSharp,
+                ObjectNotation => Language.CSharp,
+                FactoryMethods => Language.CSharp,
+                TextualTree => Language.CSharp,
                 _ => null
             };
 
@@ -46,7 +47,7 @@ namespace ExpressionTreeToString.Tests {
             return (
                 ret,
                 pathSpans.Keys.Select(x => {
-                    if (formatter != FormatterNames.ObjectNotation) {
+                    if (formatter != ObjectNotation) {
                         x = x.Replace("_0", "");
                     }
                     return x;
@@ -56,7 +57,7 @@ namespace ExpressionTreeToString.Tests {
 
         [Theory]
         [MemberData(nameof(TestObjectsData))]
-        public void TestMethod(string formatter, string objectName, string category, object o) {
+        public void TestMethod(Formatter formatter, string objectName, string category, object o) {
             CurrentCulture = new CultureInfo("en-IL");
 
             var expected = fixture.expectedStrings[(formatter, objectName)];
@@ -71,20 +72,20 @@ namespace ExpressionTreeToString.Tests {
 
             // the paths from the Object Notation formatter serve as a reference for all the other formatters
 
-            if (formatter == FormatterNames.ObjectNotation) {
+            if (formatter == ObjectNotation) {
                 fixture.expectedPaths[objectName] = paths;
                 return;
             }
 
             if (!fixture.expectedPaths.TryGetValue(objectName, out var expectedPaths)) {
-                (_, expectedPaths) = GetToString(FormatterNames.ObjectNotation, o);
+                (_, expectedPaths) = GetToString(ObjectNotation, o);
                 fixture.expectedPaths[objectName] = expectedPaths;
             }
 
             Assert.True(expectedPaths.IsSupersetOf(paths));
         }
 
-        public static TheoryData<string, string, string, object> TestObjectsData => Objects.Get().SelectMany(x => 
+        public static TheoryData<Formatter, string, string, object> TestObjectsData => Objects.Get().SelectMany(x => 
             Formatters.Select(formatter => (formatter, $"{x.source}.{x.name}", x.category, x.o))
         ).ToTheoryData();
 

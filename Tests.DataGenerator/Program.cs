@@ -4,10 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
-using static ExpressionTreeToString.FormatterNames;
 using ExpressionTreeTestObjects.VB;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Linq;
+using static ExpressionTreeToString.Formatter;
+using ZSpitz.Util;
 
 namespace Tests.DataGenerator {
     class Program {
@@ -19,7 +19,7 @@ namespace Tests.DataGenerator {
             foreach (var (formatter, filename) in formatterFileMapping) {
                 var ordering = parseFileOrder(@$"C:\Users\Spitz\source\repos\zspitz\ExpressionTreeToString\Tests\expectedResults\{filename}-testdata.txt");
 
-                var language = formatter == VisualBasic ? VisualBasic : CSharp;
+                var language = formatter == VisualBasic ? Language.VisualBasic : Language.CSharp;
 
                 foreach (var (category, source, name, o) in Objects.Get().OrderBy(x => ordering[$"{x.source}.{x.name}"])) {
                     lines.Add($"---- {source}.{name}");
@@ -53,7 +53,7 @@ namespace Tests.DataGenerator {
                 .Select((x, index) => (x.Substring(5), index))
                 .ToDictionary(x => x.Item1, x => x.index);
 
-        static Dictionary<string, string> formatterFileMapping = new Dictionary<string, string> {
+        static Dictionary<Formatter, string> formatterFileMapping = new Dictionary<Formatter, string> {
             [CSharp] = "csharp",
             [VisualBasic] = "visual basic",
             [FactoryMethods] = "factory methods",

@@ -24,7 +24,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="ZSpitz.Util" Version="0.1.48" />
+    <PackageReference Include="ZSpitz.Util" Version="0.1.49" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,16 +34,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="expectedResults\object notation-testdata.txt">
+    <None Update="expectedResults\objectnotation-testdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="expectedResults\factory methods-testdata.txt">
+    <None Update="expectedResults\factorymethods-testdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="expectedResults\textual tree-testdata.txt">
+    <None Update="expectedResults\textualtree-testdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="expectedResults\visual basic-testdata.txt">
+    <None Update="expectedResults\visualbasic-testdata.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="expectedResults\csharp-testdata.txt">

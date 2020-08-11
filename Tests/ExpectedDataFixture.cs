@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using static ExpressionTreeToString.FormatterNames;
 using static ExpressionTreeToString.Tests.Functions;
 using static System.Environment;
 using static ZSpitz.Util.Functions;
 using System.IO;
+using static ExpressionTreeToString.Formatter;
 
 namespace ExpressionTreeToString.Tests {
     public class ExpectedDataFixture {
-        public static readonly string[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
+        public static readonly Formatter[] Formatters = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
 
-        public readonly Dictionary<(string formatter, string objectName), string> expectedStrings = new Dictionary<(string formatter, string objectName), string>();
+        public readonly Dictionary<(Formatter formatter, string objectName), string> expectedStrings = new Dictionary<(Formatter formatter, string objectName), string>();
         public readonly Dictionary<string, HashSet<string>> expectedPaths = new Dictionary<string, HashSet<string>>();
         public ExpectedDataFixture() {
-            foreach (var formatter in Formatters.Except(new[] { DebugView, "ToString" })) {
-                var filename = formatter == CSharp ? "CSharp" : formatter;
+            foreach (var formatter in Formatters) {
+                var filename = formatter.ToString();
                 var expectedDataPath = GetFullFilename($"{filename.ToLower()}-testdata.txt");
                 string testName = "";
                 string expected = "";

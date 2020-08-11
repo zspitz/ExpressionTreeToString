@@ -5,28 +5,32 @@ using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
-using static ExpressionTreeToString.FormatterNames;
 using static System.Linq.Expressions.ExpressionType;
-using static ZSpitz.Util.Functions;
 using OneOf;
+using ExpressionTreeToString.Util;
+using static ExpressionTreeToString.Formatter;
 
 namespace ExpressionTreeToString {
     public abstract class WriterBase {
-        internal static WriterBase Create(object o, string formatterName, OneOf<string, Language?> languageArg) =>
-            formatterName == CSharp ? new CSharpCodeWriter(o) :
-            formatterName == VisualBasic ? new VBCodeWriter(o) :
-            formatterName == FactoryMethods ? new FactoryMethodsFormatter(o, languageArg) :
-            formatterName == ObjectNotation ? new ObjectNotationFormatter(o, languageArg) :
-            formatterName == TextualTree ? (WriterBase)new TextualTreeFormatter(o, languageArg) :
-            throw new NotImplementedException("Unknown formatter");
+        internal static WriterBase Create(object o, OneOf<string, Formatter> formatterArg, OneOf<string, Language?> languageArg) =>
+            formatterArg.ResolveFormatter() switch {
+                CSharp => new CSharpCodeWriter(o),
+                VisualBasic => new VBCodeWriter(o),
+                FactoryMethods => new FactoryMethodsFormatter(o, languageArg),
+                ObjectNotation => new ObjectNotationFormatter(o, languageArg),
+                TextualTree => new TextualTreeFormatter(o, languageArg),
+                _ => throw new ArgumentException("Unknown formatter")
+            };
 
-        public static WriterBase Create(object o, string formatterName, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) =>
-            formatterName == CSharp ? new CSharpCodeWriter(o, out pathSpans) :
-            formatterName == VisualBasic ? new VBCodeWriter(o, out pathSpans) :
-            formatterName == FactoryMethods ? new FactoryMethodsFormatter(o, languageArg, out pathSpans) :
-            formatterName == ObjectNotation ? new ObjectNotationFormatter(o, languageArg, out pathSpans) :
-            formatterName == TextualTree ? (WriterBase)new TextualTreeFormatter(o, languageArg, out pathSpans) :
-            throw new NotImplementedException("Unknown formatter");
+        public static WriterBase Create(object o, OneOf<string, Formatter> formatterArg, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) =>
+            formatterArg.ResolveFormatter() switch {
+                CSharp => new CSharpCodeWriter(o, out pathSpans),
+                VisualBasic => new VBCodeWriter(o, out pathSpans),
+                FactoryMethods => new FactoryMethodsFormatter(o, languageArg, out pathSpans),
+                ObjectNotation => new ObjectNotationFormatter(o, languageArg, out pathSpans),
+                TextualTree => new TextualTreeFormatter(o, languageArg, out pathSpans),
+                _ => throw new ArgumentException("Unknown formatter")
+            };
 
         private readonly StringBuilder sb = new StringBuilder();
         private readonly Dictionary<string, (int start, int length)>? pathSpans;
@@ -36,13 +40,13 @@ namespace ExpressionTreeToString {
 
         // Unfortunately, C# doesn't support union types ...
         protected WriterBase(object o, OneOf<string, Language?> languageArg) {
-            language = ResolveLanguage(languageArg);
+            language = languageArg.ResolveLanguage();
             PreWrite();
             WriteNode("", o);
         }
 
         protected WriterBase(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) {
-            language = ResolveLanguage(languageArg);
+            language = languageArg.ResolveLanguage();
             this.pathSpans = new Dictionary<string, (int start, int length)>();
             PreWrite();
             WriteNode("", o);

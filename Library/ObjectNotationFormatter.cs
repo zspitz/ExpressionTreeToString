@@ -13,10 +13,10 @@ using static ZSpitz.Util.Language;
 namespace ExpressionTreeToString {
     public class ObjectNotationFormatter : WriterBase {
         public ObjectNotationFormatter(object o, OneOf<string, Language?> languageArg) : 
-            base(o, ResolveLanguage(languageArg) ?? throw new ArgumentException("Invalid language")) { }
+            base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language")) { }
 
         public ObjectNotationFormatter(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : 
-            base(o, ResolveLanguage(languageArg) ?? throw new ArgumentException("Invalid language"), out pathSpans) { }
+            base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans) { }
 
         // TODO represent parameters using variables, except for first usage where variable is defined
         // TODO if a given type always has the same node type, don't include

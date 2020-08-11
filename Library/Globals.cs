@@ -7,6 +7,16 @@ using System.Reflection;
 using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionTreeToString {
+    public enum Formatter {
+        CSharp,
+        VisualBasic,
+        FactoryMethods,
+        ObjectNotation,
+        TextualTree,
+        [Obsolete("Not yet implemented")] DebugView,
+        [Obsolete("Not yet implemented")] ToString
+    }
+
     public static class FormatterNames {
         public const string CSharp = "C#";
         public const string VisualBasic = "Visual Basic";
@@ -23,16 +33,12 @@ namespace ExpressionTreeToString {
         static Globals() {
             var methods = typeof(string)
                 .GetMethods()
-                .Where(x => {
-                    switch (x.Name) {
-                        case "Concat":
-                            return x.GetParameters().All(
-                                y => y.ParameterType.In(typeof(string), typeof(string[]))
-                            );
-                        case "Format":
-                            return x.GetParameters().First().ParameterType == typeof(string);
-                        default: return false;
-                    }
+                .Where(x => x.Name switch {
+                    "Concat" => x.GetParameters().All(
+                        y => y.ParameterType.In(typeof(string), typeof(string[]))
+                    ),
+                    "Format" => x.GetParameters().First().ParameterType == typeof(string),
+                    _ => false,
                 })
                 .ToLookup(x => x.Name);
 
