@@ -226,7 +226,7 @@ namespace ExpressionTreeToString {
             Write("}");
         }
 
-        protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
+        protected override void WriteParameterDeclaration(ParameterExpression prm) {
             if (prm.IsByRef) { Write("ref "); }
             Write($"{prm.Type.FriendlyName(language)} {prm.Name}");
         }

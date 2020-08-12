@@ -293,7 +293,7 @@ namespace ExpressionTreeToString {
             Write($"End {lambdaKeyword}");
         }
 
-        protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
+        protected override void WriteParameterDeclaration(ParameterExpression prm) {
             if (prm.IsByRef) { Write("ByRef "); }
             Write($"{prm.Name} As {prm.Type.FriendlyName(language)}");
         }

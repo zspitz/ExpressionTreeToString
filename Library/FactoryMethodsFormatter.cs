@@ -15,7 +15,7 @@ using OneOf;
 using static ZSpitz.Util.Language;
 
 namespace ExpressionTreeToString {
-    public class FactoryMethodsFormatter : WriterBase {
+    public class FactoryMethodsFormatter : BuiltinsFormatter {
         public const string CSharpUsing = "// using static System.Linq.Expressions.Expression";
         public const string VisualBasicUsing = "' Imports System.Linq.Expressions.Expression";
 
@@ -435,7 +435,7 @@ namespace ExpressionTreeToString {
         protected override void WriteSetIndexBinder(SetIndexBinder setIndexBinder, IList<Expression> args) => throw new NotImplementedException();
         protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) => throw new NotImplementedException();
         protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) => throw new NotImplementedException();
-        protected override void WriteParameterDeclarationImpl(ParameterExpression prm) {
+        protected override void WriteParameterDeclaration(ParameterExpression prm) {
             if (language == CSharp) {
                 Write($"var {prm.Name} = ");
             } else { // language == VisualBasic

@@ -7,7 +7,7 @@ using ZSpitz.Util;
 using OneOf;
 
 namespace ExpressionTreeToString {
-    public abstract class CodeWriterBase : WriterBase {
+    public abstract class CodeWriterBase : BuiltinsFormatter {
         protected CodeWriterBase(object o, OneOf<string, Language?> languageArg) : base(o, languageArg) { }
         protected CodeWriterBase(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : base(o, languageArg, out pathSpans) { }
 
