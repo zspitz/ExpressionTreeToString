@@ -173,6 +173,10 @@ namespace ExpressionTreeToString {
                     WriteDynamic((DynamicExpression)expr);
                     break;
 
+                case Extension:
+                    WriteExtension(expr);
+                    break;
+
                 default:
                     throw new NotImplementedException($"NodeType: {expr.NodeType}, Expression object type: {expr.GetType().Name}");
             }
@@ -221,6 +225,8 @@ namespace ExpressionTreeToString {
                     throw new NotImplementedException($"Dynamic expression with binder type {expr.Binder} not implemented");
             }
         }
+
+        protected virtual void WriteExtension(Expression expr) => throw new NotImplementedException("NodeType: Exension not implemented.");
 
         // .NET 3.5 expression types
         protected abstract void WriteBinary(BinaryExpression expr);
