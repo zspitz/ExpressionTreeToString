@@ -4,6 +4,7 @@ using static System.Linq.Expressions.Expression;
 using static ExpressionTreeTestObjects.Globals;
 using System.Linq;
 using System.Collections;
+using TestObjects;
 
 namespace ExpressionTreeTestObjects {
     [ObjectContainer]
@@ -81,5 +82,8 @@ namespace ExpressionTreeTestObjects {
         internal static readonly Expression MakeInvocation = Invoke(
             Lambda(Constant(5))
         );
+
+        [TestObject("")]
+        internal static readonly Expression MakeExtensionExpression = new ExtensionExpression();
     }
 }
