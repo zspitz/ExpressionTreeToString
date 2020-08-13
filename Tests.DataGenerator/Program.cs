@@ -21,7 +21,8 @@ namespace Tests.DataGenerator {
 
                 var language = formatter == VisualBasic ? Language.VisualBasic : Language.CSharp;
 
-                foreach (var (category, source, name, o) in Objects.Get().OrderBy(x => ordering[$"{x.source}.{x.name}"])) {
+                // foreach (var (category, source, name, o) in Objects.Get().OrderBy(x => ordering[$"{x.source}.{x.name}"])) {
+                foreach (var (category, source, name, o) in Objects.Get().Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"))) {
                     lines.Add($"---- {source}.{name}");
                     var toWrite = o switch
                     {
@@ -55,10 +56,10 @@ namespace Tests.DataGenerator {
 
         static Dictionary<Formatter, string> formatterFileMapping = new Dictionary<Formatter, string> {
             [CSharp] = "csharp",
-            [VisualBasic] = "visual basic",
-            [FactoryMethods] = "factory methods",
-            [ObjectNotation] = "object notation",
-            [TextualTree] ="textual tree"
+            [VisualBasic] = "visualbasic",
+            [FactoryMethods] = "factorymethods",
+            [ObjectNotation] = "objectnotation",
+            [TextualTree] ="textualtree"
         };
     }
 }

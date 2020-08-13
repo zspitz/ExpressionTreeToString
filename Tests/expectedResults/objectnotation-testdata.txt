@@ -8486,4 +8486,9 @@ new Expression<Func<int>> {
     },
     ReturnType = typeof(int)
 }
+---- FactoryMethods.MakeExtensionExpression
+new ExtensionExpression {
+    NodeType = ExpressionType.Extension,
+    Type = typeof(int)
+}
 ------

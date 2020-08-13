@@ -2715,4 +2715,8 @@ Lambda(
         lst
     )
 )
+---- FactoryMethods.MakeExtensionExpression
+--
+-- Not implemented - NodeType: Exension not implemented.
+--
 ------

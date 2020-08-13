@@ -1076,4 +1076,8 @@ lstString.DummyExtensionMethod2Arguments(5, 17)
 Function() lst.Count
 ---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
 Function() lst.Count
+---- FactoryMethods.MakeExtensionExpression
+--
+-- Not implemented - NodeType: Exension not implemented.
+--
 ------

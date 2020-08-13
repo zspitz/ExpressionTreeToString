@@ -76,8 +76,9 @@ namespace ExpressionTreeToString {
             try {
                 WriteNodeImpl(o, parameterDeclaration, metadata);
             } catch (NotImplementedException ex) {
-                sb.AppendLine();
-                $"----- Not implemented - {ex.Message} ()".AppendLineTo(sb);
+                $@"--
+-- Not implemented - {ex.Message}
+--".AppendTo(sb);
             }
 
             if (pathSpans != null) {
