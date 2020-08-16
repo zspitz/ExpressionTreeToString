@@ -2174,5 +2174,5 @@ Lambda (Func<int>)
         · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
             · Expression - Constant (<closure>) = #<closure>
 ---- FactoryMethods.MakeExtensionExpression
-Extension (int) = 42
+Extension (int) = 69
 ------
