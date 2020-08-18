@@ -11,10 +11,10 @@ using ExpressionTreeToString.Util;
 using OneOf;
 
 namespace ExpressionTreeToString {
-    public class TextualTreeFormatter : FormatterBase {
-        public TextualTreeFormatter(object o, OneOf<string, Language?> languageArg) : base(o, languageArg) { }
+    public class TextualTreeWriterVisitor : WriterVisitorBase {
+        public TextualTreeWriterVisitor(object o, OneOf<string, Language?> languageArg) : base(o, languageArg) { }
 
-        public TextualTreeFormatter(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : base(o, languageArg, out pathSpans) { }
+        public TextualTreeWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : base(o, languageArg, out pathSpans) { }
 
         private readonly ValueExtractor valueExtractor = new ValueExtractor();
 

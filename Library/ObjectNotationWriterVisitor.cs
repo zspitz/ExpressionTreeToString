@@ -10,11 +10,11 @@ using OneOf;
 using static ZSpitz.Util.Language;
 
 namespace ExpressionTreeToString {
-    public class ObjectNotationFormatter : FormatterBase {
-        public ObjectNotationFormatter(object o, OneOf<string, Language?> languageArg) : 
+    public class ObjectNotationWriterVisitor : WriterVisitorBase {
+        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg) : 
             base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language")) { }
 
-        public ObjectNotationFormatter(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : 
+        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : 
             base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans) { }
 
         protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {

@@ -6,20 +6,20 @@ using System.Text;
 using OneOf;
 
 namespace ExpressionTreeToString {
-    public abstract class FormatterBase {
+    public abstract class WriterVisitorBase {
         private readonly StringBuilder sb = new StringBuilder();
         private readonly Dictionary<string, (int start, int length)>? pathSpans;
 
         /// <summary>Determines how to render literals and types</summary>
         protected readonly Language? language;
 
-        protected FormatterBase(object o, OneOf<string, Language?> languageArg) {
+        protected WriterVisitorBase(object o, OneOf<string, Language?> languageArg) {
             language = languageArg.ResolveLanguage();
             PreWrite();
             WriteNode("", o);
         }
 
-        protected FormatterBase(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) {
+        protected WriterVisitorBase(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) {
             language = languageArg.ResolveLanguage();
             this.pathSpans = new Dictionary<string, (int start, int length)>();
             PreWrite();

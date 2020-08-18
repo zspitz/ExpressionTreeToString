@@ -15,7 +15,7 @@ using OneOf;
 using static ZSpitz.Util.Language;
 
 namespace ExpressionTreeToString {
-    public class FactoryMethodsFormatter : BuiltinsFormatter {
+    public class FactoryMethodsWriterVisitor : BuiltinsWriterVisitor {
         public const string CSharpUsing = "// using static System.Linq.Expressions.Expression";
         public const string VisualBasicUsing = "' Imports System.Linq.Expressions.Expression";
 
@@ -36,9 +36,9 @@ namespace ExpressionTreeToString {
             WriteEOL();
         }
 
-        public FactoryMethodsFormatter(object o, OneOf<string, Language?> languageArg) : 
+        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg) : 
             base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language")) { }
-        public FactoryMethodsFormatter(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : 
+        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : 
             base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans) { }
 
         /// <param name="args">The arguments to write. If a tuple of string and node type, will write as single node. If a tuple of string and property type, will write as multiple nodes.</param>

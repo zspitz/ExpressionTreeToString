@@ -9,11 +9,11 @@ using Xunit;
 using static System.Globalization.CultureInfo;
 using ExpressionTreeTestObjects.VB;
 using ZSpitz.Util;
-using static ExpressionTreeToString.Formatter;
+using static ExpressionTreeToString.BuiltinRenderer;
 
 namespace ExpressionTreeToString.Tests {
     public class TestContainer : IClassFixture<ExpectedDataFixture> {
-        public static readonly Formatter[] Formatters = new[] {
+        public static readonly BuiltinRenderer[] RendererKeys = new[] {
             CSharp, 
             VisualBasic, 
             FactoryMethods, 
@@ -24,8 +24,8 @@ namespace ExpressionTreeToString.Tests {
         private readonly ExpectedDataFixture fixture;
         public TestContainer(ExpectedDataFixture fixture) => this.fixture = fixture;
 
-        private (string toString, HashSet<string> paths) GetToString(Formatter formatter, object o) {
-            Language? language = formatter switch
+        private (string toString, HashSet<string> paths) GetToString(BuiltinRenderer rendererKey, object o) {
+            Language? language = rendererKey switch
             {
                 ObjectNotation => Language.CSharp,
                 FactoryMethods => Language.CSharp,
@@ -36,18 +36,18 @@ namespace ExpressionTreeToString.Tests {
             Dictionary<string, (int start, int length)> pathSpans;
             string ret = o switch
             {
-                Expression expr => expr.ToString(formatter, out pathSpans, language),
-                MemberBinding mbind => mbind.ToString(formatter, out pathSpans, language),
-                ElementInit init => init.ToString(formatter, out pathSpans, language),
-                SwitchCase switchCase => switchCase.ToString(formatter, out pathSpans, language),
-                CatchBlock catchBlock => catchBlock.ToString(formatter, out pathSpans, language),
-                LabelTarget labelTarget => labelTarget.ToString(formatter, out pathSpans, language),
+                Expression expr => expr.ToString(rendererKey, out pathSpans, language),
+                MemberBinding mbind => mbind.ToString(rendererKey, out pathSpans, language),
+                ElementInit init => init.ToString(rendererKey, out pathSpans, language),
+                SwitchCase switchCase => switchCase.ToString(rendererKey, out pathSpans, language),
+                CatchBlock catchBlock => catchBlock.ToString(rendererKey, out pathSpans, language),
+                LabelTarget labelTarget => labelTarget.ToString(rendererKey, out pathSpans, language),
                 _ => throw new InvalidOperationException(),
             };
             return (
                 ret,
                 pathSpans.Keys.Select(x => {
-                    if (formatter != ObjectNotation) {
+                    if (rendererKey != ObjectNotation) {
                         x = x.Replace("_0", "");
                     }
                     return x;
@@ -57,11 +57,11 @@ namespace ExpressionTreeToString.Tests {
 
         [Theory]
         [MemberData(nameof(TestObjectsData))]
-        public void TestMethod(Formatter formatter, string objectName, string category, object o) {
+        public void TestMethod(BuiltinRenderer rendererKey, string objectName, string category, object o) {
             CurrentCulture = new CultureInfo("en-IL");
 
-            var expected = fixture.expectedStrings[(formatter, objectName)];
-            var (actual, paths) = GetToString(formatter, o);
+            var expected = fixture.expectedStrings[(rendererKey, objectName)];
+            var (actual, paths) = GetToString(rendererKey, o);
 
             // test that the string result is correct
             Assert.Equal(expected, actual);
@@ -70,9 +70,9 @@ namespace ExpressionTreeToString.Tests {
             // make sure that all paths resolve to a valid object
             Assert.All(paths, path => Assert.NotNull(resolver.Resolve(o, path)));
 
-            // the paths from the Object Notation formatter serve as a reference for all the other formatters
+            // the paths from the Object Notation renderer serve as a reference for all the other renderers
 
-            if (formatter == ObjectNotation) {
+            if (rendererKey == ObjectNotation) {
                 fixture.expectedPaths[objectName] = paths;
                 return;
             }
@@ -85,14 +85,14 @@ namespace ExpressionTreeToString.Tests {
             Assert.True(expectedPaths.IsSupersetOf(paths));
         }
 
-        public static TheoryData<Formatter, string, string, object> TestObjectsData => Objects.Get().SelectMany(x => 
-            Formatters.Select(formatter => (formatter, $"{x.source}.{x.name}", x.category, x.o))
+        public static TheoryData<BuiltinRenderer, string, string, object> TestObjectsData => Objects.Get().SelectMany(x => 
+            RendererKeys.Select(key => (key, $"{x.source}.{x.name}", x.category, x.o))
         ).ToTheoryData();
 
         [Fact]
         public void CheckMissingObjects() {
-            var objectNames = fixture.expectedStrings.GroupBy(x => x.Key.objectName, (key, grp) => (key, grp.Select(x => x.Key.formatter).ToList()));
-            foreach (var (name, formatters) in objectNames) {
+            var objectNames = fixture.expectedStrings.GroupBy(x => x.Key.objectName, (key, grp) => (key, grp.Select(x => x.Key.rendererKey).ToList()));
+            foreach (var (name, key) in objectNames) {
                 var o = Objects.ByName(name);
             }
         }

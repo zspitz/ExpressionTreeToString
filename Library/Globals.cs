@@ -7,7 +7,7 @@ using System.Reflection;
 using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionTreeToString {
-    public enum Formatter {
+    public enum BuiltinRenderer {
         CSharp,
         VisualBasic,
         FactoryMethods,
@@ -17,7 +17,7 @@ namespace ExpressionTreeToString {
         [Obsolete("Not yet implemented")] ToString
     }
 
-    public static class FormatterNames {
+    public static class RendererNames {
         public const string CSharp = "C#";
         public const string VisualBasic = "Visual Basic";
         public const string FactoryMethods = "Factory methods";

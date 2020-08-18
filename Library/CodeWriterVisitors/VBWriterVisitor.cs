@@ -15,9 +15,9 @@ using static ZSpitz.Util.Methods;
 using static ExpressionTreeToString.VBExpressionMetadata;
 
 namespace ExpressionTreeToString {
-    public class VBCodeWriter : CodeWriterBase {
-        public VBCodeWriter(object o) : base(o, Language.VisualBasic) { }
-        public VBCodeWriter(object o, out Dictionary<string, (int start, int length)> pathSpans) : base(o, Language.VisualBasic, out pathSpans) { }
+    public class VBWriterVisitor : CodeWriterVisitor {
+        public VBWriterVisitor(object o) : base(o, Language.VisualBasic) { }
+        public VBWriterVisitor(object o, out Dictionary<string, (int start, int length)> pathSpans) : base(o, Language.VisualBasic, out pathSpans) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
             [Add] = "+",

@@ -2,8 +2,8 @@
 using System.Linq.Expressions;
 
 namespace ExpressionTreeToString.Tests {
-    public class ExtensionExpressionFormatter : CSharpCodeWriter {
-        public ExtensionExpressionFormatter(object o) : base(o) { }
+    public class ExtensionWriterVisitor : CSharpWriterVisitor {
+        public ExtensionWriterVisitor(object o) : base(o) { }
 
         protected override void WriteExtension(Expression expr) {
             if (expr.CanReduce) {
