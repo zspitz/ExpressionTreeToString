@@ -43,6 +43,10 @@ namespace _tests {
 
             //Expression<Func<bool>> expr = () => DateTime.Now.DayOfWeek == DayOfWeek.Monday;
             //Console.WriteLine(expr.ToString("C#"));
+
+            Expression<Func<int, int, string>> expr1 = (i, j) => (i + j + 5).ToString();
+            Console.WriteLine(expr1.ToString("C#"));
+            Console.WriteLine(expr1.ToString("Textual tree", "C#"));
         }
     }
 

@@ -7,7 +7,7 @@ using ZSpitz.Util;
 using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionTreeToString {
-    public abstract class BuiltinsFormatter : WriterBase {
+    public abstract class BuiltinsFormatter : FormatterBase {
         protected BuiltinsFormatter(object o, OneOf<string, Language?> languageArg) : base(o, languageArg) { }
         protected BuiltinsFormatter(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : base(o, languageArg, out pathSpans) { }
 

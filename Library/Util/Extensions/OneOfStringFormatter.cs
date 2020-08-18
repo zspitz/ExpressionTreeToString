@@ -1,18 +1,19 @@
 ﻿using OneOf;
 using System;
-using static ExpressionTreeToString.Formatter;
+using static ExpressionTreeToString.FormatterNames;
 
 namespace ExpressionTreeToString.Util {
     internal static class OneOfStringFormatterExtensions {
-        internal static Formatter ResolveFormatter(this OneOf<string, Formatter> formatterArg) =>
-            formatterArg.IsT1 ?
-                formatterArg.AsT1 :
-                formatterArg.AsT0 switch {
-                    FormatterNames.CSharp => CSharp,
-                    FormatterNames.VisualBasic => VisualBasic,
-                    FormatterNames.FactoryMethods => FactoryMethods,
-                    FormatterNames.ObjectNotation => ObjectNotation,
-                    FormatterNames.TextualTree => TextualTree,
+        internal static string ResolveFormatter(this OneOf<string, Formatter> formatterArg) =>
+            formatterArg.IsT0 ?
+                formatterArg.AsT0 :
+                formatterArg.AsT1 switch
+                {
+                    Formatter.CSharp => CSharp,
+                    Formatter.VisualBasic => VisualBasic,
+                    Formatter.FactoryMethods => FactoryMethods,
+                    Formatter.ObjectNotation => ObjectNotation,
+                    Formatter.TextualTree => TextualTree,
                     _ => throw new ArgumentException("Unknown formatter")
                 };
     }

@@ -10,7 +10,7 @@ using OneOf;
 using static ZSpitz.Util.Language;
 
 namespace ExpressionTreeToString {
-    public class ObjectNotationFormatter : WriterBase {
+    public class ObjectNotationFormatter : FormatterBase {
         public ObjectNotationFormatter(object o, OneOf<string, Language?> languageArg) : 
             base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language")) { }
 

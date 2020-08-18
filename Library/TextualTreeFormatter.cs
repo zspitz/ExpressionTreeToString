@@ -11,7 +11,7 @@ using ExpressionTreeToString.Util;
 using OneOf;
 
 namespace ExpressionTreeToString {
-    public class TextualTreeFormatter : WriterBase {
+    public class TextualTreeFormatter : FormatterBase {
         public TextualTreeFormatter(object o, OneOf<string, Language?> languageArg) : base(o, languageArg) { }
 
         public TextualTreeFormatter(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : base(o, languageArg, out pathSpans) { }

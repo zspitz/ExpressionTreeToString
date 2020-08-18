@@ -4,44 +4,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OneOf;
-using ExpressionTreeToString.Util;
-using static ExpressionTreeToString.Formatter;
 
 namespace ExpressionTreeToString {
-    public abstract class WriterBase {
-        internal static WriterBase Create(object o, OneOf<string, Formatter> formatterArg, OneOf<string, Language?> languageArg) =>
-            formatterArg.ResolveFormatter() switch {
-                CSharp => new CSharpCodeWriter(o),
-                VisualBasic => new VBCodeWriter(o),
-                FactoryMethods => new FactoryMethodsFormatter(o, languageArg),
-                ObjectNotation => new ObjectNotationFormatter(o, languageArg),
-                TextualTree => new TextualTreeFormatter(o, languageArg),
-                _ => throw new ArgumentException("Unknown formatter")
-            };
-
-        public static WriterBase Create(object o, OneOf<string, Formatter> formatterArg, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) =>
-            formatterArg.ResolveFormatter() switch {
-                CSharp => new CSharpCodeWriter(o, out pathSpans),
-                VisualBasic => new VBCodeWriter(o, out pathSpans),
-                FactoryMethods => new FactoryMethodsFormatter(o, languageArg, out pathSpans),
-                ObjectNotation => new ObjectNotationFormatter(o, languageArg, out pathSpans),
-                TextualTree => new TextualTreeFormatter(o, languageArg, out pathSpans),
-                _ => throw new ArgumentException("Unknown formatter")
-            };
-
+    public abstract class FormatterBase {
         private readonly StringBuilder sb = new StringBuilder();
         private readonly Dictionary<string, (int start, int length)>? pathSpans;
 
         /// <summary>Determines how to render literals and types</summary>
         protected readonly Language? language;
 
-        protected WriterBase(object o, OneOf<string, Language?> languageArg) {
+        protected FormatterBase(object o, OneOf<string, Language?> languageArg) {
             language = languageArg.ResolveLanguage();
             PreWrite();
             WriteNode("", o);
         }
 
-        protected WriterBase(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) {
+        protected FormatterBase(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) {
             language = languageArg.ResolveLanguage();
             this.pathSpans = new Dictionary<string, (int start, int length)>();
             PreWrite();

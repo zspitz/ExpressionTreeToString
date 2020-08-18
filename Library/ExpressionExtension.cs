@@ -2,43 +2,44 @@
 using System.Linq.Expressions;
 using OneOf;
 using ZSpitz.Util;
+using static ExpressionTreeToString.Writers;
 
 namespace ExpressionTreeToString {
     public static class ExpressionExtension {
         public static string ToString(this Expression expr, OneOf<string, Formatter> formatterArg, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(expr, formatterArg, language).ToString();
+            Invoke(formatterArg, expr, language);
 
-        public static string ToString(this Expression expr, OneOf<string, Formatter> formatterArg, out Dictionary<string, (int start, int length)> pathSpans, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(expr, formatterArg, language, out pathSpans).ToString();
+        public static string ToString(this Expression expr, OneOf<string, Formatter> formatterArg, out Dictionary<string, (int start, int length)> pathSpans, OneOf<string, Language?> language = default) => 
+            Invoke(formatterArg, expr, language, out pathSpans);
 
         public static string ToString(this ElementInit init, OneOf<string, Formatter> formatterArg, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(init, formatterArg, language).ToString();
+            Invoke(formatterArg, init, language);
 
-        public static string ToString(this ElementInit init, OneOf<string, Formatter> formatterArg, out Dictionary<string, (int start, int length)> pathSpans, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(init, formatterArg, language, out pathSpans).ToString();
+        public static string ToString(this ElementInit init, OneOf<string, Formatter> formatterArg, out Dictionary<string, (int start, int length)> pathSpans, OneOf<string, Language?> language = default) => 
+            Invoke(formatterArg, init, language, out pathSpans);
 
         public static string ToString(this MemberBinding mbind, OneOf<string, Formatter> formatterArg, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(mbind, formatterArg, language).ToString();
+            Invoke(formatterArg, mbind, language);
 
         public static string ToString(this MemberBinding mbind, OneOf<string, Formatter> formatterArg, out Dictionary<string, (int start, int length)> pathSpans, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(mbind, formatterArg, language, out pathSpans).ToString();
+            Invoke(formatterArg, mbind, language, out pathSpans);
 
         public static string ToString(this SwitchCase switchCase, OneOf<string, Formatter> formatterArg, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(switchCase, formatterArg, language).ToString();
+            Invoke(formatterArg, switchCase, language);
 
         public static string ToString(this SwitchCase switchCase, OneOf<string, Formatter> formatterArg, out Dictionary<string, (int start, int length)> pathSpans, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(switchCase, formatterArg, language, out pathSpans).ToString();
+            Invoke(formatterArg, switchCase, language, out pathSpans);
 
         public static string ToString(this CatchBlock catchBlock, OneOf<string, Formatter> formatterArg, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(catchBlock, formatterArg, language).ToString();
+            Invoke(formatterArg, catchBlock, language);
 
         public static string ToString(this CatchBlock catchBlock, OneOf<string, Formatter> formatterArg, out Dictionary<string, (int start, int length)> pathSpans, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(catchBlock, formatterArg, language, out pathSpans).ToString();
+            Invoke(formatterArg, catchBlock, language, out pathSpans);
 
         public static string ToString(this LabelTarget labelTarget, OneOf<string, Formatter> formatterArg, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(labelTarget, formatterArg, language).ToString();
+            Invoke(formatterArg, labelTarget, language);
 
         public static string ToString(this LabelTarget labelTarget, OneOf<string, Formatter> formatterArg, out Dictionary<string, (int start, int length)> pathSpans, OneOf<string, Language?> language = default) =>
-            WriterBase.Create(labelTarget, formatterArg, language, out pathSpans).ToString();
+            Invoke(formatterArg, labelTarget, language, out pathSpans);
     }
 }
