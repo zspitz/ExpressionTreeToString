@@ -59,5 +59,8 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject(Unary)]
         internal static readonly Expression ConstructRethrow = Rethrow();
+
+        [TestObject(Unary)]
+        internal static readonly Expression ConstructUnbox = Unbox(obj, typeof(int));
       }
 }

@@ -36,9 +36,9 @@ namespace ExpressionTreeToString {
             WriteEOL();
         }
 
-        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg) : 
+        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg) :
             base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language")) { }
-        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : 
+        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) :
             base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans) { }
 
         /// <param name="args">The arguments to write. If a tuple of string and node type, will write as single node. If a tuple of string and property type, will write as multiple nodes.</param>
@@ -63,7 +63,7 @@ namespace ExpressionTreeToString {
                     if (
                         (
                             argType!.InheritsFromOrImplementsAny(NodeTypes) ||
-                            arg is MemberInfo || 
+                            arg is MemberInfo ||
                             arg is CallSiteBinder
                         ) && !(
                             arg is ParameterExpression && !parameterDeclaration
@@ -148,22 +148,81 @@ namespace ExpressionTreeToString {
             WriteMethodCall(callExpr.Method.Name, pairs.ToList());
         }
 
+        private static readonly MethodInfo powerMethod = typeof(Math).GetMethod("Pow");
         protected override void WriteBinary(BinaryExpression expr) {
-            if (!BinaryUnaryMethods.TryGetValue(expr.NodeType, out var name)) { throw new InvalidOperationException($"Method not found for '{expr.NodeType}' node type"); }
-            WriteMethodCall(name, new[] { ("Left", expr.Left), ("Right", expr.Right) });
+            var methodName = FactoryMethodNames[expr.NodeType];
+            var args = new List<object?> {
+                ("Left", expr.Left),
+                ("Right", expr.Right)
+            };
+            var types = new List<Type> {
+                typeof(Expression),
+                typeof(Expression)
+            };
+
+            // Method property is always filled for Power/PowerAssign, even if the expression is generated usnig Expression.MakeBinary
+            // It could, however, be something other than Math.Pow; that's handled further on
+            if (expr.NodeType.In(ExpressionType.Power, ExpressionType.PowerAssign) && expr.Method == powerMethod) {
+                WriteMethodCall(methodName, args);
+                return;
+            }
+
+            if (expr.Method is { } || expr.Conversion is { }) {
+                args.Add(expr.Method);
+                types.Add(typeof(MethodInfo));
+            }
+            if (expr.Conversion is { }) {
+                args.Add(expr.Conversion);
+                types.Add(typeof(LambdaExpression));
+            }
+
+            var mi = typeof(Expression).GetMethod(methodName, types.ToArray());
+            if (mi is { }) {
+                WriteMethodCall(methodName, args);
+                return;
+            }
+
+            if (expr.Conversion is { }) {
+                WriteMethodCall(() => MakeBinary(expr.NodeType, expr.Left, expr.Right, false, expr.Method, expr.Conversion));
+            } else if (expr.Method is { }) {
+                WriteMethodCall(() => MakeBinary(expr.NodeType, expr.Left, expr.Right, false, expr.Method));
+            } else {
+                WriteMethodCall(() => MakeBinary(expr.NodeType, expr.Left, expr.Right));
+            }
         }
 
         protected override void WriteUnary(UnaryExpression expr) {
-            if (!BinaryUnaryMethods.TryGetValue(expr.NodeType, out var name)) { throw new InvalidOperationException($"Method not found for '{expr.NodeType}' node type"); }
-            switch (expr.NodeType) {
-                case ExpressionType.Convert:
-                case ExpressionType.ConvertChecked:
-                case ExpressionType.TypeAs:
-                    WriteMethodCall(name, new object[] { ("Operand", expr.Operand), expr.Type });
-                    break;
-                default:
-                    WriteMethodCall(name, new[] { ("Operand", expr.Operand) });
-                    break;
+            var methodName = FactoryMethodNames[expr.NodeType];
+            var args = new List<object> {
+                ("Operand", expr.Operand)
+            };
+            var types = new List<Type> {
+                typeof(Expression)
+            };
+
+            if (
+                (expr.NodeType.In(ExpressionType.Convert, ExpressionType.ConvertChecked, ExpressionType.TypeAs, ExpressionType.Unbox)) ||
+                (expr.NodeType == ExpressionType.Throw && expr.Type != typeof(void))
+            ) {
+                args.Add(expr.Type);
+                types.Add(typeof(Type));
+            }
+
+            if (expr.Method is { }) {
+                args.Add(expr.Method);
+                types.Add(typeof(MethodInfo));
+            }
+
+            var mi = typeof(Expression).GetMethod(methodName, types.ToArray());
+            if (mi is { }) {
+                WriteMethodCall(methodName, args);
+                return;
+            }
+
+            if (expr.Method is { }) {
+                WriteMethodCall(() => MakeUnary(expr.NodeType, expr.Operand, expr.Type, expr.Method));
+            } else {
+                WriteMethodCall(() => MakeUnary(expr.NodeType, expr.Operand, expr.Type));
             }
         }
 
@@ -204,7 +263,7 @@ namespace ExpressionTreeToString {
             WriteMethodCall(() => MakeMemberAccess(expr.Expression, expr.Member));
         }
 
-        protected override void WriteNew(NewExpression expr) => 
+        protected override void WriteNew(NewExpression expr) =>
             WriteMethodCall(() => New(expr.Constructor, expr.Arguments.ToArray()));
 
         protected override void WriteCall(MethodCallExpression expr) {
@@ -223,10 +282,10 @@ namespace ExpressionTreeToString {
             }
         }
 
-        protected override void WriteMemberInit(MemberInitExpression expr) => 
+        protected override void WriteMemberInit(MemberInitExpression expr) =>
             WriteMethodCall(() => MemberInit(expr.NewExpression, expr.Bindings.ToArray()));
 
-        protected override void WriteListInit(ListInitExpression expr) => 
+        protected override void WriteListInit(ListInitExpression expr) =>
             WriteMethodCall(() => ListInit(expr.NewExpression, expr.Initializers.ToArray()));
 
         protected override void WriteNewArray(NewArrayExpression expr) {
@@ -273,7 +332,7 @@ namespace ExpressionTreeToString {
             }
         }
 
-        protected override void WriteInvocation(InvocationExpression expr) => 
+        protected override void WriteInvocation(InvocationExpression expr) =>
             WriteMethodCall(() => Invoke(expr.Expression, expr.Arguments.ToArray()));
 
         protected override void WriteIndex(IndexExpression expr) {
@@ -335,7 +394,8 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteGoto(GotoExpression expr) {
-            var methodName = expr.Kind switch {
+            var methodName = expr.Kind switch
+            {
                 GotoExpressionKind.Break => "Break",
                 GotoExpressionKind.Continue => "Continue",
                 GotoExpressionKind.Return => "Return",
@@ -357,7 +417,7 @@ namespace ExpressionTreeToString {
             }
         }
 
-        protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) => 
+        protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) =>
             WriteMethodCall(() => RuntimeVariables(expr.Variables.ToArray()));
         protected override void WriteDebugInfo(DebugInfoExpression expr) {
             if (expr.IsClear) {
@@ -367,7 +427,7 @@ namespace ExpressionTreeToString {
             }
         }
 
-        protected override void WriteElementInit(ElementInit elementInit) => 
+        protected override void WriteElementInit(ElementInit elementInit) =>
             WriteMethodCall(() => ElementInit(elementInit.AddMethod, elementInit.Arguments.ToArray()));
 
         protected override void WriteBinding(MemberBinding binding) {
@@ -384,7 +444,7 @@ namespace ExpressionTreeToString {
             }
         }
 
-        protected override void WriteSwitchCase(SwitchCase switchCase) => 
+        protected override void WriteSwitchCase(SwitchCase switchCase) =>
             WriteMethodCall(() => SwitchCase(switchCase.Body, switchCase.TestValues.ToArray()));
 
         protected override void WriteCatchBlock(CatchBlock catchBlock) {
@@ -444,7 +504,7 @@ namespace ExpressionTreeToString {
             if (prm.IsByRef) {
                 var type = prm.Type.MakeByRefType();
                 (string, object)[] args = prm.Name.IsNullOrWhitespace() ?
-                    new (string, object)[] { ("Type", type)} :
+                    new (string, object)[] { ("Type", type) } :
                     new (string, object)[] { ("Type", type), ("Name", prm.Name) };
                 WriteMethodCall("Parameter", args);
             } else {
