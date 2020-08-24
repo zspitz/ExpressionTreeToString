@@ -8491,4 +8491,14 @@ new ExtensionExpression {
     NodeType = ExpressionType.Extension,
     Type = typeof(int)
 }
+---- FactoryMethods.ConstructUnbox
+new UnaryExpression {
+    NodeType = ExpressionType.Unbox,
+    Type = typeof(int),
+    Operand = new ParameterExpression {
+        Type = typeof(object),
+        IsByRef = false,
+        Name = "obj"
+    }
+}
 ------

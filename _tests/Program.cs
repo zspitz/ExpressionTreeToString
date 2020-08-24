@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using ExpressionTreeToString;
+using ZSpitz.Util;
 
 namespace _tests {
     class Program {
@@ -18,6 +19,8 @@ namespace _tests {
             //Expression<Func<string, bool>> equal = s => s == "test";
             //LambdaExpression lambda = Expression.Lambda(equal.Body, Expression.Parameter(typeof(string), "s"));
             //Console.WriteLine(equal.ToString("Factory methods"));
+
+            Console.WriteLine(expr.ToString("Textual tree", Language.CSharp));
 
 
             string s = expr.ToString("C#", out Dictionary<string, (int start, int length)> pathSpans);

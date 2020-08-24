@@ -62,7 +62,7 @@ namespace ExpressionTreeToString {
         }.ToHashSet();
 
         private static readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {
-            ArrayLength, ExpressionType.Convert, ConvertChecked, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus, IsTrue, IsFalse,
+            ArrayLength, ExpressionType.Convert, ConvertChecked, Unbox, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus, IsTrue, IsFalse,
             PreIncrementAssign, PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,
             Increment, Decrement,
             Throw

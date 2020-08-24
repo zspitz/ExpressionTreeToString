@@ -57,7 +57,7 @@ namespace ExpressionTreeToString {
 
         public readonly static List<Type> PropertyTypes = NodeTypes.Select(x => typeof(IEnumerable<>).MakeGenericType(x)).ToList();
 
-        public readonly static Dictionary<ExpressionType, string> BinaryUnaryMethods = new Dictionary<ExpressionType, string>() {
+        public readonly static Dictionary<ExpressionType, string> FactoryMethodNames = new Dictionary<ExpressionType, string>() {
             { Add, "Add" },
             { AddAssign, "AddAssign" },
             { AddAssignChecked, "AddAssignChecked" },

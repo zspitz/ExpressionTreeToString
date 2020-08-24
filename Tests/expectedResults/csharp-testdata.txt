@@ -1129,4 +1129,6 @@ lstString.DummyExtensionMethod2Arguments(5, 17)
 --
 -- Not implemented - NodeType: Exension not implemented.
 --
+---- FactoryMethods.ConstructUnbox
+(int)obj
 ------
