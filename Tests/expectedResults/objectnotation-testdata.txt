@@ -428,44 +428,34 @@ new Expression<Func<Wrapper>> {
     ReturnType = typeof(Wrapper)
 }
 ---- CSCompiler.Conditional
+var i = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "i"
+};
+
 new Expression<Func<int, int>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<int, int>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "i"
-        }
+        i
     },
     Body = new ConditionalExpression {
         Type = typeof(int),
         Test = new BinaryExpression {
             NodeType = ExpressionType.GreaterThan,
             Type = typeof(bool),
-            Left = new ParameterExpression {
-                Type = typeof(int),
-                IsByRef = false,
-                Name = "i"
-            },
+            Left = i,
             Right = new ConstantExpression {
                 Type = typeof(int),
                 Value = 10
             }
         },
-        IfTrue = new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "i"
-        },
+        IfTrue = i,
         IfFalse = new BinaryExpression {
             NodeType = ExpressionType.Add,
             Type = typeof(int),
-            Left = new ParameterExpression {
-                Type = typeof(int),
-                IsByRef = false,
-                Name = "i"
-            },
+            Left = i,
             Right = new ConstantExpression {
                 Type = typeof(int),
                 Value = 10
@@ -1104,34 +1094,29 @@ new Expression<Func<bool>> {
     ReturnType = typeof(bool)
 }
 ---- CSCompiler.MathPow
+var x = new ParameterExpression {
+    Type = typeof(double),
+    IsByRef = false,
+    Name = "x"
+};
+var y = new ParameterExpression {
+    Type = typeof(double),
+    IsByRef = false,
+    Name = "y"
+};
+
 new Expression<Func<double, double, double>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<double, double, double>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(double),
-            IsByRef = false,
-            Name = "x"
-        },
-        new ParameterExpression {
-            Type = typeof(double),
-            IsByRef = false,
-            Name = "y"
-        }
+        x,
+        y
     },
     Body = new MethodCallExpression {
         Type = typeof(double),
         Arguments = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(double),
-                IsByRef = false,
-                Name = "x"
-            },
-            new ParameterExpression {
-                Type = typeof(double),
-                IsByRef = false,
-                Name = "y"
-            }
+            x,
+            y
         },
         Method = typeof(Math).GetMethod("Pow")
     },
@@ -1459,42 +1444,38 @@ new Expression<Func<string>> {
     ReturnType = typeof(string)
 }
 ---- CSCompiler.OneParameterNonVoidReturn
+var s = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s"
+};
+
 new Expression<Func<string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s"
-        }
+        s
     },
-    Body = new ParameterExpression {
-        Type = typeof(string),
-        IsByRef = false,
-        Name = "s"
-    },
+    Body = s,
     ReturnType = typeof(string)
 }
 ---- CSCompiler.OneParameterVoidReturn
+var s = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s"
+};
+
 new Expression<Action<string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Action<string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s"
-        }
+        s
     },
     Body = new MethodCallExpression {
         Type = typeof(void),
         Arguments = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s"
-            }
+            s
         },
         Method = typeof(Console).GetMethod("WriteLine", new[] { typeof(string) })
     },
@@ -1726,34 +1707,29 @@ new Expression<Func<string>> {
     ReturnType = typeof(string)
 }
 ---- CSCompiler.StringConcat
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<string, string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new MethodCallExpression {
         Type = typeof(string),
         Arguments = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s1"
-            },
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s2"
-            }
+            s1,
+            s2
         },
         Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
     },
@@ -1796,53 +1772,51 @@ new Expression<Func<bool>> {
     ReturnType = typeof(bool)
 }
 ---- CSCompiler.TwoParametersNonVoidReturn
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<string, string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new BinaryExpression {
         NodeType = ExpressionType.Add,
         Type = typeof(string),
-        Left = new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        Right = new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        },
+        Left = s1,
+        Right = s2,
         Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
 ---- CSCompiler.TwoParametersVoidReturn
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Action<string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Action<string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new MethodCallExpression {
         Type = typeof(void),
@@ -1850,16 +1824,8 @@ new Expression<Action<string, string>> {
             new BinaryExpression {
                 NodeType = ExpressionType.Add,
                 Type = typeof(string),
-                Left = new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "s1"
-                },
-                Right = new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "s2"
-                },
+                Left = s1,
+                Right = s2,
                 Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
             }
         },
@@ -1955,19 +1921,22 @@ new NewArrayExpression {
     }
 }
 ---- FactoryMethods.BlockMultipleVariable
+var i = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "i"
+};
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+
 new BlockExpression {
     Type = typeof(bool),
     Variables = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "i"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        }
+        i,
+        s1
     },
     Expressions = new ReadOnlyCollection<Expression> {
         new ConstantExpression {
@@ -2003,14 +1972,16 @@ new BlockExpression {
     }
 }
 ---- FactoryMethods.BlockSingleVariable
+var i = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "i"
+};
+
 new BlockExpression {
     Type = typeof(bool),
     Variables = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "i"
-        }
+        i
     },
     Expressions = new ReadOnlyCollection<Expression> {
         new ConstantExpression {
@@ -2127,156 +2098,76 @@ new ListInitExpression {
 new BinaryExpression {
     NodeType = ExpressionType.Add,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructAddAssign
 new BinaryExpression {
     NodeType = ExpressionType.AddAssign,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructAddAssignChecked
 new BinaryExpression {
     NodeType = ExpressionType.AddAssignChecked,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructAddChecked
 new BinaryExpression {
     NodeType = ExpressionType.AddChecked,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructAndAlso
 new BinaryExpression {
     NodeType = ExpressionType.AndAlso,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b2"
-    }
+    Left = b1,
+    Right = b2
 }
 ---- FactoryMethods.ConstructAndAssign
 new BinaryExpression {
     NodeType = ExpressionType.AndAssign,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b2"
-    }
+    Left = b1,
+    Right = b2
 }
 ---- FactoryMethods.ConstructAndBitwise
 new BinaryExpression {
     NodeType = ExpressionType.And,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructAndLogical
 new BinaryExpression {
     NodeType = ExpressionType.And,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b2"
-    }
+    Left = b1,
+    Right = b2
 }
 ---- FactoryMethods.ConstructArrayIndex
 new BinaryExpression {
     NodeType = ExpressionType.ArrayIndex,
     Type = typeof(string),
-    Left = new ParameterExpression {
-        Type = typeof(string[]),
-        IsByRef = false,
-        Name = "arr"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    }
+    Left = arr,
+    Right = i
 }
 ---- FactoryMethods.ConstructArrayLength
 new UnaryExpression {
     NodeType = ExpressionType.ArrayLength,
     Type = typeof(int),
-    Operand = new ParameterExpression {
-        Type = typeof(string[]),
-        IsByRef = false,
-        Name = "arr"
-    }
+    Operand = arr
 }
 ---- FactoryMethods.ConstructAssign
 new BinaryExpression {
     NodeType = ExpressionType.Assign,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
+    Left = x,
     Right = new ConstantExpression {
         Type = typeof(double),
         Value = 5.2
@@ -2286,19 +2177,11 @@ new BinaryExpression {
 new UnaryExpression {
     NodeType = ExpressionType.Not,
     Type = typeof(int),
-    Operand = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    }
+    Operand = i
 }
 ---- FactoryMethods.ConstructCatchMultiStatement
 new CatchBlock {
-    Variable = new ParameterExpression {
-        Type = typeof(Exception),
-        IsByRef = false,
-        Name = "ex"
-    },
+    Variable = ex,
     Body = new BlockExpression {
         Type = typeof(void),
         Expressions = new ReadOnlyCollection<Expression> {
@@ -2338,11 +2221,7 @@ new CatchBlock {
 }
 ---- FactoryMethods.ConstructCatchMultiStatementWithFilter
 new CatchBlock {
-    Variable = new ParameterExpression {
-        Type = typeof(Exception),
-        IsByRef = false,
-        Name = "ex"
-    },
+    Variable = ex,
     Filter = new ConstantExpression {
         Type = typeof(bool),
         Value = true
@@ -2425,11 +2304,7 @@ new CatchBlock {
 }
 ---- FactoryMethods.ConstructCatchSingleStatement
 new CatchBlock {
-    Variable = new ParameterExpression {
-        Type = typeof(Exception),
-        IsByRef = false,
-        Name = "ex"
-    },
+    Variable = ex,
     Body = new MethodCallExpression {
         Type = typeof(void),
         Arguments = new ReadOnlyCollection<Expression> {
@@ -2444,11 +2319,7 @@ new CatchBlock {
 }
 ---- FactoryMethods.ConstructCatchSingleStatementWithFilter
 new CatchBlock {
-    Variable = new ParameterExpression {
-        Type = typeof(Exception),
-        IsByRef = false,
-        Name = "ex"
-    },
+    Variable = ex,
     Filter = new ConstantExpression {
         Type = typeof(bool),
         Value = true
@@ -2481,11 +2352,7 @@ new CatchBlock {
 }
 ---- FactoryMethods.ConstructCatchWithMultiStatementFilter
 new CatchBlock {
-    Variable = new ParameterExpression {
-        Type = typeof(Exception),
-        IsByRef = false,
-        Name = "ex"
-    },
+    Variable = ex,
     Filter = new BlockExpression {
         Type = typeof(bool),
         Expressions = new ReadOnlyCollection<Expression> {
@@ -2519,26 +2386,14 @@ new CatchBlock {
 new BinaryExpression {
     NodeType = ExpressionType.Coalesce,
     Type = typeof(string),
-    Left = new ParameterExpression {
-        Type = typeof(string),
-        IsByRef = false,
-        Name = "s1"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(string),
-        IsByRef = false,
-        Name = "s2"
-    }
+    Left = s1,
+    Right = s2
 }
 ---- FactoryMethods.ConstructConvert
 new UnaryExpression {
     NodeType = ExpressionType.Convert,
     Type = typeof(object),
-    Operand = new ParameterExpression {
-        Type = typeof(string[]),
-        IsByRef = false,
-        Name = "arr"
-    }
+    Operand = arr
 }
 ---- FactoryMethods.ConstructConvertChecked
 new UnaryExpression {
@@ -2553,51 +2408,27 @@ new UnaryExpression {
 new UnaryExpression {
     NodeType = ExpressionType.Convert,
     Type = typeof(object),
-    Operand = new ParameterExpression {
-        Type = typeof(string[]),
-        IsByRef = false,
-        Name = "arr"
-    }
+    Operand = arr
 }
 ---- FactoryMethods.ConstructDecrement
 new UnaryExpression {
     NodeType = ExpressionType.Decrement,
     Type = typeof(int),
-    Operand = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    }
+    Operand = i
 }
 ---- FactoryMethods.ConstructDivide
 new BinaryExpression {
     NodeType = ExpressionType.Divide,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructDivideAssign
 new BinaryExpression {
     NodeType = ExpressionType.DivideAssign,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructEmptyLabelTarget
 new LabelTarget {
@@ -2607,72 +2438,36 @@ new LabelTarget {
 new BinaryExpression {
     NodeType = ExpressionType.Equal,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructExclusiveOrAssign
 new BinaryExpression {
     NodeType = ExpressionType.ExclusiveOrAssign,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b2"
-    }
+    Left = b1,
+    Right = b2
 }
 ---- FactoryMethods.ConstructExclusiveOrBitwise
 new BinaryExpression {
     NodeType = ExpressionType.ExclusiveOr,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructExclusiveOrLogical
 new BinaryExpression {
     NodeType = ExpressionType.ExclusiveOr,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b2"
-    }
+    Left = b1,
+    Right = b2
 }
 ---- FactoryMethods.ConstructGetIndex
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpGetIndexBinder,
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "obj"
-        },
+        obj,
         new ConstantExpression {
             Type = typeof(string),
             Value = "key"
@@ -2685,11 +2480,7 @@ new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpGetIndexBinder,
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "obj"
-        },
+        obj,
         new ConstantExpression {
             Type = typeof(string),
             Value = "key"
@@ -2706,11 +2497,7 @@ new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpGetMemberBinder,
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "obj"
-        }
+        obj
     },
     DelegateType = typeof(Func<CallSite, object, object>)
 }
@@ -2718,52 +2505,28 @@ new DynamicExpression {
 new BinaryExpression {
     NodeType = ExpressionType.GreaterThan,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructGreaterThanOrEqual
 new BinaryExpression {
     NodeType = ExpressionType.GreaterThanOrEqual,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructIncrement
 new UnaryExpression {
     NodeType = ExpressionType.Increment,
     Type = typeof(int),
-    Operand = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    }
+    Operand = i
 }
 ---- FactoryMethods.ConstructInvocationNoArguments
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpInvokeBinder,
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "obj"
-        }
+        obj
     },
     DelegateType = typeof(Func<CallSite, object, object>)
 }
@@ -2772,11 +2535,7 @@ new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpInvokeBinder,
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "obj"
-        },
+        obj,
         new ConstantExpression {
             Type = typeof(string),
             Value = "arg1"
@@ -2792,41 +2551,41 @@ new DynamicExpression {
 new UnaryExpression {
     NodeType = ExpressionType.IsFalse,
     Type = typeof(bool),
-    Operand = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    }
+    Operand = b1
 }
 ---- FactoryMethods.ConstructIsTrue
 new UnaryExpression {
     NodeType = ExpressionType.IsTrue,
     Type = typeof(bool),
-    Operand = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    }
+    Operand = b1
 }
 ---- FactoryMethods.ConstructLabel
+var i = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "i"
+};
+var j = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "j"
+};
+var j = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "j"
+};
+
 new BlockExpression {
     Type = typeof(bool),
     Variables = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "i"
-        }
+        i
     },
     Expressions = new ReadOnlyCollection<Expression> {
         new BlockExpression {
             Type = typeof(bool),
             Variables = new ReadOnlyCollection<ParameterExpression> {
-                new ParameterExpression {
-                    Type = typeof(int),
-                    IsByRef = false,
-                    Name = "j"
-                }
+                j
             },
             Expressions = new ReadOnlyCollection<Expression> {
                 new ConstantExpression {
@@ -2854,11 +2613,7 @@ new BlockExpression {
     Result = new BlockExpression {
         Type = typeof(bool),
         Variables = new ReadOnlyCollection<ParameterExpression> {
-            new ParameterExpression {
-                Type = typeof(int),
-                IsByRef = false,
-                Name = "j"
-            }
+            j
         },
         Expressions = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
@@ -2884,24 +2639,32 @@ new BlockExpression {
     }
 }
 ---- FactoryMethods.ConstructLabel1
+var i = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "i"
+};
+var j = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "j"
+};
+var j = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "j"
+};
+
 new BlockExpression {
     Type = typeof(bool),
     Variables = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "i"
-        }
+        i
     },
     Expressions = new ReadOnlyCollection<Expression> {
         new BlockExpression {
             Type = typeof(bool),
             Variables = new ReadOnlyCollection<ParameterExpression> {
-                new ParameterExpression {
-                    Type = typeof(int),
-                    IsByRef = false,
-                    Name = "j"
-                }
+                j
             },
             Expressions = new ReadOnlyCollection<Expression> {
                 new LabelExpression {
@@ -2925,11 +2688,7 @@ new BlockExpression {
     Result = new BlockExpression {
         Type = typeof(bool),
         Variables = new ReadOnlyCollection<ParameterExpression> {
-            new ParameterExpression {
-                Type = typeof(int),
-                IsByRef = false,
-                Name = "j"
-            }
+            j
         },
         Expressions = new ReadOnlyCollection<Expression> {
             new LabelExpression {
@@ -2959,82 +2718,42 @@ new LabelTarget {
 new BinaryExpression {
     NodeType = ExpressionType.LeftShift,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructLeftShiftAssign
 new BinaryExpression {
     NodeType = ExpressionType.LeftShiftAssign,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructLessThan
 new BinaryExpression {
     NodeType = ExpressionType.LessThan,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructLessThanOrEqual
 new BinaryExpression {
     NodeType = ExpressionType.LessThanOrEqual,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructLogicalNot
 new UnaryExpression {
     NodeType = ExpressionType.Not,
     Type = typeof(bool),
-    Operand = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    }
+    Operand = b1
 }
 ---- FactoryMethods.ConstructMemberInvocationNoArguments
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpInvokeMemberBinder,
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "obj"
-        }
+        obj
     },
     DelegateType = typeof(Func<CallSite, object, object>)
 }
@@ -3043,11 +2762,7 @@ new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpInvokeMemberBinder,
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "obj"
-        },
+        obj,
         new ConstantExpression {
             Type = typeof(string),
             Value = "arg1"
@@ -3063,278 +2778,138 @@ new DynamicExpression {
 new BinaryExpression {
     NodeType = ExpressionType.Modulo,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructModuloAssign
 new BinaryExpression {
     NodeType = ExpressionType.ModuloAssign,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructMultiply
 new BinaryExpression {
     NodeType = ExpressionType.Multiply,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructMultiplyAssign
 new BinaryExpression {
     NodeType = ExpressionType.MultiplyAssign,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructMultiplyAssignChecked
 new BinaryExpression {
     NodeType = ExpressionType.MultiplyAssignChecked,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructMultiplyChecked
 new BinaryExpression {
     NodeType = ExpressionType.MultiplyChecked,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructNegate
 new UnaryExpression {
     NodeType = ExpressionType.Negate,
     Type = typeof(int),
-    Operand = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    }
+    Operand = i
 }
 ---- FactoryMethods.ConstructNotEqual
 new BinaryExpression {
     NodeType = ExpressionType.NotEqual,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructOrAssign
 new BinaryExpression {
     NodeType = ExpressionType.OrAssign,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b2"
-    }
+    Left = b1,
+    Right = b2
 }
 ---- FactoryMethods.ConstructOrBitwise
 new BinaryExpression {
     NodeType = ExpressionType.Or,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructOrElse
 new BinaryExpression {
     NodeType = ExpressionType.OrElse,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b2"
-    }
+    Left = b1,
+    Right = b2
 }
 ---- FactoryMethods.ConstructOrLogical
 new BinaryExpression {
     NodeType = ExpressionType.Or,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b1"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(bool),
-        IsByRef = false,
-        Name = "b2"
-    }
+    Left = b1,
+    Right = b2
 }
 ---- FactoryMethods.ConstructPostDecrementAssign
 new UnaryExpression {
     NodeType = ExpressionType.PostDecrementAssign,
     Type = typeof(int),
-    Operand = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    }
+    Operand = i
 }
 ---- FactoryMethods.ConstructPostIncrementAssign
 new UnaryExpression {
     NodeType = ExpressionType.PostIncrementAssign,
     Type = typeof(int),
-    Operand = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    }
+    Operand = i
 }
 ---- FactoryMethods.ConstructPower
 new BinaryExpression {
     NodeType = ExpressionType.Power,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    },
+    Left = x,
+    Right = y,
     Method = typeof(Math).GetMethod("Pow")
 }
 ---- FactoryMethods.ConstructPowerAssign
 new BinaryExpression {
     NodeType = ExpressionType.PowerAssign,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    },
+    Left = x,
+    Right = y,
     Method = typeof(Math).GetMethod("Pow")
 }
 ---- FactoryMethods.ConstructPreDecrementAssign
 new UnaryExpression {
     NodeType = ExpressionType.PreDecrementAssign,
     Type = typeof(int),
-    Operand = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    }
+    Operand = i
 }
 ---- FactoryMethods.ConstructPreIncrementAssign
 new UnaryExpression {
     NodeType = ExpressionType.PreIncrementAssign,
     Type = typeof(int),
-    Operand = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    }
+    Operand = i
 }
 ---- FactoryMethods.ConstructReferenceEqual
 new BinaryExpression {
     NodeType = ExpressionType.Equal,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(List<string>),
-        IsByRef = false,
-        Name = "lstString"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(List<string>),
-        IsByRef = false,
-        Name = "lstString"
-    }
+    Left = lstString,
+    Right = lstString
 }
 ---- FactoryMethods.ConstructReferenceNotEqual
 new BinaryExpression {
     NodeType = ExpressionType.NotEqual,
     Type = typeof(bool),
-    Left = new ParameterExpression {
-        Type = typeof(List<string>),
-        IsByRef = false,
-        Name = "lstString"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(List<string>),
-        IsByRef = false,
-        Name = "lstString"
-    }
+    Left = lstString,
+    Right = lstString
 }
 ---- FactoryMethods.ConstructRethrow
 new UnaryExpression {
@@ -3345,46 +2920,22 @@ new UnaryExpression {
 new BinaryExpression {
     NodeType = ExpressionType.RightShift,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructRightShiftAssign
 new BinaryExpression {
     NodeType = ExpressionType.RightShiftAssign,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructRuntimeVariables
 new RuntimeVariablesExpression {
     Type = typeof(IRuntimeVariables),
     Variables = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(double),
-            IsByRef = false,
-            Name = "x"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        }
+        x,
+        s1
     }
 }
 ---- FactoryMethods.ConstructSetIndex
@@ -3392,11 +2943,7 @@ new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpSetIndexBinder,
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "obj"
-        },
+        obj,
         new ConstantExpression {
             Type = typeof(int),
             Value = 42
@@ -3413,11 +2960,7 @@ new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpSetIndexBinder,
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "obj"
-        },
+        obj,
         new ConstantExpression {
             Type = typeof(int),
             Value = 42
@@ -3438,11 +2981,7 @@ new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpSetMemberBinder,
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "obj"
-        },
+        obj,
         new ConstantExpression {
             Type = typeof(int),
             Value = 42
@@ -3468,61 +3007,29 @@ new CatchBlock {
 new BinaryExpression {
     NodeType = ExpressionType.Subtract,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructSubtractAssign
 new BinaryExpression {
     NodeType = ExpressionType.SubtractAssign,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructSubtractAssignChecked
 new BinaryExpression {
     NodeType = ExpressionType.SubtractAssignChecked,
     Type = typeof(int),
-    Left = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "j"
-    }
+    Left = i,
+    Right = j
 }
 ---- FactoryMethods.ConstructSubtractChecked
 new BinaryExpression {
     NodeType = ExpressionType.SubtractChecked,
     Type = typeof(double),
-    Left = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "x"
-    },
-    Right = new ParameterExpression {
-        Type = typeof(double),
-        IsByRef = false,
-        Name = "y"
-    }
+    Left = x,
+    Right = y
 }
 ---- FactoryMethods.ConstructThrow
 new UnaryExpression {
@@ -3559,11 +3066,7 @@ new TryExpression {
     },
     Handlers = new ReadOnlyCollection<CatchBlock> {
         new CatchBlock {
-            Variable = new ParameterExpression {
-                Type = typeof(Exception),
-                IsByRef = false,
-                Name = "ex"
-            },
+            Variable = ex,
             Body = new ConstantExpression {
                 Type = typeof(bool),
                 Value = true
@@ -3634,11 +3137,7 @@ new TryExpression {
 new UnaryExpression {
     NodeType = ExpressionType.TypeAs,
     Type = typeof(object),
-    Operand = new ParameterExpression {
-        Type = typeof(string[]),
-        IsByRef = false,
-        Name = "arr"
-    }
+    Operand = arr
 }
 ---- FactoryMethods.DifferentTypeForNodeAndValue
 new ConstantExpression {
@@ -3677,22 +3176,14 @@ new LoopExpression {
 new MethodCallExpression {
     Type = typeof(int),
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(List<string>),
-            IsByRef = false,
-            Name = "lstString"
-        }
+        lstString
     },
     Method = typeof(Enumerable).GetMethod("Count", new[] { typeof(IEnumerable<string>) })
 }
 ---- FactoryMethods.InstanceIndexer
 new IndexExpression {
     Type = typeof(string),
-    Object = new ParameterExpression {
-        Type = typeof(List<string>),
-        IsByRef = false,
-        Name = "lstString"
-    },
+    Object = lstString,
     Arguments = new ReadOnlyCollection<Expression> {
         new ConstantExpression {
             Type = typeof(int),
@@ -3712,21 +3203,13 @@ new MemberExpression {
 ---- FactoryMethods.InstanceMethod0Arguments
 new MethodCallExpression {
     Type = typeof(string),
-    Object = new ParameterExpression {
-        Type = typeof(string),
-        IsByRef = false,
-        Name = "s"
-    },
+    Object = s,
     Method = typeof(object).GetMethod("ToString")
 }
 ---- FactoryMethods.InstanceMethod1Argument
 new MethodCallExpression {
     Type = typeof(int),
-    Object = new ParameterExpression {
-        Type = typeof(string),
-        IsByRef = false,
-        Name = "s"
-    },
+    Object = s,
     Arguments = new ReadOnlyCollection<Expression> {
         new ConstantExpression {
             Type = typeof(string)
@@ -3737,11 +3220,7 @@ new MethodCallExpression {
 ---- FactoryMethods.InstanceMethod2Arguments
 new MethodCallExpression {
     Type = typeof(int),
-    Object = new ParameterExpression {
-        Type = typeof(string),
-        IsByRef = false,
-        Name = "s"
-    },
+    Object = s,
     Arguments = new ReadOnlyCollection<Expression> {
         new ConstantExpression {
             Type = typeof(char),
@@ -3859,6 +3338,27 @@ new Expression<Func<bool>> {
     ReturnType = typeof(bool)
 }
 ---- FactoryMethods.LambdaMultilineNestedBlockNonvoidReturn
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<bool>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<bool>),
@@ -3872,16 +3372,8 @@ new Expression<Func<bool>> {
             new BlockExpression {
                 Type = typeof(bool),
                 Variables = new ReadOnlyCollection<ParameterExpression> {
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s1"
-                    },
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s2"
-                    }
+                    s1,
+                    s2
                 },
                 Expressions = new ReadOnlyCollection<Expression> {
                     new ConstantExpression {
@@ -3902,16 +3394,8 @@ new Expression<Func<bool>> {
         Result = new BlockExpression {
             Type = typeof(bool),
             Variables = new ReadOnlyCollection<ParameterExpression> {
-                new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "s1"
-                },
-                new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "s2"
-                }
+                s1,
+                s2
             },
             Expressions = new ReadOnlyCollection<Expression> {
                 new ConstantExpression {
@@ -3934,11 +3418,7 @@ new Expression<Func<bool>> {
 ---- FactoryMethods.MakeArrayAccess
 new IndexExpression {
     Type = typeof(string),
-    Object = new ParameterExpression {
-        Type = typeof(string[]),
-        IsByRef = false,
-        Name = "arr"
-    },
+    Object = arr,
     Arguments = new ReadOnlyCollection<Expression> {
         new ConstantExpression {
             Type = typeof(int),
@@ -3950,11 +3430,7 @@ new IndexExpression {
 new BinaryExpression {
     NodeType = ExpressionType.ArrayIndex,
     Type = typeof(string),
-    Left = new ParameterExpression {
-        Type = typeof(string[]),
-        IsByRef = false,
-        Name = "arr"
-    },
+    Left = arr,
     Right = new ConstantExpression {
         Type = typeof(int),
         Value = 0
@@ -3963,11 +3439,7 @@ new BinaryExpression {
 ---- FactoryMethods.MakeArrayMultipleIndex
 new MethodCallExpression {
     Type = typeof(string),
-    Object = new ParameterExpression {
-        Type = typeof(string[,]),
-        IsByRef = false,
-        Name = "arr2d"
-    },
+    Object = arr2d,
     Arguments = new ReadOnlyCollection<Expression> {
         new ConstantExpression {
             Type = typeof(int),
@@ -4003,15 +3475,17 @@ new GotoExpression {
     }
 }
 ---- FactoryMethods.MakeByRefParameter
+var s4 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = true,
+    Name = "s4"
+};
+
 new Expression<Delegate2$1> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Delegate2$1),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = true,
-            Name = "s4"
-        }
+        s4
     },
     Body = new ConstantExpression {
         Type = typeof(bool),
@@ -4035,29 +3509,17 @@ new ConditionalExpression {
     Test = new BinaryExpression {
         NodeType = ExpressionType.GreaterThan,
         Type = typeof(bool),
-        Left = new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "i"
-        },
+        Left = i,
         Right = new ConstantExpression {
             Type = typeof(int),
             Value = 10
         }
     },
-    IfTrue = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
+    IfTrue = i,
     IfFalse = new BinaryExpression {
         NodeType = ExpressionType.Add,
         Type = typeof(int),
-        Left = new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "i"
-        },
+        Left = i,
         Right = new ConstantExpression {
             Type = typeof(int),
             Value = 10
@@ -4200,14 +3662,16 @@ new MemberMemberBinding {
     Member = typeof(Node).GetProperty("Data", BindingFlags.Instance | BindingFlags.NonPublic)
 }
 ---- FactoryMethods.MakeQuoted
+var x = new ParameterExpression {
+    Type = typeof(double),
+    IsByRef = false,
+    Name = "x"
+};
+
 new BlockExpression {
     Type = typeof(Expression<Action>),
     Variables = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(double),
-            IsByRef = false,
-            Name = "x"
-        }
+        x
     },
     Expressions = new ReadOnlyCollection<Expression> {
         new UnaryExpression {
@@ -4613,34 +4077,29 @@ new SwitchCase {
     }
 }
 ---- FactoryMethods.NamedLambda
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<string, string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new BinaryExpression {
         NodeType = ExpressionType.Add,
         Type = typeof(string),
-        Left = new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        Right = new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        },
+        Left = s1,
+        Right = s2,
         Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
     },
     Name = "name",
@@ -4784,6 +4243,12 @@ new ConditionalExpression {
     }
 }
 ---- FactoryMethods.NestedBlockInBlockSyntaxWithVariable
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+
 new ConditionalExpression {
     Type = typeof(void),
     Test = new ConstantExpression {
@@ -4800,11 +4265,7 @@ new ConditionalExpression {
             new BlockExpression {
                 Type = typeof(bool),
                 Variables = new ReadOnlyCollection<ParameterExpression> {
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s1"
-                    }
+                    s1
                 },
                 Expressions = new ReadOnlyCollection<Expression> {
                     new ConstantExpression {
@@ -4881,6 +4342,12 @@ new ConditionalExpression {
     }
 }
 ---- FactoryMethods.NestedBlockInTestWithVariables
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+
 new ConditionalExpression {
     Type = typeof(void),
     Test = new BlockExpression {
@@ -4893,11 +4360,7 @@ new ConditionalExpression {
             new BlockExpression {
                 Type = typeof(bool),
                 Variables = new ReadOnlyCollection<ParameterExpression> {
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s1"
-                    }
+                    s1
                 },
                 Expressions = new ReadOnlyCollection<Expression> {
                     new ConstantExpression {
@@ -5037,6 +4500,12 @@ new BlockExpression {
     }
 }
 ---- FactoryMethods.NestedInlineBlockWithVariable
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+
 new BlockExpression {
     Type = typeof(bool),
     Expressions = new ReadOnlyCollection<Expression> {
@@ -5047,11 +4516,7 @@ new BlockExpression {
         new BlockExpression {
             Type = typeof(bool),
             Variables = new ReadOnlyCollection<ParameterExpression> {
-                new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "s1"
-                }
+                s1
             },
             Expressions = new ReadOnlyCollection<Expression> {
                 new ConstantExpression {
@@ -5079,6 +4544,17 @@ new BlockExpression {
     }
 }
 ---- FactoryMethods.NestedLambda
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<Func<string, string, string>>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<Func<string, string, string>>),
@@ -5086,30 +4562,14 @@ new Expression<Func<Func<string, string, string>>> {
         NodeType = ExpressionType.Lambda,
         Type = typeof(Func<string, string, string>),
         Parameters = new ReadOnlyCollection<ParameterExpression> {
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s1"
-            },
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s2"
-            }
+            s1,
+            s2
         },
         Body = new BinaryExpression {
             NodeType = ExpressionType.Add,
             Type = typeof(string),
-            Left = new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s1"
-            },
-            Right = new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s2"
-            },
+            Left = s1,
+            Right = s2,
             Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
         },
         ReturnType = typeof(string)
@@ -5185,42 +4645,38 @@ new ConstantExpression {
     Value = Tuple.Create("abcd", 5)
 }
 ---- FactoryMethods.OneParameterNonVoidReturn
+var s = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s"
+};
+
 new Expression<Func<string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s"
-        }
+        s
     },
-    Body = new ParameterExpression {
-        Type = typeof(string),
-        IsByRef = false,
-        Name = "s"
-    },
+    Body = s,
     ReturnType = typeof(string)
 }
 ---- FactoryMethods.OneParameterVoidReturn
+var s = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s"
+};
+
 new Expression<Action<string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Action<string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s"
-        }
+        s
     },
     Body = new MethodCallExpression {
         Type = typeof(void),
         Arguments = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s"
-            }
+            s
         },
         Method = typeof(Console).GetMethod("WriteLine", new[] { typeof(string) })
     },
@@ -5229,11 +4685,7 @@ new Expression<Action<string>> {
 ---- FactoryMethods.PropertyIndexer
 new IndexExpression {
     Type = typeof(string),
-    Object = new ParameterExpression {
-        Type = typeof(List<string>),
-        IsByRef = false,
-        Name = "lstString"
-    },
+    Object = lstString,
     Arguments = new ReadOnlyCollection<Expression> {
         new ConstantExpression {
             Type = typeof(int),
@@ -5248,14 +4700,16 @@ new ConstantExpression {
     Value = #Random
 }
 ---- FactoryMethods.RuntimeVariablesWithinBlock
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new BlockExpression {
     Type = typeof(IRuntimeVariables),
     Variables = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s2
     },
     Expressions = new ReadOnlyCollection<Expression> {
         new ConstantExpression {
@@ -5265,32 +4719,16 @@ new BlockExpression {
         new RuntimeVariablesExpression {
             Type = typeof(IRuntimeVariables),
             Variables = new ReadOnlyCollection<ParameterExpression> {
-                new ParameterExpression {
-                    Type = typeof(double),
-                    IsByRef = false,
-                    Name = "x"
-                },
-                new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "s1"
-                }
+                x,
+                s1
             }
         }
     },
     Result = new RuntimeVariablesExpression {
         Type = typeof(IRuntimeVariables),
         Variables = new ReadOnlyCollection<ParameterExpression> {
-            new ParameterExpression {
-                Type = typeof(double),
-                IsByRef = false,
-                Name = "x"
-            },
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s1"
-            }
+            x,
+            s1
         }
     }
 }
@@ -5437,27 +4875,15 @@ new MethodCallExpression {
 new MethodCallExpression {
     Type = typeof(string),
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
 }
 ---- FactoryMethods.SwitchOnExpressionWithDefaultMultiStatement
 new SwitchExpression {
     Type = typeof(void),
-    SwitchValue = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
+    SwitchValue = i,
     Cases = new ReadOnlyCollection<SwitchCase> {
         new SwitchCase {
             TestValues = new ReadOnlyCollection<Expression> {
@@ -5517,11 +4943,7 @@ new SwitchExpression {
 ---- FactoryMethods.SwitchOnExpressionWithDefaultSingleStatement
 new SwitchExpression {
     Type = typeof(void),
-    SwitchValue = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
+    SwitchValue = i,
     Cases = new ReadOnlyCollection<SwitchCase> {
         new SwitchCase {
             TestValues = new ReadOnlyCollection<Expression> {
@@ -5567,11 +4989,7 @@ new SwitchExpression {
 ---- FactoryMethods.SwitchOnExpressionWithoutDefault
 new SwitchExpression {
     Type = typeof(void),
-    SwitchValue = new ParameterExpression {
-        Type = typeof(int),
-        IsByRef = false,
-        Name = "i"
-    },
+    SwitchValue = i,
     Cases = new ReadOnlyCollection<SwitchCase> {
         new SwitchCase {
             TestValues = new ReadOnlyCollection<Expression> {
@@ -5617,22 +5035,10 @@ new SwitchExpression {
     SwitchValue = new BlockExpression {
         Type = typeof(int),
         Expressions = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(int),
-                IsByRef = false,
-                Name = "i"
-            },
-            new ParameterExpression {
-                Type = typeof(int),
-                IsByRef = false,
-                Name = "j"
-            }
+            i,
+            j
         },
-        Result = new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "j"
-        }
+        Result = j
     },
     Cases = new ReadOnlyCollection<SwitchCase> {
         new SwitchCase {
@@ -5696,22 +5102,10 @@ new SwitchExpression {
     SwitchValue = new BlockExpression {
         Type = typeof(int),
         Expressions = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(int),
-                IsByRef = false,
-                Name = "i"
-            },
-            new ParameterExpression {
-                Type = typeof(int),
-                IsByRef = false,
-                Name = "j"
-            }
+            i,
+            j
         },
-        Result = new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "j"
-        }
+        Result = j
     },
     Cases = new ReadOnlyCollection<SwitchCase> {
         new SwitchCase {
@@ -5753,53 +5147,51 @@ new SwitchExpression {
     }
 }
 ---- FactoryMethods.TwoParametersNonVoidReturn
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<string, string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new BinaryExpression {
         NodeType = ExpressionType.Add,
         Type = typeof(string),
-        Left = new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        Right = new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        },
+        Left = s1,
+        Right = s2,
         Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
 ---- FactoryMethods.TwoParametersVoidReturn
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Action<string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Action<string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new MethodCallExpression {
         Type = typeof(void),
@@ -5807,16 +5199,8 @@ new Expression<Action<string, string>> {
             new BinaryExpression {
                 NodeType = ExpressionType.Add,
                 Type = typeof(string),
-                Left = new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "s1"
-                },
-                Right = new ParameterExpression {
-                    Type = typeof(string),
-                    IsByRef = false,
-                    Name = "s2"
-                },
+                Left = s1,
+                Right = s2,
                 Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
             }
         },
@@ -6380,44 +5764,34 @@ new Expression<Func<Wrapper>> {
     ReturnType = typeof(Wrapper)
 }
 ---- VBCompiler.Conditional
+var i = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "i"
+};
+
 new Expression<Func<int, int>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<int, int>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "i"
-        }
+        i
     },
     Body = new ConditionalExpression {
         Type = typeof(int),
         Test = new BinaryExpression {
             NodeType = ExpressionType.GreaterThan,
             Type = typeof(bool),
-            Left = new ParameterExpression {
-                Type = typeof(int),
-                IsByRef = false,
-                Name = "i"
-            },
+            Left = i,
             Right = new ConstantExpression {
                 Type = typeof(int),
                 Value = 10
             }
         },
-        IfTrue = new ParameterExpression {
-            Type = typeof(int),
-            IsByRef = false,
-            Name = "i"
-        },
+        IfTrue = i,
         IfFalse = new BinaryExpression {
             NodeType = ExpressionType.AddChecked,
             Type = typeof(int),
-            Left = new ParameterExpression {
-                Type = typeof(int),
-                IsByRef = false,
-                Name = "i"
-            },
+            Left = i,
             Right = new ConstantExpression {
                 Type = typeof(int),
                 Value = 10
@@ -7347,42 +6721,38 @@ new Expression<Func<string>> {
     ReturnType = typeof(string)
 }
 ---- VBCompiler.OneParameterNonVoidReturn
+var s = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s"
+};
+
 new Expression<Func<string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s"
-        }
+        s
     },
-    Body = new ParameterExpression {
-        Type = typeof(string),
-        IsByRef = false,
-        Name = "s"
-    },
+    Body = s,
     ReturnType = typeof(string)
 }
 ---- VBCompiler.OneParameterVoidReturn
+var s = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s"
+};
+
 new Expression<Action<string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Action<string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s"
-        }
+        s
     },
     Body = new MethodCallExpression {
         Type = typeof(void),
         Arguments = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s"
-            }
+            s
         },
         Method = typeof(Console).GetMethod("WriteLine", new[] { typeof(string) })
     },
@@ -7683,88 +7053,81 @@ new Expression<Func<string>> {
     ReturnType = typeof(string)
 }
 ---- VBCompiler.StringConcat
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<string, string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new MethodCallExpression {
         Type = typeof(string),
         Arguments = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s1"
-            },
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s2"
-            }
+            s1,
+            s2
         },
         Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
 ---- VBCompiler.StringConcatOperator
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<string, string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new MethodCallExpression {
         Type = typeof(string),
         Arguments = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s1"
-            },
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s2"
-            }
+            s1,
+            s2
         },
         Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
 ---- VBCompiler.StringConcatOperatorParamArray
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<string, string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new MethodCallExpression {
         Type = typeof(string),
@@ -7773,36 +7136,12 @@ new Expression<Func<string, string, string>> {
                 NodeType = ExpressionType.NewArrayInit,
                 Type = typeof(string[]),
                 Expressions = new ReadOnlyCollection<Expression> {
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s1"
-                    },
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s2"
-                    },
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s1"
-                    },
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s2"
-                    },
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s1"
-                    },
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s2"
-                    }
+                    s1,
+                    s2,
+                    s1,
+                    s2,
+                    s1,
+                    s2
                 }
             }
         },
@@ -7847,54 +7186,52 @@ new Expression<Func<bool>> {
     ReturnType = typeof(bool)
 }
 ---- VBCompiler.TwoParametersNonVoidReturn
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<string, string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new MethodCallExpression {
         Type = typeof(string),
         Arguments = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s1"
-            },
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s2"
-            }
+            s1,
+            s2
         },
         Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
 ---- VBCompiler.TwoParametersVoidReturn
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Action<string, string>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Action<string, string>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new MethodCallExpression {
         Type = typeof(void),
@@ -7902,16 +7239,8 @@ new Expression<Action<string, string>> {
             new MethodCallExpression {
                 Type = typeof(string),
                 Arguments = new ReadOnlyCollection<Expression> {
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s1"
-                    },
-                    new ParameterExpression {
-                        Type = typeof(string),
-                        IsByRef = false,
-                        Name = "s2"
-                    }
+                    s1,
+                    s2
                 },
                 Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
             }
@@ -8173,34 +7502,29 @@ new Expression<Func<bool>> {
     ReturnType = typeof(bool)
 }
 ---- VBCompiler.LikeOperatorStrings
+var s1 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s1"
+};
+var s2 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "s2"
+};
+
 new Expression<Func<string, string, bool>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<string, string, bool>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s1"
-        },
-        new ParameterExpression {
-            Type = typeof(string),
-            IsByRef = false,
-            Name = "s2"
-        }
+        s1,
+        s2
     },
     Body = new MethodCallExpression {
         Type = typeof(bool),
         Arguments = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s1"
-            },
-            new ParameterExpression {
-                Type = typeof(string),
-                IsByRef = false,
-                Name = "s2"
-            },
+            s1,
+            s2,
             new ConstantExpression {
                 Type = typeof(CompareMethod),
                 Value = CompareMethod.Binary
@@ -8211,34 +7535,29 @@ new Expression<Func<string, string, bool>> {
     ReturnType = typeof(bool)
 }
 ---- VBCompiler.LikeOperatorObjects
+var o1 = new ParameterExpression {
+    Type = typeof(object),
+    IsByRef = false,
+    Name = "o1"
+};
+var o2 = new ParameterExpression {
+    Type = typeof(object),
+    IsByRef = false,
+    Name = "o2"
+};
+
 new Expression<Func<object, object, object>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<object, object, object>),
     Parameters = new ReadOnlyCollection<ParameterExpression> {
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "o1"
-        },
-        new ParameterExpression {
-            Type = typeof(object),
-            IsByRef = false,
-            Name = "o2"
-        }
+        o1,
+        o2
     },
     Body = new MethodCallExpression {
         Type = typeof(object),
         Arguments = new ReadOnlyCollection<Expression> {
-            new ParameterExpression {
-                Type = typeof(object),
-                IsByRef = false,
-                Name = "o1"
-            },
-            new ParameterExpression {
-                Type = typeof(object),
-                IsByRef = false,
-                Name = "o2"
-            },
+            o1,
+            o2,
             new ConstantExpression {
                 Type = typeof(CompareMethod),
                 Value = CompareMethod.Binary
@@ -8416,11 +7735,7 @@ new Expression<Func<List<string>>> {
 new MethodCallExpression {
     Type = typeof(List<string>),
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(List<string>),
-            IsByRef = false,
-            Name = "lstString"
-        },
+        lstString,
         new ConstantExpression {
             Type = typeof(int),
             Value = 1
@@ -8432,11 +7747,7 @@ new MethodCallExpression {
 new MethodCallExpression {
     Type = typeof(List<string>),
     Arguments = new ReadOnlyCollection<Expression> {
-        new ParameterExpression {
-            Type = typeof(List<string>),
-            IsByRef = false,
-            Name = "lstString"
-        },
+        lstString,
         new ConstantExpression {
             Type = typeof(int),
             Value = 5
@@ -8495,10 +7806,6 @@ new ExtensionExpression {
 new UnaryExpression {
     NodeType = ExpressionType.Unbox,
     Type = typeof(int),
-    Operand = new ParameterExpression {
-        Type = typeof(object),
-        IsByRef = false,
-        Name = "obj"
-    }
+    Operand = obj
 }
 ------

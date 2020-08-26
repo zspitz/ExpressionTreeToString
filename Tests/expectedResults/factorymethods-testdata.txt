@@ -652,6 +652,15 @@ NewArrayBounds(
     Constant(5)
 )
 ---- FactoryMethods.BlockMultipleVariable
+var i = Parameter(
+    typeof(int),
+    "i"
+);
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+
 Block(new[] { i, s1 },
     Constant(true),
     Constant(true)
@@ -662,6 +671,11 @@ Block(
     Constant(true)
 )
 ---- FactoryMethods.BlockSingleVariable
+var i = Parameter(
+    typeof(int),
+    "i"
+);
+
 Block(new[] { i },
     Constant(true),
     Constant(true)
@@ -890,6 +904,15 @@ IsFalse(b1)
 ---- FactoryMethods.ConstructIsTrue
 IsTrue(b1)
 ---- FactoryMethods.ConstructLabel
+var i = Parameter(
+    typeof(int),
+    "i"
+);
+var j = Parameter(
+    typeof(int),
+    "j"
+);
+
 Block(new[] { i },
     Block(new[] { j },
         Constant(true),
@@ -901,6 +924,15 @@ Block(new[] { i },
     )
 )
 ---- FactoryMethods.ConstructLabel1
+var i = Parameter(
+    typeof(int),
+    "i"
+);
+var j = Parameter(
+    typeof(int),
+    "j"
+);
+
 Block(new[] { i },
     Block(new[] { j },
         Label(
@@ -1164,6 +1196,15 @@ Lambda(
     )
 )
 ---- FactoryMethods.LambdaMultilineNestedBlockNonvoidReturn
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Block(
         Constant(true),
@@ -1287,6 +1328,11 @@ MemberBind(
     )
 )
 ---- FactoryMethods.MakeQuoted
+var x = Parameter(
+    typeof(double),
+    "x"
+);
+
 Block(new[] { x },
     Quote(
         Lambda(
@@ -1508,6 +1554,11 @@ IfThen(
     )
 )
 ---- FactoryMethods.NestedBlockInBlockSyntaxWithVariable
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+
 IfThen(
     Constant(true),
     Block(
@@ -1532,6 +1583,11 @@ IfThen(
     Constant(true)
 )
 ---- FactoryMethods.NestedBlockInTestWithVariables
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+
 IfThen(
     Block(
         Constant(true),
@@ -1579,6 +1635,11 @@ Block(
     Constant(true)
 )
 ---- FactoryMethods.NestedInlineBlockWithVariable
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+
 Block(
     Constant(true),
     Block(new[] { s1 },
@@ -1670,6 +1731,11 @@ MakeIndex(lstString,
 ---- FactoryMethods.Random
 Constant(#Random)
 ---- FactoryMethods.RuntimeVariablesWithinBlock
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Block(new[] { s2 },
     Constant(true),
     RuntimeVariables(x, s1)
