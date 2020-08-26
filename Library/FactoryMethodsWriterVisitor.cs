@@ -51,7 +51,9 @@ namespace ExpressionTreeToString {
             args.Cast<object>().ForEach((x, index) => {
                 var isTuple = TryTupleValues(x, out var values) && values.Length == 2;
                 (string path, object? arg) = isTuple ? ((string)values![0]!, values[1]) : ("", x);
-                var parameterDeclaration = name == "Lambda" && path.StartsWith("Parameters");
+                var parameterDeclaration = 
+                    (name == "Lambda" && path.StartsWith("Parameters")) || 
+                    (name == "Block" && path.StartsWith("Variables"));
 
                 bool writeNewline = false;
                 var argType = arg?.GetType();

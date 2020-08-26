@@ -11,20 +11,27 @@ using static ZSpitz.Util.Language;
 
 namespace ExpressionTreeToString {
     public class ObjectNotationWriterVisitor : WriterVisitorBase {
-        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg) 
-            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), new[] { "declarations", "" }) { }
+        private static string[] insertionPointKeys = new[] { "declarations", "" };
+
+        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg)
+            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys) { }
 
         public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans)
-            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans, new[] { "declarations", "" }) { }
+            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans, insertionPointKeys) { }
 
         protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {
-            if (parameterDeclaration) {
-                if (language == CSharp) {
-                    Write($"var ");
-                } else if (language == VisualBasic) {
-                    Write($"Dim ");
-                }
-                Write($"{(o as ParameterExpression)!.Name} = ");
+            if (o is ParameterExpression pexpr) {
+                Write(pexpr.Name);
+
+                if (!parameterDeclaration) { return; }
+
+                SetInsertionPoint("declarations");
+                Write(language switch {
+                    CSharp => "var",
+                    VisualBasic => "Dim",
+                    _ => throw new NotImplementedException("Invalid language.")
+                });
+                Write($" {pexpr.Name} = ");
             }
 
             var type = writeNew(o);
@@ -77,12 +84,10 @@ namespace ExpressionTreeToString {
                 Write(" = ");
 
                 if (x.PropertyType.InheritsFromOrImplementsAny(PropertyTypes)) {
-
-                    // https://github.com/zspitz/ExpressionTreeToString/issues/4
-                    //var parameterDeclaration = o is LambdaExpression && x.Name == "Parameters";
-                    //WriteCollection(value as IEnumerable, x.Name, parameterDeclaration);
-
-                    WriteCollection((IEnumerable)value, x.Name);
+                    var parameterDeclaration = 
+                        (o is LambdaExpression && x.Name == "Parameters") ||
+                        (o is BlockExpression && x.Name == "Variables");
+                    WriteCollection((IEnumerable)value, x.Name, parameterDeclaration);
                 } else if (x.PropertyType.InheritsFromOrImplementsAny(NodeTypes)) {
                     WriteNode(x.Name, value);
                 } else {
@@ -92,6 +97,12 @@ namespace ExpressionTreeToString {
 
             WriteEOL(true);
             Write("}");
+
+            if (parameterDeclaration) {
+                Write(";");
+                WriteEOL();
+                SetInsertionPoint("");
+            }
         }
 
         // TODO represent parameters using variables, except for first usage where variable is defined
@@ -119,11 +130,11 @@ namespace ExpressionTreeToString {
             typeof(TryExpression)
         };
 
-        private void WriteCollection(IEnumerable seq, string pathSegment) {
+        private void WriteCollection(IEnumerable seq, string pathSegment, bool parameterDeclaration = false) {
             writeNew(seq);
             var items = seq.Cast<object>().ToList();
-            if (items.None() ) {
-                if (language==CSharp) { Write("()"); }
+            if (items.None()) {
+                if (language == CSharp) { Write("()"); }
                 return;
             }
             if (language == VisualBasic) { Write(" From"); }
@@ -131,10 +142,8 @@ namespace ExpressionTreeToString {
             Indent();
             WriteEOL();
 
-            // https://github.com/zspitz/ExpressionTreeToString/issues/4
-            //WriteNodes(pathSegment, items, true, ",", parameterDeclaration);
-            
-            WriteNodes(pathSegment, items, true);
+            WriteNodes(pathSegment, items, true, ",", parameterDeclaration);
+
             WriteEOL(true);
             Write("}");
         }
