@@ -21,8 +21,8 @@ namespace Tests.DataGenerator {
 
                 var language = key == VisualBasic ? Language.VisualBasic : Language.CSharp;
 
-                // foreach (var (category, source, name, o) in Objects.Get().OrderBy(x => ordering[$"{x.source}.{x.name}"])) {
-                foreach (var (category, source, name, o) in Objects.Get().Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"))) {
+                foreach (var (category, source, name, o) in Objects.Get().OrderBy(x => ordering[$"{x.source}.{x.name}"])) {
+                    //foreach (var (category, source, name, o) in Objects.Get().Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"))) {
                     lines.Add($"---- {source}.{name}");
                     var toWrite = o switch
                     {

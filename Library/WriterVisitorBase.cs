@@ -106,7 +106,7 @@ namespace ExpressionTreeToString {
 
         public override string ToString() => insertionPoints.Values()
             .Where(x => x.sb.Length > 0)
-            .Joined("", x => x.sb.ToString());
+            .Joined(Environment.NewLine, x => x.sb.ToString());
 
         protected void SetInsertionPoint(string key) => ip = insertionPoints.Get(key);
     }

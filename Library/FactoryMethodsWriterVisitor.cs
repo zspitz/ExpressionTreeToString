@@ -16,6 +16,8 @@ using static ZSpitz.Util.Language;
 
 namespace ExpressionTreeToString {
     public class FactoryMethodsWriterVisitor : BuiltinsWriterVisitor {
+        private static string[] insertionPointKeys = new[] { "usings", "declarations", "" };
+
         private void WriteUsings() {
             SetInsertionPoint("usings");
             string @using = language switch
@@ -26,16 +28,15 @@ namespace ExpressionTreeToString {
             };
             Write(@using);
             WriteEOL();
-            WriteEOL();
             SetInsertionPoint("");
         }
 
         public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg)
-            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), new[] { "usings", "" }) {
+            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys) {
             WriteUsings();
         }
         public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans)
-            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans, new[] { "usings", "" }) {
+            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans, insertionPointKeys) {
             WriteUsings();
         }
 
@@ -64,7 +65,7 @@ namespace ExpressionTreeToString {
                             arg is MemberInfo ||
                             arg is CallSiteBinder
                         ) && !(
-                            arg is ParameterExpression && !parameterDeclaration
+                            arg is ParameterExpression
                         ) && !(
                             arg is MemberExpression mexpr && mexpr.IsClosedVariable()
                         )
@@ -98,7 +99,7 @@ namespace ExpressionTreeToString {
 
                     var argList = arg is IEnumerable enumerable ? enumerable.ToObjectList() : Empty<object>().ToList();
                     if (argList.Any()) {
-                        if (parameterDeclaration || argList.Any(y => !(y is ParameterExpression))) {
+                        if (argList.Any(y => !(y is ParameterExpression))) {
                             Indent();
                             WriteEOL();
                             WriteNodes(path, argList, true, ", ", parameterDeclaration);
@@ -494,6 +495,8 @@ namespace ExpressionTreeToString {
         protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) => throw new NotImplementedException();
         protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) => throw new NotImplementedException();
         protected override void WriteParameterDeclaration(ParameterExpression prm) {
+            SetInsertionPoint("declarations");
+
             if (language == CSharp) {
                 Write($"var {prm.Name} = ");
             } else { // language == VisualBasic
@@ -512,6 +515,12 @@ namespace ExpressionTreeToString {
                     WriteMethodCall(() => Parameter(prm.Type, prm.Name));
                 }
             }
+            if (language == CSharp) { Write(";"); }
+            WriteEOL();
+
+            SetInsertionPoint("");
+
+            Write(prm.Name);
         }
     }
 }

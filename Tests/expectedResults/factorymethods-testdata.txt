@@ -121,6 +121,11 @@ Lambda(
     )
 )
 ---- CSCompiler.Conditional
+var i = Parameter(
+    typeof(int),
+    "i"
+);
+
 Lambda(
     Condition(
         GreaterThan(i,
@@ -131,10 +136,7 @@ Lambda(
             Constant(10)
         )
     ),
-    var i = Parameter(
-        typeof(int),
-        "i"
-    )
+    i
 )
 ---- CSCompiler.Convert
 Lambda(
@@ -323,19 +325,21 @@ Lambda(
     Not(b)
 )
 ---- CSCompiler.MathPow
+var x = Parameter(
+    typeof(double),
+    "x"
+);
+var y = Parameter(
+    typeof(double),
+    "y"
+);
+
 Lambda(
     Call(
         typeof(Math).GetMethod("Pow"),
         x, y
     ),
-    var x = Parameter(
-        typeof(double),
-        "x"
-    ),
-    var y = Parameter(
-        typeof(double),
-        "y"
-    )
+    x, y
 )
 ---- CSCompiler.MemberMemberBinding
 Lambda(
@@ -463,22 +467,24 @@ Lambda(
     )
 )
 ---- CSCompiler.OneParameterNonVoidReturn
-Lambda(s,
-    var s = Parameter(
-        typeof(string),
-        "s"
-    )
-)
+var s = Parameter(
+    typeof(string),
+    "s"
+);
+
+Lambda(s, s)
 ---- CSCompiler.OneParameterVoidReturn
+var s = Parameter(
+    typeof(string),
+    "s"
+);
+
 Lambda(
     Call(
         typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         s
     ),
-    var s = Parameter(
-        typeof(string),
-        "s"
-    )
+    s
 )
 ---- CSCompiler.OrBitwise
 Lambda(
@@ -553,19 +559,21 @@ Lambda(
     Constant("abcd")
 )
 ---- CSCompiler.StringConcat
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Call(
         typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- CSCompiler.Subtract
 Lambda(
@@ -576,20 +584,31 @@ Lambda(
     Constant(true)
 )
 ---- CSCompiler.TwoParametersNonVoidReturn
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Add(s1, s2,
         typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- CSCompiler.TwoParametersVoidReturn
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Call(
         typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
@@ -597,14 +616,7 @@ Lambda(
             typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
         )
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- CSCompiler.Type
 Lambda(
@@ -1184,12 +1196,14 @@ Break(
     Constant(5)
 )
 ---- FactoryMethods.MakeByRefParameter
+var s4 = Parameter(
+    typeof(string).MakeByRef(),
+    "s4"
+);
+
 Lambda(
     Constant(true),
-    var s4 = Parameter(
-        typeof(string).MakeByRef(),
-        "s4"
-    )
+    s4
 )
 ---- FactoryMethods.MakeClearDebugInfo
 ClearDebugInfo(#SymbolDocumentInfo)
@@ -1418,20 +1432,20 @@ SwitchCase(
     Constant(6)
 )
 ---- FactoryMethods.NamedLambda
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Add(s1, s2,
         typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
     ),
-    "name", new[] {
-        var s1 = Parameter(
-            typeof(string),
-            "s1"
-        ),
-        var s2 = Parameter(
-            typeof(string),
-            "s2"
-        )
-    }
+    "name", new[] { s1, s2 }
 )
 ---- FactoryMethods.NamedType
 New(
@@ -1574,19 +1588,21 @@ Block(
     Constant(true)
 )
 ---- FactoryMethods.NestedLambda
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Lambda(
         Add(s1, s2,
             typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
         ),
-        var s1 = Parameter(
-            typeof(string),
-            "s1"
-        ),
-        var s2 = Parameter(
-            typeof(string),
-            "s2"
-        )
+        s1, s2
     )
 )
 ---- FactoryMethods.NonVoidConditionalWithElse
@@ -1625,22 +1641,24 @@ Lambda(
 ---- FactoryMethods.OldTuple
 Constant(Tuple.Create("abcd", 5))
 ---- FactoryMethods.OneParameterNonVoidReturn
-Lambda(s,
-    var s = Parameter(
-        typeof(string),
-        "s"
-    )
-)
+var s = Parameter(
+    typeof(string),
+    "s"
+);
+
+Lambda(s, s)
 ---- FactoryMethods.OneParameterVoidReturn
+var s = Parameter(
+    typeof(string),
+    "s"
+);
+
 Lambda(
     Call(
         typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         s
     ),
-    var s = Parameter(
-        typeof(string),
-        "s"
-    )
+    s
 )
 ---- FactoryMethods.PropertyIndexer
 MakeIndex(lstString,
@@ -1820,20 +1838,31 @@ Switch(
     )
 )
 ---- FactoryMethods.TwoParametersNonVoidReturn
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Add(s1, s2,
         typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- FactoryMethods.TwoParametersVoidReturn
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Call(
         typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
@@ -1841,14 +1870,7 @@ Lambda(
             typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
         )
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- FactoryMethods.Type
 Constant(
@@ -2025,6 +2047,11 @@ Lambda(
     )
 )
 ---- VBCompiler.Conditional
+var i = Parameter(
+    typeof(int),
+    "i"
+);
+
 Lambda(
     Condition(
         GreaterThan(i,
@@ -2035,10 +2062,7 @@ Lambda(
             Constant(10)
         )
     ),
-    var i = Parameter(
-        typeof(int),
-        "i"
-    )
+    i
 )
 ---- VBCompiler.ConstantNothingToObject
 Lambda(
@@ -2331,22 +2355,24 @@ Lambda(
     )
 )
 ---- VBCompiler.OneParameterNonVoidReturn
-Lambda(s,
-    var s = Parameter(
-        typeof(string),
-        "s"
-    )
-)
+var s = Parameter(
+    typeof(string),
+    "s"
+);
+
+Lambda(s, s)
 ---- VBCompiler.OneParameterVoidReturn
+var s = Parameter(
+    typeof(string),
+    "s"
+);
+
 Lambda(
     Call(
         typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         s
     ),
-    var s = Parameter(
-        typeof(string),
-        "s"
-    )
+    s
 )
 ---- VBCompiler.OrBitwise
 Lambda(
@@ -2441,36 +2467,49 @@ Lambda(
     Constant("abcd")
 )
 ---- VBCompiler.StringConcat
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Call(
         typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- VBCompiler.StringConcatOperator
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Call(
         typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- VBCompiler.StringConcatOperatorParamArray
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Call(
         typeof(string).GetMethod("Concat", new[] { typeof(string[]) }),
@@ -2479,14 +2518,7 @@ Lambda(
             s1, s2, s1, s2, s1, s2
         )
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- VBCompiler.Subtract
 Lambda(
@@ -2497,21 +2529,32 @@ Lambda(
     Constant(true)
 )
 ---- VBCompiler.TwoParametersNonVoidReturn
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Call(
         typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- VBCompiler.TwoParametersVoidReturn
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Call(
         typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
@@ -2520,14 +2563,7 @@ Lambda(
             s1, s2
         )
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- VBCompiler.TypeAs
 Lambda(
@@ -2615,36 +2651,40 @@ Lambda(
     )
 )
 ---- VBCompiler.LikeOperatorStrings
+var s1 = Parameter(
+    typeof(string),
+    "s1"
+);
+var s2 = Parameter(
+    typeof(string),
+    "s2"
+);
+
 Lambda(
     Call(
         typeof(LikeOperator).GetMethod("LikeString"),
         s1, s2,
         Constant(CompareMethod.Binary)
     ),
-    var s1 = Parameter(
-        typeof(string),
-        "s1"
-    ),
-    var s2 = Parameter(
-        typeof(string),
-        "s2"
-    )
+    s1, s2
 )
 ---- VBCompiler.LikeOperatorObjects
+var o1 = Parameter(
+    typeof(object),
+    "o1"
+);
+var o2 = Parameter(
+    typeof(object),
+    "o2"
+);
+
 Lambda(
     Call(
         typeof(LikeOperator).GetMethod("LikeObject"),
         o1, o2,
         Constant(CompareMethod.Binary)
     ),
-    var o1 = Parameter(
-        typeof(object),
-        "o1"
-    ),
-    var o2 = Parameter(
-        typeof(object),
-        "o2"
-    )
+    o1, o2
 )
 ---- VBCompiler.ExtensionMethod1Argument
 Lambda(
