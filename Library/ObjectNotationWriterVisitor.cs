@@ -11,11 +11,11 @@ using static ZSpitz.Util.Language;
 
 namespace ExpressionTreeToString {
     public class ObjectNotationWriterVisitor : WriterVisitorBase {
-        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg) : 
-            base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language")) { }
+        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg) 
+            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), new[] { "declarations", "" }) { }
 
-        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : 
-            base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans) { }
+        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans)
+            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans, new[] { "declarations", "" }) { }
 
         protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {
             if (parameterDeclaration) {

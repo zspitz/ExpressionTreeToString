@@ -20,7 +20,7 @@ namespace ExpressionTreeToString.Tests {
                     if (line.StartsWith("----")) {
                         if (testName != "") {
                             if (key == FactoryMethods) {
-                                expected = FactoryMethodsWriterVisitor.CSharpUsing + NewLines(2) + expected;
+                                expected = "// using static System.Linq.Expressions.Expression" + NewLines(2) + expected;
                             }
                             expectedStrings.Add((key, testName), expected.Trim());
                         }

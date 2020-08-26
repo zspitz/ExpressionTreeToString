@@ -8,8 +8,10 @@ using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionTreeToString {
     public abstract class BuiltinsWriterVisitor : WriterVisitorBase {
-        protected BuiltinsWriterVisitor(object o, OneOf<string, Language?> languageArg) : base(o, languageArg) { }
-        protected BuiltinsWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) : base(o, languageArg, out pathSpans) { }
+        protected BuiltinsWriterVisitor(object o, OneOf<string, Language?> languageArg, IEnumerable<string>? insertionPointKeys) 
+            : base(o, languageArg, insertionPointKeys) { }
+        protected BuiltinsWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans, IEnumerable<string>? insertionPointKeys) 
+            : base(o, languageArg, out pathSpans, insertionPointKeys) { }
 
         protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {
             switch (o) {

@@ -4,44 +4,55 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using OneOf;
+using static ZSpitz.Util.Functions;
 
 namespace ExpressionTreeToString {
-    public abstract class WriterVisitorBase {
-        private readonly StringBuilder sb = new StringBuilder();
-        private readonly Dictionary<string, (int start, int length)>? pathSpans;
+    internal class InsertionPoint {
+        internal readonly StringBuilder sb = new StringBuilder();
+        internal readonly Dictionary<string, (int start, int length)>? pathSpans;
+        internal int indentationLevel = 0;
+        internal readonly List<string> pathSegments = new List<string>();
+        internal InsertionPoint(bool hasPathSpans) {
+            if (hasPathSpans) { pathSpans = new Dictionary<string, (int start, int length)>(); }
+        }
+    }
 
-        /// <summary>Determines how to render literals and types</summary>
+    public abstract class WriterVisitorBase {
+        private readonly List<KeyValuePair<string, InsertionPoint>> insertionPoints;
+        private InsertionPoint ip;
         protected readonly Language? language;
 
-        protected WriterVisitorBase(object o, OneOf<string, Language?> languageArg) {
+        private WriterVisitorBase(object o, OneOf<string, Language?> languageArg, bool hasPathSpans, IEnumerable<string>? insertionPointKeys) {
             language = languageArg.ResolveLanguage();
-            PreWrite();
+            insertionPoints = (insertionPointKeys ?? new[] { "" }).Select(x => KVP(x, new InsertionPoint(hasPathSpans))).ToList();
+            ip = insertionPoints.Get("");
+
             WriteNode("", o);
         }
 
-        protected WriterVisitorBase(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) {
-            language = languageArg.ResolveLanguage();
-            this.pathSpans = new Dictionary<string, (int start, int length)>();
-            PreWrite();
-            WriteNode("", o);
-            pathSpans = this.pathSpans;
+        protected WriterVisitorBase(object o, OneOf<string, Language?> languageArg, IEnumerable<string>? insertionPointKeys)
+            : this(o, languageArg, false, insertionPointKeys) { }
+
+        protected WriterVisitorBase(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans, IEnumerable<string>? insertionPointKeys)
+            : this(o, languageArg, true, insertionPointKeys) {
+
+            pathSpans = new Dictionary<string, (int start, int length)>();
+            var offset = 0;
+            foreach (var ip in insertionPoints.Values()) {
+                ip.pathSpans!.SelectKVP((path, span) => KVP(path, (span.start + offset, span.length))).AddRangeTo(pathSpans);
+            }
         }
 
-        private int indentationLevel = 0;
-        protected void Indent() => indentationLevel += 1;
-        protected void Dedent() => indentationLevel -= 1;
+        protected void Indent() => ip.indentationLevel += 1;
+        protected void Dedent() => ip.indentationLevel -= 1;
 
         protected void WriteEOL(bool dedent = false) {
-            sb.AppendLine();
-            if (dedent) { indentationLevel = Math.Max(indentationLevel - 1, 0); } // ensures the indentation level is never < 0
-            sb.Append(new string(' ', indentationLevel * 4));
+            ip.sb.AppendLine();
+            if (dedent) { ip.indentationLevel = Math.Max(ip.indentationLevel - 1, 0); } // ensures the indentation level is never < 0
+            ip.sb.Append(new string(' ', ip.indentationLevel * 4));
         }
 
-        protected void Write(string s) => s.AppendTo(sb);
-
-        protected virtual void PreWrite() { }
-
-        private readonly List<string> pathSegments = new List<string>();
+        protected void Write(string s) => s.AppendTo(ip.sb);
 
         /// <summary>Write a string-rendering of an expression or other type used in expression trees</summary>
         /// <param name="o">Object to be rendered</param>
@@ -49,21 +60,21 @@ namespace ExpressionTreeToString {
         /// <param name="blockType">For BlockExpression, sets the preferred block type</param>
         /// 
         protected void WriteNode(string pathSegment, object o, bool parameterDeclaration = false, object? metadata = null) {
-            if (!pathSegment.IsNullOrWhitespace()) { pathSegments.Add(pathSegment); }
-            var start = sb.Length;
+            if (!pathSegment.IsNullOrWhitespace()) { ip.pathSegments.Add(pathSegment); }
+            var start = ip.sb.Length;
             try {
                 WriteNodeImpl(o, parameterDeclaration, metadata);
             } catch (NotImplementedException ex) {
                 $@"--
 -- Not implemented - {ex.Message}
---".AppendTo(sb);
+--".AppendTo(ip.sb);
             }
 
-            if (pathSpans != null) {
-                pathSpans.Add(pathSegments.Joined("."), (start, sb.Length - start));
-                if (pathSegments.Any()) {
-                    if (pathSegments.Last() != pathSegment) { throw new InvalidOperationException(); }
-                    pathSegments.RemoveLast();
+            if (ip.pathSpans != null) {
+                ip.pathSpans.Add(ip.pathSegments.Joined("."), (start, ip.sb.Length - start));
+                if (ip.pathSegments.Any()) {
+                    if (ip.pathSegments.Last() != pathSegment) { throw new InvalidOperationException(); }
+                    ip.pathSegments.RemoveLast();
                 }
             }
         }
@@ -76,7 +87,7 @@ namespace ExpressionTreeToString {
             if (writeEOL) { delimiter = delimiter.TrimEnd(); }
             pathsItems.ForEachT((pathSegment, arg, index) => {
                 if (index > 0) {
-                    delimiter.AppendTo(sb);
+                    delimiter.AppendTo(ip.sb);
                     if (writeEOL) { WriteEOL(); }
                 }
                 WriteNode(pathSegment, arg!, parameterDeclaration);
@@ -91,8 +102,12 @@ namespace ExpressionTreeToString {
         protected void WriteNodes<T>(string pathSegment, IEnumerable<T> items, string delimiter = ", ", bool parameterDeclaration = false) =>
             WriteNodes(pathSegment, items, false, delimiter, parameterDeclaration);
 
-        protected void TrimEnd(bool trimEOL = false) => sb.TrimEnd(trimEOL);
+        protected void TrimEnd(bool trimEOL = false) => ip.sb.TrimEnd(trimEOL);
 
-        public override string ToString() => sb.ToString();
+        public override string ToString() => insertionPoints.Values()
+            .Where(x => x.sb.Length > 0)
+            .Joined("", x => x.sb.ToString());
+
+        protected void SetInsertionPoint(string key) => ip = insertionPoints.Get(key);
     }
 }
