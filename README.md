@@ -61,7 +61,7 @@ Console.WriteLine(expr.ToString("Textual tree"));
 
 Features:
 
-* Multiple formatters ([with more planned](https://github.com/zspitz/ExpressionTreeToString/issues/14)):
+* Multiple writers ([with more planned](https://github.com/zspitz/ExpressionTreeToString/issues/14)):
 
   * Pseudo-code in C# or VB.NET
   * Factory method calls which generate this expression
@@ -88,7 +88,7 @@ Features:
 
 * Type names are rendered using language syntax and keywords, instead of the [**Type.Name**](https://docs.microsoft.com/en-us/dotnet/api/system.type.name) property; e.g. `List<string>` or `List(Of Date)` instead of ``List`1``
 
-* Calls to `String.Concat` and `String.Format` are mapped to the `+` operator and string interpolation (where possible):
+* Calls to `String.Concat` and `String.Format` are mapped to the `+` operator and string interpolation, respectively (where possible):
 
     ```csharp
     var name = "World";
