@@ -1,18 +1,30 @@
 ﻿---- CSCompiler.Add
 Lambda(
-    Add(x, y)
+    Add(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- CSCompiler.AndAlso
 Lambda(
-    AndAlso(b1, b2)
+    AndAlso(
+        Constant(b1),
+        Constant(b2)
+    )
 )
 ---- CSCompiler.AndBitwise
 Lambda(
-    And(i, j)
+    And(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.AndLogical
 Lambda(
-    And(b1, b2)
+    And(
+        Constant(b1),
+        Constant(b2)
+    )
 )
 ---- CSCompiler.AnonymousType
 Lambda(
@@ -26,22 +38,27 @@ Lambda(
 Lambda(
     New(
         typeof({ string Bar, string Baz }).GetConstructor(new[] { typeof(string), typeof(string) }),
-        Bar, Baz
+        Constant(Bar),
+        Constant(Baz)
     )
 )
 ---- CSCompiler.ArrayIndex
 Lambda(
-    ArrayIndex(arr,
+    ArrayIndex(
+        Constant(arr),
         Constant(0)
     )
 )
 ---- CSCompiler.ArrayLength
 Lambda(
-    ArrayLength(arr)
+    ArrayLength(
+        Constant(arr)
+    )
 )
 ---- CSCompiler.ArrayMultipleIndex
 Lambda(
-    ArrayIndex(arr,
+    ArrayIndex(
+        Constant(arr),
         Constant(5),
         Constant(6)
     )
@@ -55,19 +72,27 @@ Lambda(
 )
 ---- CSCompiler.ArraySingleIndex
 Lambda(
-    ArrayIndex(arr,
+    ArrayIndex(
+        Constant(arr),
         Constant(5)
     )
 )
 ---- CSCompiler.BitwiseNot
 Lambda(
-    Not(i)
+    Not(
+        Constant(i)
+    )
 )
 ---- CSCompiler.ClosedVariable
-Lambda(s)
+Lambda(
+    Constant(s)
+)
 ---- CSCompiler.Coalesce
 Lambda(
-    Coalesce(s1, s2)
+    Coalesce(
+        Constant(s1),
+        Constant(s2)
+    )
 )
 ---- CSCompiler.CollectionTypeWithInitializer
 Lambda(
@@ -140,7 +165,8 @@ Lambda(
 )
 ---- CSCompiler.Convert
 Lambda(
-    Convert(lst,
+    Convert(
+        Constant(lst),
         typeof(object)
     )
 )
@@ -156,25 +182,37 @@ Lambda(
 )
 ---- CSCompiler.Divide
 Lambda(
-    Divide(x, y)
+    Divide(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- CSCompiler.Equal
 Lambda(
-    Equal(i, j)
+    Equal(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.ExclusiveOrBitwise
 Lambda(
-    ExclusiveOr(i, j)
+    ExclusiveOr(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.ExclusiveOrLogical
 Lambda(
-    ExclusiveOr(b1, b2)
+    ExclusiveOr(
+        Constant(b1),
+        Constant(b2)
+    )
 )
 ---- CSCompiler.ExtensionMethod0Arguments
 Lambda(
     Call(
         typeof(Enumerable).GetMethod("Count", new[] { typeof(IEnumerable<string>) }),
-        lst
+        Constant(lst)
     )
 )
 ---- CSCompiler.False
@@ -183,34 +221,44 @@ Lambda(
 )
 ---- CSCompiler.GreaterThan
 Lambda(
-    GreaterThan(i, j)
+    GreaterThan(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.GreaterThanOrEqual
 Lambda(
-    GreaterThanOrEqual(i, j)
+    GreaterThanOrEqual(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.InstanceMember
 Lambda(
-    MakeMemberAccess(s,
+    MakeMemberAccess(
+        Constant(s),
         typeof(string).GetProperty("Length")
     )
 )
 ---- CSCompiler.InstanceMethod0Arguments
 Lambda(
-    Call(s,
+    Call(
+        Constant(s),
         typeof(object).GetMethod("ToString")
     )
 )
 ---- CSCompiler.InstanceMethod1Argument
 Lambda(
-    Call(s,
+    Call(
+        Constant(s),
         typeof(string).GetMethod("CompareTo", new[] { typeof(string) }),
         Constant("")
     )
 )
 ---- CSCompiler.InstanceMethod2Arguments
 Lambda(
-    Call(s,
+    Call(
+        Constant(s),
         typeof(string).GetMethod("IndexOf", new[] { typeof(char), typeof(int) }),
         Constant('a'),
         Constant(2)
@@ -238,11 +286,14 @@ Lambda(
 )
 ---- CSCompiler.InvocationNoArguments
 Lambda(
-    Invoke(del)
+    Invoke(
+        Constant(del)
+    )
 )
 ---- CSCompiler.InvocationOneArgument
 Lambda(
-    Invoke(del,
+    Invoke(
+        Constant(del),
         Constant(5)
     )
 )
@@ -287,15 +338,24 @@ Lambda(
 )
 ---- CSCompiler.LeftShift
 Lambda(
-    LeftShift(i, j)
+    LeftShift(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.LessThan
 Lambda(
-    LessThan(i, j)
+    LessThan(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.LessThanOrEqual
 Lambda(
-    LessThanOrEqual(i, j)
+    LessThanOrEqual(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.ListBinding
 Lambda(
@@ -322,7 +382,9 @@ Lambda(
 )
 ---- CSCompiler.LogicalNot
 Lambda(
-    Not(b)
+    Not(
+        Constant(b)
+    )
 )
 ---- CSCompiler.MathPow
 var x = Parameter(
@@ -358,7 +420,10 @@ Lambda(
 )
 ---- CSCompiler.Modulo
 Lambda(
-    Modulo(x, y)
+    Modulo(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- CSCompiler.MultidimensionalArrayOfArray
 Lambda(
@@ -378,7 +443,10 @@ Lambda(
 )
 ---- CSCompiler.Multiply
 Lambda(
-    Multiply(x, y)
+    Multiply(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- CSCompiler.NamedType
 Lambda(
@@ -440,7 +508,9 @@ Lambda(
 )
 ---- CSCompiler.Negate
 Lambda(
-    Negate(i)
+    Negate(
+        Constant(i)
+    )
 )
 ---- CSCompiler.NonInteger
 Lambda(
@@ -458,7 +528,10 @@ Lambda(
 )
 ---- CSCompiler.NotEqual
 Lambda(
-    NotEqual(i, j)
+    NotEqual(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.Nothing
 Lambda(
@@ -488,19 +561,31 @@ Lambda(
 )
 ---- CSCompiler.OrBitwise
 Lambda(
-    Or(i, j)
+    Or(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.OrElse
 Lambda(
-    OrElse(b1, b2)
+    OrElse(
+        Constant(b1),
+        Constant(b2)
+    )
 )
 ---- CSCompiler.OrLogical
 Lambda(
-    Or(b1, b2)
+    Or(
+        Constant(b1),
+        Constant(b2)
+    )
 )
 ---- CSCompiler.RightShift
 Lambda(
-    RightShift(i, j)
+    RightShift(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- CSCompiler.SingleDimensionInit
 Lambda(
@@ -577,7 +662,10 @@ Lambda(
 )
 ---- CSCompiler.Subtract
 Lambda(
-    Subtract(x, y)
+    Subtract(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- CSCompiler.True
 Lambda(
@@ -627,19 +715,22 @@ Lambda(
 )
 ---- CSCompiler.TypeAs
 Lambda(
-    TypeAs(o,
+    TypeAs(
+        Constant(o),
         typeof(string)
     )
 )
 ---- CSCompiler.TypeCheck
 Lambda(
-    TypeIs(o,
+    TypeIs(
+        Constant(o),
         typeof(string)
     )
 )
 ---- CSCompiler.TypeIndexer
 Lambda(
-    Property(lst,
+    Property(
+        Constant(lst),
         typeof(List<string>).GetProperty("Item"),
         Constant(3)
     )
@@ -1986,19 +2077,31 @@ IfThen(
 )
 ---- VBCompiler.Add
 Lambda(
-    Add(x, y)
+    Add(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- VBCompiler.AndAlso
 Lambda(
-    AndAlso(b1, b2)
+    AndAlso(
+        Constant(b1),
+        Constant(b2)
+    )
 )
 ---- VBCompiler.AndBitwise
 Lambda(
-    And(i, j)
+    And(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- VBCompiler.AndLogical
 Lambda(
-    And(b1, b2)
+    And(
+        Constant(b1),
+        Constant(b2)
+    )
 )
 ---- VBCompiler.AnonymousType
 Lambda(
@@ -2012,22 +2115,27 @@ Lambda(
 Lambda(
     New(
         typeof({ string Bar, string Baz }).GetConstructor(new[] { typeof(string), typeof(string) }),
-        Bar, Baz
+        Constant(Bar),
+        Constant(Baz)
     )
 )
 ---- VBCompiler.ArrayIndex
 Lambda(
-    ArrayIndex(arr,
+    ArrayIndex(
+        Constant(arr),
         Constant(0)
     )
 )
 ---- VBCompiler.ArrayLength
 Lambda(
-    ArrayLength(arr)
+    ArrayLength(
+        Constant(arr)
+    )
 )
 ---- VBCompiler.ArrayMultipleIndex
 Lambda(
-    ArrayIndex(arr,
+    ArrayIndex(
+        Constant(arr),
         Constant(5),
         Constant(6)
     )
@@ -2041,23 +2149,32 @@ Lambda(
 )
 ---- VBCompiler.ArraySingleIndex
 Lambda(
-    ArrayIndex(arr,
+    ArrayIndex(
+        Constant(arr),
         Constant(5)
     )
 )
 ---- VBCompiler.BitwiseNot
 Lambda(
-    Not(i)
+    Not(
+        Constant(i)
+    )
 )
 ---- VBCompiler.ClosedVariable
-Lambda(s)
+Lambda(
+    Constant(s)
+)
 ---- VBCompiler.Coalesce
 Lambda(
-    Coalesce(s1, s2)
+    Coalesce(
+        Constant(s1),
+        Constant(s2)
+    )
 )
 ---- VBCompiler.CObject
 Lambda(
-    Convert(lst,
+    Convert(
+        Constant(lst),
         typeof(object)
     )
 )
@@ -2146,17 +2263,24 @@ Lambda(
 )
 ---- VBCompiler.Convert
 Lambda(
-    Convert(o,
+    Convert(
+        Constant(o),
         typeof(Random)
     )
 )
 ---- VBCompiler.Divide
 Lambda(
-    Divide(x, y)
+    Divide(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- VBCompiler.Equal
 Lambda(
-    Equal(i, j)
+    Equal(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- VBCompiler.EscapedString
 Lambda(
@@ -2164,11 +2288,17 @@ Lambda(
 )
 ---- VBCompiler.ExclusiveOrBitwise
 Lambda(
-    ExclusiveOr(i, j)
+    ExclusiveOr(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- VBCompiler.ExclusiveOrLogical
 Lambda(
-    ExclusiveOr(b1, b2)
+    ExclusiveOr(
+        Constant(b1),
+        Constant(b2)
+    )
 )
 ---- VBCompiler.False
 Lambda(
@@ -2176,34 +2306,44 @@ Lambda(
 )
 ---- VBCompiler.GreaterThan
 Lambda(
-    GreaterThan(i, j)
+    GreaterThan(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- VBCompiler.GreaterThanOrEqual
 Lambda(
-    GreaterThanOrEqual(i, j)
+    GreaterThanOrEqual(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- VBCompiler.InstanceMember
 Lambda(
-    MakeMemberAccess(s,
+    MakeMemberAccess(
+        Constant(s),
         typeof(string).GetProperty("Length")
     )
 )
 ---- VBCompiler.InstanceMethod0Arguments
 Lambda(
-    Call(s,
+    Call(
+        Constant(s),
         typeof(string).GetMethod("ToString", new Type[] { })
     )
 )
 ---- VBCompiler.InstanceMethod1Argument
 Lambda(
-    Call(s,
+    Call(
+        Constant(s),
         typeof(string).GetMethod("CompareTo", new[] { typeof(string) }),
         Constant("")
     )
 )
 ---- VBCompiler.InstanceMethod2Arguments
 Lambda(
-    Call(s,
+    Call(
+        Constant(s),
         typeof(string).GetMethod("IndexOf", new[] { typeof(char), typeof(int) }),
         Constant('a'),
         Constant(2)
@@ -2226,11 +2366,14 @@ Lambda(
 )
 ---- VBCompiler.InvocationNoArguments
 Lambda(
-    Invoke(del)
+    Invoke(
+        Constant(del)
+    )
 )
 ---- VBCompiler.InvocationOneArgument
 Lambda(
-    Invoke(del,
+    Invoke(
+        Constant(del),
         Constant(5)
     )
 )
@@ -2283,32 +2426,46 @@ Lambda(
 Lambda(
     NewArrayInit(
         typeof(string[]),
-        arr1, arr2
+        Constant(arr1),
+        Constant(arr2)
     )
 )
 ---- VBCompiler.LeftShift
 Lambda(
-    LeftShift(i,
-        And(j,
+    LeftShift(
+        Constant(i),
+        And(
+            Constant(j),
             Constant(31)
         )
     )
 )
 ---- VBCompiler.LessThan
 Lambda(
-    LessThan(i, j)
+    LessThan(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- VBCompiler.LessThanOrEqual
 Lambda(
-    LessThanOrEqual(i, j)
+    LessThanOrEqual(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- VBCompiler.LogicalNot
 Lambda(
-    Not(b)
+    Not(
+        Constant(b)
+    )
 )
 ---- VBCompiler.Modulo
 Lambda(
-    Modulo(x, y)
+    Modulo(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- VBCompiler.MultidimensionalArrayOfArray
 Lambda(
@@ -2328,7 +2485,10 @@ Lambda(
 )
 ---- VBCompiler.Multiply
 Lambda(
-    Multiply(x, y)
+    Multiply(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- VBCompiler.NamedType
 Lambda(
@@ -2390,7 +2550,9 @@ Lambda(
 )
 ---- VBCompiler.Negate
 Lambda(
-    NegateChecked(i)
+    NegateChecked(
+        Constant(i)
+    )
 )
 ---- VBCompiler.NonInteger
 Lambda(
@@ -2408,7 +2570,10 @@ Lambda(
 )
 ---- VBCompiler.NotEqual
 Lambda(
-    NotEqual(i, j)
+    NotEqual(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- VBCompiler.Nothing
 Lambda(
@@ -2442,24 +2607,38 @@ Lambda(
 )
 ---- VBCompiler.OrBitwise
 Lambda(
-    Or(i, j)
+    Or(
+        Constant(i),
+        Constant(j)
+    )
 )
 ---- VBCompiler.OrElse
 Lambda(
-    OrElse(b1, b2)
+    OrElse(
+        Constant(b1),
+        Constant(b2)
+    )
 )
 ---- VBCompiler.OrLogical
 Lambda(
-    Or(b1, b2)
+    Or(
+        Constant(b1),
+        Constant(b2)
+    )
 )
 ---- VBCompiler.Power
 Lambda(
-    Power(x, y)
+    Power(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- VBCompiler.RightShift
 Lambda(
-    RightShift(i,
-        And(j,
+    RightShift(
+        Constant(i),
+        And(
+            Constant(j),
             Constant(31)
         )
     )
@@ -2516,7 +2695,7 @@ Lambda(
             typeof(string),
             New(
                 typeof(string).GetConstructor(new[] { typeof(char[]) }),
-                arr
+                Constant(arr)
             )
         )
     )
@@ -2525,7 +2704,8 @@ Lambda(
 Lambda(
     Call(
         typeof(string).GetMethod("Join", new[] { typeof(string), typeof(IEnumerable<char>) }),
-        Constant(","), arr
+        Constant(","),
+        Constant(arr)
     )
 )
 ---- VBCompiler.String
@@ -2588,7 +2768,10 @@ Lambda(
 )
 ---- VBCompiler.Subtract
 Lambda(
-    Subtract(x, y)
+    Subtract(
+        Constant(x),
+        Constant(y)
+    )
 )
 ---- VBCompiler.True
 Lambda(
@@ -2633,7 +2816,8 @@ Lambda(
 )
 ---- VBCompiler.TypeAs
 Lambda(
-    TypeAs(o,
+    TypeAs(
+        Constant(o),
         typeof(string)
     )
 )
@@ -2646,14 +2830,16 @@ Lambda(
 )
 ---- VBCompiler.TypeIndexer
 Lambda(
-    Property(lst,
+    Property(
+        Constant(lst),
         typeof(List<string>).GetProperty("Item"),
         Constant(3)
     )
 )
 ---- VBCompiler.VBDeclaredTypeIndexer
 Lambda(
-    Property(x,
+    Property(
+        Constant(x),
         typeof(DummyWithDefault).GetProperty("Item"),
         Constant(5)
     )
@@ -2661,7 +2847,8 @@ Lambda(
 ---- VBCompiler.LeftEnumNonConstant
 Lambda(
     GreaterThanOrEqual(
-        ConvertChecked(dow,
+        ConvertChecked(
+            Constant(dow),
             typeof(int)
         ),
         Constant(2)
@@ -2671,7 +2858,8 @@ Lambda(
 Lambda(
     LessThanOrEqual(
         Constant(2),
-        ConvertChecked(dow,
+        ConvertChecked(
+            Constant(dow),
             typeof(int)
         )
     )
@@ -2679,10 +2867,12 @@ Lambda(
 ---- VBCompiler.DualNonConstant
 Lambda(
     Equal(
-        ConvertChecked(dow1,
+        ConvertChecked(
+            Constant(dow1),
             typeof(int)
         ),
-        ConvertChecked(dow2,
+        ConvertChecked(
+            Constant(dow2),
             typeof(int)
         )
     )
@@ -2690,7 +2880,8 @@ Lambda(
 ---- CSCompiler.LeftEnumNonConstant
 Lambda(
     GreaterThanOrEqual(
-        Convert(dow,
+        Convert(
+            Constant(dow),
             typeof(int)
         ),
         Constant(2)
@@ -2700,7 +2891,8 @@ Lambda(
 Lambda(
     LessThanOrEqual(
         Constant(2),
-        Convert(dow,
+        Convert(
+            Constant(dow),
             typeof(int)
         )
     )
@@ -2708,10 +2900,12 @@ Lambda(
 ---- CSCompiler.DualNonConstant
 Lambda(
     Equal(
-        Convert(dow1,
+        Convert(
+            Constant(dow1),
             typeof(int)
         ),
-        Convert(dow2,
+        Convert(
+            Constant(dow2),
             typeof(int)
         )
     )
@@ -2756,7 +2950,8 @@ Lambda(
 Lambda(
     Call(
         typeof(Dummy).GetMethod("DummyExtensionMethod1Argument", BindingFlags.Static | BindingFlags.NonPublic),
-        Convert(lst,
+        Convert(
+            Constant(lst),
             typeof(IEnumerable<string>)
         ),
         Constant(1)
@@ -2766,7 +2961,7 @@ Lambda(
 Lambda(
     Call(
         typeof(Dummy).GetMethod("DummyExtensionMethod1Argument", BindingFlags.Static | BindingFlags.NonPublic),
-        lst,
+        Constant(lst),
         Constant(1)
     )
 )
@@ -2774,7 +2969,8 @@ Lambda(
 Lambda(
     Call(
         typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
-        Convert(lst,
+        Convert(
+            Constant(lst),
             typeof(IEnumerable<string>)
         ),
         Constant(5),
@@ -2785,7 +2981,7 @@ Lambda(
 Lambda(
     Call(
         typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
-        lst,
+        Constant(lst),
         Constant(5),
         Constant(6)
     )
@@ -2794,7 +2990,7 @@ Lambda(
 Lambda(
     Call(
         typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments", BindingFlags.Static | BindingFlags.NonPublic),
-        lst,
+        Constant(lst),
         Constant(1)
     )
 )
@@ -2802,7 +2998,7 @@ Lambda(
 Lambda(
     Call(
         typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
-        lst,
+        Constant(lst),
         Constant(5),
         Constant(17)
     )
@@ -2822,7 +3018,8 @@ Call(
 )
 ---- VBCompiler.ExtensionMethod0Arguments
 Lambda(
-    MakeMemberAccess(lst,
+    MakeMemberAccess(
+        Constant(lst),
         typeof(List<string>).GetProperty("Count")
     )
 )
@@ -2830,7 +3027,7 @@ Lambda(
 Lambda(
     Call(
         typeof(Enumerable).GetMethod("Count", new[] { typeof(IEnumerable<string>) }),
-        lst
+        Constant(lst)
     )
 )
 ---- FactoryMethods.MakeExtensionExpression

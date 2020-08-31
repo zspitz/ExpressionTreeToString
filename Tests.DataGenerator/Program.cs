@@ -17,6 +17,8 @@ namespace Tests.DataGenerator {
             var lines = new List<string>();
 
             foreach (var (key, filename) in rendererFileMapping) {
+                if (key != BuiltinRenderer.FactoryMethods) { continue; }
+
                 var ordering = parseFileOrder(@$"C:\Users\Spitz\source\repos\zspitz\ExpressionTreeToString\Tests\expectedResults\{filename}-testdata.txt");
 
                 var language = key == VisualBasic ? Language.VisualBasic : Language.CSharp;
