@@ -10,6 +10,7 @@ namespace ExpressionTreeTestObjects {
         internal static void DummyMethod() { }
         internal static List<T> DummyExtensionMethod1Arguments<T>(this List<T> lst, int n) => lst;
         internal static List<T>? DummyExtensionMethod2Arguments<T>(this List<T>? lst, int n1, int n2) => lst;
+        internal static void DummyMethodWithGenerics<T>() { }
     }
 
     partial class CSCompiler {
@@ -64,5 +65,8 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject(Method)]
         internal static readonly Expression MathPow = Expr((double x, double y) => Math.Pow(x, y));
+
+        [TestObject(Method)]
+        internal static readonly Expression RequiredGenericParameters = Expr(() => Dummy.DummyMethodWithGenerics<string>());
     }
 }

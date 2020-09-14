@@ -441,6 +441,16 @@ namespace ExpressionTreeToString {
                 WriteNode(path, o);
             }
             Write($".{expr.Method.Name}");
+
+            if (expr.Method.IsGenericMethod) {
+                var def = expr.Method.GetGenericMethodDefinition();
+                var args = def.GetGenericArguments();
+                var parameterTypes = def.GetParameters().Select(x => x.ParameterType).ToArray();
+                if (args.Any(arg => parameterTypes.None(prm => prm.ContainsType(arg)))) {
+                    Write($"(Of {expr.Method.GetGenericArguments().Joined(", ", t => t.FriendlyName(language))})");
+                }
+            }
+
             if (arguments.Any()) {
                 Write("(");
                 WriteNodes(arguments);
