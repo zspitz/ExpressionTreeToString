@@ -1692,7 +1692,7 @@ new Expression<Func<string>> {
                 }
             }
         },
-        Method = typeof(string).GetMethod("Join", new[] { typeof(string), typeof(string[]) })
+        Method = typeof(string).GetMethod("Join", 0, new[] { typeof(string), typeof(string[]) })
     },
     ReturnType = typeof(string)
 }
@@ -1731,7 +1731,7 @@ new Expression<Func<string, string, string>> {
             s1,
             s2
         },
-        Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+        Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
@@ -1795,7 +1795,7 @@ new Expression<Func<string, string, string>> {
         Type = typeof(string),
         Left = s1,
         Right = s2,
-        Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+        Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
@@ -1826,7 +1826,7 @@ new Expression<Action<string, string>> {
                 Type = typeof(string),
                 Left = s1,
                 Right = s2,
-                Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+                Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
             }
         },
         Method = typeof(Console).GetMethod("WriteLine", new[] { typeof(string) })
@@ -4100,7 +4100,7 @@ new Expression<Func<string, string, string>> {
         Type = typeof(string),
         Left = s1,
         Right = s2,
-        Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+        Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     },
     Name = "name",
     ReturnType = typeof(string)
@@ -4570,7 +4570,7 @@ new Expression<Func<Func<string, string, string>>> {
             Type = typeof(string),
             Left = s1,
             Right = s2,
-            Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+            Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
         },
         ReturnType = typeof(string)
     },
@@ -4869,7 +4869,7 @@ new MethodCallExpression {
             }
         }
     },
-    Method = typeof(string).GetMethod("Join", new[] { typeof(string), typeof(string[]) })
+    Method = typeof(string).GetMethod("Join", 0, new[] { typeof(string), typeof(string[]) })
 }
 ---- FactoryMethods.StringConcat
 new MethodCallExpression {
@@ -4878,7 +4878,7 @@ new MethodCallExpression {
         s1,
         s2
     },
-    Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+    Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
 }
 ---- FactoryMethods.SwitchOnExpressionWithDefaultMultiStatement
 new SwitchExpression {
@@ -5170,7 +5170,7 @@ new Expression<Func<string, string, string>> {
         Type = typeof(string),
         Left = s1,
         Right = s2,
-        Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+        Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
@@ -5201,7 +5201,7 @@ new Expression<Action<string, string>> {
                 Type = typeof(string),
                 Left = s1,
                 Right = s2,
-                Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+                Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
             }
         },
         Method = typeof(Console).GetMethod("WriteLine", new[] { typeof(string) })
@@ -7014,7 +7014,7 @@ new Expression<Func<string>> {
                 }
             }
         },
-        Method = typeof(string).GetMethod("Join", new[] { typeof(string), typeof(string[]) })
+        Method = typeof(string).GetMethod("Join", 0, new[] { typeof(string), typeof(string[]) })
     },
     ReturnType = typeof(string)
 }
@@ -7038,7 +7038,7 @@ new Expression<Func<string>> {
                 Member = typeof(<closure>).GetField("$VB$Local_arr")
             }
         },
-        Method = typeof(string).GetMethod("Join", new[] { typeof(string), typeof(IEnumerable<char>) })
+        Method = typeof(string).GetMethod("Join", 1, new[] { typeof(string), typeof(IEnumerable<char>) })
     },
     ReturnType = typeof(string)
 }
@@ -7077,7 +7077,7 @@ new Expression<Func<string, string, string>> {
             s1,
             s2
         },
-        Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+        Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
@@ -7106,7 +7106,7 @@ new Expression<Func<string, string, string>> {
             s1,
             s2
         },
-        Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+        Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
@@ -7145,7 +7145,7 @@ new Expression<Func<string, string, string>> {
                 }
             }
         },
-        Method = typeof(string).GetMethod("Concat", new[] { typeof(string[]) })
+        Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string[]) })
     },
     ReturnType = typeof(string)
 }
@@ -7210,7 +7210,7 @@ new Expression<Func<string, string, string>> {
             s1,
             s2
         },
-        Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+        Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     },
     ReturnType = typeof(string)
 }
@@ -7242,7 +7242,7 @@ new Expression<Action<string, string>> {
                     s1,
                     s2
                 },
-                Method = typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+                Method = typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
             }
         },
         Method = typeof(Console).GetMethod("WriteLine", new[] { typeof(string) })
@@ -7807,5 +7807,15 @@ new UnaryExpression {
     NodeType = ExpressionType.Unbox,
     Type = typeof(int),
     Operand = obj
+}
+---- CSCompiler.RequiredGenericParameters
+new Expression<Action> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Action),
+    Body = new MethodCallExpression {
+        Type = typeof(void),
+        Method = typeof(Dummy).GetMethod("DummyMethodWithGenerics", BindingFlags.Static | BindingFlags.NonPublic)
+    },
+    ReturnType = typeof(void)
 }
 ------

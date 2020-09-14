@@ -2178,4 +2178,7 @@ Extension (int) = 69
 ---- FactoryMethods.ConstructUnbox
 Unbox (int)
     · Operand - Parameter (object) obj
+---- CSCompiler.RequiredGenericParameters
+Lambda (Action)
+    · Body - Call (void) Dummy.DummyMethodWithGenerics
 ------

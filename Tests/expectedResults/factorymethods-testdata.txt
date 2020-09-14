@@ -630,7 +630,7 @@ Lambda(
 ---- CSCompiler.StaticMethod2Arguments
 Lambda(
     Call(
-        typeof(string).GetMethod("Join", new[] { typeof(string), typeof(string[]) }),
+        typeof(string).GetMethod("Join", 0, new[] { typeof(string), typeof(string[]) }),
         Constant(","),
         NewArrayInit(
             typeof(string),
@@ -655,7 +655,7 @@ var s2 = Parameter(
 
 Lambda(
     Call(
-        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
+        typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
     s1, s2
@@ -683,7 +683,7 @@ var s2 = Parameter(
 
 Lambda(
     Add(s1, s2,
-        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+        typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     ),
     s1, s2
 )
@@ -701,7 +701,7 @@ Lambda(
     Call(
         typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         Add(s1, s2,
-            typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+            typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
         )
     ),
     s1, s2
@@ -1580,7 +1580,7 @@ var s2 = Parameter(
 
 Lambda(
     Add(s1, s2,
-        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+        typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     ),
     "name", new[] { s1, s2 }
 )
@@ -1752,7 +1752,7 @@ var s2 = Parameter(
 Lambda(
     Lambda(
         Add(s1, s2,
-            typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+            typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
         ),
         s1, s2
     )
@@ -1883,7 +1883,7 @@ Call(
 )
 ---- FactoryMethods.StaticMethod2Arguments
 Call(
-    typeof(string).GetMethod("Join", new[] { typeof(string), typeof(string[]) }),
+    typeof(string).GetMethod("Join", 0, new[] { typeof(string), typeof(string[]) }),
     Constant(","),
     NewArrayInit(
         typeof(string),
@@ -1893,7 +1893,7 @@ Call(
 )
 ---- FactoryMethods.StringConcat
 Call(
-    typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
+    typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) }),
     s1, s2
 )
 ---- FactoryMethods.SwitchOnExpressionWithDefaultMultiStatement
@@ -2006,7 +2006,7 @@ var s2 = Parameter(
 
 Lambda(
     Add(s1, s2,
-        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+        typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     ),
     s1, s2
 )
@@ -2024,7 +2024,7 @@ Lambda(
     Call(
         typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         Add(s1, s2,
-            typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) })
+            typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
         )
     ),
     s1, s2
@@ -2689,7 +2689,7 @@ Lambda(
 ---- VBCompiler.StaticMethod2Arguments
 Lambda(
     Call(
-        typeof(string).GetMethod("Join", new[] { typeof(string), typeof(string[]) }),
+        typeof(string).GetMethod("Join", 0, new[] { typeof(string), typeof(string[]) }),
         Constant(","),
         NewArrayInit(
             typeof(string),
@@ -2703,7 +2703,7 @@ Lambda(
 ---- VBCompiler.StaticMethod2ArgumentsWithoutConversion
 Lambda(
     Call(
-        typeof(string).GetMethod("Join", new[] { typeof(string), typeof(IEnumerable<char>) }),
+        typeof(string).GetMethod("Join", 1, new[] { typeof(string), typeof(IEnumerable<char>) }),
         Constant(","),
         Constant(arr)
     )
@@ -2724,7 +2724,7 @@ var s2 = Parameter(
 
 Lambda(
     Call(
-        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
+        typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
     s1, s2
@@ -2741,7 +2741,7 @@ var s2 = Parameter(
 
 Lambda(
     Call(
-        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
+        typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
     s1, s2
@@ -2758,7 +2758,7 @@ var s2 = Parameter(
 
 Lambda(
     Call(
-        typeof(string).GetMethod("Concat", new[] { typeof(string[]) }),
+        typeof(string).GetMethod("Concat", 0, new[] { typeof(string[]) }),
         NewArrayInit(
             typeof(string),
             s1, s2, s1, s2, s1, s2
@@ -2789,7 +2789,7 @@ var s2 = Parameter(
 
 Lambda(
     Call(
-        typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
+        typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) }),
         s1, s2
     ),
     s1, s2
@@ -2808,7 +2808,7 @@ Lambda(
     Call(
         typeof(Console).GetMethod("WriteLine", new[] { typeof(string) }),
         Call(
-            typeof(string).GetMethod("Concat", new[] { typeof(string), typeof(string) }),
+            typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) }),
             s1, s2
         )
     ),
@@ -3037,5 +3037,11 @@ Lambda(
 ---- FactoryMethods.ConstructUnbox
 Unbox(obj,
     typeof(int)
+)
+---- CSCompiler.RequiredGenericParameters
+Lambda(
+    Call(
+        typeof(Dummy).GetMethod("DummyMethodWithGenerics", BindingFlags.Static | BindingFlags.NonPublic)
+    )
 )
 ------

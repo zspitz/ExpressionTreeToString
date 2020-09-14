@@ -17,14 +17,12 @@ namespace Tests.DataGenerator {
             var lines = new List<string>();
 
             foreach (var (key, filename) in rendererFileMapping) {
-                if (key != BuiltinRenderer.FactoryMethods) { continue; }
-
                 var ordering = parseFileOrder(@$"C:\Users\Spitz\source\repos\zspitz\ExpressionTreeToString\Tests\expectedResults\{filename}-testdata.txt");
 
                 var language = key == VisualBasic ? Language.VisualBasic : Language.CSharp;
 
-                foreach (var (category, source, name, o) in Objects.Get().OrderBy(x => ordering[$"{x.source}.{x.name}"])) {
-                    //foreach (var (category, source, name, o) in Objects.Get().Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"))) {
+                //foreach (var (category, source, name, o) in Objects.Get().OrderBy(x => ordering[$"{x.source}.{x.name}"])) {
+                foreach (var (category, source, name, o) in Objects.Get().Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"))) {
                     lines.Add($"---- {source}.{name}");
                     var toWrite = o switch
                     {

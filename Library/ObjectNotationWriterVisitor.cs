@@ -26,7 +26,8 @@ namespace ExpressionTreeToString {
                 if (!parameterDeclaration) { return; }
 
                 SetInsertionPoint("declarations");
-                Write(language switch {
+                Write(language switch
+                {
                     CSharp => "var",
                     VisualBasic => "Dim",
                     _ => throw new NotImplementedException("Invalid language.")
@@ -84,7 +85,7 @@ namespace ExpressionTreeToString {
                 Write(" = ");
 
                 if (x.PropertyType.InheritsFromOrImplementsAny(PropertyTypes)) {
-                    var parameterDeclaration = 
+                    var parameterDeclaration =
                         (o is LambdaExpression && x.Name == "Parameters") ||
                         (o is BlockExpression && x.Name == "Variables");
                     WriteCollection((IEnumerable)value, x.Name, parameterDeclaration);

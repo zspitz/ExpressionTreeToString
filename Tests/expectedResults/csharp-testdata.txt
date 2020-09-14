@@ -1131,4 +1131,6 @@ lstString.DummyExtensionMethod2Arguments(5, 17)
 --
 ---- FactoryMethods.ConstructUnbox
 (int)obj
+---- CSCompiler.RequiredGenericParameters
+() => Dummy.DummyMethodWithGenerics<string>()
 ------

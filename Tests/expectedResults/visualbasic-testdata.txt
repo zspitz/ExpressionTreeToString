@@ -1082,4 +1082,6 @@ Function() lst.Count
 --
 ---- FactoryMethods.ConstructUnbox
 CInt(obj)
+---- CSCompiler.RequiredGenericParameters
+Sub() Dummy.DummyMethodWithGenerics(Of String)
 ------

@@ -13,6 +13,7 @@ using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
 using static ExpressionTreeToString.CSharpMultilineBlockTypes;
 using static ExpressionTreeToString.CSharpBlockMetadata;
+using OneOf;
 
 namespace ExpressionTreeToString {
     public class CSharpWriterVisitor : CodeWriterVisitor {
@@ -57,6 +58,18 @@ namespace ExpressionTreeToString {
             [SubtractAssign] = "-=",
             [SubtractAssignChecked] = "-="
         };
+
+        //private void operatorLevel(object o) {
+
+        //}
+
+        //private void Parens(object outer, object inner) {
+        //    var result = outer switch
+        //    {
+        //        OneOf<Expression, ElementInit, MemberBinding> x => x.AsT0,
+        //        _ => throw new NotImplementedException()
+        //    };
+        //}
 
         private void WriteIndexerAccess(string instancePath, Expression instance, string argBasePath, params Expression[] keys) {
             WriteNode(instancePath, instance);
@@ -348,6 +361,12 @@ namespace ExpressionTreeToString {
                 // instance method, or extension method
                 WriteNode(path, o);
             }
+
+            //string typeParameters = "";
+            //if (expr.Method.IsGenericMethod) {
+            //    var def = expr.Method.GetGenericMethodDefinition();
+
+            //}
             Write($".{expr.Method.Name}(");
             WriteNodes(arguments);
             Write(")");

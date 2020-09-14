@@ -1,9 +1,6 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Reflection;
-using ExpressionTreeToString.Util;
 
 namespace ExpressionTreeToString.Tests {
     public static class Functions {
