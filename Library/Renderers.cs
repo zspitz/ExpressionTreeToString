@@ -1,6 +1,7 @@
 ﻿using ExpressionTreeToString.Util;
 using OneOf;
 using System.Collections.Generic;
+using System.Linq;
 using ZSpitz.Util;
 using static ExpressionTreeToString.RendererNames;
 
@@ -48,5 +49,7 @@ namespace ExpressionTreeToString {
             pathSpans = pathSpans1!;
             return ret;
         }
+
+        public static string[] RendererKeys = writers.Keys.Ordered().ToArray();
     }
 }
