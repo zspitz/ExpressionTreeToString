@@ -31,12 +31,8 @@ namespace ExpressionTreeToString {
             SetInsertionPoint("");
         }
 
-        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg)
-            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys) {
-            WriteUsings();
-        }
-        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans)
-            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans, insertionPointKeys) {
+        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false)
+            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys, hasPathSpans) {
             WriteUsings();
         }
 

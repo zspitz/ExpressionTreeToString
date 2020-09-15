@@ -12,11 +12,8 @@ using OneOf;
 
 namespace ExpressionTreeToString {
     public class TextualTreeWriterVisitor : WriterVisitorBase {
-        public TextualTreeWriterVisitor(object o, OneOf<string, Language?> languageArg) 
-            : base(o, languageArg, null) { }
-
-        public TextualTreeWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) 
-            : base(o, languageArg, out pathSpans, null) { }
+        public TextualTreeWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false) 
+            : base(o, languageArg, null, hasPathSpans) { }
 
         private readonly ValueExtractor valueExtractor = new ValueExtractor();
 

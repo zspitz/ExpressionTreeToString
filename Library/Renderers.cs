@@ -12,31 +12,11 @@ namespace ExpressionTreeToString {
     public static class Renderers {
         private static readonly Dictionary<string, Renderer> writers =
             new Dictionary<string, Renderer> {
-                {CSharp, (o, languageArg, usePathSpans) =>
-                    usePathSpans ?
-                        (new CSharpWriterVisitor(o, out var pathSpans).ToString(), pathSpans) :
-                        (new CSharpWriterVisitor(o).ToString(), null)
-                },
-                {VisualBasic, (o, languageArg, usePathSpans) => 
-                    usePathSpans ?
-                        (new VBWriterVisitor(o, out var pathSpans).ToString(), pathSpans) :
-                        (new VBWriterVisitor(o).ToString(), null)
-                },
-                {FactoryMethods, (o, languageArg, usePathSpans) => 
-                    usePathSpans ?
-                        (new FactoryMethodsWriterVisitor(o, languageArg, out var pathSpans).ToString(), pathSpans) :
-                        (new FactoryMethodsWriterVisitor(o, languageArg).ToString(), null)
-                },
-                {ObjectNotation, (o, languageArg, usePathSpans) =>
-                    usePathSpans ?
-                        (new ObjectNotationWriterVisitor(o, languageArg, out var pathSpans).ToString(), pathSpans) :
-                        (new ObjectNotationWriterVisitor(o, languageArg).ToString(), null)
-                },
-                {TextualTree, (o, languageArg, usePathSpans) =>
-                    usePathSpans ?
-                        (new TextualTreeWriterVisitor(o, languageArg, out var pathSpans).ToString(), pathSpans) :
-                        (new TextualTreeWriterVisitor(o, languageArg).ToString(), null)
-                }
+                {CSharp, (o, languageArg, usePathSpans) => new CSharpWriterVisitor(o, usePathSpans).GetResult() },
+                {VisualBasic, (o, languageArg, usePathSpans) => new VBWriterVisitor(o, usePathSpans).GetResult() },
+                {FactoryMethods, (o, languageArg, usePathSpans) => new FactoryMethodsWriterVisitor(o, languageArg, usePathSpans).GetResult() },
+                {ObjectNotation, (o, languageArg, usePathSpans) =>new ObjectNotationWriterVisitor(o, languageArg, usePathSpans).GetResult() },
+                {TextualTree, (o, languageArg, usePathSpans) => new TextualTreeWriterVisitor(o, languageArg, usePathSpans).GetResult() }
             };
 
         public static void Register(string key, Renderer writer) => writers.Add(key, writer);
@@ -50,6 +30,6 @@ namespace ExpressionTreeToString {
             return ret;
         }
 
-        public static string[] RendererKeys = writers.Keys.Ordered().ToArray();
+        public static string[] RendererKeys => writers.Keys.Ordered().ToArray();
     }
 }

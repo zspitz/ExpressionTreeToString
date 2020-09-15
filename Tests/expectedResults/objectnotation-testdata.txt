@@ -7818,4 +7818,165 @@ new Expression<Action> {
     },
     ReturnType = typeof(void)
 }
+---- FactoryMethods.NonVoidSwitch
+new SwitchExpression {
+    Type = typeof(string),
+    SwitchValue = i,
+    Cases = new ReadOnlyCollection<SwitchCase> {
+        new SwitchCase {
+            TestValues = new ReadOnlyCollection<Expression> {
+                new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 1
+                }
+            },
+            Body = new ConstantExpression {
+                Type = typeof(string),
+                Value = "One"
+            }
+        },
+        new SwitchCase {
+            TestValues = new ReadOnlyCollection<Expression> {
+                new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 2
+                }
+            },
+            Body = new ConstantExpression {
+                Type = typeof(string),
+                Value = "Two"
+            }
+        },
+        new SwitchCase {
+            TestValues = new ReadOnlyCollection<Expression> {
+                new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 3
+                }
+            },
+            Body = new ConstantExpression {
+                Type = typeof(string),
+                Value = "Three"
+            }
+        }
+    },
+    DefaultBody = new ConstantExpression {
+        Type = typeof(string),
+        Value = "Default"
+    }
+}
+---- FactoryMethods.NonVoidSwitchMultilineBodies
+new SwitchExpression {
+    Type = typeof(string),
+    SwitchValue = i,
+    Cases = new ReadOnlyCollection<SwitchCase> {
+        new SwitchCase {
+            TestValues = new ReadOnlyCollection<Expression> {
+                new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 1
+                }
+            },
+            Body = new BlockExpression {
+                Type = typeof(string),
+                Expressions = new ReadOnlyCollection<Expression> {
+                    new ConstantExpression {
+                        Type = typeof(string)
+                    },
+                    new ConstantExpression {
+                        Type = typeof(string),
+                        Value = "One"
+                    }
+                },
+                Result = new ConstantExpression {
+                    Type = typeof(string),
+                    Value = "One"
+                }
+            }
+        },
+        new SwitchCase {
+            TestValues = new ReadOnlyCollection<Expression> {
+                new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 2
+                }
+            },
+            Body = new BlockExpression {
+                Type = typeof(string),
+                Expressions = new ReadOnlyCollection<Expression> {
+                    new ConstantExpression {
+                        Type = typeof(string)
+                    },
+                    new ConstantExpression {
+                        Type = typeof(string),
+                        Value = "Two"
+                    }
+                },
+                Result = new ConstantExpression {
+                    Type = typeof(string),
+                    Value = "Two"
+                }
+            }
+        }
+    },
+    DefaultBody = new BlockExpression {
+        Type = typeof(string),
+        Expressions = new ReadOnlyCollection<Expression> {
+            new ConstantExpression {
+                Type = typeof(string)
+            },
+            new ConstantExpression {
+                Type = typeof(string),
+                Value = "Default"
+            }
+        },
+        Result = new ConstantExpression {
+            Type = typeof(string),
+            Value = "Default"
+        }
+    }
+}
+---- FactoryMethods.NonVoidSwitchMultipleTestValues
+new SwitchExpression {
+    Type = typeof(string),
+    SwitchValue = i,
+    Cases = new ReadOnlyCollection<SwitchCase> {
+        new SwitchCase {
+            TestValues = new ReadOnlyCollection<Expression> {
+                new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 1
+                },
+                new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 2
+                }
+            },
+            Body = new ConstantExpression {
+                Type = typeof(string),
+                Value = "OneTwo"
+            }
+        },
+        new SwitchCase {
+            TestValues = new ReadOnlyCollection<Expression> {
+                new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 3
+                },
+                new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 4
+                }
+            },
+            Body = new ConstantExpression {
+                Type = typeof(string),
+                Value = "ThreeFour"
+            }
+        }
+    },
+    DefaultBody = new ConstantExpression {
+        Type = typeof(string),
+        Value = "Default"
+    }
+}
 ------

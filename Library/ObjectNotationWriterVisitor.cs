@@ -13,11 +13,8 @@ namespace ExpressionTreeToString {
     public class ObjectNotationWriterVisitor : WriterVisitorBase {
         private static string[] insertionPointKeys = new[] { "declarations", "" };
 
-        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg)
-            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys) { }
-
-        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans)
-            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), out pathSpans, insertionPointKeys) { }
+        public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false)
+            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys, hasPathSpans) { }
 
         protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {
             if (o is ParameterExpression pexpr) {

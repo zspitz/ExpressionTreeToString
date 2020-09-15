@@ -8,10 +8,8 @@ using OneOf;
 
 namespace ExpressionTreeToString {
     public abstract class CodeWriterVisitor : BuiltinsWriterVisitor {
-        protected CodeWriterVisitor(object o, OneOf<string, Language?> languageArg) 
-            : base(o, languageArg, null) { }
-        protected CodeWriterVisitor(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans) 
-            : base(o, languageArg, out pathSpans, null) { }
+        protected CodeWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans) 
+            : base(o, languageArg, null, hasPathSpans) { }
 
         protected abstract void WriteBinary(ExpressionType nodeType, string leftPath, Expression left, string rightPath, Expression right);
 

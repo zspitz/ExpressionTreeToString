@@ -1084,4 +1084,36 @@ Function() lst.Count
 CInt(obj)
 ---- CSCompiler.RequiredGenericParameters
 Sub() Dummy.DummyMethodWithGenerics(Of String)
+---- FactoryMethods.NonVoidSwitch
+Select Case i
+    Case 1
+        "One"
+    Case 2
+        "Two"
+    Case 3
+        "Three"
+    Case Else
+        "Default"
+End Select
+---- FactoryMethods.NonVoidSwitchMultilineBodies
+Select Case i
+    Case 1
+        Nothing
+        "One"
+    Case 2
+        Nothing
+        "Two"
+    Case Else
+        Nothing
+        "Default"
+End Select
+---- FactoryMethods.NonVoidSwitchMultipleTestValues
+Select Case i
+    Case 1, 2
+        "OneTwo"
+    Case 3, 4
+        "ThreeFour"
+    Case Else
+        "Default"
+End Select
 ------

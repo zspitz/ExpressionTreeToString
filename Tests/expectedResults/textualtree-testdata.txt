@@ -2181,4 +2181,48 @@ Unbox (int)
 ---- CSCompiler.RequiredGenericParameters
 Lambda (Action)
     · Body - Call (void) Dummy.DummyMethodWithGenerics
+---- FactoryMethods.NonVoidSwitch
+Switch (string)
+    · SwitchValue - Parameter (int) i
+    · Cases[0] - SwitchCase
+        · TestValues[0] - Constant (int) = 1
+        · Body - Constant (string) = "One"
+    · Cases[1] - SwitchCase
+        · TestValues[0] - Constant (int) = 2
+        · Body - Constant (string) = "Two"
+    · Cases[2] - SwitchCase
+        · TestValues[0] - Constant (int) = 3
+        · Body - Constant (string) = "Three"
+    · DefaultBody - Constant (string) = "Default"
+---- FactoryMethods.NonVoidSwitchMultilineBodies
+Switch (string)
+    · SwitchValue - Parameter (int) i
+    · Cases[0] - SwitchCase
+        · TestValues[0] - Constant (int) = 1
+        · Body - Block (string)
+            · Result - Constant (string) = "One"
+            · Expressions[0] - Constant (string)
+            · Expressions[1] - Constant (string) = "One"
+    · Cases[1] - SwitchCase
+        · TestValues[0] - Constant (int) = 2
+        · Body - Block (string)
+            · Result - Constant (string) = "Two"
+            · Expressions[0] - Constant (string)
+            · Expressions[1] - Constant (string) = "Two"
+    · DefaultBody - Block (string)
+        · Result - Constant (string) = "Default"
+        · Expressions[0] - Constant (string)
+        · Expressions[1] - Constant (string) = "Default"
+---- FactoryMethods.NonVoidSwitchMultipleTestValues
+Switch (string)
+    · SwitchValue - Parameter (int) i
+    · Cases[0] - SwitchCase
+        · TestValues[0] - Constant (int) = 1
+        · TestValues[1] - Constant (int) = 2
+        · Body - Constant (string) = "OneTwo"
+    · Cases[1] - SwitchCase
+        · TestValues[0] - Constant (int) = 3
+        · TestValues[1] - Constant (int) = 4
+        · Body - Constant (string) = "ThreeFour"
+    · DefaultBody - Constant (string) = "Default"
 ------

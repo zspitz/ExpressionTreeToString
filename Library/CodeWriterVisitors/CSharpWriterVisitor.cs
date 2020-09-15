@@ -17,8 +17,7 @@ using OneOf;
 
 namespace ExpressionTreeToString {
     public class CSharpWriterVisitor : CodeWriterVisitor {
-        public CSharpWriterVisitor(object o) : base(o, Language.CSharp) { }
-        public CSharpWriterVisitor(object o, out Dictionary<string, (int start, int length)> pathSpans) : base(o, Language.CSharp, out pathSpans) { }
+        public CSharpWriterVisitor(object o, bool hasPathSpans = false) : base(o, Language.CSharp, hasPathSpans) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
             [Add] = "+",
@@ -58,18 +57,6 @@ namespace ExpressionTreeToString {
             [SubtractAssign] = "-=",
             [SubtractAssignChecked] = "-="
         };
-
-        //private void operatorLevel(object o) {
-
-        //}
-
-        //private void Parens(object outer, object inner) {
-        //    var result = outer switch
-        //    {
-        //        OneOf<Expression, ElementInit, MemberBinding> x => x.AsT0,
-        //        _ => throw new NotImplementedException()
-        //    };
-        //}
 
         private void WriteIndexerAccess(string instancePath, Expression instance, string argBasePath, params Expression[] keys) {
             WriteNode(instancePath, instance);
@@ -642,6 +629,13 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteSwitchCase(SwitchCase switchCase) {
+            if (switchCase.Body.Type != typeof(void)) {
+                WriteNodes("TestValues", switchCase.TestValues, " or ");
+                Write(" => ");
+                WriteNode("Body", switchCase.Body);
+                return;
+            }
+
             switchCase.TestValues.ForEach((testValue, index) => {
                 if (index > 0) { WriteEOL(); }
                 Write("case ");
@@ -657,6 +651,23 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteSwitch(SwitchExpression expr) {
+            if (expr.Type != typeof(void)) {
+                WriteNode("SwitchValue", expr.SwitchValue);
+                Write(" switch {");
+                Indent();
+                WriteEOL();
+                WriteNodes("Cases", expr.Cases, true, ",");
+                if (expr.DefaultBody != null) {
+                    Write(",");
+                    WriteEOL();
+                    Write("_ => ");
+                    WriteNode("DefaultBody", expr.DefaultBody);
+                }
+                WriteEOL(true);
+                Write("}");
+                return;
+            }
+
             Write("switch (");
             WriteNode("SwitchValue", expr.SwitchValue, CreateMetadata(Test));
             Write(") {");

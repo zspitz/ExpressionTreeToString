@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using OneOf;
 using static ZSpitz.Util.Functions;
+using System.Security.Cryptography.X509Certificates;
 
 namespace ExpressionTreeToString {
     internal class InsertionPoint {
@@ -22,25 +23,30 @@ namespace ExpressionTreeToString {
         private InsertionPoint ip;
         protected readonly Language? language;
 
-        private WriterVisitorBase(object o, OneOf<string, Language?> languageArg, bool hasPathSpans, IEnumerable<string>? insertionPointKeys) {
+        public (string result, Dictionary<string, (int start, int length)>? pathSpans) GetResult() {
+            var result = insertionPoints.Values()
+                .Where(x => x.sb.Length > 0)
+                .Joined(Environment.NewLine, x => x.sb.ToString());
+
+            Dictionary<string, (int start, int length)>? pathSpans=null;
+            if (insertionPoints.Any(x => x.Value.pathSpans is { })) {
+                pathSpans = new Dictionary<string, (int start, int length)>();
+                var offset = 0;
+                foreach (var ip in insertionPoints.Values().Where(ip => ip.sb.Length > 0)) {
+                    ip.pathSpans!.SelectKVP((path, span) => KVP(path, (span.start + offset, span.length))).AddRangeTo(pathSpans);
+                    offset += ip.sb.Length += Environment.NewLine.Length;
+                }
+            }
+
+            return (result, pathSpans);
+        }
+
+        protected WriterVisitorBase(object o, OneOf<string, Language?> languageArg, IEnumerable<string>? insertionPointKeys, bool hasPathSpans) {
             language = languageArg.ResolveLanguage();
             insertionPoints = (insertionPointKeys ?? new[] { "" }).Select(x => KVP(x, new InsertionPoint(hasPathSpans))).ToList();
             ip = insertionPoints.Get("");
 
             WriteNode("", o);
-        }
-
-        protected WriterVisitorBase(object o, OneOf<string, Language?> languageArg, IEnumerable<string>? insertionPointKeys)
-            : this(o, languageArg, false, insertionPointKeys) { }
-
-        protected WriterVisitorBase(object o, OneOf<string, Language?> languageArg, out Dictionary<string, (int start, int length)> pathSpans, IEnumerable<string>? insertionPointKeys)
-            : this(o, languageArg, true, insertionPointKeys) {
-
-            pathSpans = new Dictionary<string, (int start, int length)>();
-            var offset = 0;
-            foreach (var ip in insertionPoints.Values()) {
-                ip.pathSpans!.SelectKVP((path, span) => KVP(path, (span.start + offset, span.length))).AddRangeTo(pathSpans);
-            }
         }
 
         protected void Indent() => ip.indentationLevel += 1;

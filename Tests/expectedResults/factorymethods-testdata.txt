@@ -3044,4 +3044,61 @@ Lambda(
         typeof(Dummy).GetMethod("DummyMethodWithGenerics", BindingFlags.Static | BindingFlags.NonPublic)
     )
 )
+---- FactoryMethods.NonVoidSwitch
+Switch(i,
+    Constant("Default"),
+    SwitchCase(
+        Constant("One"),
+        Constant(1)
+    ),
+    SwitchCase(
+        Constant("Two"),
+        Constant(2)
+    ),
+    SwitchCase(
+        Constant("Three"),
+        Constant(3)
+    )
+)
+---- FactoryMethods.NonVoidSwitchMultilineBodies
+Switch(i,
+    Block(
+        Constant(null,
+            typeof(string)
+        ),
+        Constant("Default")
+    ),
+    SwitchCase(
+        Block(
+            Constant(null,
+                typeof(string)
+            ),
+            Constant("One")
+        ),
+        Constant(1)
+    ),
+    SwitchCase(
+        Block(
+            Constant(null,
+                typeof(string)
+            ),
+            Constant("Two")
+        ),
+        Constant(2)
+    )
+)
+---- FactoryMethods.NonVoidSwitchMultipleTestValues
+Switch(i,
+    Constant("Default"),
+    SwitchCase(
+        Constant("OneTwo"),
+        Constant(1),
+        Constant(2)
+    ),
+    SwitchCase(
+        Constant("ThreeFour"),
+        Constant(3),
+        Constant(4)
+    )
+)
 ------

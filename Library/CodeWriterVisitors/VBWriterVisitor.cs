@@ -16,8 +16,7 @@ using static ExpressionTreeToString.VBExpressionMetadata;
 
 namespace ExpressionTreeToString {
     public class VBWriterVisitor : CodeWriterVisitor {
-        public VBWriterVisitor(object o) : base(o, Language.VisualBasic) { }
-        public VBWriterVisitor(object o, out Dictionary<string, (int start, int length)> pathSpans) : base(o, Language.VisualBasic, out pathSpans) { }
+        public VBWriterVisitor(object o, bool hasPathSpans = false) : base(o, Language.VisualBasic, hasPathSpans) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
             [Add] = "+",

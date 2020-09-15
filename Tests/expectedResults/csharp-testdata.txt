@@ -1133,4 +1133,23 @@ lstString.DummyExtensionMethod2Arguments(5, 17)
 (int)obj
 ---- CSCompiler.RequiredGenericParameters
 () => Dummy.DummyMethodWithGenerics<string>()
+---- FactoryMethods.NonVoidSwitch
+i switch {
+    1 => "One",
+    2 => "Two",
+    3 => "Three",
+    _ => "Default"
+}
+---- FactoryMethods.NonVoidSwitchMultilineBodies
+i switch {
+    1 => null, "One",
+    2 => null, "Two",
+    _ => null, "Default"
+}
+---- FactoryMethods.NonVoidSwitchMultipleTestValues
+i switch {
+    1 or 2 => "OneTwo",
+    3 or 4 => "ThreeFour",
+    _ => "Default"
+}
 ------

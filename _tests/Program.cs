@@ -8,7 +8,7 @@ using ZSpitz.Util;
 namespace _tests {
     class Program {
         static void Main() {
-            Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
+            //Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
 
             //Console.WriteLine(expr.ToString("C#"));
 
@@ -20,10 +20,11 @@ namespace _tests {
             //LambdaExpression lambda = Expression.Lambda(equal.Body, Expression.Parameter(typeof(string), "s"));
             //Console.WriteLine(equal.ToString("Factory methods"));
 
-            Console.WriteLine(expr.ToString("Textual tree", Language.CSharp));
+            //Console.WriteLine(expr.ToString("Textual tree", Language.CSharp));
 
+            Expression<Func<int, int, int>> expr = (i, j) => i * j;
 
-            string s = expr.ToString("C#", out Dictionary<string, (int start, int length)> pathSpans);
+            string s = expr.ToString("Factory methods", out Dictionary<string, (int start, int length)> pathSpans, "C#");
             const int firstColumnAlignment = -45;
 
             Console.WriteLine($"{"Path",firstColumnAlignment}Substring");
@@ -37,8 +38,8 @@ namespace _tests {
                 );
             }
 
-            expr = p => p.LastName.StartsWith("A");
-            Console.WriteLine(expr.ToString("Factory methods", "Visual Basic"));
+            //expr = p => p.LastName.StartsWith("A");
+            //Console.WriteLine(expr.ToString("Factory methods", "Visual Basic"));
 
             //var b = true;
             //Expression<Func<bool>> expr = () => b;
@@ -47,9 +48,9 @@ namespace _tests {
             //Expression<Func<bool>> expr = () => DateTime.Now.DayOfWeek == DayOfWeek.Monday;
             //Console.WriteLine(expr.ToString("C#"));
 
-            Expression<Func<int, int, string>> expr1 = (i, j) => (i + j + 5).ToString();
-            Console.WriteLine(expr1.ToString("C#"));
-            Console.WriteLine(expr1.ToString("Textual tree", "C#"));
+            //Expression<Func<int, int, string>> expr1 = (i, j) => (i + j + 5).ToString();
+            //Console.WriteLine(expr1.ToString("C#"));
+            //Console.WriteLine(expr1.ToString("Textual tree", "C#"));
         }
     }
 
