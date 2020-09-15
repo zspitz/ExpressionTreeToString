@@ -40,10 +40,10 @@ namespace ExpressionTreeToString {
 
         public static void Register(string key, Renderer writer) => writers.Add(key, writer);
 
-        internal static string Invoke(OneOf<string, BuiltinRenderer> rendererArg, object o, OneOf<string, Language?> language) => 
+        public static string Invoke(OneOf<string, BuiltinRenderer> rendererArg, object o, OneOf<string, Language?> language) => 
             writers[rendererArg.ResolveRendererKey()].Invoke(o, language, false).result;
 
-        internal static string Invoke(OneOf<string, BuiltinRenderer> rendererArg, object o, OneOf<string, Language?> language, out Dictionary<string, (int start, int length)> pathSpans) {
+        public static string Invoke(OneOf<string, BuiltinRenderer> rendererArg, object o, OneOf<string, Language?> language, out Dictionary<string, (int start, int length)> pathSpans) {
             var (ret, pathSpans1) = writers[rendererArg.ResolveRendererKey()].Invoke(o, language, true);
             pathSpans = pathSpans1!;
             return ret;
