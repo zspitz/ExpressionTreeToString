@@ -554,6 +554,11 @@ namespace ExpressionTreeToString {
 
         protected override void WriteBlock(BlockExpression expr, object? metadata) {
             var (blockType, parentIsBlock) = metadata as CSharpBlockMetadata ?? CreateMetadata(Inline, false);
+            if (blockType == ForceInline) {
+                WriteNodes("Expressions", expr.Expressions);
+                return;
+            }
+
             bool introduceNewBlock;
             if (blockType.In(CSharpMultilineBlockTypes.Block, CSharpMultilineBlockTypes.Return)) {
                 introduceNewBlock = expr.Variables.Any() && parentIsBlock;
@@ -632,7 +637,7 @@ namespace ExpressionTreeToString {
             if (switchCase.Body.Type != typeof(void)) {
                 WriteNodes("TestValues", switchCase.TestValues, " or ");
                 Write(" => ");
-                WriteNode("Body", switchCase.Body);
+                WriteNode("Body", switchCase.Body, CreateMetadata(ForceInline));
                 return;
             }
 
@@ -661,7 +666,7 @@ namespace ExpressionTreeToString {
                     Write(",");
                     WriteEOL();
                     Write("_ => ");
-                    WriteNode("DefaultBody", expr.DefaultBody);
+                    WriteNode("DefaultBody", expr.DefaultBody, CreateMetadata(ForceInline));
                 }
                 WriteEOL(true);
                 Write("}");
