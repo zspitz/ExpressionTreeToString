@@ -1,17 +1,13 @@
 ﻿using ZSpitz.Util;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using static ExpressionTreeToString.Globals;
 using static ZSpitz.Util.Functions;
 using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
-using static ZSpitz.Util.Methods;
 using static ExpressionTreeToString.VBExpressionMetadata;
 
 namespace ExpressionTreeToString {
@@ -51,15 +47,6 @@ namespace ExpressionTreeToString {
             [SubtractAssign] = "-=",
             [SubtractAssignChecked] = "-="
         };
-
-        private void WriteIndexerAccess(string instancePath, Expression instance, string argBasePath, params Expression[] keys) {
-            WriteNode(instancePath, instance);
-            Write("(");
-            WriteNodes(argBasePath, keys);
-            Write(")");
-        }
-        private void WriteIndexerAccess(string instancePath, Expression instance, string argBasePath, IEnumerable<Expression> keys) =>
-            WriteIndexerAccess(instancePath, instance, argBasePath, keys.ToArray());
 
         protected override void WriteBinary(ExpressionType nodeType, string leftPath, Expression left, string rightPath, Expression right) {
             if (simpleBinaryOperators.TryGetValue(nodeType, out var @operator)) {
@@ -146,7 +133,7 @@ namespace ExpressionTreeToString {
             {typeof(ushort), "CUShort" }
         };
 
-        private void WriteUnary(ExpressionType nodeType, string operandPath, Expression operand, Type type, string expressionTypename) {
+        protected override void WriteUnary(ExpressionType nodeType, string operandPath, Expression operand, Type type, string expressionTypename) {
             switch (nodeType) {
                 case ArrayLength:
                     WriteNode(operandPath, operand);
@@ -258,8 +245,6 @@ namespace ExpressionTreeToString {
             }
         }
 
-        protected override void WriteUnary(UnaryExpression expr) =>
-            WriteUnary(expr.NodeType, "Operand", expr.Operand, expr.Type, expr.GetType().Name);
 
         protected override void WriteLambda(LambdaExpression expr) {
             var lambdaKeyword = expr.ReturnType == typeof(void) ? "Sub" : "Function";
@@ -297,29 +282,7 @@ namespace ExpressionTreeToString {
             Write($"{prm.Name} As {prm.Type.FriendlyName(language)}");
         }
 
-        protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
-
-        protected override void WriteConstant(ConstantExpression expr) =>
-            Write(RenderLiteral(expr.Value, language));
-
-        protected override void WriteMemberAccess(MemberExpression expr) {
-            switch (expr.Expression) {
-                case ConstantExpression cexpr when cexpr.Type.IsClosureClass():
-                case MemberExpression mexpr when mexpr.Type.IsClosureClass():
-                    // closed over variable from outer scope
-                    Write(expr.Member.Name.Replace("$VB$Local_", ""));
-                    return;
-                case null:
-                    // static member
-                    Write($"{expr.Member.DeclaringType.FriendlyName(language)}.{expr.Member.Name}");
-                    return;
-                default:
-                    WriteNode("Expression", expr.Expression);
-                    Write($".{expr.Member.Name}");
-                    return;
-            }
-        }
-        private void WriteNew(Type type, string argsPath, IList<Expression> args) {
+        protected override void WriteNew(Type type, string argsPath, IList<Expression> args) {
             Write("New ");
             Write(type.FriendlyName(language));
             if (args.Count > 0) {
@@ -356,56 +319,11 @@ namespace ExpressionTreeToString {
         static readonly MethodInfo power = typeof(Math).GetMethod("Pow");
 
         protected override void WriteCall(MethodCallExpression expr) {
+            // Microsoft.VisualBasic.CompilerServices is not available to .NET Standard, so we have to check by name
             if (expr.Method.DeclaringType.FullName == "Microsoft.VisualBasic.CompilerServices.LikeOperator" && expr.Method.Name.StartsWith("Like")) {
                 WriteNode("Arguments[0]", expr.Arguments[0]);
                 Write(" Like ");
                 WriteNode("Arguments[1]", expr.Arguments[1]);
-                return;
-            }
-
-            if (expr.Method.In(stringConcats)) {
-                var firstArg = expr.Arguments[0];
-                IEnumerable<Expression>? argsToWrite = null;
-                string argsPath = "";
-                if (firstArg is NewArrayExpression newArray && firstArg.NodeType == NewArrayInit) {
-                    argsToWrite = newArray.Expressions;
-                    argsPath = "Arguments[0].Expressions";
-                } else if (expr.Arguments.All(x => x.Type == typeof(string))) {
-                    argsToWrite = expr.Arguments;
-                    argsPath = "Arguments";
-                }
-                if (argsToWrite != null) {
-                    WriteNodes(argsPath, argsToWrite, " + ");
-                    return;
-                }
-            }
-
-            bool isIndexer = false;
-            if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
-                isIndexer = true;
-            } else {
-                var indexerMethods = expr.Method.ReflectedType.GetIndexers(true).SelectMany(x => new[] { x.GetMethod, x.SetMethod }).ToList();
-                isIndexer = expr.Method.In(indexerMethods);
-            }
-            if (isIndexer) {
-                // no such thing as a static indexer; expr.Object will not be null
-                WriteIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
-                return;
-            }
-
-            if (expr.Method.In(stringFormats) && expr.Arguments[0] is ConstantExpression cexpr && cexpr.Value is string format) {
-                var parts = ParseFormatString(format);
-                Write("$\"");
-                foreach (var (literal, index, alignment, itemFormat) in parts) {
-                    Write(literal.Replace("{", "{{").Replace("}", "}}"));
-                    if (index == null) { break; }
-                    Write("{");
-                    WriteNode($"Arguments[{index.Value + 1}]", expr.Arguments[index.Value + 1]);
-                    if (alignment != null) { Write($", {alignment}"); }
-                    if (itemFormat != null) { Write($":{itemFormat}"); }
-                    Write("}");
-                }
-                Write("\"");
                 return;
             }
 
@@ -416,45 +334,7 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            // Microsoft.VisualBasic.CompilerServices is not available to .NET Standard
-            if (expr.Method.DeclaringType.FullName == "Microsoft.VisualBasic.CompilerServices.LikeOperator") {
-                WriteNode("Arguments[0]", expr.Arguments[0]);
-                Write(" Like ");
-                WriteNode("Arguments[1]", expr.Arguments[1]);
-                return;
-            }
-
-            var (path, o) = ("Object", expr.Object);
-            var arguments = expr.Arguments.Select((x, index) => ($"Arguments[{index}]", x));
-
-            if (expr.Object == null && expr.Method.HasAttribute<ExtensionAttribute>()) {
-                (path, o) = ("Arguments[0]", expr.Arguments[0]);
-                arguments = expr.Arguments.Skip(1).Select((x, index) => ($"Arguments[{index + 1}]", x));
-            }
-
-            if (o is null) {
-                // static non-extension method -- write the type name
-                Write(expr.Method.ReflectedType.FriendlyName(language));
-            } else {
-                // instance method, or extension method
-                WriteNode(path, o);
-            }
-            Write($".{expr.Method.Name}");
-
-            if (expr.Method.IsGenericMethod) {
-                var def = expr.Method.GetGenericMethodDefinition();
-                var args = def.GetGenericArguments();
-                var parameterTypes = def.GetParameters().Select(x => x.ParameterType).ToArray();
-                if (args.Any(arg => parameterTypes.None(prm => prm.ContainsType(arg)))) {
-                    Write($"(Of {expr.Method.GetGenericArguments().Joined(", ", t => t.FriendlyName(language))})");
-                }
-            }
-
-            if (arguments.Any()) {
-                Write("(");
-                WriteNodes(arguments);
-                Write(")");
-            }
+            base.WriteCall(expr);
         }
 
         protected override void WriteBinding(MemberBinding binding) {
@@ -514,25 +394,6 @@ namespace ExpressionTreeToString {
             WriteNodes("Initializers", expr.Initializers, true);
             WriteEOL(true);
             Write("}");
-        }
-
-        protected override void WriteElementInit(ElementInit elementInit) {
-            var args = elementInit.Arguments;
-            switch (args.Count) {
-                case 0:
-                    throw new NotImplementedException();
-                case 1:
-                    WriteNode("Arguments[0]", args[0]);
-                    break;
-                default:
-                    Write("{");
-                    Indent();
-                    WriteEOL();
-                    WriteNodes("Arguments", args, true);
-                    WriteEOL(true);
-                    Write("}");
-                    break;
-            }
         }
 
         protected override void WriteNewArray(NewArrayExpression expr) {
@@ -674,18 +535,6 @@ namespace ExpressionTreeToString {
                     break;
             }
         }
-
-        protected override void WriteInvocation(InvocationExpression expr) {
-            if (expr.Expression is LambdaExpression) { Write("("); }
-            WriteNode("Expression", expr.Expression);
-            if (expr.Expression is LambdaExpression) { Write(")"); }
-            Write("(");
-            WriteNodes("Arguments", expr.Arguments);
-            Write(")");
-        }
-
-        protected override void WriteIndex(IndexExpression expr) =>
-            WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
         protected override void WriteBlock(BlockExpression expr, object? metadata) {
             var (isInMultiline, parentType, returnBlock) = (VBExpressionMetadata?)metadata ?? CreateMetadata(false, null, false);
@@ -863,78 +712,10 @@ namespace ExpressionTreeToString {
             Write(comment);
         }
 
-        protected override void WriteBinaryOperationBinder(BinaryOperationBinder binder, IList<Expression> args) {
-            VerifyCount(args, 2);
-            WriteBinary(binder.Operation, "Arguments[0]", args[0], "Arguments[1]", args[1]);
-        }
+        protected override (string prefix, string suffix) GenericIndicators => ("(Of ", ")");
 
-        protected override void WriteConvertBinder(ConvertBinder binder, IList<Expression> args) {
-            VerifyCount(args, 1);
-            WriteUnary(ExpressionType.Convert, "Arguments[0]", args[0], binder.Type, typeof(ConvertBinder).Name);
-        }
+        protected override bool ParensOnEmptyArguments => false;
 
-        protected override void WriteCreateInstanceBinder(CreateInstanceBinder binder, IList<Expression> args) =>
-            WriteNew(binder.ReturnType, "Arguments", args);
-
-        protected override void WriteDeleteIndexBinder(DeleteIndexBinder binder, IList<Expression> args) =>
-            throw new NotImplementedException();
-        protected override void WriteDeleteMemberBinder(DeleteMemberBinder binder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteGetIndexBinder(GetIndexBinder binder, IList<Expression> args) {
-            VerifyCount(args, 2, null);
-            WriteNode("Arguments[0]", args[0]);
-            Write("(");
-            WriteNodes(args.Skip(1).Select((arg, index) => ($"Arguments[{index + 1}]", arg)));
-            Write(")");
-        }
-
-        protected override void WriteGetMemberBinder(GetMemberBinder binder, IList<Expression> args) {
-            VerifyCount(args, 1);
-            WriteNode("Arguments[0]", args[0]);
-            Write($".{binder.Name}");
-        }
-
-        protected override void WriteInvokeBinder(InvokeBinder binder, IList<Expression> args) {
-            VerifyCount(args, 1, null);
-            WriteNode("Arguments[0]", args[0]);
-            if (args.Count > 1) {
-                Write("(");
-                WriteNodes(args.Skip(1).Select((arg, index) => ($"Arguments[{index + 1}]", arg)));
-                Write(")");
-            }
-        }
-
-        protected override void WriteInvokeMemberBinder(InvokeMemberBinder binder, IList<Expression> args) {
-            VerifyCount(args, 1, null);
-            WriteNode("Arguments[0]", args[0]);
-            Write($".{binder.Name}");
-            if (args.Count > 1) {
-                Write("(");
-                WriteNodes(args.Skip(1).Select((arg, index) => ($"Arguments[{index + 1}]", arg)));
-                Write(")");
-            }
-        }
-
-        protected override void WriteSetIndexBinder(SetIndexBinder binder, IList<Expression> args) {
-            VerifyCount(args, 3, null);
-            WriteNode("Arguments[0]", args[0]);
-            Write("(");
-            WriteNodes(args.Skip(2).Select((arg, index) => ($"Arguments[{index + 2}]", arg)));
-            Write(") = ");
-            WriteNode("Arguments[1]", args[1]);
-        }
-
-        protected override void WriteSetMemberBinder(SetMemberBinder binder, IList<Expression> args) {
-            VerifyCount(args, 2);
-            WriteNode("Arguments[0]", args[0]);
-            Write($".{binder.Name} = ");
-            WriteNode("Arguments[1]", args[1]);
-        }
-
-        protected override void WriteUnaryOperationBinder(UnaryOperationBinder binder, IList<Expression> args) {
-            VerifyCount(args, 1);
-            WriteUnary(binder.Operation, "Arguments[0]", args[0], binder.ReturnType, binder.GetType().Name);
-        }
+        protected override (string prefix, string suffix) IndexerIndicators => ("(", ")");
     }
 }
