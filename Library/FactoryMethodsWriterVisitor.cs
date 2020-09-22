@@ -134,7 +134,18 @@ namespace ExpressionTreeToString {
                 return Convert(x, typeof(object));
             })).ExtractValue() as object[];
             var names = callExpr.Arguments.Select(x => {
-                if (x is MethodCallExpression callExpr1 && callExpr1.Method.Name == "ToArray") { x = callExpr1.Arguments[0]; }
+                if (x is MethodCallExpression callExpr1) {
+                    if (callExpr1.Method.Name == "ToArray") {
+                        x = callExpr1.Arguments[0];
+                    } else if (
+                        callExpr1.Method.IsIndexerMethod() && 
+                        callExpr1.Arguments.Count == 1 && // TODO theoretically we could pass multiple values to the indexer
+                        callExpr1.Arguments[0] is ConstantExpression cexpr &&
+                        callExpr1.Object is MemberExpression mexpr
+                    ) {
+                        return $"{mexpr.Member.Name}[{cexpr.Value}]";
+                    }
+                }
                 if (x is UnaryExpression unary && unary.NodeType == ExpressionType.Convert) { x = unary.Operand; }
                 return (x as MemberExpression)?.Member.Name ?? "";
             });
@@ -488,7 +499,17 @@ namespace ExpressionTreeToString {
             }
         }
 
-        protected override void WriteDynamic(DynamicExpression expr) => WriteMethodCall(() => Dynamic(expr.Binder, expr.Type, expr.Arguments));
+        protected override void WriteDynamic(DynamicExpression expr) {
+            Expression<Action> callExpr = expr.Arguments.Count switch
+            {
+                1 => () => Dynamic(expr.Binder, expr.Type, expr.Arguments[0]),
+                2 => () => Dynamic(expr.Binder, expr.Type, expr.Arguments[0], expr.Arguments[1]),
+                3 => () => Dynamic(expr.Binder, expr.Type, expr.Arguments[0], expr.Arguments[1], expr.Arguments[2]),
+                4 => () => Dynamic(expr.Binder, expr.Type, expr.Arguments[0], expr.Arguments[1], expr.Arguments[2], expr.Arguments[3]),
+                _ => () => Dynamic(expr.Binder, expr.Type, expr.Arguments)
+            };
+            WriteMethodCall(callExpr);
+        }
 
         protected override void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args) => throw new NotImplementedException();
         protected override void WriteConvertBinder(ConvertBinder convertBinder, IList<Expression> args) => throw new NotImplementedException();

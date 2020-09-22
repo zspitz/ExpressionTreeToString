@@ -40,6 +40,6 @@ namespace ExpressionTreeToString.Util {
                 _ => Unknown,
             };
 
-        [Obsolete("Use BinderType which returns ExpressionToString.Util.BinderTypes.")] public static string BinderType(this CallSiteBinder callSiteBinder) => callSiteBinder.BinderType1().ToString();
+        [Obsolete("Use BinderType which returns ExpressionToString.Util.BinderTypes; currently BinderType1.")] public static string BinderType(this CallSiteBinder callSiteBinder) => callSiteBinder.BinderType1().ToString();
     }
 }
