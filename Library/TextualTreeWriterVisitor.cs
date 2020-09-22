@@ -36,7 +36,7 @@ namespace ExpressionTreeToString {
                     name = mbind.Member.Name;
                     break;
                 case CallSiteBinder binder:
-                    nodeType = binder.BinderType();
+                    nodeType = binder.BinderType1().ToString();
                     break;
                 default:
                     nodeType = o.GetType().FriendlyName(language);

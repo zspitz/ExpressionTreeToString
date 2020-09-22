@@ -992,7 +992,7 @@ if (true) {
 ---- VBCompiler.JaggedWithElementsImplicitTypeInnerNonLiteral
 () => new string[][] { arr1, arr2 }
 ---- VBCompiler.LeftShift
-() => i << j & 31
+() => i << (j & 31)
 ---- VBCompiler.LessThan
 () => i < j
 ---- VBCompiler.LessThanOrEqual
@@ -1052,7 +1052,7 @@ if (true) {
 ---- VBCompiler.Power
 () => Math.Pow(x, y)
 ---- VBCompiler.RightShift
-() => i >> j & 31
+() => i >> (j & 31)
 ---- VBCompiler.SingleDimensionInit
 () => new[] { "" }
 ---- VBCompiler.SingleDimensionInitExplicitType

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using ExpressionTreeToString;
 using ZSpitz.Util;
+using static System.Linq.Expressions.Expression;
 
 namespace _tests {
     class Program {
@@ -22,21 +23,21 @@ namespace _tests {
 
             //Console.WriteLine(expr.ToString("Textual tree", Language.CSharp));
 
-            Expression<Func<int, int, int>> expr = (i, j) => i * j;
+            //Expression<Func<int, int, int>> expr = (i, j) => i * j;
 
-            string s = expr.ToString("Factory methods", out Dictionary<string, (int start, int length)> pathSpans, "C#");
-            const int firstColumnAlignment = -45;
+            //string s = expr.ToString("Factory methods", out Dictionary<string, (int start, int length)> pathSpans, "C#");
+            //const int firstColumnAlignment = -45;
 
-            Console.WriteLine($"{"Path",firstColumnAlignment}Substring");
-            Console.WriteLine(new string('-', 95));
+            //Console.WriteLine($"{"Path",firstColumnAlignment}Substring");
+            //Console.WriteLine(new string('-', 95));
 
-            foreach (var kvp in pathSpans) {
-                var path = kvp.Key;
-                var (start, length) = kvp.Value;
-                Console.WriteLine(
-                    $"{path,firstColumnAlignment}{new string(' ', start)}{s.Substring(start, length)}"
-                );
-            }
+            //foreach (var kvp in pathSpans) {
+            //    var path = kvp.Key;
+            //    var (start, length) = kvp.Value;
+            //    Console.WriteLine(
+            //        $"{path,firstColumnAlignment}{new string(' ', start)}{s.Substring(start, length)}"
+            //    );
+            //}
 
             //expr = p => p.LastName.StartsWith("A");
             //Console.WriteLine(expr.ToString("Factory methods", "Visual Basic"));
@@ -51,6 +52,10 @@ namespace _tests {
             //Expression<Func<int, int, string>> expr1 = (i, j) => (i + j + 5).ToString();
             //Console.WriteLine(expr1.ToString("C#"));
             //Console.WriteLine(expr1.ToString("Textual tree", "C#"));
+
+            double d = 5.2;
+            Expression<Func<string>> expr = () => ((int)d).ToString();
+            Console.WriteLine(expr.ToString("C#"));
         }
     }
 

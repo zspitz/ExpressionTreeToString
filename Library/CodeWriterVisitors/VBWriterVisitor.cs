@@ -9,6 +9,8 @@ using static System.Linq.Enumerable;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
 using static ExpressionTreeToString.VBExpressionMetadata;
+using ExpressionTreeToString.Util;
+using OneOf;
 
 namespace ExpressionTreeToString {
     public class VBWriterVisitor : CodeWriterVisitor {
@@ -50,15 +52,15 @@ namespace ExpressionTreeToString {
 
         protected override void WriteBinary(ExpressionType nodeType, string leftPath, Expression left, string rightPath, Expression right) {
             if (simpleBinaryOperators.TryGetValue(nodeType, out var @operator)) {
-                WriteNode(leftPath, left);
+                Parens(nodeType, leftPath, left);
                 Write($" {@operator} ");
-                WriteNode(rightPath, right);
+                Parens(nodeType, rightPath, right);
                 return;
             }
 
             switch (nodeType) {
                 case ArrayIndex:
-                    WriteNode(leftPath, left);
+                    Parens(nodeType, leftPath, left);
                     Write("(");
                     WriteNode(rightPath, right);
                     Write(")");
@@ -107,7 +109,7 @@ namespace ExpressionTreeToString {
                 };
                 WriteNode("Left", expr.Left);
                 Write(op);
-                WriteNode("Right", expr.Right);
+                Parens(expr, "Right", expr.Right);
                 return;
             }
 
@@ -136,7 +138,7 @@ namespace ExpressionTreeToString {
         protected override void WriteUnary(ExpressionType nodeType, string operandPath, Expression operand, Type type, string expressionTypename) {
             switch (nodeType) {
                 case ArrayLength:
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     Write(".Length");
                     break;
                 case ExpressionType.Convert:
@@ -319,8 +321,7 @@ namespace ExpressionTreeToString {
         static readonly MethodInfo power = typeof(Math).GetMethod("Pow");
 
         protected override void WriteCall(MethodCallExpression expr) {
-            // Microsoft.VisualBasic.CompilerServices is not available to .NET Standard, so we have to check by name
-            if (expr.Method.DeclaringType.FullName == "Microsoft.VisualBasic.CompilerServices.LikeOperator" && expr.Method.Name.StartsWith("Like")) {
+            if (expr.Method.IsVBLike()) {
                 WriteNode("Arguments[0]", expr.Arguments[0]);
                 Write(" Like ");
                 WriteNode("Arguments[1]", expr.Arguments[1]);
@@ -422,7 +423,7 @@ namespace ExpressionTreeToString {
                                 if (index > 0) { Write(", "); }
 
                                 // The value(s) for an array-bounds initialization expression refer to the number of elements in the array, for the specified dimension.
-                                // But in VB.NET code, the number in an array-bounds initialization is the upper bound, not the number of elements.
+                                // But in VB.NET, the number in an array-bounds initialization is the upper bound, not the number of elements.
                                 // For example:
                                 //
                                 //    Dim arr = New String(5) {}
@@ -717,5 +718,125 @@ namespace ExpressionTreeToString {
         protected override bool ParensOnEmptyArguments => false;
 
         protected override (string prefix, string suffix) IndexerIndicators => ("(", ")");
+
+        // to verify precendence levels by level against https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/operators/operator-precedence#precedence-order
+        // use:
+        //    precedence.GroupBy(kvp => kvp.Value, kvp => kvp.Key, (key, grp) => new {key, values = grp.OrderBy(x => x.ToString()).Joined(", ")}).OrderBy(x => x.key);
+        private Dictionary<ExpressionType, int> precedence = new Dictionary<ExpressionType, int>() {
+            [Add] =6,
+            [AddAssign] =-1,
+            [AddAssignChecked] =-1,
+            [AddChecked] =6,
+            [And] =11,
+            [AndAlso] =11,
+            [AndAssign] =-1,
+            [ArrayIndex] =-1,
+            [ArrayLength] =-1, // member access in VB.NET
+            [Assign] =-1,
+            [Block] = -1,
+            [Call] = 0, // precedence of the . operator, not the arguments, which are in any case wrapped in parentheses
+            [Coalesce] =-1,
+            [Conditional] = -1,
+            [Constant] = -1,
+            [ExpressionType.Convert] =-1,
+            [ConvertChecked] =-1,
+            [DebugInfo] = -1,
+            [Decrement] =-1,
+            [Default] =-1,
+            [Divide] =3,
+            [DivideAssign] =-1,
+            [Dynamic] = -1,
+            [Equal] =9,
+            [ExclusiveOr] =13,
+            [ExclusiveOrAssign] =-1,
+            [Extension] = -1,
+            [ExpressionType.Goto] = -1,
+            [GreaterThan] =9,
+            [GreaterThanOrEqual] =9,
+            [Increment] =-1,
+            [Index] =-1,
+            [Invoke] =-1,
+            [IsFalse] =-1,
+            [IsTrue] = -1,
+            [Label] = -1,
+            [Lambda] =-1,
+            [LeftShift] =8,
+            [LeftShiftAssign] =-1,
+            [LessThan] =9,
+            [LessThanOrEqual] =9,
+            [ListInit] = -1,
+            [Loop] = -1,
+            [MemberAccess] =-1,
+            [MemberInit] = -1,
+            [Modulo] =5,
+            [ModuloAssign] =-1,
+            [Multiply] =3,
+            [MultiplyAssign] =-1,
+            [MultiplyAssignChecked] =-1,
+            [MultiplyChecked] =-1,
+            [Negate] =2,
+            [NegateChecked] =2,
+            [New] =-1,
+            [NewArrayBounds] =-1, // same as New
+            [NewArrayInit] =-1, // same as New
+            [Not] =10,
+            [NotEqual] =9,
+            [OnesComplement] =2,
+            [Or] =12,
+            [OrAssign] =-1,
+            [OrElse] =12,
+            [Parameter] = -1,
+            [PostDecrementAssign] =-1,
+            [PostIncrementAssign] =-1,
+            [Power] =1, 
+            [PowerAssign] =-1,
+            [PreDecrementAssign] =-1,
+            [PreIncrementAssign] =-1,
+            [Quote] = -1,
+            [RightShift] =8,
+            [RightShiftAssign] =-1,
+            [RuntimeVariables] = -1,
+            [Subtract] =6,
+            [SubtractAssign] =-1,
+            [SubtractAssignChecked] =-1,
+            [SubtractChecked] =6,
+            [Switch] = -1,
+            [Throw] = -1,
+            [Try] = -1,
+            [TypeAs] =-1,
+            [TypeEqual] = 9, // like Equal
+            [TypeIs] =9,
+            [UnaryPlus] =2,
+            [Unbox] = -1,
+        };
+
+        private int GetPrecedence(Expression node) => node switch
+        {
+            MethodCallExpression mexpr when mexpr.Method.IsStringConcat() => 7,
+            MethodCallExpression mexpr when mexpr.Method.IsVBLike() => 9,
+            _ => precedence[node.NodeType]
+        };
+
+        protected override void Parens(OneOf<Expression, ExpressionType> arg, string path, Expression childNode) {
+            var parentPrecedence = arg.Match(
+                node => GetPrecedence(node),
+                nodeType => precedence[nodeType]
+            );
+            var childPrecedence = GetPrecedence(childNode);
+
+            // Operators in VB are left-associative, except for assignment which cannot be nested
+            // We thus consider everything left-associative
+
+            bool writeParens = false;
+            if (parentPrecedence != -1 && childPrecedence != -1) {
+                writeParens =
+                    (childPrecedence > parentPrecedence) ||
+                    (parentPrecedence == childPrecedence && childNode is BinaryExpression && path == "Right");
+            }
+
+            if (writeParens) { Write("("); }
+            WriteNode(path, childNode);
+            if (writeParens) { Write(")"); }
+        }
     }
 }

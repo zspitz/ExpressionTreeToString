@@ -8,6 +8,8 @@ using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Expressions.GotoExpressionKind;
 using static ExpressionTreeToString.CSharpMultilineBlockTypes;
 using static ExpressionTreeToString.CSharpBlockMetadata;
+using ExpressionTreeToString.Util;
+using OneOf;
 
 namespace ExpressionTreeToString {
     public class CSharpWriterVisitor : CodeWriterVisitor {
@@ -54,15 +56,15 @@ namespace ExpressionTreeToString {
 
         protected override void WriteBinary(ExpressionType nodeType, string leftPath, Expression left, string rightPath, Expression right) {
             if (simpleBinaryOperators.TryGetValue(nodeType, out var @operator)) {
-                WriteNode(leftPath, left);
+                Parens(nodeType, leftPath, left);
                 Write($" {@operator} ");
-                WriteNode(rightPath, right);
+                Parens(nodeType, rightPath, right);
                 return;
             }
 
             switch (nodeType) {
                 case ArrayIndex:
-                    WriteNode(leftPath, left);
+                    Parens(nodeType, leftPath, left);
                     Write("[");
                     WriteNode(rightPath, right);
                     Write("]");
@@ -75,12 +77,12 @@ namespace ExpressionTreeToString {
                     Write(")");
                     return;
                 case PowerAssign:
-                    WriteNode($"{leftPath}_0", left);
+                    Parens(nodeType, $"{leftPath}_0", left);
                     Write(" = ");
                     Write("Math.Pow(");
-                    WriteNode(leftPath, left);
+                    Parens(nodeType, leftPath, left);
                     Write(", ");
-                    WriteNode(rightPath, right);
+                    Parens(nodeType, rightPath, right);
                     Write(")");
                     return;
             }
@@ -91,7 +93,7 @@ namespace ExpressionTreeToString {
         protected override void WriteUnary(ExpressionType nodeType, string operandPath, Expression operand, Type type, string expressionTypename) {
             switch (nodeType) {
                 case ArrayLength:
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     Write(".Length");
                     break;
                 case ExpressionType.Convert:
@@ -100,12 +102,12 @@ namespace ExpressionTreeToString {
                     if (!type.IsAssignableFrom(operand.Type)) {
                         Write($"({type.FriendlyName(language)})");
                     }
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     break;
                 case Negate:
                 case NegateChecked:
                     Write("-");
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     break;
                 case Not:
                     if (type == typeof(bool)) {
@@ -113,52 +115,52 @@ namespace ExpressionTreeToString {
                     } else {
                         Write("~");
                     }
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     break;
                 case OnesComplement:
                     Write("~");
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     break;
                 case TypeAs:
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     Write($" as {type.FriendlyName(language)}");
                     break;
                 case PreIncrementAssign:
                     Write("++");
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     break;
                 case PostIncrementAssign:
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     Write("++");
                     break;
                 case PreDecrementAssign:
                     Write("--");
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     break;
                 case PostDecrementAssign:
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     Write("--");
                     break;
                 case IsTrue:
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     break;
                 case IsFalse:
                     Write("!");
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     break;
                 case Increment:
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     Write(" += 1");
                     break;
                 case Decrement:
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     Write(" -= 1");
                     break;
                 case Throw:
                     Write("throw");
                     if (operand != null) {
                         Write(" ");
-                        WriteNode(operandPath, operand);
+                        Parens(nodeType, operandPath, operand);
                     }
                     break;
                 case Quote:
@@ -167,13 +169,13 @@ namespace ExpressionTreeToString {
                     Write("// --- Quoted - begin");
                     Indent();
                     WriteEOL();
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     WriteEOL(true);
                     Write("// --- Quoted - end");
                     break;
                 case UnaryPlus:
                     Write("+");
-                    WriteNode(operandPath, operand);
+                    Parens(nodeType, operandPath, operand);
                     break;
                 default:
                     throw new NotImplementedException($"NodeType: {nodeType}, Expression object type: {expressionTypename}");
@@ -353,7 +355,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteConditional(ConditionalExpression expr, object? metadata) {
             if (expr.Type != typeof(void)) {
-                WriteNode("Test", expr.Test);
+                Parens(expr, "Test", expr.Test);
                 Write(" ? ");
                 WriteNode("IfTrue", expr.IfTrue);
                 Write(" : ");
@@ -665,5 +667,151 @@ namespace ExpressionTreeToString {
         protected override bool ParensOnEmptyArguments => true;
 
         protected override (string prefix, string suffix) IndexerIndicators => ("[", "]");
+
+        // to verify precendence levels by level against https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/#operator-precedence
+        // use:
+        //    precedence.GroupBy(kvp => kvp.Value, kvp => kvp.Key, (key, grp) => new {key, values = grp.OrderBy(x => x.ToString()).Joined(", ")}).OrderBy(x => x.key);
+        private Dictionary<ExpressionType, int> precedence = new Dictionary<ExpressionType, int>() {
+            [Add] = 5,
+            [AddAssign] = 16,
+            [AddAssignChecked] = 16,
+            [AddChecked] = 5,
+            [And] = 9,
+            [AndAlso] = 12,
+            [AndAssign] = 16,
+            [ArrayIndex] = 0,
+            [ArrayLength] = 0, // member access in C# 
+            [Assign] = 16,
+            [ExpressionType.Block] = -1,
+            [Call] = 0, // precedence of the . operator, not the arguments, which are in any case wrapped in parentheses
+            [Coalesce] = 14,
+            [Conditional] = -1, // if Type != typeof(void), then 15
+            [Constant] = -1,
+            [ExpressionType.Convert] = 1, // conversion is rendered only if the types aren't assignable
+            [ConvertChecked] = 1, // // conversion is rendered only if the types aren't assignable
+            [DebugInfo] = -1,
+            [Decrement] = 16,
+            [Default] = 0,
+            [Divide] = 4,
+            [DivideAssign] = 16,
+            [Dynamic] = -1,
+            [Equal] = 8,
+            [ExclusiveOr] = 10,
+            [ExclusiveOrAssign] = 16,
+            [Extension] = -1,
+            [ExpressionType.Goto] = -1,
+            [GreaterThan] = 7,
+            [GreaterThanOrEqual] = 7,
+            [Increment] = 16,
+            [Index] = 0,
+            [Invoke] = 0,
+            [IsFalse] = 1,
+            [IsTrue] = -1,
+            [Label] = -1,
+            [Lambda] = 16,
+            [LeftShift] = 6,
+            [LeftShiftAssign] = 16,
+            [LessThan] = 7,
+            [LessThanOrEqual] = 7,
+            [ListInit] = -1,
+            [Loop] = -1,
+            [MemberAccess] = 0,
+            [MemberInit] = -1,
+            [Modulo] = 4,
+            [ModuloAssign] = 16,
+            [Multiply] = 4,
+            [MultiplyAssign] = 16,
+            [MultiplyAssignChecked] = 16,
+            [MultiplyChecked] = 4,
+            [Negate] = 1,
+            [NegateChecked] = 1,
+            [New] = 0,
+            [NewArrayBounds] = 0, // same as New
+            [NewArrayInit] = 0, // same as New
+            [Not] = 1,
+            [NotEqual] = 8,
+            [OnesComplement] = 1,
+            [Or] = 11,
+            [OrAssign] = 16,
+            [OrElse] = 13,
+            [Parameter] = -1,
+            [PostDecrementAssign] = 0,
+            [PostIncrementAssign] = 0,
+            [Power] = 0, // same as Call
+            [PowerAssign] = 16,
+            [PreDecrementAssign] = 1,
+            [PreIncrementAssign] = 1,
+            [Quote] = -1,
+            [RightShift] = 6,
+            [RightShiftAssign] = 16,
+            [RuntimeVariables] = -1,
+            [Subtract] = 5,
+            [SubtractAssign] = 16,
+            [SubtractAssignChecked] = 16,
+            [SubtractChecked] = 5,
+            [Switch] = -1, // if Type != typeof(void), then 3
+            [Throw] = -1,
+            [Try] = -1,
+            [TypeAs] = 7,
+            [TypeEqual] = 8, // like Equal
+            [TypeIs] = 7,
+            [UnaryPlus] = 1,
+            [Unbox] = 1, // // conversion is rendered only if the types aren't assignable
+        };
+
+        private int GetPrecedence(Expression node, Type? parentType = null) {
+            ExpressionType nodeType;
+            Type type;
+            if (node is DynamicExpression dexpr) {
+                (nodeType, type, _) = dexpr;
+            } else {
+                (nodeType, type) = node;
+            }
+
+            var renderConversion = parentType is { } && !parentType.IsAssignableFrom(type);
+            return nodeType switch
+            {
+                Conditional when type != typeof(void) => 15,
+                Switch when type != typeof(void) => 3,
+                var x when x.In(Unbox, ExpressionType.Convert, ConvertChecked) && !renderConversion => -1,
+                _ => precedence[nodeType]
+            };
+        }
+
+        private HashSet<ExpressionType> rightAssociatives = new HashSet<ExpressionType> {
+            Assign, AddAssign, AndAssign, DivideAssign, ExclusiveOrAssign, LeftShiftAssign, ModuloAssign, MultiplyAssign,
+            OrAssign, PowerAssign, RightShiftAssign, SubtractAssign, AddAssignChecked, MultiplyAssignChecked, SubtractAssignChecked, PreIncrementAssign,
+            PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,
+            Coalesce, Conditional
+        };
+
+        protected override void Parens(OneOf<Expression, ExpressionType> arg, string path, Expression childNode) {
+            var (parentPrecedence, parentNodeType, parentType) = arg.Match(
+                node => (GetPrecedence(node), node.NodeType, (Type?)node.Type),
+                nodeType => (precedence[nodeType], nodeType, null)
+            );
+            var leftAssociative = parentNodeType.NotIn(rightAssociatives);
+            var childPrecedence = GetPrecedence(childNode, parentType);
+
+            bool writeParens = false;
+            if (parentPrecedence != -1 && childPrecedence != -1) {
+                // higher precedence is expressed as a lower number
+                if (childPrecedence > parentPrecedence) { 
+                    writeParens = true;
+                } else if (parentPrecedence == childPrecedence && (childNode is BinaryExpression || childNode is ConditionalExpression)) {
+                    // associativity
+                    if (
+                        (leftAssociative && path == "Right") ||
+                        (!leftAssociative && path.In("Left", "Test"))
+                    ) {
+                        writeParens = true;
+                    }
+                }
+            }
+
+            if (writeParens) { Write("("); }
+            WriteNode(path, childNode);
+            if (writeParens) { Write(")"); }
+        }
     }
 }

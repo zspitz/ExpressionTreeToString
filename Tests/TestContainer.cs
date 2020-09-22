@@ -14,8 +14,8 @@ using static ExpressionTreeToString.BuiltinRenderer;
 namespace ExpressionTreeToString.Tests {
     public class TestContainer : IClassFixture<ExpectedDataFixture> {
         public static readonly BuiltinRenderer[] RendererKeys = new[] {
-            CSharp, 
-            VisualBasic, 
+            CSharp,
+            VisualBasic,
             FactoryMethods, 
             ObjectNotation, 
             TextualTree 

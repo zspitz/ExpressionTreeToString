@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Dynamic;
 using static ZSpitz.Util.Methods;
+using ExpressionTreeToString.Util;
 
 namespace ExpressionTreeToString {
     public abstract class CodeWriterVisitor : BuiltinsWriterVisitor {
@@ -85,7 +86,7 @@ namespace ExpressionTreeToString {
                     Write($"{expr.Member.DeclaringType.FriendlyName(language)}.{expr.Member.Name}");
                     return;
                 default:
-                    WriteNode("Expression", expr.Expression);
+                    Parens(expr, "Expression", expr.Expression);
                     Write($".{expr.Member.Name}");
                     return;
             }
@@ -95,7 +96,7 @@ namespace ExpressionTreeToString {
         protected abstract bool ParensOnEmptyArguments { get; }
 
         protected override void WriteCall(MethodCallExpression expr) {
-            if (expr.Method.In(stringConcats)) {
+            if (expr.Method.IsStringConcat()) {
                 var firstArg = expr.Arguments[0];
                 IEnumerable<Expression>? argsToWrite = null;
                 string argsPath = "";
@@ -124,7 +125,7 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            if (expr.Method.In(stringFormats) && expr.Arguments[0] is ConstantExpression cexpr && cexpr.Value is string format) {
+            if (expr.Method.IsStringFormat() && expr.Arguments[0] is ConstantExpression cexpr && cexpr.Value is string format) {
                 var parts = ParseFormatString(format);
                 Write("$\"");
                 foreach (var (literal, index, alignment, itemFormat) in parts) {
@@ -153,7 +154,7 @@ namespace ExpressionTreeToString {
                 Write(expr.Method.ReflectedType.FriendlyName(language));
             } else {
                 // instance method, or extension method
-                WriteNode(path, o);
+                Parens(expr, path, o);
             }
 
             string typeParameters = "";
@@ -268,7 +269,7 @@ namespace ExpressionTreeToString {
             VerifyCount(args, 1, null);
             WriteNode("Arguments[0]", args[0]);
             Write($".{binder.Name}");
-            if (ParensOnEmptyArguments || args.Count>1) {
+            if (ParensOnEmptyArguments || args.Count > 1) {
                 Write("(");
                 WriteNodes(args.Skip(1).Select((arg, index) => ($"Arguments[{index + 1}]", arg)));
                 Write(")");
@@ -295,5 +296,7 @@ namespace ExpressionTreeToString {
             VerifyCount(args, 1);
             WriteUnary(binder.Operation, "Arguments[0]", args[0], binder.ReturnType, binder.GetType().Name);
         }
+
+        protected abstract void Parens(OneOf<Expression, ExpressionType> nodeTypeSource, string path, Expression childNode);
     }
 }

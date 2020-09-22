@@ -27,25 +27,6 @@ namespace ExpressionTreeToString {
     }
 
     public static class Globals {
-        public readonly static HashSet<MethodInfo> stringConcats;
-        public readonly static HashSet<MethodInfo> stringFormats;
-
-        static Globals() {
-            var methods = typeof(string)
-                .GetMethods()
-                .Where(x => x.Name switch {
-                    "Concat" => x.GetParameters().All(
-                        y => y.ParameterType.In(typeof(string), typeof(string[]))
-                    ),
-                    "Format" => x.GetParameters().First().ParameterType == typeof(string),
-                    _ => false,
-                })
-                .ToLookup(x => x.Name);
-
-            stringConcats = methods["Concat"].ToHashSet();
-            stringFormats = methods["Format"].ToHashSet();
-        }
-
         public readonly static List<Type> NodeTypes = new List<Type>() {
             typeof(Expression),
             typeof(MemberBinding),

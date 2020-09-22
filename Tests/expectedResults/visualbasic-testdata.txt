@@ -941,7 +941,7 @@ Function() { ({ "ab", "cd" }), ({ "ef", "gh" }) }
 ---- VBCompiler.JaggedWithElementsImplicitTypeInnerNonLiteral
 Function() { arr1, arr2 }
 ---- VBCompiler.LeftShift
-Function() i << j And 31
+Function() i << (j And 31)
 ---- VBCompiler.LessThan
 Function() i < j
 ---- VBCompiler.LessThanOrEqual
@@ -1001,7 +1001,7 @@ Function() b1 Or b2
 ---- VBCompiler.Power
 Function() x ^ y
 ---- VBCompiler.RightShift
-Function() i >> j And 31
+Function() i >> (j And 31)
 ---- VBCompiler.SingleDimensionInit
 Function() { "" }
 ---- VBCompiler.SingleDimensionInitExplicitType
