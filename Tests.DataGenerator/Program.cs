@@ -26,12 +26,12 @@ namespace Tests.DataGenerator {
                     lines.Add($"---- {source}.{name}");
                     var toWrite = o switch
                     {
-                        Expression expr => expr.ToString(key, language),
-                        MemberBinding mbind => mbind.ToString(key, language),
-                        ElementInit init => init.ToString(key, language),
-                        SwitchCase switchCase => switchCase.ToString(key, language),
-                        CatchBlock catchBlock => catchBlock.ToString(key, language),
-                        LabelTarget labelTarget => labelTarget.ToString(key, language),
+                        Expression expr => expr.ToString(key, out var pathSpans, language),
+                        MemberBinding mbind => mbind.ToString(key, out var pathSpans, language),
+                        ElementInit init => init.ToString(key, out var pathSpans, language),
+                        SwitchCase switchCase => switchCase.ToString(key, out var pathSpans, language),
+                        CatchBlock catchBlock => catchBlock.ToString(key, out var pathSpans, language),
+                        LabelTarget labelTarget => labelTarget.ToString(key, out var pathSpans, language),
                         _ => throw new NotImplementedException(),
                     };
                     if (key == FactoryMethods) {
