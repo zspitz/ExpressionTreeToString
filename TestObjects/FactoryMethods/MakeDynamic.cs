@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq.Expressions;
 using static ExpressionTreeTestObjects.Functions;
 using static ExpressionTreeTestObjects.Categories;
 using static System.Linq.Expressions.Expression;
 using Microsoft.CSharp.RuntimeBinder;
 using static Microsoft.CSharp.RuntimeBinder.Binder;
-using System.Reflection;
+using static ExpressionTreeTestObjects.Globals;
 
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
@@ -24,14 +23,19 @@ namespace ExpressionTreeTestObjects {
         private static readonly ConstantExpression arg1 = Constant("arg1");
         private static readonly ConstantExpression arg2 = Constant(15);
 
-        // TODO write test objects for the following types in System.Dynamic:
-        //      CreateInstanceBinder (can't create from Microsoft.CSharp.RuntimeBinder classes because Microsoft.CSharp.RuntimeBinder.CSharpInvokeBinder inherits directly from DynamicMetaObjectBinder)
-
         // TODO what about VB runtime binder?
 
-        // TODO BinaryOperationBinder
+        [TestObject(Dynamics)]
+        internal static readonly Expression DynamicBinaryOperation = IIFE(() => {
+            var binder = BinaryOperation(flags, ExpressionType.Add, context, argInfos2);
+            return Dynamic(binder, typeof(double), x, y);
+        });
 
-        // TODO ConvertBinder
+        [TestObject(Dynamics)]
+        internal static readonly Expression DynamicConvertOperation = IIFE(() => {
+            var binder = Convert(flags, typeof(int), context);
+            return Dynamic(binder, typeof(int), x);
+        });
 
         [TestObject(Dynamics)]
         internal static readonly Expression DynamicGetIndex = IIFE(() => {
@@ -76,6 +80,13 @@ namespace ExpressionTreeTestObjects {
         });
 
         // TODO InvokeConstructor binder
+        // we can't use Microsoft.CSharp.RuntimeBinder.Binder.InvokeConstructor, because the resulting binder
+        // inherits directly from DynamicMetaObjectBinder, not from System.Dynamic.InvokeConstructorBinder
+        //[TestObject(Dynamics)]
+        //internal static readonly Expression DynamicCreateInstance = IIFE(() => {
+        //    var binder = InvokeConstructor(flags, context, new CSharpArgumentInfo[] { });
+        //    return Dynamic(binder, typeof(object), obj, arg1, arg2);
+        //});
 
         // TODO IsEvent binder
 
@@ -97,6 +108,10 @@ namespace ExpressionTreeTestObjects {
             return Dynamic(binder, typeof(object), obj, value);
         });
 
-        // TODO UnaryOperation binder
+        [TestObject(Dynamics)]
+        internal static readonly Expression DynamicUnaryOperation = IIFE(() => {
+            var binder = UnaryOperation(flags, ExpressionType.Not, context, argInfos);
+            return Dynamic(binder, typeof(bool), b1);
+        });
     }
 }

@@ -1152,4 +1152,10 @@ i switch {
     3 or 4 => "ThreeFour",
     _ => "Default"
 }
+---- FactoryMethods.DynamicBinaryOperation
+x + y
+---- FactoryMethods.DynamicConvertOperation
+(int)x
+---- FactoryMethods.DynamicUnaryOperation
+~b1
 ------

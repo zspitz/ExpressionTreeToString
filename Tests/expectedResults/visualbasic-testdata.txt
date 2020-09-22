@@ -1116,4 +1116,10 @@ Select Case i
     Case Else
         "Default"
 End Select
+---- FactoryMethods.DynamicBinaryOperation
+x + y
+---- FactoryMethods.DynamicConvertOperation
+CInt(x)
+---- FactoryMethods.DynamicUnaryOperation
+Not b1
 ------

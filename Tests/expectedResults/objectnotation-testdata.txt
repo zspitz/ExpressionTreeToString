@@ -7979,4 +7979,32 @@ new SwitchExpression {
         Value = "Default"
     }
 }
+---- FactoryMethods.DynamicBinaryOperation
+new DynamicExpression {
+    Type = typeof(double),
+    Binder = #CSharpBinaryOperationBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        x,
+        y
+    },
+    DelegateType = typeof(Func<CallSite, double, double, double>)
+}
+---- FactoryMethods.DynamicConvertOperation
+new DynamicExpression {
+    Type = typeof(int),
+    Binder = #CSharpConvertBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        x
+    },
+    DelegateType = typeof(Func<CallSite, double, int>)
+}
+---- FactoryMethods.DynamicUnaryOperation
+new DynamicExpression {
+    Type = typeof(bool),
+    Binder = #CSharpUnaryOperationBinder,
+    Arguments = new ReadOnlyCollection<Expression> {
+        b1
+    },
+    DelegateType = typeof(Func<CallSite, bool, bool>)
+}
 ------

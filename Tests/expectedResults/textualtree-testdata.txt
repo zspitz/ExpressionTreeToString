@@ -2225,4 +2225,14 @@ Switch (string)
         · TestValues[1] - Constant (int) = 4
         · Body - Constant (string) = "ThreeFour"
     · DefaultBody - Constant (string) = "Default"
+---- FactoryMethods.DynamicBinaryOperation
+Dynamic (double)
+    · Arguments[0] - Parameter (double) x
+    · Arguments[1] - Parameter (double) y
+---- FactoryMethods.DynamicConvertOperation
+Dynamic (int)
+    · Arguments[0] - Parameter (double) x
+---- FactoryMethods.DynamicUnaryOperation
+Dynamic (bool)
+    · Arguments[0] - Parameter (bool) b1
 ------

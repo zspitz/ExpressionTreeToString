@@ -951,24 +951,20 @@ ExclusiveOr(b1, b2)
 ---- FactoryMethods.DynamicGetIndex
 Dynamic(
     #CSharpGetIndexBinder,
-    typeof(object), new[] {
-        obj,
-        Constant("key")
-    }
+    typeof(object), obj,
+    Constant("key")
 )
 ---- FactoryMethods.DynamicGetIndexMultipleKeys
 Dynamic(
     #CSharpGetIndexBinder,
-    typeof(object), new[] {
-        obj,
-        Constant("key"),
-        Constant(1)
-    }
+    typeof(object), obj,
+    Constant("key"),
+    Constant(1)
 )
 ---- FactoryMethods.DynamicGetMember
 Dynamic(
     #CSharpGetMemberBinder,
-    typeof(object), new[] { obj }
+    typeof(object), obj
 )
 ---- FactoryMethods.ConstructGreaterThan
 GreaterThan(x, y)
@@ -979,16 +975,14 @@ Increment(i)
 ---- FactoryMethods.DynamicInvocationNoArguments
 Dynamic(
     #CSharpInvokeBinder,
-    typeof(object), new[] { obj }
+    typeof(object), obj
 )
 ---- FactoryMethods.DynamicInvocationWithArguments
 Dynamic(
     #CSharpInvokeBinder,
-    typeof(object), new[] {
-        obj,
-        Constant("arg1"),
-        Constant(15)
-    }
+    typeof(object), obj,
+    Constant("arg1"),
+    Constant(15)
 )
 ---- FactoryMethods.ConstructIsFalse
 IsFalse(b1)
@@ -1048,16 +1042,14 @@ Not(b1)
 ---- FactoryMethods.DynamicMemberInvocationNoArguments
 Dynamic(
     #CSharpInvokeMemberBinder,
-    typeof(object), new[] { obj }
+    typeof(object), obj
 )
 ---- FactoryMethods.DynamicMemberInvocationWithArguments
 Dynamic(
     #CSharpInvokeMemberBinder,
-    typeof(object), new[] {
-        obj,
-        Constant("arg1"),
-        Constant(15)
-    }
+    typeof(object), obj,
+    Constant("arg1"),
+    Constant(15)
 )
 ---- FactoryMethods.ConstructModulo
 Modulo(x, y)
@@ -1110,29 +1102,23 @@ RuntimeVariables(x, s1)
 ---- FactoryMethods.DynamicSetIndex
 Dynamic(
     #CSharpSetIndexBinder,
-    typeof(object), new[] {
-        obj,
-        Constant(42),
-        Constant("key")
-    }
+    typeof(object), obj,
+    Constant(42),
+    Constant("key")
 )
 ---- FactoryMethods.DynamicSetIndexMultipleKeys
 Dynamic(
     #CSharpSetIndexBinder,
-    typeof(object), new[] {
-        obj,
-        Constant(42),
-        Constant("key"),
-        Constant(1)
-    }
+    typeof(object), obj,
+    Constant(42),
+    Constant("key"),
+    Constant(1)
 )
 ---- FactoryMethods.DynamicSetMember
 Dynamic(
     #CSharpSetMemberBinder,
-    typeof(object), new[] {
-        obj,
-        Constant(42)
-    }
+    typeof(object), obj,
+    Constant(42)
 )
 ---- FactoryMethods.ConstructSimpleCatch
 Catch(
@@ -3100,5 +3086,20 @@ Switch(i,
         Constant(3),
         Constant(4)
     )
+)
+---- FactoryMethods.DynamicBinaryOperation
+Dynamic(
+    #CSharpBinaryOperationBinder,
+    typeof(double), x, y
+)
+---- FactoryMethods.DynamicConvertOperation
+Dynamic(
+    #CSharpConvertBinder,
+    typeof(int), x
+)
+---- FactoryMethods.DynamicUnaryOperation
+Dynamic(
+    #CSharpUnaryOperationBinder,
+    typeof(bool), b1
 )
 ------
