@@ -971,45 +971,45 @@ Conditional (int)
     · IfFalse - Add (int)
         · Left - Parameter (int) i
         · Right - Constant (int) = 10
----- FactoryMethods.ConstructMemberInvocationNoArguments
+---- FactoryMethods.DynamicMemberInvocationNoArguments
 Dynamic (object)
     · Arguments[0] - Parameter (object) obj
----- FactoryMethods.ConstructMemberInvocationWithArguments
+---- FactoryMethods.DynamicMemberInvocationWithArguments
 Dynamic (object)
     · Arguments[0] - Parameter (object) obj
     · Arguments[1] - Constant (string) = "arg1"
     · Arguments[2] - Constant (int) = 15
----- FactoryMethods.ConstructSetIndex
+---- FactoryMethods.DynamicSetIndex
 Dynamic (object)
     · Arguments[0] - Parameter (object) obj
     · Arguments[1] - Constant (int) = 42
     · Arguments[2] - Constant (string) = "key"
----- FactoryMethods.ConstructSetIndexMultipleKeys
+---- FactoryMethods.DynamicSetIndexMultipleKeys
 Dynamic (object)
     · Arguments[0] - Parameter (object) obj
     · Arguments[1] - Constant (int) = 42
     · Arguments[2] - Constant (string) = "key"
     · Arguments[3] - Constant (int) = 1
----- FactoryMethods.ConstructSetMember
+---- FactoryMethods.DynamicSetMember
 Dynamic (object)
     · Arguments[0] - Parameter (object) obj
     · Arguments[1] - Constant (int) = 42
----- FactoryMethods.ConstructGetIndex
+---- FactoryMethods.DynamicGetIndex
 Dynamic (object)
     · Arguments[0] - Parameter (object) obj
     · Arguments[1] - Constant (string) = "key"
----- FactoryMethods.ConstructGetIndexMultipleKeys
+---- FactoryMethods.DynamicGetIndexMultipleKeys
 Dynamic (object)
     · Arguments[0] - Parameter (object) obj
     · Arguments[1] - Constant (string) = "key"
     · Arguments[2] - Constant (int) = 1
----- FactoryMethods.ConstructGetMember
+---- FactoryMethods.DynamicGetMember
 Dynamic (object)
     · Arguments[0] - Parameter (object) obj
----- FactoryMethods.ConstructInvocationNoArguments
+---- FactoryMethods.DynamicInvocationNoArguments
 Dynamic (object)
     · Arguments[0] - Parameter (object) obj
----- FactoryMethods.ConstructInvocationWithArguments
+---- FactoryMethods.DynamicInvocationWithArguments
 Dynamic (object)
     · Arguments[0] - Parameter (object) obj
     · Arguments[1] - Constant (string) = "arg1"

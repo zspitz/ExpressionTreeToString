@@ -6,7 +6,7 @@ using static ExpressionTreeTestObjects.Categories;
 using static System.Linq.Expressions.Expression;
 using Microsoft.CSharp.RuntimeBinder;
 using static Microsoft.CSharp.RuntimeBinder.Binder;
-
+using System.Reflection;
 
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
@@ -29,91 +29,74 @@ namespace ExpressionTreeTestObjects {
 
         // TODO what about VB runtime binder?
 
+        // TODO BinaryOperationBinder
+
+        // TODO ConvertBinder
+
         [TestObject(Dynamics)]
-        internal static readonly Expression ConstructMemberInvocationNoArguments = IIFE(() => {
-            var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
-            return Dynamic(binder, typeof(object), obj);
+        internal static readonly Expression DynamicGetIndex = IIFE(() => {
+            var binder = GetIndex(flags, context, argInfos);
+            return Dynamic(binder, typeof(object), obj, key);
         });
 
         [TestObject(Dynamics)]
-        internal static readonly Expression ConstructMemberInvocationWithArguments = IIFE(() => {
-            var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
-            return Dynamic(binder, typeof(object), obj, arg1, arg2);
+        internal static readonly Expression DynamicGetIndexMultipleKeys = IIFE(() => {
+            var binder = GetIndex(flags, context, argInfos);
+            return Dynamic(binder, typeof(object), obj, key, key1);
         });
 
         [TestObject(Dynamics)]
-        internal static readonly Expression ConstructSetIndex = IIFE(() => {
-            var binder = SetIndex(flags, context, argInfos2);
-            return Dynamic(binder, typeof(object), obj, value, key);
-        });
-
-        [TestObject(Dynamics)]
-        internal static readonly Expression ConstructSetIndexMultipleKeys = IIFE(() => {
-            var binder = SetIndex(flags, context, argInfos2);
-            return Dynamic(binder, typeof(object), obj, value, key, key1);
-        });
-
-        [TestObject(Dynamics)]
-        internal static readonly Expression ConstructSetMember = IIFE(() => {
-            var binder = SetMember(flags, "Data", context, argInfos);
-            return Dynamic(binder, typeof(object), obj, value);
-        });
-
-    [TestObject(Dynamics)]
-      internal static readonly Expression ConstructGetIndex = IIFE(() => {
-          var binder = GetIndex(flags, context, argInfos);
-          return Dynamic(binder, typeof(object), obj, key);
-      });
-
-        [TestObject(Dynamics)]
-      internal static readonly Expression ConstructGetIndexMultipleKeys = IIFE(() => {
-          var binder = GetIndex(flags, context, argInfos);
-          return Dynamic(binder, typeof(object), obj, key, key1);
-      });
-
-        [TestObject(Dynamics)]
-        internal static readonly Expression ConstructGetMember = IIFE(() => {
+        internal static readonly Expression DynamicGetMember = IIFE(() => {
             var binder = GetMember(flags, "Data", context, argInfos);
             return Dynamic(binder, typeof(object), obj);
         });
 
         [TestObject(Dynamics)]
-        internal static readonly Expression ConstructInvocationNoArguments = IIFE(() => {
+        internal static readonly Expression DynamicInvocationNoArguments = IIFE(() => {
             var binder = Invoke(flags, context, argInfos);
             return Dynamic(binder, typeof(object), obj);
         });
 
         [TestObject(Dynamics)]
-        internal static readonly Expression ConstructInvocationWithArguments = IIFE(() => {
+        internal static readonly Expression DynamicInvocationWithArguments = IIFE(() => {
             var binder = Invoke(flags, context, argInfos);
             return Dynamic(binder, typeof(object), obj, arg1, arg2);
         });
 
-        // TODO create test objects specifically for the classes in Microsoft.CSharp.RuntimeBinder
-        // TODO including invoking methods with generic parameters
+        [TestObject(Dynamics)]
+        internal static readonly Expression DynamicMemberInvocationNoArguments = IIFE(() => {
+            var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
+            return Dynamic(binder, typeof(object), obj);
+        });
 
-        //internal static readonly ConstructGenericMemberInvocationNoArguments = IIFE(() => {
-        //    var obj = Parameter(typeof(object), "obj");
-        //    var binder = InvokeMember(flags, "Method", new Type[] { typeof(string), typeof(int)}, context, argInfos);
+        [TestObject(Dynamics)]
+        internal static readonly Expression DynamicMemberInvocationWithArguments = IIFE(() => {
+            var binder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
+            return Dynamic(binder, typeof(object), obj, arg1, arg2);
+        });
 
-        //    return Dynamic(binder, typeof(object), obj);
+        // TODO InvokeConstructor binder
 
-        //    C#: obj.Method()
-        //    VB: obj.Method
-        //});
+        // TODO IsEvent binder
 
-        //[Fact]
-        //internal static readonly ConstructGenericMemberInvocationWithArguments = IIFE(() => {
-        //    var obj = Parameter(typeof(object), "obj");
-        //    var arg1 = Constant("arg1");
-        //    var arg2 = Constant(15);
+        [TestObject(Dynamics)]
+        internal static readonly Expression DynamicSetIndex = IIFE(() => {
+            var binder = SetIndex(flags, context, argInfos2);
+            return Dynamic(binder, typeof(object), obj, value, key);
+        });
 
-        //    var binder = InvokeMember(flags, "Method", new Type[] { typeof(string), typeof(int) }, context, argInfos);
+        [TestObject(Dynamics)]
+        internal static readonly Expression DynamicSetIndexMultipleKeys = IIFE(() => {
+            var binder = SetIndex(flags, context, argInfos2);
+            return Dynamic(binder, typeof(object), obj, value, key, key1);
+        });
 
-        //    return Dynamic(binder, typeof(object), obj, arg1, arg2);
+        [TestObject(Dynamics)]
+        internal static readonly Expression DynamicSetMember = IIFE(() => {
+            var binder = SetMember(flags, "Data", context, argInfos);
+            return Dynamic(binder, typeof(object), obj, value);
+        });
 
-        //    C#: obj.Method<string, int>(\"arg1\", 15)
-        //    VB: obj(Of String, Integer)(\"arg1\", 15)
-        //}
+        // TODO UnaryOperation binder
     }
 }

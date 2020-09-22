@@ -2462,7 +2462,7 @@ new BinaryExpression {
     Left = b1,
     Right = b2
 }
----- FactoryMethods.ConstructGetIndex
+---- FactoryMethods.DynamicGetIndex
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpGetIndexBinder,
@@ -2475,7 +2475,7 @@ new DynamicExpression {
     },
     DelegateType = typeof(Func<CallSite, object, string, object>)
 }
----- FactoryMethods.ConstructGetIndexMultipleKeys
+---- FactoryMethods.DynamicGetIndexMultipleKeys
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpGetIndexBinder,
@@ -2492,7 +2492,7 @@ new DynamicExpression {
     },
     DelegateType = typeof(Func<CallSite, object, string, int, object>)
 }
----- FactoryMethods.ConstructGetMember
+---- FactoryMethods.DynamicGetMember
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpGetMemberBinder,
@@ -2521,7 +2521,7 @@ new UnaryExpression {
     Type = typeof(int),
     Operand = i
 }
----- FactoryMethods.ConstructInvocationNoArguments
+---- FactoryMethods.DynamicInvocationNoArguments
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpInvokeBinder,
@@ -2530,7 +2530,7 @@ new DynamicExpression {
     },
     DelegateType = typeof(Func<CallSite, object, object>)
 }
----- FactoryMethods.ConstructInvocationWithArguments
+---- FactoryMethods.DynamicInvocationWithArguments
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpInvokeBinder,
@@ -2748,7 +2748,7 @@ new UnaryExpression {
     Type = typeof(bool),
     Operand = b1
 }
----- FactoryMethods.ConstructMemberInvocationNoArguments
+---- FactoryMethods.DynamicMemberInvocationNoArguments
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpInvokeMemberBinder,
@@ -2757,7 +2757,7 @@ new DynamicExpression {
     },
     DelegateType = typeof(Func<CallSite, object, object>)
 }
----- FactoryMethods.ConstructMemberInvocationWithArguments
+---- FactoryMethods.DynamicMemberInvocationWithArguments
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpInvokeMemberBinder,
@@ -2938,7 +2938,7 @@ new RuntimeVariablesExpression {
         s1
     }
 }
----- FactoryMethods.ConstructSetIndex
+---- FactoryMethods.DynamicSetIndex
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpSetIndexBinder,
@@ -2955,7 +2955,7 @@ new DynamicExpression {
     },
     DelegateType = typeof(Func<CallSite, object, int, string, object>)
 }
----- FactoryMethods.ConstructSetIndexMultipleKeys
+---- FactoryMethods.DynamicSetIndexMultipleKeys
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpSetIndexBinder,
@@ -2976,7 +2976,7 @@ new DynamicExpression {
     },
     DelegateType = typeof(Func<CallSite, object, int, string, int, object>)
 }
----- FactoryMethods.ConstructSetMember
+---- FactoryMethods.DynamicSetMember
 new DynamicExpression {
     Type = typeof(object),
     Binder = #CSharpSetMemberBinder,

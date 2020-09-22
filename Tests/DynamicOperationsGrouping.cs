@@ -1,8 +1,15 @@
 ﻿using Xunit;
 using static ExpressionTreeTestObjects.Functions;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using static ExpressionTreeTestObjects.Categories;
+using static System.Linq.Expressions.Expression;
+using Microsoft.CSharp.RuntimeBinder;
+using static Microsoft.CSharp.RuntimeBinder.Binder;
 
 namespace ExpressionTreeToString.Tests {
-    public class OperationsGrouping {
+    public class DynamicOperationsGrouping {
         [Theory]
         [InlineData("C#", "() => (x + y) * z")]
         [InlineData("Visual Basic", "Function() (x + y) * z")]

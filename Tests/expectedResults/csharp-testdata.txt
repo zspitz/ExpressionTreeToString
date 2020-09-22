@@ -341,11 +341,11 @@ b1 ^= b2
 i ^ j
 ---- FactoryMethods.ConstructExclusiveOrLogical
 b1 ^ b2
----- FactoryMethods.ConstructGetIndex
+---- FactoryMethods.DynamicGetIndex
 obj["key"]
----- FactoryMethods.ConstructGetIndexMultipleKeys
+---- FactoryMethods.DynamicGetIndexMultipleKeys
 obj["key", 1]
----- FactoryMethods.ConstructGetMember
+---- FactoryMethods.DynamicGetMember
 obj.Data
 ---- FactoryMethods.ConstructGreaterThan
 x > y
@@ -353,9 +353,9 @@ x > y
 x >= y
 ---- FactoryMethods.ConstructIncrement
 i += 1
----- FactoryMethods.ConstructInvocationNoArguments
+---- FactoryMethods.DynamicInvocationNoArguments
 obj()
----- FactoryMethods.ConstructInvocationWithArguments
+---- FactoryMethods.DynamicInvocationWithArguments
 obj("arg1", 15)
 ---- FactoryMethods.ConstructIsFalse
 !b1
@@ -392,9 +392,9 @@ x < y
 x <= y
 ---- FactoryMethods.ConstructLogicalNot
 !b1
----- FactoryMethods.ConstructMemberInvocationNoArguments
+---- FactoryMethods.DynamicMemberInvocationNoArguments
 obj.Method()
----- FactoryMethods.ConstructMemberInvocationWithArguments
+---- FactoryMethods.DynamicMemberInvocationWithArguments
 obj.Method("arg1", 15)
 ---- FactoryMethods.ConstructModulo
 x % y
@@ -444,11 +444,11 @@ i >> j
 i >>= j
 ---- FactoryMethods.ConstructRuntimeVariables
 // variables -- double x, string s1
----- FactoryMethods.ConstructSetIndex
+---- FactoryMethods.DynamicSetIndex
 obj["key"] = 42
----- FactoryMethods.ConstructSetIndexMultipleKeys
+---- FactoryMethods.DynamicSetIndexMultipleKeys
 obj["key", 1] = 42
----- FactoryMethods.ConstructSetMember
+---- FactoryMethods.DynamicSetMember
 obj.Data = 42
 ---- FactoryMethods.ConstructSimpleCatch
 catch {

@@ -948,7 +948,7 @@ ExclusiveOrAssign(b1, b2)
 ExclusiveOr(i, j)
 ---- FactoryMethods.ConstructExclusiveOrLogical
 ExclusiveOr(b1, b2)
----- FactoryMethods.ConstructGetIndex
+---- FactoryMethods.DynamicGetIndex
 Dynamic(
     #CSharpGetIndexBinder,
     typeof(object), new[] {
@@ -956,7 +956,7 @@ Dynamic(
         Constant("key")
     }
 )
----- FactoryMethods.ConstructGetIndexMultipleKeys
+---- FactoryMethods.DynamicGetIndexMultipleKeys
 Dynamic(
     #CSharpGetIndexBinder,
     typeof(object), new[] {
@@ -965,7 +965,7 @@ Dynamic(
         Constant(1)
     }
 )
----- FactoryMethods.ConstructGetMember
+---- FactoryMethods.DynamicGetMember
 Dynamic(
     #CSharpGetMemberBinder,
     typeof(object), new[] { obj }
@@ -976,12 +976,12 @@ GreaterThan(x, y)
 GreaterThanOrEqual(x, y)
 ---- FactoryMethods.ConstructIncrement
 Increment(i)
----- FactoryMethods.ConstructInvocationNoArguments
+---- FactoryMethods.DynamicInvocationNoArguments
 Dynamic(
     #CSharpInvokeBinder,
     typeof(object), new[] { obj }
 )
----- FactoryMethods.ConstructInvocationWithArguments
+---- FactoryMethods.DynamicInvocationWithArguments
 Dynamic(
     #CSharpInvokeBinder,
     typeof(object), new[] {
@@ -1045,12 +1045,12 @@ LessThan(x, y)
 LessThanOrEqual(x, y)
 ---- FactoryMethods.ConstructLogicalNot
 Not(b1)
----- FactoryMethods.ConstructMemberInvocationNoArguments
+---- FactoryMethods.DynamicMemberInvocationNoArguments
 Dynamic(
     #CSharpInvokeMemberBinder,
     typeof(object), new[] { obj }
 )
----- FactoryMethods.ConstructMemberInvocationWithArguments
+---- FactoryMethods.DynamicMemberInvocationWithArguments
 Dynamic(
     #CSharpInvokeMemberBinder,
     typeof(object), new[] {
@@ -1107,7 +1107,7 @@ RightShift(i, j)
 RightShiftAssign(i, j)
 ---- FactoryMethods.ConstructRuntimeVariables
 RuntimeVariables(x, s1)
----- FactoryMethods.ConstructSetIndex
+---- FactoryMethods.DynamicSetIndex
 Dynamic(
     #CSharpSetIndexBinder,
     typeof(object), new[] {
@@ -1116,7 +1116,7 @@ Dynamic(
         Constant("key")
     }
 )
----- FactoryMethods.ConstructSetIndexMultipleKeys
+---- FactoryMethods.DynamicSetIndexMultipleKeys
 Dynamic(
     #CSharpSetIndexBinder,
     typeof(object), new[] {
@@ -1126,7 +1126,7 @@ Dynamic(
         Constant(1)
     }
 )
----- FactoryMethods.ConstructSetMember
+---- FactoryMethods.DynamicSetMember
 Dynamic(
     #CSharpSetMemberBinder,
     typeof(object), new[] {
