@@ -5,6 +5,7 @@ using System.Dynamic;
 using System.Linq.Expressions;
 using ZSpitz.Util;
 using static System.Linq.Expressions.ExpressionType;
+using static ExpressionTreeToString.Globals;
 
 namespace ExpressionTreeToString {
     public abstract class BuiltinsWriterVisitor : WriterVisitorBase {
@@ -45,28 +46,6 @@ namespace ExpressionTreeToString {
                     throw new NotImplementedException($"Code generation not implemented for type '{o.GetType().Name}'");
             }
         }
-
-        private static readonly HashSet<ExpressionType> binaryExpressionTypes = new[] {
-            Add, AddChecked, Divide, Modulo, Multiply, MultiplyChecked, Power, Subtract, SubtractChecked,   // mathematical operators
-            And, Or, ExclusiveOr,   // bitwise / logical operations
-            LeftShift, RightShift,     // shift operators
-            AndAlso, OrElse,        // short-circuit boolean operators
-            Equal, NotEqual, GreaterThanOrEqual, GreaterThan,LessThan,LessThanOrEqual,     // comparison operators
-            Coalesce,
-            ArrayIndex,
-
-            Assign,
-            AddAssign, AddAssignChecked,DivideAssign, ModuloAssign,MultiplyAssign, MultiplyAssignChecked, PowerAssign, SubtractAssign, SubtractAssignChecked,
-            AndAssign, OrAssign, ExclusiveOrAssign,
-            LeftShiftAssign,RightShiftAssign
-        }.ToHashSet();
-
-        private static readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {
-            ArrayLength, ExpressionType.Convert, ConvertChecked, Unbox, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus, IsTrue, IsFalse,
-            PreIncrementAssign, PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,
-            Increment, Decrement,
-            Throw
-        }.ToHashSet();
 
         private void WriteExpression(Expression expr) {
             switch (expr.NodeType) {

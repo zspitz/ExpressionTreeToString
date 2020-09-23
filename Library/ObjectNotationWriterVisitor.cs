@@ -103,8 +103,6 @@ namespace ExpressionTreeToString {
             }
         }
 
-        // TODO represent parameters using variables, except for first usage where variable is defined
-
         private static readonly HashSet<Type> hideNodeType = new HashSet<Type>() {
             typeof(BlockExpression),
             typeof(ConditionalExpression),

@@ -11,6 +11,7 @@ using static System.Linq.Expressions.GotoExpressionKind;
 using static ExpressionTreeToString.VBExpressionMetadata;
 using ExpressionTreeToString.Util;
 using OneOf;
+using static ExpressionTreeToString.Globals;
 
 namespace ExpressionTreeToString {
     public class VBWriterVisitor : CodeWriterVisitor {
@@ -814,6 +815,7 @@ namespace ExpressionTreeToString {
         {
             MethodCallExpression mexpr when mexpr.Method.IsStringConcat() => 7,
             MethodCallExpression mexpr when mexpr.Method.IsVBLike() => 9,
+            DynamicExpression dexpr => precedence[dexpr.VirtualNodeType()],
             _ => precedence[node.NodeType]
         };
 
@@ -829,9 +831,18 @@ namespace ExpressionTreeToString {
 
             bool writeParens = false;
             if (parentPrecedence != -1 && childPrecedence != -1) {
-                writeParens =
-                    (childPrecedence > parentPrecedence) ||
-                    (parentPrecedence == childPrecedence && childNode is BinaryExpression && path == "Right");
+                if (childPrecedence > parentPrecedence) {
+                    writeParens = true;
+                } else if (childPrecedence == parentPrecedence) {
+                    writeParens = childNode switch
+                    {
+                        BinaryExpression _ => path == "Right",
+                        DynamicExpression dexpr =>
+                            (dexpr.VirtualNodeType() == Conditional || dexpr.VirtualNodeType().In(binaryExpressionTypes)) &&
+                            path == "Arguments[1]",
+                        _ => false
+                    };
+                }
             }
 
             if (writeParens) { Write("("); }

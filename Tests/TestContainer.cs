@@ -16,7 +16,7 @@ namespace ExpressionTreeToString.Tests {
         public static readonly BuiltinRenderer[] RendererKeys = new[] {
             CSharp,
             VisualBasic,
-            FactoryMethods, 
+            BuiltinRenderer.FactoryMethods, 
             ObjectNotation, 
             TextualTree 
         };
@@ -28,7 +28,7 @@ namespace ExpressionTreeToString.Tests {
             Language? language = rendererKey switch
             {
                 ObjectNotation => Language.CSharp,
-                FactoryMethods => Language.CSharp,
+                BuiltinRenderer.FactoryMethods => Language.CSharp,
                 TextualTree => Language.CSharp,
                 _ => null
             };

@@ -54,7 +54,8 @@ namespace ExpressionTreeToString.Tests {
 
         [Theory]
         [InlineData("C#", "() => (b2 ? b2 : b1) ? b1 : b3")]
-        // no need to test VB because the ternary If includes parentheses
+        // no need to test VB because operators are all left associative, except for = assignment
+        // the ones that are not, include parentheses as part of the syntax
         public void RightAssociativity(string language, string expected) {
             var expr = IIFE(() => {
                 bool b1 = false;

@@ -151,5 +151,27 @@ namespace ExpressionTreeToString {
             LessThanOrEqual,
             NotEqual
         };
+
+        public static readonly HashSet<ExpressionType> binaryExpressionTypes = new[] {
+            Add, AddChecked, Divide, Modulo, Multiply, MultiplyChecked, Power, Subtract, SubtractChecked,   // mathematical operators
+            And, Or, ExclusiveOr,   // bitwise / logical operations
+            LeftShift, RightShift,     // shift operators
+            AndAlso, OrElse,        // short-circuit boolean operators
+            Equal, NotEqual, GreaterThanOrEqual, GreaterThan,LessThan,LessThanOrEqual,     // comparison operators
+            Coalesce,
+            ArrayIndex,
+
+            Assign,
+            AddAssign, AddAssignChecked,DivideAssign, ModuloAssign,MultiplyAssign, MultiplyAssignChecked, PowerAssign, SubtractAssign, SubtractAssignChecked,
+            AndAssign, OrAssign, ExclusiveOrAssign,
+            LeftShiftAssign,RightShiftAssign
+        }.ToHashSet();
+
+        public static readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {
+            ArrayLength, ExpressionType.Convert, ConvertChecked, Unbox, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus, IsTrue, IsFalse,
+            PreIncrementAssign, PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,
+            Increment, Decrement,
+            Throw
+        }.ToHashSet();
     }
 }

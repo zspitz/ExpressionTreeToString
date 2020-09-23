@@ -768,7 +768,7 @@ namespace ExpressionTreeToString {
                 (nodeType, type) = node;
             }
 
-            var renderConversion = parentType is { } && !parentType.IsAssignableFrom(type);
+            var renderConversion = parentType is null || !parentType.IsAssignableFrom(type);
             return nodeType switch
             {
                 Conditional when type != typeof(void) => 15,
@@ -796,15 +796,23 @@ namespace ExpressionTreeToString {
             bool writeParens = false;
             if (parentPrecedence != -1 && childPrecedence != -1) {
                 // higher precedence is expressed as a lower number
-                if (childPrecedence > parentPrecedence) { 
+                if (childPrecedence > parentPrecedence) {
                     writeParens = true;
-                } else if (parentPrecedence == childPrecedence && (childNode is BinaryExpression || childNode is ConditionalExpression)) {
-                    // associativity
-                    if (
-                        (leftAssociative && path == "Right") ||
-                        (!leftAssociative && path.In("Left", "Test"))
-                    ) {
-                        writeParens = true;
+                } else if (parentPrecedence == childPrecedence) {
+                    // with C# 9 we can use a switch expression with the OR pattern
+                    switch (childNode) {
+                        case BinaryExpression _:
+                        case ConditionalExpression _:
+                            writeParens =
+                                (leftAssociative && path == "Right") ||
+                                (!leftAssociative && path.In("Left", "Test"));
+                            break;
+                        case DynamicExpression dexpr:
+                            var childNodeType = dexpr.VirtualNodeType();
+                            writeParens =
+                                (leftAssociative && path == "Arguments[1]") ||
+                                (!leftAssociative && path == "Arugments[0]");
+                            break;
                     }
                 }
             }

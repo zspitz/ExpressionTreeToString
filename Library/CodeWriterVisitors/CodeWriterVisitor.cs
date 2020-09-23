@@ -267,7 +267,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteInvokeMemberBinder(InvokeMemberBinder binder, IList<Expression> args) {
             VerifyCount(args, 1, null);
-            WriteNode("Arguments[0]", args[0]);
+            Parens(Call, "Arguments[0]", args[0]);
             Write($".{binder.Name}");
             if (ParensOnEmptyArguments || args.Count > 1) {
                 Write("(");
