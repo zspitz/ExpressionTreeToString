@@ -14,7 +14,7 @@ namespace ExpressionTreeToString {
         ObjectNotation,
         TextualTree,
         [Obsolete("Not yet implemented")] DebugView,
-        [Obsolete("Not yet implemented")] ToString
+        ToString
     }
 
     public static class RendererNames {
@@ -24,6 +24,7 @@ namespace ExpressionTreeToString {
         public const string ObjectNotation = "Object notation";
         public const string DebugView = "DebugView";
         public const string TextualTree = "Textual tree";
+        public const string ToStringRenderer = "ToString";
     }
 
     public static class Globals {

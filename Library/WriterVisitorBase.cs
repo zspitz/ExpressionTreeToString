@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using OneOf;
 using static ZSpitz.Util.Functions;
+using ExpressionTreeToString.Util;
 
 namespace ExpressionTreeToString {
     internal class InsertionPoint {
@@ -25,7 +26,8 @@ namespace ExpressionTreeToString {
         public (string result, Dictionary<string, (int start, int length)>? pathSpans) GetResult() {
             var result = insertionPoints.Values()
                 .Where(x => x.sb.Length > 0)
-                .Joined(Environment.NewLine, x => x.sb.ToString());
+                .Joined(Environment.NewLine, x => x.sb.ToString())
+                .Trim('\0');
 
             Dictionary<string, (int start, int length)>? pathSpans=null;
             if (insertionPoints.Any(x => x.Value.pathSpans is { })) {
@@ -58,6 +60,7 @@ namespace ExpressionTreeToString {
         }
 
         protected void Write(string s) => s.AppendTo(ip.sb);
+        protected void Write(char c) => c.AppendTo(ip.sb);
 
         /// <summary>Write a string-rendering of an expression or other type used in expression trees</summary>
         /// <param name="o">Object to be rendered</param>

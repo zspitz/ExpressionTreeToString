@@ -233,8 +233,9 @@ namespace ExpressionTreeToString {
                         Write(",");
                         WriteEOL();
                     }
-                    // write as `property = member` only if the source name is different from the target name
-                    // otheriwse just write `member`
+                    // if the expression being assigned from is a property access with the same name as the target property, 
+                    // write only the target expression.
+                    // Otherwise, write `property = expression`
                     if (!(arg is MemberExpression mexpr && mexpr.Member.Name.Replace("$VB$Local_", "") == name)) {
                         Write($"{name} = ");
                     }
@@ -257,19 +258,14 @@ namespace ExpressionTreeToString {
 
             Write("{");
 
-            IEnumerable<object>? items = null;
-            string itemsPath = "";
-            switch (binding) {
-                case MemberListBinding listBinding when listBinding.Initializers.Count > 0:
-                    items = listBinding.Initializers.Cast<object>();
-                    itemsPath = "Initializers";
-                    break;
-                case MemberMemberBinding memberBinding when memberBinding.Bindings.Count > 0:
-                    items = memberBinding.Bindings.Cast<object>();
-                    itemsPath = "Bindings";
-                    break;
-            }
-            if (items is { }) {
+            (IEnumerable<object> items, string itemsPath) = binding switch
+            {
+                MemberListBinding listBinding => (listBinding.Initializers, "Initializers"),
+                MemberMemberBinding memberBinding => (memberBinding.Bindings, "Bindings"),
+                _ => (Empty<object>(), "")
+            };
+
+            if (items.Any()) {
                 Indent();
                 WriteEOL();
                 WriteNodes(itemsPath, items, true);

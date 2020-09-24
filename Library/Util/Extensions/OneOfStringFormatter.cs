@@ -13,6 +13,7 @@ namespace ExpressionTreeToString.Util {
                     BuiltinRenderer.FactoryMethods => FactoryMethods,
                     BuiltinRenderer.ObjectNotation => ObjectNotation,
                     BuiltinRenderer.TextualTree => TextualTree,
+                    BuiltinRenderer.ToString => ToStringRenderer,
                     _ => throw new ArgumentException("Unknown renderer.")
                 };
     }

@@ -13,12 +13,14 @@ using static ExpressionTreeToString.BuiltinRenderer;
 
 namespace ExpressionTreeToString.Tests {
     public class TestContainer : IClassFixture<ExpectedDataFixture> {
+        [Obsolete("Replace this with the ExpressionTreeToString.BuiltInRenderer enum")]
         public static readonly BuiltinRenderer[] RendererKeys = new[] {
             CSharp,
             VisualBasic,
             BuiltinRenderer.FactoryMethods, 
             ObjectNotation, 
-            TextualTree 
+            TextualTree,
+            BuiltinRenderer.ToString
         };
 
         private readonly ExpectedDataFixture fixture;
@@ -58,9 +60,20 @@ namespace ExpressionTreeToString.Tests {
         [Theory]
         [MemberData(nameof(TestObjectsData))]
         public void TestMethod(BuiltinRenderer rendererKey, string objectName, string category, object o) {
+#if NET472
+            ToStringWriterVisitor.FrameworkCompatible = true;
+#endif
+
+            //if (objectName == "FactoryMethods.MakeBreakWithValue" && rendererKey == BuiltinRenderer.ToString) {
+            //    System.Diagnostics.Debugger.Break();
+            //}
+
             CurrentCulture = new CultureInfo("en-IL");
 
-            var expected = fixture.expectedStrings[(rendererKey, objectName)];
+            var expected = 
+                rendererKey == BuiltinRenderer.ToString ?
+                    o.ToString() : 
+                    fixture.expectedStrings[(rendererKey, objectName)];
             var (actual, paths) = GetToString(rendererKey, o);
 
             // test that the string result is correct
