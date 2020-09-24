@@ -75,34 +75,47 @@ Features:
   * Textual tree, focusing on the properties related to the structure of the tree
   * ToString reimplementation
 
-* Extension methods are rendered as instance methods
+* For C# and VB pseudo-code representations:
 
-    ```csharp
-    Expression<Func<int, int>> expr = x => Enumerable.Range(1, x).Select(y => x * y).Count();
-    Console.WriteLine(expr.ToString("C#"));
-    // prints: (int x) => Enumerable.Range(1, x).Select((int y) => x * y).Count()
-    ```
+  * Extension methods are rendered as instance methods
 
-* Closed-over variables are rendered as simple identifiers (instead of member access on the hidden compiler-generated class)
+      ```csharp
+      Expression<Func<int, int>> expr = x => Enumerable.Range(1, x).Select(y => x * y).Count();
+      Console.WriteLine(expr.ToString("C#"));
+      // prints: (int x) => Enumerable.Range(1, x).Select((int y) => x * y).Count()
+      ```
 
-    ```csharp
-    var i = 7;
-    var j = 8;
-    Expression<Func<int>> expr = () => i + j;
-    Console.WriteLine(expr.ToString("C#"));
-    // prints: () => i + j
-    ```
+  * Closed-over variables are rendered as simple identifiers (instead of member access on the hidden compiler-generated class)
+
+      ```csharp
+      var i = 7;
+      var j = 8;
+      Expression<Func<int>> expr = () => i + j;
+      Console.WriteLine(expr.ToString("C#"));
+      // prints: () => i + j
+      ```
+  * Calls to `String.Concat` and `String.Format` are mapped to the `+` operator and string interpolation, respectively (where possible):
+
+      ```csharp
+      var name = "World";
+      Expression<Func<string>> expr = () => string.Format("Hello, {0}!", name);
+      Console.WriteLine(expr.ToString("C#"));
+      // prints: () => $"Hello, {name}!"
+      ```
+
+* Each representation can return the start and length of the substring corresponding to any of the paths of the tree's nodes
+
+  ```csharp
+  var s = expr.ToString("C#", out var pathSpans);
+  Console.WriteLine(s);
+  // prints: (Person p) => p.DOB.DayOfWeek == DayOfWeek.Tuesday
+  
+  (int start, int length) = pathSpans["Body.Left.Operand"];
+  Console.WriteLine(s.Substring(start, length));
+  // prints: p.DOB.DayOfWeek
+  ```
 
 * Type names are rendered using language syntax and keywords, instead of the [**Type.Name**](https://docs.microsoft.com/en-us/dotnet/api/system.type.name) property; e.g. `List<string>` or `List(Of Date)` instead of ``List`1``
-
-* Calls to `String.Concat` and `String.Format` are mapped to the `+` operator and string interpolation, respectively (where possible):
-
-    ```csharp
-    var name = "World";
-    Expression<Func<string>> expr = () => string.Format("Hello, {0}!", name);
-    Console.WriteLine(expr.ToString("C#"));
-    // prints: () => $"Hello, {name}!"
-    ```
 
 * Supports the full range of types in `System.Linq.Expressions`, including .NET 4 expression types, and `DynamicExpression`
 
