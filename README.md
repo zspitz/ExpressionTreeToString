@@ -57,6 +57,12 @@ Console.WriteLine(expr.ToString("Textual tree"));
     Lambda (Func<bool>)
         Body - Constant (bool) = True
 */
+
+Console.WriteLine(expr.ToString("ToString"));
+// prints:
+/*
+    p => (Convert(p.DOB.DayOfWeek, Int32) == 2)
+*/
 ```
 
 Features:
@@ -67,6 +73,7 @@ Features:
   * Factory method calls which generate this expression
   * Object notation, using object initializer and collection initializer syntax to describe objects
   * Textual tree, focusing on the properties related to the structure of the tree
+  * ToString reimplementation
 
 * Extension methods are rendered as instance methods
 
