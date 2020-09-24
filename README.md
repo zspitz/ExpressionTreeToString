@@ -58,10 +58,12 @@ Console.WriteLine(expr.ToString("Textual tree"));
         Body - Constant (bool) = True
 */
 
+var b = true;
+Expression<Func<int>> expr = () => b ? 1 : 0;
 Console.WriteLine(expr.ToString("ToString"));
 // prints:
 /*
-    p => (Convert(p.DOB.DayOfWeek, Int32) == 2)
+    () => IIF(value(_tests.Program+<>c__DisplayClass0_0).b, 1, 0)
 */
 ```
 
