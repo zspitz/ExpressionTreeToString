@@ -83,13 +83,14 @@ Console.WriteLine(expr.ToString("DebugView"));
 
 Features:
 
-* Multiple writers ([with more planned](https://github.com/zspitz/ExpressionTreeToString/issues/14)):
+* Multiple writers:
 
   * Pseudo-code in C# or VB.NET
   * Factory method calls which generate this expression
   * Object notation, using object initializer and collection initializer syntax to describe objects
   * Textual tree, focusing on the properties related to the structure of the tree
-  * ToString reimplementation
+  * ToString and DebugView reimplementation
+  * (Planned) Dynamic LINQ
 
 * For C# and VB pseudo-code representations:
 
@@ -119,7 +120,7 @@ Features:
       // prints: () => $"Hello, {name}!"
       ```
 
-* Each representation can return the start and length of the substring corresponding to any of the paths of the tree's nodes
+* Each representation (including the ToString and DebugView renderers) can return the start and length of the substring corresponding to any of the paths of the tree's nodes, which can be used to find the substring corresponding to a given node in the tree:
 
   ```csharp
   var s = expr.ToString("C#", out var pathSpans);
@@ -141,6 +142,8 @@ Features:
   * [SwitchCase](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.switchcase)
   * [CatchBlock](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.catchblock)
   * [LabelTarget](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.labeltarget)
+  
+* Extensibility -- allows creating custom renderers, or inheriting from existing renderers, to handle your own Expression-derived types
   
 For more information, see the [wiki](https://github.com/zspitz/ExpressionTreeToString/wiki).
 
