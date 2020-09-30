@@ -120,6 +120,37 @@ Features:
       // prints: () => $"Hello, {name}!"
       ```
 
+  * Unnecessary conversions are not rendered:
+  
+      ```csharp
+      Expression<Func<IEnumerable<char>>> expr = () => (IEnumerable<char>)"abcd";
+      Console.WriteLine(expr.ToString("C#"));
+      // prints: () => "abcd"
+      ```
+  
+  * Comparisons against an enum are rendered properly, not as comparison to `int`-converted value:
+  
+      ```csharp
+      var dow = DayOfWeek.Sunday;
+      Expression<Func<bool>> expr = () => DateTime.Today.DayOfWeek == dow;
+      
+      Console.WriteLine(expr.ToString("Textual tree", "C#"));
+      // prints:
+      /*
+        Lambda (Func<bool>)
+            · Body - Equal (bool) = false
+                · Left - Convert (int) = 3
+                    · Operand - MemberAccess (DayOfWeek) DayOfWeek = DayOfWeek.Wednesday
+                        · Expression - MemberAccess (DateTime) DateTime.Today = 30/09/2020 12:00:00 am
+                · Right - Convert (int) = 0
+                    · Operand - MemberAccess (DayOfWeek) dow = DayOfWeek.Sunday
+                        · Expression - Constant (<closure>) = #<closure>      
+      */
+      
+      Console.WriteLine(expr.ToString("C#"));
+      // prints: () => DateTime.Today.DayOfWeek == dow
+      ```
+
 * Each representation (including the ToString and DebugView renderers) can return the start and length of the substring corresponding to any of the paths of the tree's nodes, which can be used to find the substring corresponding to a given node in the tree:
 
   ```csharp
