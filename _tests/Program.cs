@@ -67,19 +67,11 @@ namespace _tests {
             //Expression<Func<int>> expr = () => b ? 1 : 0;
             //Console.WriteLine(expr.ToString("ToString"));
 
-            Expression<Func<bool>> expr = () => true;
-            var s = expr.ToString("DebugView");
-            var s1 = debugView.GetValue(expr) as string;
-            Console.WriteLine(s);
-            Console.WriteLine(s1);
-            Console.WriteLine(s == s1);
+            //Console.WriteLine(expr.ToString("DebugView"));
 
-            Expression<Func<int, bool>> expr1 = i => true;
-            s = expr1.ToString("DebugView");
-            s1 = debugView.GetValue(expr1) as string;
-            Console.WriteLine(s);
-            Console.WriteLine(s1);
-            Console.WriteLine(s == s1);
+            Expression<Func<IEnumerable<char>>> expr = () => (IEnumerable<char>)"abcd";
+            Console.WriteLine(expr.ToString("DebugView", out var pathSpans));
+
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);

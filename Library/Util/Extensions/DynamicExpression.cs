@@ -9,7 +9,7 @@ namespace ExpressionTreeToString.Util {
             (nodeType, type, binderType) = (
                 expr.VirtualNodeType(),
                 expr.Type,
-                expr.Binder.BinderType1()
+                expr.Binder.BinderType()
             );
         }
 

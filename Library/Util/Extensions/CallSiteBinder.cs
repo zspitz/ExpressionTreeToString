@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 using static ExpressionTreeToString.Util.BinderTypes;
 
 namespace ExpressionTreeToString.Util {
-    internal enum BinderTypes {
+    public enum BinderTypes {
         Unknown = 0,
         BinaryOperation,
         Convert,
@@ -21,8 +21,8 @@ namespace ExpressionTreeToString.Util {
         Dynamic
     }
 
-    internal static class CallSiteBinderExtensions {
-        internal static BinderTypes BinderType1(this CallSiteBinder callSiteBinder) =>
+    public static class CallSiteBinderExtensions {
+        public static BinderTypes BinderType(this CallSiteBinder callSiteBinder) =>
             callSiteBinder switch {
                 BinaryOperationBinder _ => BinaryOperation,
                 ConvertBinder _ => BinderTypes.Convert,
@@ -39,7 +39,5 @@ namespace ExpressionTreeToString.Util {
                 DynamicMetaObjectBinder _ => Dynamic,
                 _ => Unknown,
             };
-
-        [Obsolete("Use BinderType which returns ExpressionToString.Util.BinderTypes; currently BinderType1.")] public static string BinderType(this CallSiteBinder callSiteBinder) => callSiteBinder.BinderType1().ToString();
     }
 }
