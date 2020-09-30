@@ -16,6 +16,5 @@ namespace ExpressionTreeToString.Tests {
 #if NETSTANDARD2_0
         internal static HashSet<T> ToHashSet<T>(this IEnumerable<T> src) => new HashSet<T>(src);
 #endif
-
     }
 }

@@ -10,6 +10,8 @@ using static System.Globalization.CultureInfo;
 using ExpressionTreeTestObjects.VB;
 using ZSpitz.Util;
 using static ExpressionTreeToString.BuiltinRenderer;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace ExpressionTreeToString.Tests {
     public class TestContainer : IClassFixture<ExpectedDataFixture> {
@@ -17,10 +19,11 @@ namespace ExpressionTreeToString.Tests {
         public static readonly BuiltinRenderer[] RendererKeys = new[] {
             CSharp,
             VisualBasic,
-            BuiltinRenderer.FactoryMethods, 
-            ObjectNotation, 
+            BuiltinRenderer.FactoryMethods,
+            ObjectNotation,
             TextualTree,
-            BuiltinRenderer.ToString
+            BuiltinRenderer.ToString,
+            DebugView
         };
 
         private readonly ExpectedDataFixture fixture;
@@ -62,24 +65,29 @@ namespace ExpressionTreeToString.Tests {
         public void TestMethod(BuiltinRenderer rendererKey, string objectName, string category, object o) {
 #if NET472
             ToStringWriterVisitor.FrameworkCompatible = true;
+            DebugViewWriterVisitor.FrameworkCompatible = true;
 #endif
-
-            //if (objectName == "FactoryMethods.MakeBreakWithValue" && rendererKey == BuiltinRenderer.ToString) {
-            //    System.Diagnostics.Debugger.Break();
-            //}
 
             CurrentCulture = new CultureInfo("en-IL");
 
-            var expected = 
-                rendererKey == BuiltinRenderer.ToString ?
-                    o.ToString() : 
-                    fixture.expectedStrings[(rendererKey, objectName)];
+            if (rendererKey == DebugView && objectName == "FactoryMethods.DynamicBinaryOperation") {
+                Debugger.Break();
+            }
+
+            var expected = rendererKey switch
+            {
+                BuiltinRenderer.ToString => o.ToString(),
+                DebugView => debugView.GetValue(o),
+                _ => fixture.expectedStrings[(rendererKey, objectName)]
+            };
             var (actual, paths) = GetToString(rendererKey, o);
 
             // test that the string result is correct
             Assert.Equal(expected, actual);
 
             var resolver = new Resolver();
+            // exclude paths to reduced nodes
+            paths.RemoveWhere(x => x.Contains("(Reduced)"));
             // make sure that all paths resolve to a valid object
             Assert.All(paths, path => Assert.NotNull(resolver.Resolve(o, path)));
 
@@ -99,7 +107,7 @@ namespace ExpressionTreeToString.Tests {
         }
 
         public static TheoryData<BuiltinRenderer, string, string, object> TestObjectsData => Objects.Get().SelectMany(x => 
-            RendererKeys.Select(key => (key, $"{x.source}.{x.name}", x.category, x.o))
+            RendererKeys.Select(key => (key, $"{x.source}.{x.name}", x.category, x.o)).Where(x => x.key != DebugView || x.o is Expression)
         ).ToTheoryData();
 
         [Fact]
@@ -111,5 +119,7 @@ namespace ExpressionTreeToString.Tests {
         }
 
         static TestContainer() => Loader.Load();
+
+        static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 }

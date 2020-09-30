@@ -14,6 +14,7 @@ namespace ExpressionTreeToString.Util {
                     BuiltinRenderer.ObjectNotation => ObjectNotation,
                     BuiltinRenderer.TextualTree => TextualTree,
                     BuiltinRenderer.ToString => ToStringRenderer,
+                    BuiltinRenderer.DebugView => DebugView,
                     _ => throw new ArgumentException("Unknown renderer.")
                 };
     }

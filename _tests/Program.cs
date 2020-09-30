@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using ExpressionTreeToString;
 using ZSpitz.Util;
 using static System.Linq.Expressions.Expression;
@@ -28,6 +29,11 @@ namespace _tests {
             //string s = expr.ToString("Factory methods", out Dictionary<string, (int start, int length)> pathSpans, "C#");
             //const int firstColumnAlignment = -45;
 
+            //var s = expr.ToString("C#", out var pathSpans);
+            //Console.WriteLine(s);
+            //(int start, int length) = pathSpans["Body.Left.Operand"];
+            //Console.WriteLine(s.Substring(start, length));
+
             //Console.WriteLine($"{"Path",firstColumnAlignment}Substring");
             //Console.WriteLine(new string('-', 95));
 
@@ -53,10 +59,30 @@ namespace _tests {
             //Console.WriteLine(expr1.ToString("C#"));
             //Console.WriteLine(expr1.ToString("Textual tree", "C#"));
 
-            double d = 5.2;
-            Expression<Func<string>> expr = () => ((int)d).ToString();
-            Console.WriteLine(expr.ToString("C#"));
+            //double d = 5.2;
+            //Expression<Func<string>> expr = () => ((int)d).ToString();
+            //Console.WriteLine(expr.ToString("C#"));
+
+            //var b = true;
+            //Expression<Func<int>> expr = () => b ? 1 : 0;
+            //Console.WriteLine(expr.ToString("ToString"));
+
+            Expression<Func<bool>> expr = () => true;
+            var s = expr.ToString("DebugView");
+            var s1 = debugView.GetValue(expr) as string;
+            Console.WriteLine(s);
+            Console.WriteLine(s1);
+            Console.WriteLine(s == s1);
+
+            Expression<Func<int, bool>> expr1 = i => true;
+            s = expr1.ToString("DebugView");
+            s1 = debugView.GetValue(expr1) as string;
+            Console.WriteLine(s);
+            Console.WriteLine(s1);
+            Console.WriteLine(s == s1);
         }
+
+        static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
     class Person {

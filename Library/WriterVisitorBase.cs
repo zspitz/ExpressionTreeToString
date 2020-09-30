@@ -12,7 +12,6 @@ namespace ExpressionTreeToString {
         internal readonly StringBuilder sb = new StringBuilder();
         internal readonly Dictionary<string, (int start, int length)>? pathSpans;
         internal int indentationLevel = 0;
-        internal readonly List<string> pathSegments = new List<string>();
         internal InsertionPoint(bool hasPathSpans) {
             if (hasPathSpans) { pathSpans = new Dictionary<string, (int start, int length)>(); }
         }
@@ -22,6 +21,9 @@ namespace ExpressionTreeToString {
         private readonly List<KeyValuePair<string, InsertionPoint>> insertionPoints;
         private InsertionPoint ip;
         protected readonly Language? language;
+        private readonly List<string> pathSegments = new List<string>();
+
+        protected int CurrentIndentationLevel => ip.indentationLevel;
 
         public (string result, Dictionary<string, (int start, int length)>? pathSpans) GetResult() {
             var result = insertionPoints.Values()
@@ -68,7 +70,7 @@ namespace ExpressionTreeToString {
         /// <param name="blockType">For BlockExpression, sets the preferred block type</param>
         /// 
         protected void WriteNode(string pathSegment, object o, bool parameterDeclaration = false, object? metadata = null) {
-            if (!pathSegment.IsNullOrWhitespace()) { ip.pathSegments.Add(pathSegment); }
+            if (!pathSegment.IsNullOrWhitespace()) { pathSegments.Add(pathSegment); }
             var start = ip.sb.Length;
             try {
                 WriteNodeImpl(o, parameterDeclaration, metadata);
@@ -78,11 +80,11 @@ namespace ExpressionTreeToString {
 --".AppendTo(ip.sb);
             }
 
-            if (ip.pathSpans != null) {
-                ip.pathSpans.Add(ip.pathSegments.Joined("."), (start, ip.sb.Length - start));
-                if (ip.pathSegments.Any()) {
-                    if (ip.pathSegments.Last() != pathSegment) { throw new InvalidOperationException(); }
-                    ip.pathSegments.RemoveLast();
+            if (ip.pathSpans is { }) {
+                ip.pathSpans.Add(pathSegments.Joined("."), (start, ip.sb.Length - start));
+                if (pathSegment.Any()) {
+                    if (pathSegments.Last() != pathSegment) { throw new InvalidOperationException(); }
+                    pathSegments.RemoveLast();
                 }
             }
         }

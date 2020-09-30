@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using static System.Linq.Expressions.ExpressionType;
+using System.Runtime.CompilerServices;
+using System.Dynamic;
 
 namespace ExpressionTreeToString {
     public enum BuiltinRenderer {
@@ -13,7 +15,7 @@ namespace ExpressionTreeToString {
         FactoryMethods,
         ObjectNotation,
         TextualTree,
-        [Obsolete("Not yet implemented")] DebugView,
+        DebugView,
         ToString
     }
 

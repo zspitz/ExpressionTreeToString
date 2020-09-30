@@ -15,7 +15,7 @@ namespace ExpressionTreeToString {
         public static bool FrameworkCompatible = false;
 
         public ToStringWriterVisitor(object o, bool hasPathSpans)
-            : base(o, Language.CSharp, null, hasPathSpans) { }
+            : base(o, (Language?)null, null, hasPathSpans) { }
 
         // Associate every unique label or anonymous parameter in the tree with an integer.
         // Labels are displayed as UnnamedLabel_#; parameters are displayed as Param_#.
@@ -29,8 +29,7 @@ namespace ExpressionTreeToString {
                 _ids = new Dictionary<object, int>();
             }
 
-            int id;
-            if (!_ids.TryGetValue(o, out id)) {
+            if (!_ids.TryGetValue(o, out int id)) {
                 id = _ids.Count;
                 _ids.Add(o, id);
             }
@@ -503,6 +502,8 @@ namespace ExpressionTreeToString {
                     labelTarget.Name
             );
 
+        // These overrides don't need to be implemented, because everything is handled within WriteDynamic
+        #region
         protected override void WriteBinaryOperationBinder(BinaryOperationBinder binder, IList<Expression> args) => throw new NotImplementedException();
         protected override void WriteConvertBinder(ConvertBinder convertBinder, IList<Expression> args) => throw new NotImplementedException();
         protected override void WriteCreateInstanceBinder(CreateInstanceBinder createInstanceBinder, IList<Expression> args) => throw new NotImplementedException();
@@ -516,5 +517,6 @@ namespace ExpressionTreeToString {
         protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) => throw new NotImplementedException();
         protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) => throw new NotImplementedException();
         protected override void WriteParameterDeclaration(ParameterExpression prm) => throw new NotImplementedException();
+        #endregion
     }
 }

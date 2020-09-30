@@ -17,7 +17,8 @@ namespace ExpressionTreeToString {
                 {FactoryMethods, (o, languageArg, usePathSpans) => new FactoryMethodsWriterVisitor(o, languageArg, usePathSpans).GetResult() },
                 {ObjectNotation, (o, languageArg, usePathSpans) =>new ObjectNotationWriterVisitor(o, languageArg, usePathSpans).GetResult() },
                 {TextualTree, (o, languageArg, usePathSpans) => new TextualTreeWriterVisitor(o, languageArg, usePathSpans).GetResult() },
-                {ToStringRenderer, (o, languageArg, usePathSpans) => new ToStringWriterVisitor(o, usePathSpans).GetResult() }
+                {ToStringRenderer, (o, languageArg, usePathSpans) => new ToStringWriterVisitor(o, usePathSpans).GetResult() },
+                {DebugView, (o, languageArg, usePathSpans) => new DebugViewWriterVisitor(o, usePathSpans).GetResult() }
             };
 
         public static void Register(string key, Renderer writer) => writers.Add(key, writer);
