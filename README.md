@@ -59,11 +59,25 @@ Console.WriteLine(expr.ToString("Textual tree"));
 */
 
 var b = true;
-Expression<Func<int>> expr = () => b ? 1 : 0;
-Console.WriteLine(expr.ToString("ToString"));
+Expression<Func<int>> expr1 = () => b ? 1 : 0;
+Console.WriteLine(expr1.ToString("ToString"));
 // prints:
 /*
     () => IIF(value(_tests.Program+<>c__DisplayClass0_0).b, 1, 0)
+*/
+
+Console.WriteLine(expr.ToString("DebugView"));
+// prints:
+/*
+    .Lambda #Lambda1<System.Func`1[System.Int32]>() {
+        .If (
+            .Constant<_tests.Program+<>c__DisplayClass0_0>(_tests.Program+<>c__DisplayClass0_0).b
+        ) {
+            1
+        } .Else {
+            0
+        }
+    }
 */
 ```
 
