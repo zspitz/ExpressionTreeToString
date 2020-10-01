@@ -83,13 +83,14 @@ Console.WriteLine(expr.ToString("DebugView"));
 
 Features:
 
-* Multiple writers ([with more planned](https://github.com/zspitz/ExpressionTreeToString/issues/14)):
+* Multiple writers:
 
   * Pseudo-code in C# or VB.NET
   * Factory method calls which generate this expression
   * Object notation, using object initializer and collection initializer syntax to describe objects
   * Textual tree, focusing on the properties related to the structure of the tree
-  * ToString reimplementation
+  * ToString and DebugView reimplementation
+  * (Planned) Dynamic LINQ
 
 * For C# and VB pseudo-code representations:
 
@@ -119,7 +120,38 @@ Features:
       // prints: () => $"Hello, {name}!"
       ```
 
-* Each representation can return the start and length of the substring corresponding to any of the paths of the tree's nodes
+  * Unnecessary conversions are not rendered:
+  
+      ```csharp
+      Expression<Func<IEnumerable<char>>> expr = () => (IEnumerable<char>)"abcd";
+      Console.WriteLine(expr.ToString("C#"));
+      // prints: () => "abcd"
+      ```
+  
+  * Comparisons against an enum are rendered properly, not as comparison to `int`-converted value:
+  
+      ```csharp
+      var dow = DayOfWeek.Sunday;
+      Expression<Func<bool>> expr = () => DateTime.Today.DayOfWeek == dow;
+      
+      Console.WriteLine(expr.ToString("Textual tree", "C#"));
+      // prints:
+      /*
+        Lambda (Func<bool>)
+            · Body - Equal (bool) = false
+                · Left - Convert (int) = 3
+                    · Operand - MemberAccess (DayOfWeek) DayOfWeek = DayOfWeek.Wednesday
+                        · Expression - MemberAccess (DateTime) DateTime.Today = 30/09/2020 12:00:00 am
+                · Right - Convert (int) = 0
+                    · Operand - MemberAccess (DayOfWeek) dow = DayOfWeek.Sunday
+                        · Expression - Constant (<closure>) = #<closure>      
+      */
+      
+      Console.WriteLine(expr.ToString("C#"));
+      // prints: () => DateTime.Today.DayOfWeek == dow
+      ```
+
+* Each representation (including the ToString and DebugView renderers) can return the start and length of the substring corresponding to any of the paths of the tree's nodes, which can be used to find the substring corresponding to a given node in the tree:
 
   ```csharp
   var s = expr.ToString("C#", out var pathSpans);
@@ -141,6 +173,8 @@ Features:
   * [SwitchCase](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.switchcase)
   * [CatchBlock](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.catchblock)
   * [LabelTarget](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.labeltarget)
+  
+* Extensibility -- allows creating custom renderers, or inheriting from existing renderers, to handle your own Expression-derived types
   
 For more information, see the [wiki](https://github.com/zspitz/ExpressionTreeToString/wiki).
 
