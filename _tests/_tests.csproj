@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Library\Library.csproj" />
+    <ProjectReference Include="..\TestObjects.VB\TestObjects.VB.vbproj" />
+    <ProjectReference Include="..\TestObjects\TestObjects.csproj" />
   </ItemGroup>
 
 </Project>

@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
+using ExpressionTreeTestObjects;
+using ExpressionTreeTestObjects.VB;
 using ExpressionTreeToString;
 using ZSpitz.Util;
 using static System.Linq.Expressions.Expression;
@@ -69,9 +72,41 @@ namespace _tests {
 
             //Console.WriteLine(expr.ToString("DebugView"));
 
-            Expression<Func<IEnumerable<char>>> expr = () => (IEnumerable<char>)"abcd";
-            Console.WriteLine(expr.ToString("DebugView", out var pathSpans));
+            //Console.WriteLine(expr.ToString("ToString"));
 
+            //Console.WriteLine(expr.ToString("Factory methods", "C#"));
+
+            //var dow = DayOfWeek.Sunday;
+            //Expression<Func<bool>> expr = () => DateTime.Today.DayOfWeek == dow;
+            //Console.WriteLine(expr.ToString("Textual tree", "C#"));
+            //Console.WriteLine(expr.ToString("C#"));
+
+            //Expression<Func<IEnumerable<char>>> expr = () => (IEnumerable<char>)"abcd";
+            //Console.WriteLine(expr.ToString("C#"));
+
+            Loader.Load();
+            //Expression x = (Expression)Objects.Get().Where(x => x.o is Expression expr && expr.CanReduce).Select(x => x.o).FirstOrDefault();
+            //Console.WriteLine(x.ToString("Textual tree", "C#"));
+
+            Objects.Get()
+                .Select(x => (o: x.o as Expression, x.name))
+                .Where(x => x.o is Expression expr && expr.CanReduce)
+                .Select(x => {
+                    (Expression expr, string name) = (x.o!, x.name);
+                    TextualTreeWriterVisitor.ReducePredicate = _ => false;
+                    var unreduced = expr.ToString("Textual tree", "C#");
+                    TextualTreeWriterVisitor.ReducePredicate = null;
+                    var @default = expr.ToString("Textual tree", "C#");
+                    TextualTreeWriterVisitor.ReducePredicate = _ => true;
+                    var allReduced = expr.ToString("Textual tree", "C#");
+                    return (name, unreduced, @default, allReduced);
+                }).ForEach(x => {
+                    var (name, unreduced, @default, allReduced) = x;
+                    Console.WriteLine($"======== {name} - {(@default != unreduced ? "default " : "")}{(allReduced != @default ? "allReduced" : "")}");
+                    Console.WriteLine(unreduced);
+                    if (@default != unreduced) { Console.WriteLine(@default); }
+                    if (allReduced != @default) { Console.WriteLine(allReduced); }
+                });
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);

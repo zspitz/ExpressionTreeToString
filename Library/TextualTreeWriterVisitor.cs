@@ -1,6 +1,5 @@
 ﻿using ZSpitz.Util;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
@@ -12,6 +11,8 @@ using OneOf;
 
 namespace ExpressionTreeToString {
     public class TextualTreeWriterVisitor : WriterVisitorBase {
+        public static Func<Expression, bool>? ReducePredicate;
+
         public TextualTreeWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false) 
             : base(o, languageArg, null, hasPathSpans) { }
 
@@ -69,6 +70,16 @@ namespace ExpressionTreeToString {
                 })
                 .Where(x => x.value != null)
                 .ToList();
+
+            static bool defaultReduceFilter(Expression expr2) => expr2.NodeType == ExpressionType.Extension;
+
+            if (o is Expression expr1 && expr1.CanReduce && (ReducePredicate ?? defaultReduceFilter)(expr1)) {
+                Expression reduced = expr1;
+                while (reduced.CanReduce) {
+                    reduced = reduced.Reduce();
+                }
+                childNodes.Add("Reduce()", reduced);
+            }
 
             if (childNodes.Any()) {
                 Indent();

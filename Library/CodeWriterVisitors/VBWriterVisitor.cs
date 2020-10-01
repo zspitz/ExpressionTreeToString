@@ -698,10 +698,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) {
             Write("' Variables -- ");
-            expr.Variables.ForEach((x, index) => {
-                if (index > 0) { Write(", "); }
-                WriteNode($"Variables[{index}]", x, true);
-            });
+            WriteNodes("Variables", expr.Variables,", ", true);
         }
 
         protected override void WriteDebugInfo(DebugInfoExpression expr) {

@@ -4,15 +4,15 @@ using static System.Environment;
 using static ZSpitz.Util.Functions;
 using System.IO;
 using static ExpressionTreeToString.BuiltinRenderer;
+using static ExpressionTreeToString.Tests.Globals;
+using ZSpitz.Util;
 
 namespace ExpressionTreeToString.Tests {
-    public class ExpectedDataFixture {
-        public static readonly BuiltinRenderer[] RendererKeys = new[] { CSharp, VisualBasic, FactoryMethods, ObjectNotation, TextualTree };
-
+    public class FileDataFixture {
         public readonly Dictionary<(BuiltinRenderer rendererKey, string objectName), string> expectedStrings = new Dictionary<(BuiltinRenderer rendererKey, string objectName), string>();
-        public readonly Dictionary<string, HashSet<string>> expectedPaths = new Dictionary<string, HashSet<string>>();
-        public ExpectedDataFixture() {
-            foreach (var key in RendererKeys) {
+        public FileDataFixture() {
+            foreach (var key in BuiltinRenderers) {
+                if (key.In(DebugView, BuiltinRenderer.ToString)) { continue; }
                 var expectedDataPath = GetFullFilename($"{key.ToString().ToLower()}-testdata.txt");
                 string testName = "";
                 string expected = "";

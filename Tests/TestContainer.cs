@@ -11,23 +11,16 @@ using ExpressionTreeTestObjects.VB;
 using ZSpitz.Util;
 using static ExpressionTreeToString.BuiltinRenderer;
 using System.Reflection;
+using static ExpressionTreeToString.Tests.Globals;
 using System.Diagnostics;
 
 namespace ExpressionTreeToString.Tests {
-    public class TestContainer : IClassFixture<ExpectedDataFixture> {
-        [Obsolete("Replace this with the ExpressionTreeToString.BuiltInRenderer enum")]
-        public static readonly BuiltinRenderer[] RendererKeys = new[] {
-            CSharp,
-            VisualBasic,
-            BuiltinRenderer.FactoryMethods,
-            ObjectNotation,
-            TextualTree,
-            BuiltinRenderer.ToString,
-            DebugView
-        };
+    public class TestContainer : IClassFixture<FileDataFixture>, IClassFixture<PathsFixture> {
+        private readonly FileDataFixture fileData;
+        private readonly PathsFixture pathsFixture;
 
-        private readonly ExpectedDataFixture fixture;
-        public TestContainer(ExpectedDataFixture fixture) => this.fixture = fixture;
+        public TestContainer(FileDataFixture fileData, PathsFixture pathsFixture) => 
+            (this.fileData, this.pathsFixture) = (fileData, pathsFixture);
 
         private (string toString, HashSet<string> paths) GetToString(BuiltinRenderer rendererKey, object o) {
             Language? language = rendererKey switch
@@ -67,18 +60,15 @@ namespace ExpressionTreeToString.Tests {
             ToStringWriterVisitor.FrameworkCompatible = true;
             DebugViewWriterVisitor.FrameworkCompatible = true;
 #endif
+            TextualTreeWriterVisitor.ReducePredicate = null;
 
             CurrentCulture = new CultureInfo("en-IL");
-
-            if (rendererKey == DebugView && objectName == "FactoryMethods.DynamicBinaryOperation") {
-                Debugger.Break();
-            }
 
             var expected = rendererKey switch
             {
                 BuiltinRenderer.ToString => o.ToString(),
                 DebugView => debugView.GetValue(o),
-                _ => fixture.expectedStrings[(rendererKey, objectName)]
+                _ => fileData.expectedStrings[(rendererKey, objectName)]
             };
             var (actual, paths) = GetToString(rendererKey, o);
 
@@ -86,33 +76,28 @@ namespace ExpressionTreeToString.Tests {
             Assert.Equal(expected, actual);
 
             var resolver = new Resolver();
-            // exclude paths to reduced nodes
-            paths.RemoveWhere(x => x.Contains("(Reduced)"));
+            resolver.PathElementFactories.Insert(0, new MethodInvocationFactory());
+
             // make sure that all paths resolve to a valid object
             Assert.All(paths, path => Assert.NotNull(resolver.Resolve(o, path)));
 
-            // the paths from the Object Notation renderer serve as a reference for all the other renderers
+            // the paths from the Textual tree renderer with all reducible nodes reduced serve as a reference for all the other renderers
+            var expectedPaths = pathsFixture.allExpectedPaths[objectName];
 
-            if (rendererKey == ObjectNotation) {
-                fixture.expectedPaths[objectName] = paths;
-                return;
-            }
-
-            if (!fixture.expectedPaths.TryGetValue(objectName, out var expectedPaths)) {
-                (_, expectedPaths) = GetToString(ObjectNotation, o);
-                fixture.expectedPaths[objectName] = expectedPaths;
+            if (paths.Any(x => x.Contains("Reduce"))) {
+                Debugger.Break();
             }
 
             Assert.True(expectedPaths.IsSupersetOf(paths));
         }
 
-        public static TheoryData<BuiltinRenderer, string, string, object> TestObjectsData => Objects.Get().SelectMany(x => 
-            RendererKeys.Select(key => (key, $"{x.source}.{x.name}", x.category, x.o)).Where(x => x.key != DebugView || x.o is Expression)
+        public static TheoryData<BuiltinRenderer, string, string, object> TestObjectsData => Objects.Get().SelectMany(x =>
+            BuiltinRenderers.Cast<BuiltinRenderer>().Select(key => (key, $"{x.source}.{x.name}", x.category, x.o)).Where(x => x.key != DebugView || x.o is Expression)
         ).ToTheoryData();
 
         [Fact]
         public void CheckMissingObjects() {
-            var objectNames = fixture.expectedStrings.GroupBy(x => x.Key.objectName, (key, grp) => (key, grp.Select(x => x.Key.rendererKey).ToList()));
+            var objectNames = fileData.expectedStrings.GroupBy(x => x.Key.objectName, (key, grp) => (key, grp.Select(x => x.Key.rendererKey).ToList()));
             foreach (var (name, key) in objectNames) {
                 var o = Objects.ByName(name);
             }
@@ -120,6 +105,6 @@ namespace ExpressionTreeToString.Tests {
 
         static TestContainer() => Loader.Load();
 
-        static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);
+        static readonly PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance)!;
     }
 }

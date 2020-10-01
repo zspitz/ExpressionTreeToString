@@ -69,7 +69,6 @@ namespace ExpressionTreeToString {
 
         private void NewLine() => _flow = Flow.NewLine;
 
-        private readonly Stack<int> _stack = new Stack<int>();
         private Flow _flow;
 
         private Dictionary<LambdaExpression, int>? _lambdaIds;
@@ -114,10 +113,10 @@ namespace ExpressionTreeToString {
             base.WriteNodeImpl(o, parameterDeclaration, metadata);
         }
 
-        private void VisitExpressions<T>(string path, char open, IReadOnlyList<T> expressions, Action<string, T>? visit = null) => VisitExpressions(path, open, ',', expressions);
-        private void VisitExpressions<T>(string path, char open, char separator, IReadOnlyList<T> expressions, Action<string, T>? visit = null) {
-            visit ??= (path, e) => WriteNode(path, e);
-
+        private void VisitExpressions<T>(string path, char open, IReadOnlyList<T> expressions) where T : notnull => 
+            VisitExpressions(path, open, ',', expressions);
+        private void VisitExpressions<T>(string path, char open, char separator, IReadOnlyList<T> expressions, bool parameterDeclaration = false) where T : notnull {
+            // we can't replace this with WriteNodes, because this affects Flow, which doesn't exist in VisitorWriterBase -- 
             Out(open.ToString());
 
             if (expressions is { }) {
@@ -128,7 +127,7 @@ namespace ExpressionTreeToString {
                     } else {
                         Out(separator.ToString(), Flow.NewLine);
                     }
-                    visit($"{path}[{index}]", e);
+                    WriteNode($"{path}[{index}]", e, parameterDeclaration);
                 });
                 Dedent();
             }
@@ -147,14 +146,6 @@ namespace ExpressionTreeToString {
             Out(close.ToString(), Flow.Break);
         }
 
-        private void VisitDeclarations(string path, IReadOnlyList<ParameterExpression> expressions) =>
-            VisitExpressions(path, '(', ',', expressions, (path, variable) => {
-                Out(variable.Type.ToString());
-                if (variable.IsByRef) { Out("&"); }
-                Out(" ");
-                WriteParameter(variable);
-            });
-
         private string GetLabelTargetName(LabelTarget target) => 
             target.Name.IsNullOrEmpty() ?
                 $"#Label{GetLabelTargetId(target)}" :
@@ -167,7 +158,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteBinary(BinaryExpression node) {
             if (node.NodeType == ArrayIndex) {
-                ParenthesizedVisit(node, node.Left, "Left");
+                ParenthesizedVisit("Left", node, node.Left);
                 Out("[");
                 WriteNode("Right", node.Right);
                 Out("]");
@@ -271,7 +262,7 @@ namespace ExpressionTreeToString {
             }
 
             if (node.Operand is { }) {
-                ParenthesizedVisit(node, node.Operand, "Operand");
+                ParenthesizedVisit("Operand", node, node.Operand);
             }
 
             switch (node.NodeType) {
@@ -306,7 +297,7 @@ namespace ExpressionTreeToString {
 
         private void WriteLambdaFull(LambdaExpression expr) {
             WriteLambdaName(expr, out var _);
-            VisitDeclarations("Parameters", expr.Parameters);
+            VisitExpressions("Parameters", '(', ',', expr.Parameters, true);
             Indent();
             Out(Flow.Space, "{", Flow.NewLine);
             WriteNode("Body", expr.Body);
@@ -334,13 +325,12 @@ namespace ExpressionTreeToString {
             }
         }
 
-        protected override void WriteParameter(ParameterExpression expr) {
-            var name =
-                expr.Name.IsNullOrEmpty() ?
-                    $"$var{GetParamId(expr)}" :
-                    $"${GetDisplayName(expr.Name)}";
-            Out(name);
-        }
+        private string GetParameterName(ParameterExpression expr) =>
+            expr.Name.IsNullOrEmpty() ?
+                $"$var{GetParamId(expr)}" :
+                $"${GetDisplayName(expr.Name)}";
+
+        protected override void WriteParameter(ParameterExpression expr) => Out(GetParameterName(expr));
 
         private static Dictionary<Type, string> suffixes = new Dictionary<Type, string> {
             [typeof(uint)] = "U",
@@ -368,120 +358,54 @@ namespace ExpressionTreeToString {
             );
         }
 
-        private static int GetOperatorPrecedence(Expression node) {
-            switch (node.NodeType) {
-                // Assignment
-                case Assign:
-                case ExclusiveOrAssign:
-                case AddAssign:
-                case AddAssignChecked:
-                case SubtractAssign:
-                case SubtractAssignChecked:
-                case DivideAssign:
-                case ModuloAssign:
-                case MultiplyAssign:
-                case MultiplyAssignChecked:
-                case LeftShiftAssign:
-                case RightShiftAssign:
-                case AndAssign:
-                case OrAssign:
-                case PowerAssign:
-                case Coalesce:
-                    return 1;
+        private static int GetOperatorPrecedence(Expression node) =>
+            node.NodeType switch
+            {
+                var x when x.In(
+                    Assign, ExclusiveOrAssign,
+                    AddAssign, AddAssignChecked, SubtractAssign, SubtractAssignChecked,
+                    DivideAssign, ModuloAssign, MultiplyAssign, MultiplyAssignChecked,
+                    LeftShiftAssign, RightShiftAssign,
+                    AndAssign, OrAssign,
+                    PowerAssign,
+                    Coalesce
+                ) => 1,
 
                 // Conditional (?:) would go here
 
-                // Conditional OR
-                case OrElse:
-                    return 2;
+                OrElse => 2,
+                AndAlso => 3,
+                Or => 4,
+                ExclusiveOr => 5,
+                And => 6,
+                var x when x.In(Equal, NotEqual) => 7,
 
-                // Conditional AND
-                case AndAlso:
-                    return 3;
+                var x when x.In(
+                    GreaterThan, LessThan, GreaterThanOrEqual, LessThanOrEqual,
+                    TypeAs, TypeIs, TypeEqual
+                ) => 8,
 
-                // Logical OR
-                case Or:
-                    return 4;
+                var x when x.In(LeftShift, RightShift) => 9,
+                var x when x.In(Add, AddChecked, Subtract, SubtractChecked) => 10,
+                var x when x.In(Divide, Modulo, Multiply, MultiplyChecked) => 11,
 
-                // Logical XOR
-                case ExclusiveOr:
-                    return 5;
+                var x when x.In(
+                    Negate, NegateChecked, UnaryPlus, Not,
+                    ExpressionType.Convert, ConvertChecked, Unbox,
+                    PreIncrementAssign, PreDecrementAssign,
+                    OnesComplement, Increment, Decrement,
+                    IsTrue, IsFalse,
+                    Throw
+                ) => 12,
 
-                // Logical AND
-                case And:
-                    return 6;
+                Power => 13,
 
-                // Equality
-                case Equal:
-                case NotEqual:
-                    return 7;
+                // Not expressions, so never need parentheses
+                var x when x.In(Constant, Parameter) => 15,
 
-                // Relational, type testing
-                case GreaterThan:
-                case LessThan:
-                case GreaterThanOrEqual:
-                case LessThanOrEqual:
-                case TypeAs:
-                case TypeIs:
-                case TypeEqual:
-                    return 8;
-
-                // Shift
-                case LeftShift:
-                case RightShift:
-                    return 9;
-
-                // Additive
-                case Add:
-                case AddChecked:
-                case Subtract:
-                case SubtractChecked:
-                    return 10;
-
-                // Multiplicative
-                case Divide:
-                case Modulo:
-                case Multiply:
-                case MultiplyChecked:
-                    return 11;
-
-                // Unary
-                case Negate:
-                case NegateChecked:
-                case UnaryPlus:
-                case Not:
-                case ExpressionType.Convert:
-                case ConvertChecked:
-                case PreIncrementAssign:
-                case PreDecrementAssign:
-                case OnesComplement:
-                case Increment:
-                case Decrement:
-                case IsTrue:
-                case IsFalse:
-                case Unbox:
-                case Throw:
-                    return 12;
-
-                // Power, which is not in C#
-                // But VB/Python/Ruby put it here, above unary.
-                case Power:
-                    return 13;
-
-                // Primary, which includes all other node types:
-                //   member access, calls, indexing, new.
-                case PostIncrementAssign:
-                case PostDecrementAssign:
-                default:
-                    return 14;
-
-                // These aren't expressions, so never need parentheses:
-                //   constants, variables
-                case Constant:
-                case Parameter:
-                    return 15;
-            }
-        }
+                var x when x.In(PostIncrementAssign, PostDecrementAssign) => 14,
+                _ => 14
+            };
 
         private static bool NeedsParentheses(Expression parent, Expression? child) {
             if (child == null) {
@@ -549,7 +473,7 @@ namespace ExpressionTreeToString {
             return childOpPrec < parentOpPrec;
         }
 
-        private void ParenthesizedVisit(Expression parent, Expression nodeToVisit, string path) {
+        private void ParenthesizedVisit(string path, Expression parent, Expression nodeToVisit) {
             if (NeedsParentheses(parent, nodeToVisit)) {
                 Out("(");
                 WriteNode(path, nodeToVisit!); // nodeToVisit is not null if NeedsParentheses returns true; TODO use attribute
@@ -559,9 +483,9 @@ namespace ExpressionTreeToString {
             }
         }
 
-        private void OutMember(Expression node, Expression? instance, MemberInfo member, string path) {
+        private void OutMember(string path, Expression node, Expression? instance, MemberInfo member) {
             if (instance is { }) {
-                ParenthesizedVisit(node, instance, path);
+                ParenthesizedVisit(path, node, instance);
                 Out("." + member.Name);
             } else {
                 // For static members, include the type name
@@ -570,7 +494,7 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteMemberAccess(MemberExpression expr) =>
-            OutMember(expr, expr.Expression, expr.Member, "Expression");
+            OutMember("Expression", expr, expr.Expression, expr.Member);
 
         protected override void WriteNew(NewExpression node) {
             Out(".New " + node.Type.ToString());
@@ -580,7 +504,7 @@ namespace ExpressionTreeToString {
         protected override void WriteCall(MethodCallExpression node) {
             Out(".Call ");
             if (node.Object is { }) {
-                ParenthesizedVisit(node, node.Object, "Object");
+                ParenthesizedVisit("Object", node, node.Object);
             } else if (node.Method.DeclaringType is { }) {
                 Out(node.Method.DeclaringType.ToString());
             } else {
@@ -593,16 +517,16 @@ namespace ExpressionTreeToString {
 
         protected override void WriteMemberInit(MemberInitExpression node) {
             WriteNode("NewExpression", node.NewExpression);
-            VisitExpressions("Bindings", '{', ',', node.Bindings, (path, e) => WriteNode(path, e));
+            VisitExpressions("Bindings", '{', ',', node.Bindings);
         }
 
         protected override void WriteListInit(ListInitExpression node) {
             WriteNode("NewExpression", node.NewExpression);
-            VisitExpressions("Initializers", '{', ',', node.Initializers, (path, e) => WriteNode(path, e));
+            VisitExpressions("Initializers", '{', ',', node.Initializers);
         }
 
         protected override void WriteNewArray(NewArrayExpression node) {
-            if (node.NodeType == ExpressionType.NewArrayBounds) {
+            if (node.NodeType == NewArrayBounds) {
                 // .NewArray MyType[expr1, expr2]
                 Out(".NewArray " + node.Type.GetElementType()!.ToString());
                 VisitExpressions("Expressions", '[', node.Expressions);
@@ -648,7 +572,7 @@ namespace ExpressionTreeToString {
             );
 
         protected override void WriteTypeBinary(TypeBinaryExpression node) {
-            ParenthesizedVisit(node, node.Expression, "Expression");
+            ParenthesizedVisit("Expression", node, node.Expression);
             switch (node.NodeType) {
                 case TypeIs:
                     Out(Flow.Space, ".Is", Flow.Space);
@@ -662,15 +586,15 @@ namespace ExpressionTreeToString {
 
         protected override void WriteInvocation(InvocationExpression expr) {
             Out(".Invoke ");
-            ParenthesizedVisit(expr, expr.Expression, "Expression");
+            ParenthesizedVisit("Expression", expr, expr.Expression);
             VisitExpressions("Arguments", '(', expr.Arguments);
         }
 
         protected override void WriteIndex(IndexExpression node) {
             if (node.Indexer is { }) {
-                OutMember(node, node.Object, node.Indexer, "Object");
+                OutMember("Object",node, node.Object, node.Indexer);
             } else {
-                ParenthesizedVisit(node, node.Object, "Object");
+                ParenthesizedVisit("Object", node, node.Object);
             }
             VisitExpressions("Arguments", '[', node.Arguments);
         }
@@ -683,7 +607,7 @@ namespace ExpressionTreeToString {
                 );
             }
 
-            VisitDeclarations("Variables", node.Variables);
+            VisitExpressions("Variables", '(', ',', node.Variables, true);
             Out(" ");
             VisitExpressions("Expressions", '{', ';', node.Expressions);
         }
@@ -779,21 +703,17 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteBinding(MemberBinding binding) {
+            Out(binding.Member.Name);
+            Out(Flow.Space, "=", Flow.Space);
             switch (binding) {
                 case MemberAssignment assignment:
-                    Out(assignment.Member.Name);
-                    Out(Flow.Space, "=", Flow.Space);
                     WriteNode("Expression", assignment.Expression);
                     break;
                 case MemberListBinding listBinding:
-                    Out(binding.Member.Name);
-                    Out(Flow.Space, "=", Flow.Space);
-                    VisitExpressions("Initializers", '{', ',', listBinding.Initializers, (path, e) => WriteNode(path, e));
+                    VisitExpressions("Initializers", '{', ',', listBinding.Initializers);
                     break;
                 case MemberMemberBinding memberBinding:
-                    Out(binding.Member.Name);
-                    Out(Flow.Space, "=", Flow.Space);
-                    VisitExpressions("Bindings", '{', ',', memberBinding.Bindings, (path, e) => WriteNode(path, e));
+                    VisitExpressions("Bindings", '{', ',', memberBinding.Bindings);
                     break;
             }
         }
@@ -806,7 +726,7 @@ namespace ExpressionTreeToString {
             if (node.CanReduce) {
                 Out(Flow.Space, "{", Flow.NewLine);
                 Indent();
-                WriteNode("(Reduced)", node.Reduce());
+                WriteNode("Reduce()", node.Reduce());
                 Dedent();
                 Out(Flow.NewLine, "}");
             }
@@ -844,8 +764,6 @@ namespace ExpressionTreeToString {
         protected override void WriteLabelTarget(LabelTarget labelTarget) {
             throw new NotImplementedException();
         }
-
-
 
         protected override void WriteDynamic(DynamicExpression node) {
             if (!FrameworkCompatible) {
@@ -900,7 +818,11 @@ namespace ExpressionTreeToString {
 
         protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) => throw new NotImplementedException();
 
-        // Currently not needed; see VisitDeclarations
-        protected override void WriteParameterDeclaration(ParameterExpression prm) => throw new NotImplementedException();
+        protected override void WriteParameterDeclaration(ParameterExpression variable) {
+            Out(variable.Type.ToString());
+            if (variable.IsByRef) { Out("&"); }
+            Out(" ");
+            Out(GetParameterName(variable));
+        }
     }
 }

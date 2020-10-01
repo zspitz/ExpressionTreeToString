@@ -36,7 +36,7 @@ namespace ExpressionTreeToString {
             var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.type.IsAssignableFrom(o.GetType())).propertyNames;
             var properties = type.GetProperties().Where(x => {
                 if (x.Name.In("CanReduce", "TailCall", "CanReduce", "IsLifted", "IsLiftedToNull", "ArgumentCount")) { return false; }
-                if (x.Name == "NodeType" && hideNodeType.Contains(type)) { return false; }
+                if (x.Name == "NodeType" && type.In(hideNodeType)) { return false; }
                 return true;
             }).ToList();
 

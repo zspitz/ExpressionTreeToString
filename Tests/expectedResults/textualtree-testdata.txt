@@ -2175,6 +2175,9 @@ Lambda (Func<int>)
             · Expression - Constant (<closure>) = #<closure>
 ---- FactoryMethods.MakeExtensionExpression
 Extension (int) = 69
+    · Reduce() - Add (int) = 69
+        · Left - Constant (int) = 42
+        · Right - Constant (int) = 27
 ---- FactoryMethods.ConstructUnbox
 Unbox (int)
     · Operand - Parameter (object) obj
