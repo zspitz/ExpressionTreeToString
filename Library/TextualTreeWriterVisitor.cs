@@ -29,6 +29,7 @@ namespace ExpressionTreeToString {
                     nodeType = expr.NodeType.ToString();
                     typename = $"({expr.Type.FriendlyName(language)})";
                     name = expr.Name();
+                    if (name is { } && name.ContainsWhitespace()) { name = $"\"{name}\""; }
                     value = valueExtractor.GetValue(expr).value;
                     break;
 

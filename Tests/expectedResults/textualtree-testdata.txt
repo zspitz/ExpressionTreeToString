@@ -2238,4 +2238,14 @@ Dynamic (int)
 ---- FactoryMethods.DynamicUnaryOperation
 Dynamic (bool)
     · Arguments[0] - Parameter (bool) b1
+---- FactoryMethods.UnnamedParameter
+Lambda (Func<string, bool>)
+    · Parameters[0] - Parameter (string)
+    · Body - Equal (bool)
+        · Left - Parameter (string)
+        · Right - Parameter (string)
+---- FactoryMethods.WhitespaceNamedParameter
+Lambda (Func<string, string>)
+    · Parameters[0] - Parameter (string) "x y"
+    · Body - Parameter (string) "x y"
 ------

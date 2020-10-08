@@ -8007,4 +8007,41 @@ new DynamicExpression {
     },
     DelegateType = typeof(Func<CallSite, bool, bool>)
 }
+---- FactoryMethods.UnnamedParameter
+var $var0 = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false
+};
+
+new Expression<Func<string, bool>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<string, bool>),
+    Parameters = new ReadOnlyCollection<ParameterExpression> {
+        $var0
+    },
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.Equal,
+        Type = typeof(bool),
+        Left = $var0,
+        Right = $var0,
+        Method = typeof(string).GetMethod("op_Equality")
+    },
+    ReturnType = typeof(bool)
+}
+---- FactoryMethods.WhitespaceNamedParameter
+var $x_y = new ParameterExpression {
+    Type = typeof(string),
+    IsByRef = false,
+    Name = "x y"
+};
+
+new Expression<Func<string, string>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<string, string>),
+    Parameters = new ReadOnlyCollection<ParameterExpression> {
+        $x_y
+    },
+    Body = $x_y,
+    ReturnType = typeof(string)
+}
 ------

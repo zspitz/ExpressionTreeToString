@@ -1122,4 +1122,8 @@ x + y
 CInt(x)
 ---- FactoryMethods.DynamicUnaryOperation
 Not b1
+---- FactoryMethods.UnnamedParameter
+Function($var0 As String) $var0 = $var0
+---- FactoryMethods.WhitespaceNamedParameter
+Function($x_y As String) $x_y
 ------

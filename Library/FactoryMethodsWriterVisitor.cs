@@ -13,10 +13,13 @@ using System.Runtime.CompilerServices;
 using static System.Linq.Enumerable;
 using OneOf;
 using static ZSpitz.Util.Language;
+using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeToString {
     public class FactoryMethodsWriterVisitor : BuiltinsWriterVisitor {
         private static string[] insertionPointKeys = new[] { "usings", "declarations", "" };
+
+        private Dictionary<ParameterExpression, int>? _ids;
 
         private void WriteUsings() {
             SetInsertionPoint("usings");
@@ -248,7 +251,8 @@ namespace ExpressionTreeToString {
             }
         }
 
-        protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
+        protected override void WriteParameter(ParameterExpression expr) => 
+            Write(GetVariableName(expr, ref _ids));
 
         protected override void WriteConstant(ConstantExpression expr) {
             if (
@@ -527,9 +531,9 @@ namespace ExpressionTreeToString {
             SetInsertionPoint("declarations");
 
             if (language == CSharp) {
-                Write($"var {prm.Name} = ");
+                Write($"var {GetVariableName(prm, ref _ids)} = ");
             } else { // language == VisualBasic
-                Write($"Dim {prm.Name} = ");
+                Write($"Dim {GetVariableName(prm, ref _ids)} = ");
             }
             if (prm.IsByRef) {
                 var type = prm.Type.MakeByRefType();
@@ -549,7 +553,7 @@ namespace ExpressionTreeToString {
 
             SetInsertionPoint("");
 
-            Write(prm.Name);
+            Write(GetVariableName(prm, ref _ids));
         }
     }
 }

@@ -10,6 +10,7 @@ using static ExpressionTreeToString.CSharpMultilineBlockTypes;
 using static ExpressionTreeToString.CSharpBlockMetadata;
 using ExpressionTreeToString.Util;
 using OneOf;
+using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeToString {
     public class CSharpWriterVisitor : CodeWriterVisitor {
@@ -212,7 +213,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteParameterDeclaration(ParameterExpression prm) {
             if (prm.IsByRef) { Write("ref "); }
-            Write($"{prm.Type.FriendlyName(language)} {prm.Name}");
+            Write($"{prm.Type.FriendlyName(language)} {GetVariableName(prm, ref ids)}");
         }
 
         protected override void WriteNew(Type type, string argsPath, IList<Expression> args) {

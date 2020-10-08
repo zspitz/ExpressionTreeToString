@@ -7,6 +7,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using ZSpitz.Util;
 using static System.Linq.Expressions.ExpressionType;
+using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeToString {
     public class DebugViewWriterVisitor : BuiltinsWriterVisitor {
@@ -75,34 +76,12 @@ namespace ExpressionTreeToString {
         private Dictionary<ParameterExpression, int>? _paramIds;
         private Dictionary<LabelTarget, int>? _labelIds;
 
-        private static int GetId<T>(T e, ref Dictionary<T, int>? ids, out bool isNew) where T : notnull {
-            isNew = false;
-            if (ids == null) {
-                ids = new Dictionary<T, int>();
-            }
-
-            if (!ids.TryGetValue(e, out int id)) {
-                isNew = true;
-                id = ids.Count + 1;
-                ids.Add(e, id);
-            }
-
-            return id;
-        }
-
-        private int GetLambdaId(LambdaExpression lmbd, out bool isNew) => GetId(lmbd, ref _lambdaIds, out isNew);
-        private int GetParamId(ParameterExpression prm) => GetId(prm, ref _paramIds, out var _);
-        private int GetLabelTargetId(LabelTarget target) => GetId(target, ref _labelIds, out var _);
+        private int GetLambdaId(LambdaExpression lmbd, out bool isNew) => GetId(lmbd, ref _lambdaIds, out isNew, 1);
+        private int GetParamId(ParameterExpression prm) => GetId(prm, ref _paramIds, out var _, 1);
+        private int GetLabelTargetId(LabelTarget target) => GetId(target, ref _labelIds, out var _, 1);
 
         private static string GetDisplayName(string name) {
-            static bool ContainsWhitespace(string name) {
-                foreach (var c in name) {
-                    if (char.IsWhiteSpace(c)) { return true; }
-                }
-                return false;
-            }
-
-            return ContainsWhitespace(name) ?
+            return name.ContainsWhitespace() ?
                 $"'{name}'" :
                 name;
         }

@@ -2,6 +2,7 @@
 using static ExpressionTreeTestObjects.Categories;
 using static System.Linq.Expressions.Expression;
 using static ExpressionTreeTestObjects.Globals;
+using static ExpressionTreeTestObjects.Functions;
 
 namespace ExpressionTreeTestObjects {
     internal static partial class FactoryMethods {
@@ -65,5 +66,23 @@ namespace ExpressionTreeTestObjects {
             Constant(true),
             Parameter(typeof(string).MakeByRefType(), "s4")
         );
+
+        [TestObject(Lambdas)]
+        internal static readonly Expression UnnamedParameter = IIFE(() => {
+            var prm = Parameter(typeof(string));
+            return Lambda(
+                Equal(prm, prm),
+                prm
+            );
+        });
+
+        [TestObject(Lambdas)]
+        internal static readonly Expression WhitespaceNamedParameter = IIFE(() => {
+            var prm = Parameter(typeof(string), "x y");
+            return Lambda(
+                prm,
+                prm
+            );
+        });
     }
 }

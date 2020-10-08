@@ -3102,4 +3102,22 @@ Dynamic(
     #CSharpUnaryOperationBinder,
     typeof(bool), b1
 )
+---- FactoryMethods.UnnamedParameter
+var $var0 = Parameter(
+    typeof(string)
+);
+
+Lambda(
+    MakeBinary(ExpressionType.Equal, $var0, $var0, false,
+        typeof(string).GetMethod("op_Equality")
+    ),
+    $var0
+)
+---- FactoryMethods.WhitespaceNamedParameter
+var $x_y = Parameter(
+    typeof(string),
+    "x y"
+);
+
+Lambda($x_y, $x_y)
 ------
