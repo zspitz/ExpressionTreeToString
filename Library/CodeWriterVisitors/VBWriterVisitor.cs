@@ -12,6 +12,7 @@ using static ExpressionTreeToString.VBExpressionMetadata;
 using ExpressionTreeToString.Util;
 using OneOf;
 using static ExpressionTreeToString.Globals;
+using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeToString {
     public class VBWriterVisitor : CodeWriterVisitor {
@@ -282,7 +283,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteParameterDeclaration(ParameterExpression prm) {
             if (prm.IsByRef) { Write("ByRef "); }
-            Write($"{prm.Name} As {prm.Type.FriendlyName(language)}");
+            Write($"{GetVariableName(prm, ref ids)} As {prm.Type.FriendlyName(language)}");
         }
 
         protected override void WriteNew(Type type, string argsPath, IList<Expression> args) {

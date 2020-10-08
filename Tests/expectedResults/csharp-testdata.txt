@@ -1158,4 +1158,8 @@ x + y
 (int)x
 ---- FactoryMethods.DynamicUnaryOperation
 ~b1
+---- FactoryMethods.UnnamedParameter
+(string $var0) => $var0 == $var0
+---- FactoryMethods.WhitespaceNamedParameter
+(string $x_y) => $x_y
 ------

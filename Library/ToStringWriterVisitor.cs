@@ -9,6 +9,8 @@ using static System.Linq.Enumerable;
 using System.Runtime.CompilerServices;
 using ExpressionTreeToString.Util;
 using static System.Linq.Expressions.GotoExpressionKind;
+using OneOf;
+using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeToString {
     public class ToStringWriterVisitor : BuiltinsWriterVisitor {
@@ -19,23 +21,10 @@ namespace ExpressionTreeToString {
 
         // Associate every unique label or anonymous parameter in the tree with an integer.
         // Labels are displayed as UnnamedLabel_#; parameters are displayed as Param_#.
-        private Dictionary<object, int>? _ids;
+        private Dictionary<OneOf<LabelTarget, ParameterExpression>, int>? _ids;
 
-        private int GetLabelId(LabelTarget label) => GetId(label);
-        private int GetParamId(ParameterExpression p) => GetId(p);
-
-        private int GetId(object o) {
-            if (_ids == null) {
-                _ids = new Dictionary<object, int>();
-            }
-
-            if (!_ids.TryGetValue(o, out int id)) {
-                id = _ids.Count;
-                _ids.Add(o, id);
-            }
-
-            return id;
-        }
+        private int GetLabelId(LabelTarget label) => GetId(label, ref _ids, out var _);
+        private int GetParamId(ParameterExpression p) => GetId(p, ref _ids, out var _);
 
         private static bool IsBool(Expression node) => node.Type.In(typeof(bool), typeof(bool?));
 

@@ -11,11 +11,14 @@ using System.Runtime.CompilerServices;
 using System.Dynamic;
 using static ZSpitz.Util.Methods;
 using ExpressionTreeToString.Util;
+using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeToString {
     public abstract class CodeWriterVisitor : BuiltinsWriterVisitor {
         protected CodeWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans)
             : base(o, languageArg, null, hasPathSpans) { }
+
+        protected Dictionary<ParameterExpression, int>? ids;
 
         protected override void WriteUnary(UnaryExpression expr) =>
             WriteUnary(expr.NodeType, "Operand", expr.Operand, expr.Type, expr.GetType().Name);
@@ -69,7 +72,7 @@ namespace ExpressionTreeToString {
             WriteBinary(expr.NodeType, "Left", expr.Left, "Right", expr.Right);
         }
 
-        protected override void WriteParameter(ParameterExpression expr) => Write(expr.Name);
+        protected override void WriteParameter(ParameterExpression expr) => Write(GetVariableName(expr, ref ids));
 
         protected override void WriteConstant(ConstantExpression expr) =>
             Write(RenderLiteral(expr.Value, language));

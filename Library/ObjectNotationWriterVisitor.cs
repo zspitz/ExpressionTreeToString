@@ -8,6 +8,7 @@ using static ExpressionTreeToString.Globals;
 using System.Collections;
 using OneOf;
 using static ZSpitz.Util.Language;
+using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeToString {
     public class ObjectNotationWriterVisitor : WriterVisitorBase {
@@ -16,9 +17,11 @@ namespace ExpressionTreeToString {
         public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false)
             : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys, hasPathSpans) { }
 
+        private Dictionary<ParameterExpression, int>? _ids;
+
         protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {
             if (o is ParameterExpression pexpr) {
-                Write(pexpr.Name);
+                Write(GetVariableName(pexpr, ref _ids));
 
                 if (!parameterDeclaration) { return; }
 
@@ -29,7 +32,7 @@ namespace ExpressionTreeToString {
                     VisualBasic => "Dim",
                     _ => throw new NotImplementedException("Invalid language.")
                 });
-                Write($" {pexpr.Name} = ");
+                Write($" {GetVariableName(pexpr, ref _ids)} = ");
             }
 
             var type = writeNew(o);
