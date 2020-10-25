@@ -111,7 +111,7 @@ namespace ExpressionTreeToString {
                     Parens(nodeType, operandPath, operand);
                     break;
                 case Not:
-                    if (type == typeof(bool)) {
+                    if (type.UnderlyingIfNullable() == typeof(bool)) {
                         Write("!");
                     } else {
                         Write("~");

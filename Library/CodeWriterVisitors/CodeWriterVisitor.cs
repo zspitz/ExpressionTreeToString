@@ -145,12 +145,13 @@ namespace ExpressionTreeToString {
             }
 
             var (path, o) = ("Object", expr.Object);
-            var arguments = expr.Arguments.Select((x, index) => ($"Arguments[{index}]", x));
+            var skip = 0;
 
             if (expr.Object == null && expr.Method.HasAttribute<ExtensionAttribute>()) {
                 (path, o) = ("Arguments[0]", expr.Arguments[0]);
-                arguments = expr.Arguments.Skip(1).Select((x, index) => ($"Arguments[{index + 1}]", x));
+                skip = 1;
             }
+            var arguments = expr.Arguments.Skip(skip).Select((x, index) => ($"Arguments[{index + skip}]", x));
 
             if (o is null) {
                 // static non-extension method -- write the type name
@@ -180,7 +181,7 @@ namespace ExpressionTreeToString {
 
         protected abstract (string prefix, string suffix) IndexerIndicators { get; }
 
-        private void WriteIndexerAccess(string instancePath, Expression instance, string argBasePath, params Expression[] keys) {
+        protected void WriteIndexerAccess(string instancePath, Expression instance, string argBasePath, params Expression[] keys) {
             WriteNode(instancePath, instance);
             Write(IndexerIndicators.prefix);
             WriteNodes(argBasePath, keys);
