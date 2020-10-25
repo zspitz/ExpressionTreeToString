@@ -3,10 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 using static System.Linq.Expressions.ExpressionType;
-using System.Runtime.CompilerServices;
-using System.Dynamic;
 
 namespace ExpressionTreeToString {
     public enum BuiltinRenderer {
@@ -16,7 +13,8 @@ namespace ExpressionTreeToString {
         ObjectNotation,
         TextualTree,
         DebugView,
-        ToString
+        ToString,
+        DynamicLinq
     }
 
     public static class RendererNames {
@@ -27,6 +25,7 @@ namespace ExpressionTreeToString {
         public const string DebugView = "DebugView";
         public const string TextualTree = "Textual tree";
         public const string ToStringRenderer = "ToString";
+        public const string DynamicLinq = "Dynamic LINQ";
     }
 
     public static class Globals {
