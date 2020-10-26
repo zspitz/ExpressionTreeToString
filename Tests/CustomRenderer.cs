@@ -1,10 +1,23 @@
-﻿using TestObjects;
+﻿using System.Linq.Expressions;
+using TestObjects;
 using Xunit;
 using static ExpressionTreeToString.Renderers;
 
 namespace ExpressionTreeToString.Tests {
-    public class CustomRendererTest {
-        public CustomRendererTest() => 
+    public class ExtensionWriterVisitor : CSharpWriterVisitor {
+        public ExtensionWriterVisitor(object o) : base(o) { }
+
+        protected override void WriteExtension(Expression expr) {
+            if (expr.CanReduce) {
+                WriteNode("", expr.Reduce());
+                return;
+            }
+            base.WriteExtension(expr);
+        }
+    }
+
+    public class CustomRenderer {
+        public CustomRenderer() => 
             Register(
                 "CustomRenderer",
                 (o, language, usePathSpans) => (new ExtensionWriterVisitor(o).ToString(), null)

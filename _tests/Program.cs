@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Security.Cryptography.X509Certificates;
 using ExpressionTreeTestObjects;
 using ExpressionTreeTestObjects.VB;
 using ExpressionTreeToString;
@@ -84,37 +83,73 @@ namespace _tests {
             //Expression<Func<IEnumerable<char>>> expr = () => (IEnumerable<char>)"abcd";
             //Console.WriteLine(expr.ToString("C#"));
 
-            Loader.Load();
-            //Expression x = (Expression)Objects.Get().Where(x => x.o is Expression expr && expr.CanReduce).Select(x => x.o).FirstOrDefault();
-            //Console.WriteLine(x.ToString("Textual tree", "C#"));
+            //Loader.Load();
+            ////Expression x = (Expression)Objects.Get().Where(x => x.o is Expression expr && expr.CanReduce).Select(x => x.o).FirstOrDefault();
+            ////Console.WriteLine(x.ToString("Textual tree", "C#"));
 
-            Objects.Get()
-                .Select(x => (o: x.o as Expression, x.name))
-                .Where(x => x.o is Expression expr && expr.CanReduce)
-                .Select(x => {
-                    (Expression expr, string name) = (x.o!, x.name);
-                    TextualTreeWriterVisitor.ReducePredicate = _ => false;
-                    var unreduced = expr.ToString("Textual tree", "C#");
-                    TextualTreeWriterVisitor.ReducePredicate = null;
-                    var @default = expr.ToString("Textual tree", "C#");
-                    TextualTreeWriterVisitor.ReducePredicate = _ => true;
-                    var allReduced = expr.ToString("Textual tree", "C#");
-                    return (name, unreduced, @default, allReduced);
-                }).ForEach(x => {
-                    var (name, unreduced, @default, allReduced) = x;
-                    Console.WriteLine($"======== {name} - {(@default != unreduced ? "default " : "")}{(allReduced != @default ? "allReduced" : "")}");
-                    Console.WriteLine(unreduced);
-                    if (@default != unreduced) { Console.WriteLine(@default); }
-                    if (allReduced != @default) { Console.WriteLine(allReduced); }
-                });
+            //Objects.Get()
+            //    .Select(x => (o: x.o as Expression, x.name))
+            //    .Where(x => x.o is Expression expr && expr.CanReduce)
+            //    .Select(x => {
+            //        (Expression expr, string name) = (x.o!, x.name);
+            //        TextualTreeWriterVisitor.ReducePredicate = _ => false;
+            //        var unreduced = expr.ToString("Textual tree", "C#");
+            //        TextualTreeWriterVisitor.ReducePredicate = null;
+            //        var @default = expr.ToString("Textual tree", "C#");
+            //        TextualTreeWriterVisitor.ReducePredicate = _ => true;
+            //        var allReduced = expr.ToString("Textual tree", "C#");
+            //        return (name, unreduced, @default, allReduced);
+            //    }).ForEach(x => {
+            //        var (name, unreduced, @default, allReduced) = x;
+            //        Console.WriteLine($"======== {name} - {(@default != unreduced ? "default " : "")}{(allReduced != @default ? "allReduced" : "")}");
+            //        Console.WriteLine(unreduced);
+            //        if (@default != unreduced) { Console.WriteLine(@default); }
+            //        if (allReduced != @default) { Console.WriteLine(allReduced); }
+            //    });
+
+            //bool? b = true;
+            //Expression<Func<object>> expr = () => !b;
+            //Console.WriteLine(expr.ToString("C#"));
+
+            //Expression<Func<Foo, Foo?>> expr = f => 
+            //    f != null && f.A != null && f.A.B != null && f.A.B.C != null ? 
+            //        f.A.B.C.D : 
+            //        null;
+            //Console.WriteLine(expr.ToString("Dynamic LINQ"));
+
+            //Expression<Func<Person, bool>> expr = p => p.Posts.Any(p1 => p1.Text.Contains("ABCD"));
+            ////Expression<Func<Person, string>> expr = p => p.TestExtension();
+            //Console.WriteLine(expr.ToString("C#"));
+            //Console.WriteLine(expr.ToString("Dynamic LINQ"));
+
+            Expression<Func<Person, bool>> expr = p => p.FirstName == "A" || p.LastName == "D" || p.FirstName == "B" || p.DOB.Hour > 10 || p.FirstName == "C" || p.LastName == "E";
+            Console.WriteLine(expr.ToString("Dynamic LINQ", out var pathspans));
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);
     }
 
-    class Person {
+    public class Person {
         public string LastName { get; set; } = "";
         public string FirstName { get; set; } = "";
+        public string Name => LastName + ", " + FirstName;
         public DateTime DOB { get; set; }
+        public Post[] Posts { get; set; } = new Post[] { };
+    }
+
+    public class Post {
+        public string Text { get; set; } = "";
+        public string[] Tags { get; set; }
+    }
+
+    public static class Extension {
+        public static string TestExtension(this Person p) => "";
+    }
+
+    class Foo {
+        public Foo? A { get; set; }
+        public Foo? B { get; set; }
+        public Foo? C { get; set; }
+        public Foo? D { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using Xunit;
 using static ExpressionTreeTestObjects.Functions;
 
 namespace ExpressionTreeToString.Tests {
-    public class Tests {
+    public class Misc {
         [Fact]
         public void EscapedString() {
             var expr = Expr(() => "\'\"\\\0\a\b\f\n\r\t\v");
