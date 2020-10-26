@@ -17,10 +17,12 @@ namespace ExpressionTreeToString.Util {
                 yield break;
             }
 
+            if (!path.IsNullOrEmpty()) { path += "."; }
+
             var bexpr = (BinaryExpression)expr;
             (string path, Expression expr)[] parts = new[] {
-                ("Left", bexpr.Left),
-                ("Right", bexpr.Right)
+                (path + "Left", bexpr.Left),
+                (path + "Right", bexpr.Right)
             };
 
             foreach (var (path1, expr1) in parts.SelectMany(x => LogicalCombinedClauses(x.path, x.expr, nodeTypes))) {

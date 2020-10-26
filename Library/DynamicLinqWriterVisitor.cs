@@ -10,7 +10,6 @@ using ZSpitz.Util;
 using static System.Linq.Expressions.ExpressionType;
 using static ZSpitz.Util.Functions;
 using static System.Linq.Enumerable;
-using System.Security.Cryptography.X509Certificates;
 
 namespace ExpressionTreeToString {
     public class DynamicLinqWriterVisitor : BuiltinsWriterVisitor {
