@@ -13,7 +13,7 @@ namespace ExpressionTreeTestObjects {
     }
 
     internal class Wrapper : List<string> {
-        internal void Add(string s1, string s2) => throw new NotImplementedException();
+        internal void Add(string s1, string s2) { }
     }
 
     // class used for MemberMemberBinding and ListBinding

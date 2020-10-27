@@ -14,13 +14,10 @@ End Class
 Friend Class Wrapper
     Inherits List(Of String)
     Friend Sub Add(ByVal s1 As String)
-        Throw New NotImplementedException
     End Sub
     Friend Sub Add(ByVal s1 As String, ByVal s2 As String)
-        Throw New NotImplementedException
     End Sub
     Friend Sub Add(ByVal s1 As String, ByVal s2 As String, ByVal s3 As String)
-        Throw New NotImplementedException
     End Sub
 End Class
 #Enable Warning BC40003 ' Member shadows an overloadable member declared in the base type
