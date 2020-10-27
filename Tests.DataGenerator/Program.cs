@@ -8,23 +8,31 @@ using ExpressionTreeTestObjects.VB;
 using System.Linq;
 using static ExpressionTreeToString.BuiltinRenderer;
 using ZSpitz.Util;
+using ExpressionTreeToString.Tests;
 
 namespace Tests.DataGenerator {
     class Program {
         static void Main(string[] args) {
             Loader.Load();
+            Objects.LoadType(typeof(DynamicLinqTestObjects));
 
             var lines = new List<string>();
 
             foreach (var (key, filename) in rendererFileMapping) {
-                if (key == DynamicLinq) { continue; } // Dynamic LINQ isn't tested using the test objects
-
                 var ordering = parseFileOrder(@$"C:\Users\Spitz\source\repos\zspitz\ExpressionTreeToString\Tests\expectedResults\{filename}-testdata.txt");
 
                 var language = key == VisualBasic ? Language.VisualBasic : Language.CSharp;
 
-                //foreach (var (category, source, name, o) in Objects.Get().Where(x => key == CSharp).OrderBy(x => ordering[$"{x.source}.{x.name}"])) {
-                foreach (var (category, source, name, o) in Objects.Get().Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"))) {
+                const string dlinq = nameof(DynamicLinqTestObjects);
+                var objects = Objects.Get()
+                    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
+                    .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
+
+                //var objects = Objects.Get()
+                //    .Where(x => key == CSharp)
+                //    .OrderBy(x => ordering[$"{x.source}.{x.name}"]);
+
+                foreach (var (category, source, name, o) in objects) {
                     var toWrite = o switch
                     {
                         Expression expr => expr.ToString(key, out var pathSpans, language),
@@ -61,7 +69,8 @@ namespace Tests.DataGenerator {
             [VisualBasic] = "visualbasic",
             [FactoryMethods] = "factorymethods",
             [ObjectNotation] = "objectnotation",
-            [TextualTree] = "textualtree"
+            [TextualTree] = "textualtree",
+            [DynamicLinq] = "dynamiclinq"
         };
     }
 }

@@ -440,7 +440,7 @@ Lambda (Func<List<string>>)
             · Arguments[0] - Constant (string) = "efgh"
 ---- CSCompiler.CollectionTypeWithMultipleElementsInitializers
 Lambda (Func<Wrapper>)
-    · Body - ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+    · Body - ListInit (Wrapper) = #Wrapper
         · NewExpression - New (Wrapper) = #Wrapper
         · Initializers[0] - ElementInit
             · Arguments[0] - Constant (string) = "ab"
@@ -450,7 +450,7 @@ Lambda (Func<Wrapper>)
             · Arguments[1] - Constant (string) = "gh"
 ---- CSCompiler.CollectionTypeWithSingleOrMultipleElementsInitializers
 Lambda (Func<Wrapper>)
-    · Body - ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+    · Body - ListInit (Wrapper) = #Wrapper
         · NewExpression - New (Wrapper) = #Wrapper
         · Initializers[0] - ElementInit
             · Arguments[0] - Constant (string) = "ab"
@@ -1235,7 +1235,7 @@ ListInit (List<string>) = #List<string>
     · Initializers[1] - ElementInit
         · Arguments[0] - Constant (string) = "efgh"
 ---- FactoryMethods.CollectionTypeWithMultiElementInitializers
-ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+ListInit (Wrapper) = #Wrapper
     · NewExpression - New (Wrapper) = #Wrapper
     · Initializers[0] - ElementInit
         · Arguments[0] - Constant (string) = "ab"
@@ -1244,7 +1244,7 @@ ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by th
         · Arguments[0] - Constant (string) = "ef"
         · Arguments[1] - Constant (string) = "gh"
 ---- FactoryMethods.CollectionTypeWithSingleOrMultiElementInitializers
-ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+ListInit (Wrapper) = #Wrapper
     · NewExpression - New (Wrapper) = #Wrapper
     · Initializers[0] - ElementInit
         · Arguments[0] - Constant (string) = "ab"
@@ -1922,7 +1922,7 @@ Lambda (Func<List<string>>)
             · Arguments[0] - Constant (string) = "efgh"
 ---- VBCompiler.CollectionTypeWithMultipleElementsInitializers
 Lambda (Func<Wrapper>)
-    · Body - ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+    · Body - ListInit (Wrapper) = #Wrapper
         · NewExpression - New (Wrapper) = #Wrapper
         · Initializers[0] - ElementInit
             · Arguments[0] - Constant (string) = "ab"
@@ -1932,7 +1932,7 @@ Lambda (Func<Wrapper>)
             · Arguments[1] - Constant (string) = "gh"
 ---- VBCompiler.CollectionTypeWithSingleOrMultipleElementsInitializers
 Lambda (Func<Wrapper>)
-    · Body - ListInit (Wrapper) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+    · Body - ListInit (Wrapper) = #Wrapper
         · NewExpression - New (Wrapper) = #Wrapper
         · Initializers[0] - ElementInit
             · Arguments[0] - Constant (string) = "ab"

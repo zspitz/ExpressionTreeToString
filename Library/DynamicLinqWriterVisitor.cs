@@ -38,6 +38,7 @@ namespace ExpressionTreeToString {
             typeof(Convert),
             typeof(Uri)
         };
+
         private static bool IsAccessibleType(Type t) {
             if (t.IsNullable()) { return IsAccessibleType(t.UnderlyingSystemType); }
             return t.In(PredefinedTypes) || t.In(CustomAccessibleTypes);

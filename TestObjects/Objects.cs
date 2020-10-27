@@ -30,6 +30,13 @@ namespace ExpressionTreeTestObjects {
         public static object ByName(string s) => _byName[s];
 
         public static void LoadType(Type t) {
+            LoadType(t, _objects);
+            foreach (var x in _objects) {
+                _byName[$"{x.source}.{x.name}"] = x.o;
+            }
+        }
+
+        internal static void LoadType(Type t, ISet<(string category, string source, string name, object o)> objects) {
             var source = t.Name;
             t.GetFields(Static | NonPublic | Public)
                 .Select(fld => (
@@ -43,11 +50,7 @@ namespace ExpressionTreeTestObjects {
                     fld.Name,
                     fld.GetValue(null)!
                 ))
-                .AddRangeTo(_objects);
-
-            foreach (var x in _objects) {
-                _byName[$"{x.source}.{x.name}"] = x.o;
-            }
+                .AddRangeTo(objects);
         }
     }
 }

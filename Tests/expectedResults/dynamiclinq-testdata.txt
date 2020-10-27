@@ -1,0 +1,7 @@
+﻿---- DynamicLinqTestObjects.Equal
+it.LastName == "A"
+---- DynamicLinqTestObjects.Np
+it.LastName in ("A", "B")
+---- DynamicLinqTestObjects.NpMultipleFields
+it.LastName in ("A", "B") || it.FirstName in ("C", "D")
+------
