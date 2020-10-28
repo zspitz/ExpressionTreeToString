@@ -79,6 +79,13 @@ Console.WriteLine(expr.ToString("DebugView"));
         }
     }
 */
+
+Expression<Func<Person, bool>> filter = p => p => p.LastName == "A" || p.FirstName == "B" || p.DOB == DateTime.MinValue || p.LastName == "C" || p.FirstName == "D";
+Console.WriteLine(expr.ToString("Dynamic LINQ"));
+// prints:
+/*
+    LastName in ("A", "C") || DOB == DateTime.MinValue || FirstName in ("B", "D")
+*/
 ```
 
 Features:
