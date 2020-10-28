@@ -1,7 +1,89 @@
 ﻿---- DynamicLinqTestObjects.Equal
-it.LastName == "A"
+LastName == "A"
+---- DynamicLinqTestObjects.Add
+Age + 100
+---- DynamicLinqTestObjects.Divide
+Age / 2
+---- DynamicLinqTestObjects.Modulo
+Age % 10
+---- DynamicLinqTestObjects.Multiply
+Age * 10
+---- DynamicLinqTestObjects.Subtract
+Age - 10
+---- DynamicLinqTestObjects.AndAlso
+Age >= 20 && Age <= 60
+---- DynamicLinqTestObjects.OrElse
+Age < 20 || Age > 60
+---- DynamicLinqTestObjects.NotEqual
+LastName != "A"
+---- DynamicLinqTestObjects.GreaterThanOrEqual
+Age >= 13
+---- DynamicLinqTestObjects.GreaterThan
+Age > 65
+---- DynamicLinqTestObjects.LessThan
+Age < 20
+---- DynamicLinqTestObjects.LessThanOrEqual
+Age <= 20
+---- DynamicLinqTestObjects.Coalesce
+LastName ?? ""
+---- DynamicLinqTestObjects.ArrayIndex
+Relatives[4]
+---- DynamicLinqTestObjects.ImplicitConversion
+it
+---- DynamicLinqTestObjects.ImplicitConversion1
+int(Age)
+---- DynamicLinqTestObjects.ExplicitConversion
+short(Age)
+---- DynamicLinqTestObjects.NegateBoolean
+-Age > 20
+---- DynamicLinqTestObjects.NegateNumeric
+-Age
 ---- DynamicLinqTestObjects.Np
-it.LastName in ("A", "B")
----- DynamicLinqTestObjects.NpMultipleFields
-it.LastName in ("A", "B") || it.FirstName in ("C", "D")
+np(LastName)
+---- DynamicLinqTestObjects.NpValue
+np(LastName, "(unknown)")
+---- DynamicLinqTestObjects.NpChain
+np(Father.LastName, "(unknown)")
+---- DynamicLinqTestObjects.DateTime1
+Date(631139040000000000)
+---- DynamicLinqTestObjects.DateTime2
+Date(631139040000000000, DateTimeKind.Utc)
+---- DynamicLinqTestObjects.Parameter
+it
+---- DynamicLinqTestObjects.In
+LastName in ("A", "B")
+---- DynamicLinqTestObjects.MultipleFieldsIn
+LastName in ("A", "B") || FirstName in ("C", "D")
+---- DynamicLinqTestObjects.MultipleFieldSingleValueIn
+LastName in ("A", "B") || DOB == DateTime.MinValue || FirstName in ("C", "D")
+---- DynamicLinqTestObjects.StaticMember
+String.Empty
+---- DynamicLinqTestObjects.ParameterMember
+LastName
+---- DynamicLinqTestObjects.InstanceMember
+LastName.Length
+---- DynamicLinqTestObjects.StringConcat
+LastName + FirstName
+---- DynamicLinqTestObjects.Contains
+Relatives.Contains(it)
+---- DynamicLinqTestObjects.IndexerMethod
+Relatives2[4]
+---- DynamicLinqTestObjects.RecgonizedSequenceMethod
+LastName.All(int(it) > 109)
+---- DynamicLinqTestObjects.StaticMethod
+String.IsInterned("abcd")
+---- DynamicLinqTestObjects.ParameterMethod
+ToString()
+---- DynamicLinqTestObjects.InstanceMethod
+LastName.ToString()
+---- DynamicLinqTestObjects.NewAnonymous
+new(LastName, FirstName, Age)
+---- DynamicLinqTestObjects.NewNamed
+Person("abcd", "efgh")
+---- DynamicLinqTestObjects.Conditional
+iif(Age >= 13, "adult", "child")
+---- DynamicLinqTestObjects.Invocation
+Notify()
+---- DynamicLinqTestObjects.InvocationArguments
+Notify1(true)
 ------

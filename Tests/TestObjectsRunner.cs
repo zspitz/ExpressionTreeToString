@@ -12,15 +12,13 @@ using ZSpitz.Util;
 using static ExpressionTreeToString.BuiltinRenderer;
 using System.Reflection;
 using static ExpressionTreeToString.Tests.Globals;
-using System.Diagnostics;
-
 
 namespace ExpressionTreeToString.Tests {
-    public class TestObjects : IClassFixture<FileDataFixture>, IClassFixture<PathsFixture> {
+    public class TestObjectsRunner : IClassFixture<FileDataFixture>, IClassFixture<PathsFixture> {
         private readonly FileDataFixture fileData;
         private readonly PathsFixture pathsFixture;
 
-        public TestObjects(FileDataFixture fileData, PathsFixture pathsFixture) => 
+        public TestObjectsRunner(FileDataFixture fileData, PathsFixture pathsFixture) => 
             (this.fileData, this.pathsFixture) = (fileData, pathsFixture);
 
         private (string toString, HashSet<string> paths) GetToString(BuiltinRenderer rendererKey, object o) {
@@ -87,14 +85,10 @@ namespace ExpressionTreeToString.Tests {
             // the paths from the Textual tree renderer with all reducible nodes reduced serve as a reference for all the other renderers
             var expectedPaths = pathsFixture.allExpectedPaths[objectName];
 
-            //if (paths.Any(x => x.Contains("Reduce"))) {
-                
-            //}
-
             Assert.True(expectedPaths.IsSupersetOf(paths));
         }
 
-        public static TheoryData<BuiltinRenderer, string, string, object> TestObjectsData => Objects.Get().SelectMany(x =>
+        public static readonly TheoryData<BuiltinRenderer, string, string, object> TestObjectsData = Objects.Get().SelectMany(x =>
             BuiltinRenderers.Cast<BuiltinRenderer>()
                 .Select(key => (key, $"{x.source}.{x.name}", x.category, x.o))
                 .Where(x => x.key != DebugView || x.o is Expression)
@@ -109,7 +103,7 @@ namespace ExpressionTreeToString.Tests {
             }
         }
 
-        static TestObjects() {
+        static TestObjectsRunner() {
             Loader.Load();
             Objects.LoadType(typeof(DynamicLinqTestObjects));
         }

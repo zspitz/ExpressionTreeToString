@@ -29,7 +29,7 @@ namespace Tests.DataGenerator {
                     .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
 
                 //var objects = Objects.Get()
-                //    .Where(x => key == CSharp)
+                //    .Where(x => key == DynamicLinq && x.source == dlinq)
                 //    .OrderBy(x => ordering[$"{x.source}.{x.name}"]);
 
                 foreach (var (category, source, name, o) in objects) {
