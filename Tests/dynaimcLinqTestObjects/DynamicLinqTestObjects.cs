@@ -21,10 +21,12 @@ namespace ExpressionTreeToString.Tests {
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression MultipleFieldSingleValueIn = Expr(p => p.LastName == "A" || p.LastName == "B" || p.DOB == DateTime.MinValue || p.FirstName == "C" || p.FirstName == "D");
 
-        [TestObject("Invocation")]
-        internal static readonly Expression Invocation = Expr(p => p.Notify());
+        // pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/441
+        //[TestObject("Invocation")]
+        //internal static readonly Expression Invocation = Expr(p => ((Func<string>)(() => p.LastName + p.FirstName))());
 
-        [TestObject("Invocation")]
-        internal static readonly Expression InvocationArguments = Expr(p => p.Notify1(true));
+        // pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/441
+        //[TestObject("Invocation")]
+        //internal static readonly Expression InvocationArguments = Expr(p => ((Func<Person, string>)(p1 => p1.LastName + p1.FirstName))(p));
     }
 }

@@ -68,22 +68,18 @@ LastName + FirstName
 Relatives.Contains(it)
 ---- DynamicLinqTestObjects.IndexerMethod
 Relatives2[4]
----- DynamicLinqTestObjects.RecgonizedSequenceMethod
-LastName.All(int(it) > 109)
 ---- DynamicLinqTestObjects.StaticMethod
 String.IsInterned("abcd")
 ---- DynamicLinqTestObjects.ParameterMethod
 ToString()
----- DynamicLinqTestObjects.InstanceMethod
-LastName.ToString()
 ---- DynamicLinqTestObjects.NewAnonymous
 new(LastName, FirstName, Age)
----- DynamicLinqTestObjects.NewNamed
-Person("abcd", "efgh")
 ---- DynamicLinqTestObjects.Conditional
 iif(Age >= 13, "adult", "child")
----- DynamicLinqTestObjects.Invocation
+---- DynamicLinqTestObjects.InstanceMethodAccessibleType
+LastName.ToString()
+---- DynamicLinqTestObjects.InstanceMethodInaccessibleType
 Notify()
----- DynamicLinqTestObjects.InvocationArguments
-Notify1(true)
+---- DynamicLinqTestObjects.NewNamed
+DateTime(2001, 1, 1, 0, 0, 0, DateTimeKind.Local)
 ------

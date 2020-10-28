@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ExpressionTreeToString.Tests {
     public class Person {
@@ -11,7 +12,7 @@ namespace ExpressionTreeToString.Tests {
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public DateTime? DOB { get; set; }
-        public int? Age{ 
+        public int? Age {
             get {
                 if (DOB is null) { return null; }
                 var dob = DOB.Value;
@@ -24,7 +25,6 @@ namespace ExpressionTreeToString.Tests {
         public Person[] Relatives { get; } = new Person[] { };
         public List<Person> Relatives2 { get; } = new List<Person>();
         public Person? Father { get; }
-        public Action Notify { get; set; } = () => { };
-        public Action<bool> Notify1 { get; set; } = b => { };
+        public bool Notify() => true;
     }
 }

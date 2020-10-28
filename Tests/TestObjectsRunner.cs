@@ -1,5 +1,4 @@
-﻿using ExpressionTreeTestObjects;
-using Pather.CSharp;
+﻿using Pather.CSharp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -7,7 +6,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 using static System.Globalization.CultureInfo;
-using ExpressionTreeTestObjects.VB;
 using ZSpitz.Util;
 using static ExpressionTreeToString.BuiltinRenderer;
 using System.Reflection;
@@ -19,13 +17,8 @@ using static System.Environment;
 
 namespace ExpressionTreeToString.Tests {
     public class TestObjectsRunner {
-        static TestObjectsRunner() {
-            Loader.Load();
-            Objects.LoadType(typeof(DynamicLinqTestObjects));
-        }
-
         public static readonly TheoryData<BuiltinRenderer, string, string, object> TestData =
-            Objects.Get()
+            Objects
                 .SelectMany(x =>
                     BuiltinRenderers.Cast<BuiltinRenderer>()
                         .Select(key => (key, $"{x.source}.{x.name}", x.category, x.o))
@@ -64,7 +57,7 @@ namespace ExpressionTreeToString.Tests {
             var oldPredicate = TextualTreeWriterVisitor.ReducePredicate;
             TextualTreeWriterVisitor.ReducePredicate = expr => true;
 
-            var ret = Objects.Get()
+            var ret = Objects
                 .SelectT((category, source, name, o) => (key: $"{source}.{name}", o))
                 .Select(x => {
                     Dictionary<string, (int start, int length)> pathSpans;
@@ -158,7 +151,7 @@ namespace ExpressionTreeToString.Tests {
         public void CheckMissingObjects() {
             var objectNames = ExpectedStrings.GroupBy(x => x.Key.objectName, (key, grp) => (key, grp.Select(x => x.Key.rendererKey).ToList()));
             foreach (var (name, key) in objectNames) {
-                var o = Objects.ByName(name);
+                var o = ExpressionTreeTestObjects.Objects.ByName(name);
             }
         }
 

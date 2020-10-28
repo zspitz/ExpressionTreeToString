@@ -18,7 +18,7 @@ namespace Tests.DataGenerator {
 
             var lines = new List<string>();
 
-            foreach (var (key, filename) in rendererFileMapping) {
+            foreach (var (key, filename) in rendererFileMapping.SelectKVP((k,v) => (k,v))) {
                 var ordering = parseFileOrder(@$"C:\Users\Spitz\source\repos\zspitz\ExpressionTreeToString\Tests\expectedResults\{filename}-testdata.txt");
 
                 var language = key == VisualBasic ? Language.VisualBasic : Language.CSharp;
@@ -27,6 +27,7 @@ namespace Tests.DataGenerator {
                 var objects = Objects.Get()
                     .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
                     .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
+                //.Where(x => x.source == dlinq);
 
                 //var objects = Objects.Get()
                 //    .Where(x => key == DynamicLinq && x.source == dlinq)

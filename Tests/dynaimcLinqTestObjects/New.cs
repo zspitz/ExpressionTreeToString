@@ -1,4 +1,5 @@
 ﻿using ExpressionTreeTestObjects;
+using System;
 using System.Linq.Expressions;
 
 namespace ExpressionTreeToString.Tests {
@@ -7,6 +8,10 @@ namespace ExpressionTreeToString.Tests {
         internal static readonly Expression NewAnonymous = Expr(p => new { p.LastName, p.FirstName, p.Age });
 
         [TestObject("New")]
-        internal static readonly Expression NewNamed = Expr(p => new Person("abcd", "efgh"));
+        internal static readonly Expression NewNamed = Expr(p => new DateTime(2001, 1, 1, 0,0,0, DateTimeKind.Local));
+
+        // pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/442
+        //[TestObject("New")]
+        //internal static readonly Expression NewNamed1 = Expr(p => new Uri("https://www.example.com/", UriKind.Absolute));
     }
 }

@@ -220,11 +220,9 @@ namespace ExpressionTreeToString {
             }
 
             if (value is DateTime dte) {
-                Write($"Date({dte.Ticks}");
-                if (dte.Kind != DateTimeKind.Unspecified) {
-                    Write($", DateTimeKind.{dte.Kind}");
-                }
-                Write(")");
+                // we need to supply both parameters to the DateTime constructor;
+                // otherwise Dynamic LINQ interperts it as a conversion, and fails
+                Write($"DateTime({dte.Ticks}, DateTimeKind.{dte.Kind})");
                 return;
             }
 
@@ -282,6 +280,8 @@ namespace ExpressionTreeToString {
             } else {
                 if (instance.Type.IsClosureClass()) {
                     throw new NotImplementedException("No representation for closed-over variables.");
+                } else if (mi is MethodInfo mthd && !(IsAccessibleType(declaringType) || IsAccessibleType(mthd.ReturnType))) {
+                    throw new NotImplementedException("Instance methods must either be on an accessible type, or return an instance of an accessible type.");
                 } else if (instance.SansConvert() != currentScoped) {
                     WriteNode(instancePath, instance);
                     Write(".");
@@ -536,10 +536,12 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteInvocation(InvocationExpression expr) {
-            WriteNode("Expression", expr.Expression);
-            Write("(");
-            WriteNodes("Arguments", expr.Arguments);
-            Write(")");
+            throw new NotImplementedException("Pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/441");
+            //Write("(");
+            //WriteNode("Expression", expr.Expression);
+            //Write(")(");
+            //WriteNodes("Arguments", expr.Arguments);
+            //Write(")");
         }
 
         protected override void WriteIndex(IndexExpression expr) =>

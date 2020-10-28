@@ -13,8 +13,9 @@ namespace ExpressionTreeToString.Tests {
         [TestObject("Method")]
         internal static readonly Expression IndexerMethod = Expr(p => p.Relatives2[4]);
 
-        [TestObject("Method")]
-        internal static readonly Expression RecgonizedSequenceMethod = Expr(p => p.LastName.All(c => c > 'm'));
+        // pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/440
+        //[TestObject("Method")]
+        //internal static readonly Expression RecgonizedSequenceMethod = Expr(p => p.LastName.All(c => c > 'm'));
 
         [TestObject("Method")]
         internal static readonly Expression StaticMethod = Expr(p => string.IsInterned("abcd"));
@@ -23,6 +24,10 @@ namespace ExpressionTreeToString.Tests {
         internal static readonly Expression ParameterMethod = Expr(p => p.ToString());
 
         [TestObject("Method")]
-        internal static readonly Expression InstanceMethod = Expr(p => p.LastName!.ToString());
+        internal static readonly Expression InstanceMethodAccessibleType = Expr(p => p.LastName!.ToString());
+
+        // this only works because it returns an accessible type
+        [TestObject("Method")]
+        internal static readonly Expression InstanceMethodInaccessibleType = Expr(p => p.Notify());
     }
 }
