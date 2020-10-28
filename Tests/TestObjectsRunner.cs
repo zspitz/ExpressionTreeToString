@@ -12,14 +12,80 @@ using ZSpitz.Util;
 using static ExpressionTreeToString.BuiltinRenderer;
 using System.Reflection;
 using static ExpressionTreeToString.Tests.Globals;
+using static ExpressionTreeToString.Tests.Functions;
+using System.IO;
+using static ZSpitz.Util.Functions;
+using static System.Environment;
 
 namespace ExpressionTreeToString.Tests {
-    public class TestObjectsRunner : IClassFixture<FileDataFixture>, IClassFixture<PathsFixture> {
-        private readonly FileDataFixture fileData;
-        private readonly PathsFixture pathsFixture;
+    public class TestObjectsRunner {
+        static TestObjectsRunner() {
+            Loader.Load();
+            Objects.LoadType(typeof(DynamicLinqTestObjects));
+        }
 
-        public TestObjectsRunner(FileDataFixture fileData, PathsFixture pathsFixture) => 
-            (this.fileData, this.pathsFixture) = (fileData, pathsFixture);
+        public static readonly TheoryData<BuiltinRenderer, string, string, object> TestData =
+            Objects.Get()
+                .SelectMany(x =>
+                    BuiltinRenderers.Cast<BuiltinRenderer>()
+                        .Select(key => (key, $"{x.source}.{x.name}", x.category, x.o))
+                        .Where(x => x.key != DebugView || x.o is Expression)
+                        .Where(x => x.key != DynamicLinq ^ x.Item2.StartsWith(nameof(DynamicLinqTestObjects)))
+                ).ToTheoryData();
+
+        public static readonly Dictionary<(BuiltinRenderer rendererKey, string objectName), string> ExpectedStrings = IIFE(() => {
+            var ret = new Dictionary<(BuiltinRenderer rendererKey, string objectName), string>();
+
+            foreach (var key in BuiltinRenderers) {
+                if (key.In(DebugView, BuiltinRenderer.ToString)) { continue; }
+                var expectedDataPath = GetFullFilename($"{key.ToString().ToLower()}-testdata.txt");
+                string testName = "";
+                string expected = "";
+                foreach (var line in File.ReadLines(expectedDataPath)) {
+                    if (!line.StartsWith("----")) {
+                        expected += line + NewLine;
+                        continue;
+                    }
+                    if (testName != "") {
+                        if (key == BuiltinRenderer.FactoryMethods) {
+                            expected = "// using static System.Linq.Expressions.Expression" + NewLines(2) + expected;
+                        }
+                        ret.Add((key, testName), expected.Trim());
+                    }
+                    testName = line.Substring(5); // ---- typename.testMethod
+                    expected = "";
+                }
+            }
+
+            return ret;
+        });
+
+        public static readonly Dictionary<string, HashSet<string>> allExpectedPaths = IIFE(() => {
+            var oldPredicate = TextualTreeWriterVisitor.ReducePredicate;
+            TextualTreeWriterVisitor.ReducePredicate = expr => true;
+
+            var ret = Objects.Get()
+                .SelectT((category, source, name, o) => (key: $"{source}.{name}", o))
+                .Select(x => {
+                    Dictionary<string, (int start, int length)> pathSpans;
+                    string ret = x.o switch
+                    {
+                        Expression expr => expr.ToString(TextualTree, out pathSpans, "C#"),
+                        MemberBinding mbind => mbind.ToString(TextualTree, out pathSpans, "C#"),
+                        ElementInit init => init.ToString(TextualTree, out pathSpans, "C#"),
+                        SwitchCase switchCase => switchCase.ToString(TextualTree, out pathSpans, "C#"),
+                        CatchBlock catchBlock => catchBlock.ToString(TextualTree, out pathSpans, "C#"),
+                        LabelTarget labelTarget => labelTarget.ToString(TextualTree, out pathSpans, "C#"),
+                        _ => throw new InvalidOperationException(),
+                    };
+                    return (x.key, pathSpans.Keys.ToHashSet());
+                })
+                .ToDictionary();
+
+            TextualTreeWriterVisitor.ReducePredicate = oldPredicate;
+
+            return ret;
+        });
 
         private (string toString, HashSet<string> paths) GetToString(BuiltinRenderer rendererKey, object o) {
             Language? language = rendererKey switch
@@ -53,7 +119,7 @@ namespace ExpressionTreeToString.Tests {
         }
 
         [Theory]
-        [MemberData(nameof(TestObjectsData))]
+        [MemberData(nameof(TestData))]
         public void TestMethod(BuiltinRenderer rendererKey, string objectName, string category, object o) {
             if (rendererKey == DynamicLinq) { return; }
 
@@ -69,7 +135,7 @@ namespace ExpressionTreeToString.Tests {
             {
                 BuiltinRenderer.ToString => o.ToString(),
                 DebugView => debugView.GetValue(o),
-                _ => fileData.expectedStrings[(rendererKey, objectName)]
+                _ => ExpectedStrings[(rendererKey, objectName)]
             };
             var (actual, paths) = GetToString(rendererKey, o);
 
@@ -83,29 +149,17 @@ namespace ExpressionTreeToString.Tests {
             Assert.All(paths, path => Assert.NotNull(resolver.Resolve(o, path)));
 
             // the paths from the Textual tree renderer with all reducible nodes reduced serve as a reference for all the other renderers
-            var expectedPaths = pathsFixture.allExpectedPaths[objectName];
+            var expectedPaths = allExpectedPaths[objectName];
 
             Assert.True(expectedPaths.IsSupersetOf(paths));
         }
 
-        public static readonly TheoryData<BuiltinRenderer, string, string, object> TestObjectsData = Objects.Get().SelectMany(x =>
-            BuiltinRenderers.Cast<BuiltinRenderer>()
-                .Select(key => (key, $"{x.source}.{x.name}", x.category, x.o))
-                .Where(x => x.key != DebugView || x.o is Expression)
-                .Where(x => x.key != DynamicLinq ^ x.Item2.StartsWith(nameof(DynamicLinqTestObjects)))
-        ).ToTheoryData();
-
         [Fact]
         public void CheckMissingObjects() {
-            var objectNames = fileData.expectedStrings.GroupBy(x => x.Key.objectName, (key, grp) => (key, grp.Select(x => x.Key.rendererKey).ToList()));
+            var objectNames = ExpectedStrings.GroupBy(x => x.Key.objectName, (key, grp) => (key, grp.Select(x => x.Key.rendererKey).ToList()));
             foreach (var (name, key) in objectNames) {
                 var o = Objects.ByName(name);
             }
-        }
-
-        static TestObjectsRunner() {
-            Loader.Load();
-            Objects.LoadType(typeof(DynamicLinqTestObjects));
         }
 
         static readonly PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance)!;
