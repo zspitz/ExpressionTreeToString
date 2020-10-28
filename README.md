@@ -97,7 +97,7 @@ Features:
   * Object notation, using object initializer and collection initializer syntax to describe objects
   * Textual tree, focusing on the properties related to the structure of the tree
   * ToString and DebugView reimplementation
-  * (Planned) [Dynamic LINQ](https://github.com/zspitz/ExpressionTreeToString/issues/56)
+  * Dynamic LINQ equivalent to the expression
 
 * For C# and VB pseudo-code representations:
 
