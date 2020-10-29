@@ -79,6 +79,13 @@ Console.WriteLine(expr.ToString("DebugView"));
         }
     }
 */
+
+Expression<Func<Person, bool>> filter = p => p => p.LastName == "A" || p.FirstName == "B" || p.DOB == DateTime.MinValue || p.LastName == "C" || p.FirstName == "D";
+Console.WriteLine(expr.ToString("Dynamic LINQ"));
+// prints:
+/*
+    LastName in ("A", "C") || DOB == DateTime.MinValue || FirstName in ("B", "D")
+*/
 ```
 
 Features:
@@ -90,7 +97,7 @@ Features:
   * Object notation, using object initializer and collection initializer syntax to describe objects
   * Textual tree, focusing on the properties related to the structure of the tree
   * ToString and DebugView reimplementation
-  * (Planned) [Dynamic LINQ](https://github.com/zspitz/ExpressionTreeToString/issues/56)
+  * Dynamic LINQ equivalent to the expression
 
 * For C# and VB pseudo-code representations:
 
