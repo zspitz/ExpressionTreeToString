@@ -8044,4 +8044,104 @@ new Expression<Func<string, string>> {
     Body = $x_y,
     ReturnType = typeof(string)
 }
+---- VBCompiler.SingleDimensionWithBoundsExpression
+new Expression<Func<string[]>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<string[]>),
+    Body = new NewArrayExpression {
+        NodeType = ExpressionType.NewArrayBounds,
+        Type = typeof(string[]),
+        Expressions = new ReadOnlyCollection<Expression> {
+            new BinaryExpression {
+                NodeType = ExpressionType.AddChecked,
+                Type = typeof(int),
+                Left = new MemberExpression {
+                    Type = typeof(int),
+                    Expression = new ConstantExpression {
+                        Type = typeof(<closure>),
+                        Value = #<closure>
+                    },
+                    Member = typeof(<closure>).GetField("$VB$Local_bounds")
+                },
+                Right = new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 1
+                }
+            }
+        }
+    },
+    ReturnType = typeof(string[])
+}
+---- VBCompiler.MultidimensionWithBoundsExpression
+new Expression<Func<string[,]>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<string[,]>),
+    Body = new NewArrayExpression {
+        NodeType = ExpressionType.NewArrayBounds,
+        Type = typeof(string[,]),
+        Expressions = new ReadOnlyCollection<Expression> {
+            new BinaryExpression {
+                NodeType = ExpressionType.AddChecked,
+                Type = typeof(int),
+                Left = new MemberExpression {
+                    Type = typeof(int),
+                    Expression = new ConstantExpression {
+                        Type = typeof(<closure>),
+                        Value = #<closure>
+                    },
+                    Member = typeof(<closure>).GetField("$VB$Local_bound1")
+                },
+                Right = new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 1
+                }
+            },
+            new BinaryExpression {
+                NodeType = ExpressionType.AddChecked,
+                Type = typeof(int),
+                Left = new MemberExpression {
+                    Type = typeof(int),
+                    Expression = new ConstantExpression {
+                        Type = typeof(<closure>),
+                        Value = #<closure>
+                    },
+                    Member = typeof(<closure>).GetField("$VB$Local_bound2")
+                },
+                Right = new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 1
+                }
+            }
+        }
+    },
+    ReturnType = typeof(string[,])
+}
+---- VBCompiler.JaggedWithBoundsExpression
+new Expression<Func<string[][]>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<string[][]>),
+    Body = new NewArrayExpression {
+        NodeType = ExpressionType.NewArrayBounds,
+        Type = typeof(string[][]),
+        Expressions = new ReadOnlyCollection<Expression> {
+            new BinaryExpression {
+                NodeType = ExpressionType.AddChecked,
+                Type = typeof(int),
+                Left = new MemberExpression {
+                    Type = typeof(int),
+                    Expression = new ConstantExpression {
+                        Type = typeof(<closure>),
+                        Value = #<closure>
+                    },
+                    Member = typeof(<closure>).GetField("$VB$Local_bound")
+                },
+                Right = new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 1
+                }
+            }
+        }
+    },
+    ReturnType = typeof(string[][])
+}
 ------

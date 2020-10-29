@@ -1126,4 +1126,10 @@ Not b1
 Function($var0 As String) $var0 = $var0
 ---- FactoryMethods.WhitespaceNamedParameter
 Function($x_y As String) $x_y
+---- VBCompiler.SingleDimensionWithBoundsExpression
+Function() New String(bounds) {}
+---- VBCompiler.MultidimensionWithBoundsExpression
+Function() New String(bound1, bound2) {}
+---- VBCompiler.JaggedWithBoundsExpression
+Function() New String(bound)() {}
 ------

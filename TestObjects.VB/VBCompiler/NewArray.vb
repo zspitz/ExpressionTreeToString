@@ -10,7 +10,21 @@
     Friend SingleDimensionWithBounds As Expression = Expr(Function() New String(4) {})
 
     <TestObject(NewArray)>
+    Friend SingleDimensionWithBoundsExpression As Expression = IIFE(Function()
+                                                                        Dim bounds = 5
+                                                                        Return Expr(Function() New String(bounds) {})
+                                                                    End Function)
+
+    <TestObject(NewArray)>
     Friend MultidimensionWithBounds As Expression = Expr(Function() New String(1, 2) {})
+
+    <TestObject(NewArray)>
+    Friend MultidimensionWithBoundsExpression As Expression = IIFE(Function()
+                                                                       Dim bound1 = 1
+                                                                       Dim bound2 = 2
+                                                                       Return Expr(Function() New String(bound1, bound2) {})
+                                                                   End Function)
+
 
     <TestObject(NewArray)>
     Friend JaggedWithElementsImplicitType As Expression = Expr(Function() {
@@ -38,6 +52,12 @@
 
     <TestObject(NewArray)>
     Friend JaggedWithBounds As Expression = Expr(Function() New String(4)() {})
+
+    <TestObject(NewArray)>
+    Friend JaggedWithBoundsExpression As Expression = IIFE(Function()
+                                                               Dim bound = 4
+                                                               Return Expr(Function() New String(bound)() {})
+                                                           End Function)
 
     <TestObject(NewArray)>
     Friend ArrayOfMultidimensionalArray As Expression = Expr(Function() New String(4)(,) {})

@@ -3120,4 +3120,38 @@ var $x_y = Parameter(
 );
 
 Lambda($x_y, $x_y)
+---- VBCompiler.SingleDimensionWithBoundsExpression
+Lambda(
+    NewArrayBounds(
+        typeof(string),
+        AddChecked(
+            Constant(bounds),
+            Constant(1)
+        )
+    )
+)
+---- VBCompiler.MultidimensionWithBoundsExpression
+Lambda(
+    NewArrayBounds(
+        typeof(string),
+        AddChecked(
+            Constant(bound1),
+            Constant(1)
+        ),
+        AddChecked(
+            Constant(bound2),
+            Constant(1)
+        )
+    )
+)
+---- VBCompiler.JaggedWithBoundsExpression
+Lambda(
+    NewArrayBounds(
+        typeof(string[]),
+        AddChecked(
+            Constant(bound),
+            Constant(1)
+        )
+    )
+)
 ------

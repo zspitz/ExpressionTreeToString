@@ -2248,4 +2248,29 @@ Lambda (Func<string, bool>)
 Lambda (Func<string, string>)
     · Parameters[0] - Parameter (string) "x y"
     · Body - Parameter (string) "x y"
+---- VBCompiler.SingleDimensionWithBoundsExpression
+Lambda (Func<string[]>)
+    · Body - NewArrayBounds (string[]) = new[] { null, null, null, null, null, null }
+        · Expressions[0] - AddChecked (int) = 6
+            · Left - MemberAccess (int) $VB$Local_bounds = 5
+                · Expression - Constant (<closure>) = #<closure>
+            · Right - Constant (int) = 1
+---- VBCompiler.MultidimensionWithBoundsExpression
+Lambda (Func<string[,]>)
+    · Body - NewArrayBounds (string[,]) = #string[,]
+        · Expressions[0] - AddChecked (int) = 2
+            · Left - MemberAccess (int) $VB$Local_bound1 = 1
+                · Expression - Constant (<closure>) = #<closure>
+            · Right - Constant (int) = 1
+        · Expressions[1] - AddChecked (int) = 3
+            · Left - MemberAccess (int) $VB$Local_bound2 = 2
+                · Expression - Constant (<closure>) = #<closure>
+            · Right - Constant (int) = 1
+---- VBCompiler.JaggedWithBoundsExpression
+Lambda (Func<string[][]>)
+    · Body - NewArrayBounds (string[][]) = #string[][]
+        · Expressions[0] - AddChecked (int) = 5
+            · Left - MemberAccess (int) $VB$Local_bound = 4
+                · Expression - Constant (<closure>) = #<closure>
+            · Right - Constant (int) = 1
 ------

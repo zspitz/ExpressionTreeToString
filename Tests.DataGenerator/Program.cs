@@ -27,11 +27,10 @@ namespace Tests.DataGenerator {
                 var objects = Objects.Get()
                     .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
                     .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
-                //.Where(x => x.source == dlinq);
 
                 //var objects = Objects.Get()
-                //    .Where(x => key == DynamicLinq && x.source == dlinq)
-                //    .OrderBy(x => ordering[$"{x.source}.{x.name}"]);
+                //    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
+                //    .OrderBy(x => ordering.TryGetValue($"{x.source}.{x.name}", out var order) ? order : -1);
 
                 foreach (var (category, source, name, o) in objects) {
                     var toWrite = o switch

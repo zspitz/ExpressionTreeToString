@@ -1162,4 +1162,10 @@ x + y
 (string $var0) => $var0 == $var0
 ---- FactoryMethods.WhitespaceNamedParameter
 (string $x_y) => $x_y
+---- VBCompiler.SingleDimensionWithBoundsExpression
+() => new string[bounds + 1]
+---- VBCompiler.MultidimensionWithBoundsExpression
+() => new string[bound1 + 1, bound2 + 1]
+---- VBCompiler.JaggedWithBoundsExpression
+() => new string[bound + 1][]
 ------

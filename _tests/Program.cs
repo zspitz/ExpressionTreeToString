@@ -117,16 +117,49 @@ namespace _tests {
             //        null;
             //Console.WriteLine(expr.ToString("Dynamic LINQ"));
 
-            //Expression<Func<Person, bool>> expr = p => p.Posts.Any(p1 => p1.Text.Contains("ABCD"));
             ////Expression<Func<Person, string>> expr = p => p.TestExtension();
-            //Console.WriteLine(expr.ToString("C#"));
-            //Console.WriteLine(expr.ToString("Dynamic LINQ"));
 
-            Expression<Func<Person, bool>> expr = p => p.FirstName == "A" || p.LastName == "D" || p.FirstName == "B" || p.DOB.Hour > 10 || p.FirstName == "C" || p.LastName == "E";
-            Console.WriteLine(expr.ToString("Dynamic LINQ", out var pathspans));
+            availableRenderersSamples();
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);
+
+        static void availableRenderersSamples() {
+            void line() => Console.WriteLine(new string('=', 50));
+
+            Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
+            Console.WriteLine(expr.ToString("C#"));
+
+            line();
+
+            Console.WriteLine(expr.ToString("Visual Basic"));
+
+            line();
+
+            Console.WriteLine(expr.ToString("Factory methods", "C#"));
+
+            line();
+
+            Expression<Func<Person, bool>> expr1 = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday || p.DOB.DayOfWeek == DayOfWeek.Thursday;
+            Console.WriteLine(expr1.ToString("Dynamic LINQ"));
+
+            line();
+
+            Expression<Func<Person, bool>> expr2 = p => true;
+            Console.WriteLine(expr2.ToString("Textual tree", "C#"));
+
+            line();
+
+            Console.WriteLine(expr2.ToString("Object notation", "C#"));
+
+            line();
+
+            Console.WriteLine(expr2.ToString("ToString"));
+
+            line();
+
+            Console.WriteLine(expr2.ToString("DebugView"));
+        }
     }
 
     public class Person {

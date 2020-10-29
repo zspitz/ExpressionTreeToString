@@ -442,6 +442,8 @@ namespace ExpressionTreeToString {
                                 if (x is ConstantExpression cexpr) {
                                     object newValue = ((dynamic)cexpr.Value) - 1;
                                     newExpr = Expression.Constant(newValue);
+                                } else if (x.NodeType == AddChecked && x is BinaryExpression bexpr && bexpr.Right is ConstantExpression cexpr1 && Object.Equals(cexpr1.Value, 1))  {
+                                    newExpr = ((BinaryExpression)x).Left;
                                 } else {
                                     newExpr = Expression.SubtractChecked(x, Expression.Constant(1));
                                 }
