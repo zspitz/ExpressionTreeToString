@@ -119,7 +119,38 @@ namespace _tests {
 
             ////Expression<Func<Person, string>> expr = p => p.TestExtension();
 
-            availableRenderersSamples();
+            //availableRenderersSamples();
+
+            //var s = "123";
+            //int i = 5;
+            //Expression<Func<bool>> expr = () => int.TryParse(s, out i);
+            //var s1 = expr.ToString("Factory methods", "C#");
+
+            //var Bar = Parameter(
+            //    typeof(string),
+            //    "Bar"
+            //);
+            //var Baz = Parameter(
+            //    typeof(string),
+            //    "Baz"
+            //);
+
+
+
+            //var s = "123";
+            //var i = Variable(typeof(int), "i");
+
+            //var expr2 = Lambda(
+            //    Call(
+            //        typeof(int).GetMethod("TryParse", new[] { typeof(string), typeof(int).MakeByRefType() }),
+            //        Constant(s),
+            //        i
+            //    )
+            //);
+
+int i = 5;
+Expression<Func<string>> expr = () => i.ToString();
+Console.WriteLine(expr.ToString("Factory methods", "C#"));
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);

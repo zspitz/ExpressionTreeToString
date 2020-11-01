@@ -107,7 +107,7 @@ new Expression<Func<{ string Bar, string Baz }>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<{ string Bar, string Baz }>),
     Body = new NewExpression {
-        Type = typeof({ string Bar, string Baz }),
+        Type = typeof(<anonymous({ string Bar, string Baz })>),
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
                 Type = typeof(string),
@@ -118,17 +118,17 @@ new Expression<Func<{ string Bar, string Baz }>> {
                 Value = "efgh"
             }
         },
-        Constructor = typeof({ string Bar, string Baz }).GetConstructor(new[] { typeof(string), typeof(string) }),
+        Constructor = typeof(<anonymous({ string Bar, string Baz })>).GetConstructor(new[] { typeof(string), typeof(string) }),
         Members = #TrueReadOnlyCollection<MemberInfo>
     },
-    ReturnType = typeof({ string Bar, string Baz })
+    ReturnType = typeof(<anonymous({ string Bar, string Baz })>)
 }
 ---- CSCompiler.AnonymousTypeFromVariables
 new Expression<Func<{ string Bar, string Baz }>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<{ string Bar, string Baz }>),
     Body = new NewExpression {
-        Type = typeof({ string Bar, string Baz }),
+        Type = typeof(<anonymous({ string Bar, string Baz })>),
         Arguments = new ReadOnlyCollection<Expression> {
             new MemberExpression {
                 Type = typeof(string),
@@ -147,10 +147,10 @@ new Expression<Func<{ string Bar, string Baz }>> {
                 Member = typeof(<closure>).GetField("Baz")
             }
         },
-        Constructor = typeof({ string Bar, string Baz }).GetConstructor(new[] { typeof(string), typeof(string) }),
+        Constructor = typeof(<anonymous({ string Bar, string Baz })>).GetConstructor(new[] { typeof(string), typeof(string) }),
         Members = #TrueReadOnlyCollection<MemberInfo>
     },
-    ReturnType = typeof({ string Bar, string Baz })
+    ReturnType = typeof(<anonymous({ string Bar, string Baz })>)
 }
 ---- CSCompiler.ArrayIndex
 new Expression<Func<string>> {
@@ -5425,7 +5425,7 @@ new Expression<Func<{ string Bar, string Baz }>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<{ string Bar, string Baz }>),
     Body = new NewExpression {
-        Type = typeof({ string Bar, string Baz }),
+        Type = typeof(<anonymous({ string Bar, string Baz })>),
         Arguments = new ReadOnlyCollection<Expression> {
             new ConstantExpression {
                 Type = typeof(string),
@@ -5436,17 +5436,17 @@ new Expression<Func<{ string Bar, string Baz }>> {
                 Value = "efgh"
             }
         },
-        Constructor = typeof({ string Bar, string Baz }).GetConstructor(new[] { typeof(string), typeof(string) }),
+        Constructor = typeof(<anonymous({ string Bar, string Baz })>).GetConstructor(new[] { typeof(string), typeof(string) }),
         Members = #TrueReadOnlyCollection<MemberInfo>
     },
-    ReturnType = typeof({ string Bar, string Baz })
+    ReturnType = typeof(<anonymous({ string Bar, string Baz })>)
 }
 ---- VBCompiler.AnonymousTypeFromVariables
 new Expression<Func<{ string Bar, string Baz }>> {
     NodeType = ExpressionType.Lambda,
     Type = typeof(Func<{ string Bar, string Baz }>),
     Body = new NewExpression {
-        Type = typeof({ string Bar, string Baz }),
+        Type = typeof(<anonymous({ string Bar, string Baz })>),
         Arguments = new ReadOnlyCollection<Expression> {
             new MemberExpression {
                 Type = typeof(string),
@@ -5465,10 +5465,10 @@ new Expression<Func<{ string Bar, string Baz }>> {
                 Member = typeof(<closure>).GetField("$VB$Local_Baz")
             }
         },
-        Constructor = typeof({ string Bar, string Baz }).GetConstructor(new[] { typeof(string), typeof(string) }),
+        Constructor = typeof(<anonymous({ string Bar, string Baz })>).GetConstructor(new[] { typeof(string), typeof(string) }),
         Members = #TrueReadOnlyCollection<MemberInfo>
     },
-    ReturnType = typeof({ string Bar, string Baz })
+    ReturnType = typeof(<anonymous({ string Bar, string Baz })>)
 }
 ---- VBCompiler.ArrayIndex
 new Expression<Func<string>> {

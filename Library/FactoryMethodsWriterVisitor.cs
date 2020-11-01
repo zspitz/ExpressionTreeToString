@@ -87,11 +87,7 @@ namespace ExpressionTreeToString {
                     Write(" ");
                 }
 
-                if (arg is ParameterExpression pexpr && pexpr.In(identifiers)) {
-                    // used for writing compiler-generated closed-over variables wrapped in Constant calls; see WriteMemberAccess
-                    // https://github.com/zspitz/ExpressionTreeToString/issues/42#issuecomment-683476272
-                    Write(pexpr.Name); 
-                } else if (argType?.InheritsFromOrImplementsAny(NodeTypes) ?? false) {
+                if (argType?.InheritsFromOrImplementsAny(NodeTypes) ?? false) {
                     WriteNode(path, arg!, parameterDeclaration);
                 } else if (argType?.InheritsFromOrImplementsAny(PropertyTypes) ?? false) {
                     if (language == CSharp) {
@@ -265,21 +261,17 @@ namespace ExpressionTreeToString {
             WriteMethodCall(() => Constant(expr.Value));
         }
 
-        private HashSet<Expression> identifiers = new HashSet<Expression>();
-
         protected override void WriteMemberAccess(MemberExpression expr) {
             // closed over variable from oute scope
             if (expr.Expression?.Type.IsClosureClass() ?? false) {
-                if (expr.Expression is ConstantExpression) {
-                    // https://github.com/zspitz/ExpressionTreeToString/issues/42#issuecomment-683476272
-                    var name = expr.Member.Name.Replace("$VB$Local_", "");
-                    var prm = Parameter(expr.Type, name);
-                    identifiers.Add(prm);
-                    WriteMethodCall(() => Constant(prm));
-                    identifiers.Remove(prm);
-                    return;
+                if (!(expr.Expression is ConstantExpression)) {
+                    throw new NotImplementedException("Closure type returned from an expression other than ConstantExpression.");
                 }
-                throw new NotImplementedException("Closure type returned from an expression other than ConstantExpression.");
+
+                var name = expr.Member.Name.Replace("$VB$Local_", "");
+                var variable = Parameter(expr.Type, name);
+                WriteNode("Expression", variable, true);
+                return;
             }
 
             WriteMethodCall(() => MakeMemberAccess(expr.Expression, expr.Member));
