@@ -75,9 +75,9 @@
 ---- CSCompiler.ExtensionMethod0Arguments
 () => lst.Count()
 ---- CSCompiler.ExtensionMethod1Argument
-() => lst.DummyExtensionMethod1Arguments(1)
+() => lst.ExtensionMethod1Argument(1)
 ---- CSCompiler.ExtensionMethod2Arguments
-() => lst.DummyExtensionMethod2Arguments(5, 17)
+() => lst.ExtensionMethod2Arguments(5, 17)
 ---- CSCompiler.False
 () => false
 ---- CSCompiler.GreaterThan
@@ -1110,17 +1110,17 @@ if (true) {
 ---- VBCompiler.LikeOperatorObjects
 (object o1, object o2) => LikeOperator.LikeObject(o1, o2, CompareMethod.Binary)
 ---- VBCompiler.ExtensionMethod1Argument
-() => lst.DummyExtensionMethod1Argument(1)
+() => lst.ExtensionMethod1Argument(1)
 ---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
-() => lst.DummyExtensionMethod1Argument(1)
+() => lst.ExtensionMethod1ArgumentEnumerable(1)
 ---- VBCompiler.ExtensionMethod2Arguments
-() => lst.DummyExtensionMethod2Arguments(5, 17)
+() => lst.ExtensionMethod2Arguments(5, 17)
 ---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
-() => lst.DummyExtensionMethod2Arguments(5, 6)
+() => lst.ExtensionMethod2ArgumentsEnumerable(5, 6)
 ---- FactoryMethods.ExtensionMethod1Argument
-lstString.DummyExtensionMethod1Arguments(1)
+lstString.ExtensionMethod1Argument(1)
 ---- FactoryMethods.ExtensionMethod2Arguments
-lstString.DummyExtensionMethod2Arguments(5, 17)
+lstString.ExtensionMethod2Arguments(5, 17)
 ---- VBCompiler.ExtensionMethod0Arguments
 () => lst.Count
 ---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
@@ -1168,4 +1168,8 @@ x + y
 () => new string[bound1 + 1, bound2 + 1]
 ---- VBCompiler.JaggedWithBoundsExpression
 () => new string[bound + 1][]
+---- VBCompiler.ExtensionMethod1ArgumentWithConversion
+() => lst.ExtensionMethod1ArgumentEnumerable(1)
+---- VBCompiler.ExtensionMethod2ArgumentsWithConversion
+() => lst.ExtensionMethod2ArgumentsEnumerable(5, 6)
 ------

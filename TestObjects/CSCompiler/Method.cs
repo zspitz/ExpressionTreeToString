@@ -6,11 +6,17 @@ using static ExpressionTreeTestObjects.Categories;
 using System.Linq;
 
 namespace ExpressionTreeTestObjects {
-    internal static class Dummy {
-        internal static void DummyMethod() { }
-        internal static List<T> DummyExtensionMethod1Arguments<T>(this List<T> lst, int n) => lst;
-        internal static List<T>? DummyExtensionMethod2Arguments<T>(this List<T>? lst, int n1, int n2) => lst;
-        internal static void DummyMethodWithGenerics<T>() { }
+    public static class Dummy {
+        public static void DummyMethod() { }
+        public static List<T> ExtensionMethod1Argument<T>(this List<T> lst, int n) => lst;
+        public static List<T> ExtensionMethod2Arguments<T>(this List<T> lst, int n1, int n2) => lst;
+        public static IEnumerable<T> ExtensionMethod1ArgumentEnumerable<T>(this IEnumerable<T> lst, int n) => lst;
+        public static IEnumerable<T> ExtensionMethod2ArgumentsEnumerable<T>(this IEnumerable<T> lst, int n1, int n2) => lst;
+        public static void DummyMethodWithGenerics<T>() { }
+        public static void DummyMethodWithRef(ref int i) { }
+        public static void DummyMethodWithOut(out int i) {
+            i = 5;
+        }
     }
 
     partial class CSCompiler {
@@ -42,7 +48,7 @@ namespace ExpressionTreeTestObjects {
         [TestObject(Method)]
         internal static readonly Expression ExtensionMethod1Argument = IIFE(() => {
             var lst = new List<string>();
-            return Expr(() => lst.DummyExtensionMethod1Arguments(1));
+            return Expr(() => lst.ExtensionMethod1Argument(1));
         });
 
         [TestObject(Method)]
@@ -57,7 +63,7 @@ namespace ExpressionTreeTestObjects {
         [TestObject(Method)]
         internal static readonly Expression ExtensionMethod2Arguments = IIFE(() => {
             var lst = new List<string>();
-            return Expr(() => lst.DummyExtensionMethod2Arguments(5, 17));
+            return Expr(() => lst.ExtensionMethod2Arguments(5, 17));
         });
 
         [TestObject(Method)]
@@ -68,5 +74,11 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject(Method)]
         internal static readonly Expression RequiredGenericParameters = Expr(() => Dummy.DummyMethodWithGenerics<string>());
+
+        //[TestObject(Method)]
+        //internal static readonly Expression MethodCallWithRefParameter = Expr((int i) => Dummy.DummyMethodWithRef(ref i));
+
+        //[TestObject(Method)]
+        //internal static readonly Expression MethodCallWithOutParameter = Expr((int i) => Dummy.DummyMethodWithOut(out i));
     }
 }

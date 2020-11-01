@@ -24,7 +24,9 @@ namespace ExpressionTreeToString.Tests {
                         .Select(key => (key, $"{x.source}.{x.name}", x.category, x.o))
                         .Where(x => x.key != DebugView || x.o is Expression)
                         .Where(x => x.key != DynamicLinq ^ x.Item2.StartsWith(nameof(DynamicLinqTestObjects)))
-                ).ToTheoryData();
+                )
+                .OrderBy(x => x.key).ThenBy(x => x.Item2)
+                .ToTheoryData();
 
         public static readonly Dictionary<(BuiltinRenderer rendererKey, string objectName), string> ExpectedStrings = IIFE(() => {
             var ret = new Dictionary<(BuiltinRenderer rendererKey, string objectName), string>();

@@ -895,7 +895,7 @@ Lambda(
 ---- CSCompiler.StaticMethod0Arguments
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyMethod", BindingFlags.Static | BindingFlags.NonPublic)
+        typeof(Dummy).GetMethod("DummyMethod")
     )
 )
 ---- CSCompiler.StaticMethod1Argument
@@ -2162,7 +2162,7 @@ MakeMemberAccess(null,
 )
 ---- FactoryMethods.StaticMethod0Arguments
 Call(
-    typeof(Dummy).GetMethod("DummyMethod", BindingFlags.Static | BindingFlags.NonPublic)
+    typeof(Dummy).GetMethod("DummyMethod")
 )
 ---- FactoryMethods.StaticMethod1Argument
 Call(
@@ -3260,7 +3260,7 @@ Lambda(
 ---- VBCompiler.StaticMethod0Arguments
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyMethod", BindingFlags.Static | BindingFlags.NonPublic)
+        typeof(Dummy).GetMethod("DummyMethod")
     )
 )
 ---- VBCompiler.StaticMethod1Argument
@@ -3610,11 +3610,8 @@ var lst = Parameter(
 
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod1Argument", BindingFlags.Static | BindingFlags.NonPublic),
-        Convert(
-            lst,
-            typeof(IEnumerable<string>)
-        ),
+        typeof(Dummy).GetMethod("ExtensionMethod1Argument"),
+        lst,
         Constant(1)
     )
 )
@@ -3626,7 +3623,7 @@ var lst = Parameter(
 
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod1Argument", BindingFlags.Static | BindingFlags.NonPublic),
+        typeof(Dummy).GetMethod("ExtensionMethod1ArgumentEnumerable"),
         lst,
         Constant(1)
     )
@@ -3639,11 +3636,8 @@ var lst = Parameter(
 
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
-        Convert(
-            lst,
-            typeof(IEnumerable<string>)
-        ),
+        typeof(Dummy).GetMethod("ExtensionMethod2Arguments"),
+        lst,
         Constant(5),
         Constant(17)
     )
@@ -3656,7 +3650,7 @@ var lst = Parameter(
 
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
+        typeof(Dummy).GetMethod("ExtensionMethod2ArgumentsEnumerable"),
         lst,
         Constant(5),
         Constant(6)
@@ -3670,7 +3664,7 @@ var lst = Parameter(
 
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments", BindingFlags.Static | BindingFlags.NonPublic),
+        typeof(Dummy).GetMethod("ExtensionMethod1Argument"),
         lst,
         Constant(1)
     )
@@ -3683,7 +3677,7 @@ var lst = Parameter(
 
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
+        typeof(Dummy).GetMethod("ExtensionMethod2Arguments"),
         lst,
         Constant(5),
         Constant(17)
@@ -3691,13 +3685,13 @@ Lambda(
 )
 ---- FactoryMethods.ExtensionMethod1Argument
 Call(
-    typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments", BindingFlags.Static | BindingFlags.NonPublic),
+    typeof(Dummy).GetMethod("ExtensionMethod1Argument"),
     lstString,
     Constant(1)
 )
 ---- FactoryMethods.ExtensionMethod2Arguments
 Call(
-    typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic),
+    typeof(Dummy).GetMethod("ExtensionMethod2Arguments"),
     lstString,
     Constant(5),
     Constant(17)
@@ -3737,7 +3731,7 @@ Unbox(obj,
 ---- CSCompiler.RequiredGenericParameters
 Lambda(
     Call(
-        typeof(Dummy).GetMethod("DummyMethodWithGenerics", BindingFlags.Static | BindingFlags.NonPublic)
+        typeof(Dummy).GetMethod("DummyMethodWithGenerics")
     )
 )
 ---- FactoryMethods.NonVoidSwitch
@@ -3881,6 +3875,39 @@ Lambda(
             bound,
             Constant(1)
         )
+    )
+)
+---- VBCompiler.ExtensionMethod1ArgumentWithConversion
+var lst = Parameter(
+    typeof(List<string>),
+    "lst"
+);
+
+Lambda(
+    Call(
+        typeof(Dummy).GetMethod("ExtensionMethod1ArgumentEnumerable"),
+        Convert(
+            lst,
+            typeof(IEnumerable<string>)
+        ),
+        Constant(1)
+    )
+)
+---- VBCompiler.ExtensionMethod2ArgumentsWithConversion
+var lst = Parameter(
+    typeof(List<string>),
+    "lst"
+);
+
+Lambda(
+    Call(
+        typeof(Dummy).GetMethod("ExtensionMethod2ArgumentsEnumerable"),
+        Convert(
+            lst,
+            typeof(IEnumerable<string>)
+        ),
+        Constant(5),
+        Constant(6)
     )
 )
 ------

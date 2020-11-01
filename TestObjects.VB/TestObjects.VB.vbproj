@@ -27,6 +27,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Import Include="ExpressionTreeTestObjects" />
     <Import Include="ExpressionTreeTestObjects.Categories" />
     <Import Include="ExpressionTreeTestObjects.Functions" />
     <Import Include="System.Linq.Expressions" />

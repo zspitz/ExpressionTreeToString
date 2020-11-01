@@ -75,7 +75,7 @@ Function() b1 Xor b2
 ---- CSCompiler.ExtensionMethod0Arguments
 Function() lst.Count
 ---- CSCompiler.ExtensionMethod2Arguments
-Function() lst.DummyExtensionMethod2Arguments(5, 17)
+Function() lst.ExtensionMethod2Arguments(5, 17)
 ---- CSCompiler.False
 Function() False
 ---- CSCompiler.GreaterThan
@@ -1059,19 +1059,19 @@ Function(s1 As String, s2 As String) s1 Like s2
 ---- VBCompiler.LikeOperatorObjects
 Function(o1 As Object, o2 As Object) o1 Like o2
 ---- VBCompiler.ExtensionMethod1Argument
-Function() lst.DummyExtensionMethod1Argument(1)
+Function() lst.ExtensionMethod1Argument(1)
 ---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
-Function() lst.DummyExtensionMethod1Argument(1)
+Function() lst.ExtensionMethod1ArgumentEnumerable(1)
 ---- VBCompiler.ExtensionMethod2Arguments
-Function() lst.DummyExtensionMethod2Arguments(5, 17)
+Function() lst.ExtensionMethod2Arguments(5, 17)
 ---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
-Function() lst.DummyExtensionMethod2Arguments(5, 6)
+Function() lst.ExtensionMethod2ArgumentsEnumerable(5, 6)
 ---- CSCompiler.ExtensionMethod1Argument
-Function() lst.DummyExtensionMethod1Arguments(1)
+Function() lst.ExtensionMethod1Argument(1)
 ---- FactoryMethods.ExtensionMethod1Argument
-lstString.DummyExtensionMethod1Arguments(1)
+lstString.ExtensionMethod1Argument(1)
 ---- FactoryMethods.ExtensionMethod2Arguments
-lstString.DummyExtensionMethod2Arguments(5, 17)
+lstString.ExtensionMethod2Arguments(5, 17)
 ---- VBCompiler.ExtensionMethod0Arguments
 Function() lst.Count
 ---- VBCompiler.ExtensionMethod0ArgumentsWithoutConversion
@@ -1132,4 +1132,8 @@ Function() New String(bounds) {}
 Function() New String(bound1, bound2) {}
 ---- VBCompiler.JaggedWithBoundsExpression
 Function() New String(bound)() {}
+---- VBCompiler.ExtensionMethod1ArgumentWithConversion
+Function() lst.ExtensionMethod1ArgumentEnumerable(1)
+---- VBCompiler.ExtensionMethod2ArgumentsWithConversion
+Function() lst.ExtensionMethod2ArgumentsEnumerable(5, 6)
 ------

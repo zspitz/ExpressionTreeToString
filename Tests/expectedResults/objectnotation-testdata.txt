@@ -1647,7 +1647,7 @@ new Expression<Action> {
     Type = typeof(Action),
     Body = new MethodCallExpression {
         Type = typeof(void),
-        Method = typeof(Dummy).GetMethod("DummyMethod", BindingFlags.Static | BindingFlags.NonPublic)
+        Method = typeof(Dummy).GetMethod("DummyMethod")
     },
     ReturnType = typeof(void)
 }
@@ -4834,7 +4834,7 @@ new MemberExpression {
 ---- FactoryMethods.StaticMethod0Arguments
 new MethodCallExpression {
     Type = typeof(void),
-    Method = typeof(Dummy).GetMethod("DummyMethod", BindingFlags.Static | BindingFlags.NonPublic)
+    Method = typeof(Dummy).GetMethod("DummyMethod")
 }
 ---- FactoryMethods.StaticMethod1Argument
 new MethodCallExpression {
@@ -6963,7 +6963,7 @@ new Expression<Action> {
     Type = typeof(Action),
     Body = new MethodCallExpression {
         Type = typeof(void),
-        Method = typeof(Dummy).GetMethod("DummyMethod", BindingFlags.Static | BindingFlags.NonPublic)
+        Method = typeof(Dummy).GetMethod("DummyMethod")
     },
     ReturnType = typeof(void)
 }
@@ -7568,32 +7568,28 @@ new Expression<Func<object, object, object>> {
     ReturnType = typeof(object)
 }
 ---- VBCompiler.ExtensionMethod1Argument
-new Expression<Func<IEnumerable<string>>> {
+new Expression<Func<List<string>>> {
     NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<IEnumerable<string>>),
+    Type = typeof(Func<List<string>>),
     Body = new MethodCallExpression {
-        Type = typeof(IEnumerable<string>),
+        Type = typeof(List<string>),
         Arguments = new ReadOnlyCollection<Expression> {
-            new UnaryExpression {
-                NodeType = ExpressionType.Convert,
-                Type = typeof(IEnumerable<string>),
-                Operand = new MemberExpression {
-                    Type = typeof(List<string>),
-                    Expression = new ConstantExpression {
-                        Type = typeof(<closure>),
-                        Value = #<closure>
-                    },
-                    Member = typeof(<closure>).GetField("$VB$Local_lst")
-                }
+            new MemberExpression {
+                Type = typeof(List<string>),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_lst")
             },
             new ConstantExpression {
                 Type = typeof(int),
                 Value = 1
             }
         },
-        Method = typeof(Dummy).GetMethod("DummyExtensionMethod1Argument", BindingFlags.Static | BindingFlags.NonPublic)
+        Method = typeof(Dummy).GetMethod("ExtensionMethod1Argument")
     },
-    ReturnType = typeof(IEnumerable<string>)
+    ReturnType = typeof(List<string>)
 }
 ---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
 new Expression<Func<IEnumerable<string>>> {
@@ -7615,28 +7611,24 @@ new Expression<Func<IEnumerable<string>>> {
                 Value = 1
             }
         },
-        Method = typeof(Dummy).GetMethod("DummyExtensionMethod1Argument", BindingFlags.Static | BindingFlags.NonPublic)
+        Method = typeof(Dummy).GetMethod("ExtensionMethod1ArgumentEnumerable")
     },
     ReturnType = typeof(IEnumerable<string>)
 }
 ---- VBCompiler.ExtensionMethod2Arguments
-new Expression<Func<IEnumerable<string>>> {
+new Expression<Func<List<string>>> {
     NodeType = ExpressionType.Lambda,
-    Type = typeof(Func<IEnumerable<string>>),
+    Type = typeof(Func<List<string>>),
     Body = new MethodCallExpression {
-        Type = typeof(IEnumerable<string>),
+        Type = typeof(List<string>),
         Arguments = new ReadOnlyCollection<Expression> {
-            new UnaryExpression {
-                NodeType = ExpressionType.Convert,
-                Type = typeof(IEnumerable<string>),
-                Operand = new MemberExpression {
-                    Type = typeof(List<string>),
-                    Expression = new ConstantExpression {
-                        Type = typeof(<closure>),
-                        Value = #<closure>
-                    },
-                    Member = typeof(<closure>).GetField("$VB$Local_lst")
-                }
+            new MemberExpression {
+                Type = typeof(List<string>),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_lst")
             },
             new ConstantExpression {
                 Type = typeof(int),
@@ -7647,9 +7639,9 @@ new Expression<Func<IEnumerable<string>>> {
                 Value = 17
             }
         },
-        Method = typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic)
+        Method = typeof(Dummy).GetMethod("ExtensionMethod2Arguments")
     },
-    ReturnType = typeof(IEnumerable<string>)
+    ReturnType = typeof(List<string>)
 }
 ---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
 new Expression<Func<IEnumerable<string>>> {
@@ -7675,7 +7667,7 @@ new Expression<Func<IEnumerable<string>>> {
                 Value = 6
             }
         },
-        Method = typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic)
+        Method = typeof(Dummy).GetMethod("ExtensionMethod2ArgumentsEnumerable")
     },
     ReturnType = typeof(IEnumerable<string>)
 }
@@ -7699,7 +7691,7 @@ new Expression<Func<List<string>>> {
                 Value = 1
             }
         },
-        Method = typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments", BindingFlags.Static | BindingFlags.NonPublic)
+        Method = typeof(Dummy).GetMethod("ExtensionMethod1Argument")
     },
     ReturnType = typeof(List<string>)
 }
@@ -7727,7 +7719,7 @@ new Expression<Func<List<string>>> {
                 Value = 17
             }
         },
-        Method = typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic)
+        Method = typeof(Dummy).GetMethod("ExtensionMethod2Arguments")
     },
     ReturnType = typeof(List<string>)
 }
@@ -7741,7 +7733,7 @@ new MethodCallExpression {
             Value = 1
         }
     },
-    Method = typeof(Dummy).GetMethod("DummyExtensionMethod1Arguments", BindingFlags.Static | BindingFlags.NonPublic)
+    Method = typeof(Dummy).GetMethod("ExtensionMethod1Argument")
 }
 ---- FactoryMethods.ExtensionMethod2Arguments
 new MethodCallExpression {
@@ -7757,7 +7749,7 @@ new MethodCallExpression {
             Value = 17
         }
     },
-    Method = typeof(Dummy).GetMethod("DummyExtensionMethod2Arguments", BindingFlags.Static | BindingFlags.NonPublic)
+    Method = typeof(Dummy).GetMethod("ExtensionMethod2Arguments")
 }
 ---- VBCompiler.ExtensionMethod0Arguments
 new Expression<Func<int>> {
@@ -7814,7 +7806,7 @@ new Expression<Action> {
     Type = typeof(Action),
     Body = new MethodCallExpression {
         Type = typeof(void),
-        Method = typeof(Dummy).GetMethod("DummyMethodWithGenerics", BindingFlags.Static | BindingFlags.NonPublic)
+        Method = typeof(Dummy).GetMethod("DummyMethodWithGenerics")
     },
     ReturnType = typeof(void)
 }
@@ -8143,5 +8135,65 @@ new Expression<Func<string[][]>> {
         }
     },
     ReturnType = typeof(string[][])
+}
+---- VBCompiler.ExtensionMethod1ArgumentWithConversion
+new Expression<Func<IEnumerable<string>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<IEnumerable<string>>),
+    Body = new MethodCallExpression {
+        Type = typeof(IEnumerable<string>),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new UnaryExpression {
+                NodeType = ExpressionType.Convert,
+                Type = typeof(IEnumerable<string>),
+                Operand = new MemberExpression {
+                    Type = typeof(List<string>),
+                    Expression = new ConstantExpression {
+                        Type = typeof(<closure>),
+                        Value = #<closure>
+                    },
+                    Member = typeof(<closure>).GetField("$VB$Local_lst")
+                }
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 1
+            }
+        },
+        Method = typeof(Dummy).GetMethod("ExtensionMethod1ArgumentEnumerable")
+    },
+    ReturnType = typeof(IEnumerable<string>)
+}
+---- VBCompiler.ExtensionMethod2ArgumentsWithConversion
+new Expression<Func<IEnumerable<string>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<IEnumerable<string>>),
+    Body = new MethodCallExpression {
+        Type = typeof(IEnumerable<string>),
+        Arguments = new ReadOnlyCollection<Expression> {
+            new UnaryExpression {
+                NodeType = ExpressionType.Convert,
+                Type = typeof(IEnumerable<string>),
+                Operand = new MemberExpression {
+                    Type = typeof(List<string>),
+                    Expression = new ConstantExpression {
+                        Type = typeof(<closure>),
+                        Value = #<closure>
+                    },
+                    Member = typeof(<closure>).GetField("$VB$Local_lst")
+                }
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 5
+            },
+            new ConstantExpression {
+                Type = typeof(int),
+                Value = 6
+            }
+        },
+        Method = typeof(Dummy).GetMethod("ExtensionMethod2ArgumentsEnumerable")
+    },
+    ReturnType = typeof(IEnumerable<string>)
 }
 ------

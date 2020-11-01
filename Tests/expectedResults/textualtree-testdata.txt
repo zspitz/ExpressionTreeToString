@@ -321,7 +321,7 @@ Lambda (Func<string>)
             · Expressions[1] - Constant (string) = "b"
 ---- CSCompiler.ExtensionMethod2Arguments
 Lambda (Func<List<string>>)
-    · Body - Call (List<string>) Dummy.DummyExtensionMethod2Arguments = #List<string>
+    · Body - Call (List<string>) Dummy.ExtensionMethod2Arguments = #List<string>
         · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
             · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Constant (int) = 5
@@ -2121,45 +2121,43 @@ Lambda (Func<object, object, object>)
         · Arguments[1] - Parameter (object) o2
         · Arguments[2] - Constant (CompareMethod) = CompareMethod.Binary
 ---- VBCompiler.ExtensionMethod1Argument
-Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Dummy.DummyExtensionMethod1Argument = #List<string>
-        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
-            · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
-                · Expression - Constant (<closure>) = #<closure>
+Lambda (Func<List<string>>)
+    · Body - Call (List<string>) Dummy.ExtensionMethod1Argument = #List<string>
+        · Arguments[0] - MemberAccess (List<string>) $VB$Local_lst = #List<string>
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Constant (int) = 1
 ---- VBCompiler.ExtensionMethod1ArgumentWithoutConversion
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Dummy.DummyExtensionMethod1Argument = #List<string>
+    · Body - Call (IEnumerable<string>) Dummy.ExtensionMethod1ArgumentEnumerable = #List<string>
         · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
             · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Constant (int) = 1
 ---- VBCompiler.ExtensionMethod2Arguments
-Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Dummy.DummyExtensionMethod2Arguments = #List<string>
-        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
-            · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
-                · Expression - Constant (<closure>) = #<closure>
+Lambda (Func<List<string>>)
+    · Body - Call (List<string>) Dummy.ExtensionMethod2Arguments = #List<string>
+        · Arguments[0] - MemberAccess (List<string>) $VB$Local_lst = #List<string>
+            · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Constant (int) = 5
         · Arguments[2] - Constant (int) = 17
 ---- VBCompiler.ExtensionMethod2ArgumentsWithoutConversion
 Lambda (Func<IEnumerable<string>>)
-    · Body - Call (IEnumerable<string>) Dummy.DummyExtensionMethod2Arguments = #List<string>
+    · Body - Call (IEnumerable<string>) Dummy.ExtensionMethod2ArgumentsEnumerable = #List<string>
         · Arguments[0] - MemberAccess (IEnumerable<string>) $VB$Local_lst = #List<string>
             · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Constant (int) = 5
         · Arguments[2] - Constant (int) = 6
 ---- CSCompiler.ExtensionMethod1Argument
 Lambda (Func<List<string>>)
-    · Body - Call (List<string>) Dummy.DummyExtensionMethod1Arguments = #List<string>
+    · Body - Call (List<string>) Dummy.ExtensionMethod1Argument = #List<string>
         · Arguments[0] - MemberAccess (List<string>) lst = #List<string>
             · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Constant (int) = 1
 ---- FactoryMethods.ExtensionMethod1Argument
-Call (List<string>) Dummy.DummyExtensionMethod1Arguments
+Call (List<string>) Dummy.ExtensionMethod1Argument
     · Arguments[0] - Parameter (List<string>) lstString
     · Arguments[1] - Constant (int) = 1
 ---- FactoryMethods.ExtensionMethod2Arguments
-Call (List<string>) Dummy.DummyExtensionMethod2Arguments
+Call (List<string>) Dummy.ExtensionMethod2Arguments
     · Arguments[0] - Parameter (List<string>) lstString
     · Arguments[1] - Constant (int) = 5
     · Arguments[2] - Constant (int) = 17
@@ -2273,4 +2271,19 @@ Lambda (Func<string[][]>)
             · Left - MemberAccess (int) $VB$Local_bound = 4
                 · Expression - Constant (<closure>) = #<closure>
             · Right - Constant (int) = 1
+---- VBCompiler.ExtensionMethod1ArgumentWithConversion
+Lambda (Func<IEnumerable<string>>)
+    · Body - Call (IEnumerable<string>) Dummy.ExtensionMethod1ArgumentEnumerable = #List<string>
+        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
+            · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
+                · Expression - Constant (<closure>) = #<closure>
+        · Arguments[1] - Constant (int) = 1
+---- VBCompiler.ExtensionMethod2ArgumentsWithConversion
+Lambda (Func<IEnumerable<string>>)
+    · Body - Call (IEnumerable<string>) Dummy.ExtensionMethod2ArgumentsEnumerable = #List<string>
+        · Arguments[0] - Convert (IEnumerable<string>) = #List<string>
+            · Operand - MemberAccess (List<string>) $VB$Local_lst = #List<string>
+                · Expression - Constant (<closure>) = #<closure>
+        · Arguments[1] - Constant (int) = 5
+        · Arguments[2] - Constant (int) = 6
 ------

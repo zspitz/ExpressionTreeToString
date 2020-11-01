@@ -1,4 +1,6 @@
-﻿Partial Module VBCompiler
+﻿Imports ExpressionTreeTestObjects.Dummy
+
+Partial Module VBCompiler
     <TestObject(Method)>
     Friend InstanceMethod0Arguments As Expression = IIFE(Function()
                                                              Dim s = ""
@@ -32,13 +34,19 @@
     <TestObject(Method)>
     Friend ExtensionMethod1Argument As Expression = IIFE(Function()
                                                              Dim lst = New List(Of String)()
-                                                             Return Expr(Function() lst.DummyExtensionMethod1Argument(1))
+                                                             Return Expr(Function() lst.ExtensionMethod1Argument(1))
                                                          End Function)
+
+    <TestObject(Method)>
+    Friend ExtensionMethod1ArgumentWithConversion As Expression = IIFE(Function()
+                                                                           Dim lst = New List(Of String)()
+                                                                           Return Expr(Function() lst.ExtensionMethod1ArgumentEnumerable(1))
+                                                                       End Function)
 
     <TestObject(Method)>
     Friend ExtensionMethod1ArgumentWithoutConversion As Expression = IIFE(Function()
                                                                               Dim lst As IEnumerable(Of String) = New List(Of String)()
-                                                                              Return Expr(Function() lst.DummyExtensionMethod1Argument(1))
+                                                                              Return Expr(Function() lst.ExtensionMethod1ArgumentEnumerable(1))
                                                                           End Function)
 
     <TestObject(Method)>
@@ -62,13 +70,19 @@
     <TestObject(Method)>
     Friend ExtensionMethod2Arguments As Expression = IIFE(Function()
                                                               Dim lst = New List(Of String)()
-                                                              Return Expr(Function() lst.DummyExtensionMethod2Arguments(5, 17))
+                                                              Return Expr(Function() lst.ExtensionMethod2Arguments(5, 17))
                                                           End Function)
+
+    <TestObject(Method)>
+    Friend ExtensionMethod2ArgumentsWithConversion As Expression = IIFE(Function()
+                                                                            Dim lst = New List(Of String)()
+                                                                            Return Expr(Function() lst.ExtensionMethod2ArgumentsEnumerable(5, 6))
+                                                                        End Function)
 
     <TestObject(Method)>
     Friend ExtensionMethod2ArgumentsWithoutConversion As Expression = IIFE(Function()
                                                                                Dim lst As IEnumerable(Of String) = New List(Of String)()
-                                                                               Return Expr(Function() lst.DummyExtensionMethod2Arguments(5, 6))
+                                                                               Return Expr(Function() lst.ExtensionMethod2ArgumentsEnumerable(5, 6))
                                                                            End Function)
 
     <TestObject(Method)>
@@ -79,6 +93,12 @@
 
     <TestObject(Method)>
     Friend StringConcatOperatorParamArray As Expression = Expr(Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2)
+
+    '<TestObject(Method)>
+    'Friend MethodCallWithRefParameter As Expression = Expr(Sub(i As Integer) DummyMethodWithRef(i))
+
+    '<TestObject(Method)>
+    'Friend MethodCallWithOutParameter As Expression = Expr(Sub(i As Integer) DummyMethodWithOut(i))
 
 #If NETSTANDARD2_0 Then
 #Else

@@ -26,7 +26,7 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject(Method)]
         internal static readonly Expression ExtensionMethod1Argument = Call(
-            GetMethod(() => (null as List<string>)!.DummyExtensionMethod1Arguments(0)), 
+            GetMethod(() => (null as List<string>)!.ExtensionMethod1Argument(0)), 
             lstString, 
             Constant(1)
         );
@@ -50,7 +50,7 @@ namespace ExpressionTreeTestObjects {
         internal static readonly Expression ExtensionMethod2Arguments = IIFE(() => {
             var x = Parameter(typeof(string), "x");
             return Call(
-                GetMethod(() => (null as List<string>).DummyExtensionMethod2Arguments(0,0)),
+                GetMethod(() => (null as List<string>)!.ExtensionMethod2Arguments(0,0)),
                 lstString,
                 Constant(5),
                 Constant(17)
