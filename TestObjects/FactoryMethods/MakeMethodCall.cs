@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq.Expressions;
 using static ExpressionTreeTestObjects.Functions;
 using static ExpressionTreeTestObjects.Categories;

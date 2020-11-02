@@ -32,5 +32,6 @@ namespace ExpressionTreeTestObjects {
         public const string Constants = "Constants";
         public const string TypeChecks = "Type check";
         public const string EnumComparison = "Enum comparison";
+        public const string RefOut = "Ref/out parameter declartion and passing";
     }
 }

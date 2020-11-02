@@ -74,11 +74,5 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject(Method)]
         internal static readonly Expression RequiredGenericParameters = Expr(() => Dummy.DummyMethodWithGenerics<string>());
-
-        //[TestObject(Method)]
-        //internal static readonly Expression MethodCallWithRefParameter = Expr((int i) => Dummy.DummyMethodWithRef(ref i));
-
-        //[TestObject(Method)]
-        //internal static readonly Expression MethodCallWithOutParameter = Expr((int i) => Dummy.DummyMethodWithOut(out i));
     }
 }

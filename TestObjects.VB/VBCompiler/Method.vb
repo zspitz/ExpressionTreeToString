@@ -94,12 +94,6 @@ Partial Module VBCompiler
     <TestObject(Method)>
     Friend StringConcatOperatorParamArray As Expression = Expr(Function(s1 As String, s2 As String) s1 + s2 + s1 + s2 + s1 + s2)
 
-    '<TestObject(Method)>
-    'Friend MethodCallWithRefParameter As Expression = Expr(Sub(i As Integer) DummyMethodWithRef(i))
-
-    '<TestObject(Method)>
-    'Friend MethodCallWithOutParameter As Expression = Expr(Sub(i As Integer) DummyMethodWithOut(i))
-
 #If NETSTANDARD2_0 Then
 #Else
     <TestObject(Method)>

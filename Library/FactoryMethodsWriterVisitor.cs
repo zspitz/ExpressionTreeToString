@@ -14,6 +14,7 @@ using static System.Linq.Enumerable;
 using OneOf;
 using static ZSpitz.Util.Language;
 using static ExpressionTreeToString.Util.Functions;
+using ExpressionTreeToString.Util;
 
 namespace ExpressionTreeToString {
     public class FactoryMethodsWriterVisitor : BuiltinsWriterVisitor {
@@ -236,15 +237,19 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteLambda(LambdaExpression expr) {
-            if (!expr.Name.IsNullOrWhitespace() && expr.TailCall) {
-                WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.TailCall, expr.Parameters.ToArray()));
-            } else if (expr.TailCall) {
-                WriteMethodCall(() => Lambda(expr.Body, expr.TailCall, expr.Parameters.ToArray()));
-            } else if (!expr.Name.IsNullOrWhitespace()) {
-                WriteMethodCall(() => Lambda(expr.Body, expr.Name, expr.Parameters));
-            } else {
-                WriteMethodCall(() => Lambda(expr.Body, expr.Parameters.ToArray()));
+            var args = new List<object>();
+            if (!expr.Type.IsAction() && !expr.Type.IsFunc()) {
+                args.Add(expr.Type);
+            };
+            args.Add(("Body", expr.Body));
+            if (!expr.Name.IsNullOrWhitespace()) {
+                args.Add(expr.Name);
             }
+            if (expr.TailCall) {
+                args.Add(expr.TailCall);
+            }
+            expr.Parameters.Select((x, index) => (object)($"Parameters[{index}]", x)).AddRangeTo(args);
+            WriteMethodCall("Lambda", args);
         }
 
         protected override void WriteParameter(ParameterExpression expr) => 

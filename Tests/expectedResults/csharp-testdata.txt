@@ -546,8 +546,6 @@ arr2d[0, 1]
 break target
 ---- FactoryMethods.MakeBreakWithValue
 break target 5
----- FactoryMethods.MakeByRefParameter
-(ref string s4) => true
 ---- FactoryMethods.MakeClearDebugInfo
 // Clear debug info from source.txt
 ---- FactoryMethods.MakeConditional

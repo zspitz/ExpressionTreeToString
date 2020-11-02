@@ -62,12 +62,6 @@ namespace ExpressionTreeTestObjects {
         );
 
         [TestObject(Lambdas)]
-        internal static readonly Expression MakeByRefParameter = Lambda(
-            Constant(true),
-            Parameter(typeof(string).MakeByRefType(), "s4")
-        );
-
-        [TestObject(Lambdas)]
         internal static readonly Expression UnnamedParameter = IIFE(() => {
             var prm = Parameter(typeof(string));
             return Lambda(

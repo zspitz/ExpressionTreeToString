@@ -1615,16 +1615,6 @@ Break(
     Label("target"),
     Constant(5)
 )
----- FactoryMethods.MakeByRefParameter
-var s4 = Parameter(
-    typeof(string).MakeByRefType(),
-    "s4"
-);
-
-Lambda(
-    Constant(true),
-    s4
-)
 ---- FactoryMethods.MakeClearDebugInfo
 ClearDebugInfo(#SymbolDocumentInfo)
 ---- FactoryMethods.MakeConditional
@@ -1870,7 +1860,7 @@ Lambda(
     Add(s1, s2,
         typeof(string).GetMethod("Concat", 0, new[] { typeof(string), typeof(string) })
     ),
-    "name", new[] { s1, s2 }
+    "name", s1, s2
 )
 ---- FactoryMethods.NamedType
 New(

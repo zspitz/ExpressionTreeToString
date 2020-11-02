@@ -3474,25 +3474,6 @@ new GotoExpression {
         Value = 5
     }
 }
----- FactoryMethods.MakeByRefParameter
-var s4 = new ParameterExpression {
-    Type = typeof(string),
-    IsByRef = true,
-    Name = "s4"
-};
-
-new Expression<Delegate2$1> {
-    NodeType = ExpressionType.Lambda,
-    Type = typeof(Delegate2$1),
-    Parameters = new ReadOnlyCollection<ParameterExpression> {
-        s4
-    },
-    Body = new ConstantExpression {
-        Type = typeof(bool),
-        Value = true
-    },
-    ReturnType = typeof(bool)
-}
 ---- FactoryMethods.MakeClearDebugInfo
 new DebugInfoExpression {
     Type = typeof(void),

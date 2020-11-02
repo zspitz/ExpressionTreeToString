@@ -1148,10 +1148,6 @@ Lambda (Func<bool>)
             · Variables[1] - Parameter (string) s2
             · Expressions[0] - Constant (bool) = true
             · Expressions[1] - Constant (bool) = true
----- FactoryMethods.MakeByRefParameter
-Lambda (Delegate2$1)
-    · Parameters[0] - Parameter (string) s4
-    · Body - Constant (bool) = true
 ---- FactoryMethods.MakeMemberBind
 Assignment Foo
     · Expression - Constant (string) = "abcd"
