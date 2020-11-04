@@ -1,5 +1,4 @@
-﻿using ExpressionTreeToString.Util;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -96,6 +95,7 @@ namespace ExpressionTreeToString {
             VisitExpressions(path, open, ',', expressions);
         private void VisitExpressions<T>(string path, char open, char separator, IReadOnlyList<T> expressions, bool parameterDeclaration = false) where T : notnull {
             // we can't replace this with WriteNodes, because this affects Flow, which doesn't exist in VisitorWriterBase -- 
+            // but perhaps after https://github.com/zspitz/ExpressionTreeToString/issues/52
             Out(open.ToString());
 
             if (expressions is { }) {
@@ -129,11 +129,6 @@ namespace ExpressionTreeToString {
             target.Name.IsNullOrEmpty() ?
                 $"#Label{GetLabelTargetId(target)}" :
                 GetDisplayName(target.Name);
-
-        private void DumpLabel(LabelTarget target) =>
-            Out(
-                $".LabelTarget {GetLabelTargetName(target)}:"
-            );
 
         protected override void WriteBinary(BinaryExpression node) {
             if (node.NodeType == ArrayIndex) {
@@ -636,7 +631,7 @@ namespace ExpressionTreeToString {
             }
             Dedent();
             NewLine();
-            DumpLabel(node.Target);
+            WriteNode("Target", node.Target);
         }
 
         protected override void WriteGoto(GotoExpression node) {
@@ -650,7 +645,7 @@ namespace ExpressionTreeToString {
         protected override void WriteLoop(LoopExpression node) {
             Out(".Loop", Flow.Space);
             if (node.ContinueLabel != null) {
-                DumpLabel(node.ContinueLabel);
+                WriteNode("ContinueLabel", node.ContinueLabel);
             }
             Out(" {", Flow.NewLine);
             Indent();
@@ -659,7 +654,7 @@ namespace ExpressionTreeToString {
             Out(Flow.NewLine, "}");
             if (node.BreakLabel != null) {
                 Out("", Flow.NewLine);
-                DumpLabel(node.BreakLabel);
+                WriteNode("BreakLabel", node.BreakLabel);
             }
         }
 
@@ -740,9 +735,10 @@ namespace ExpressionTreeToString {
             Dedent();
         }
 
-        protected override void WriteLabelTarget(LabelTarget labelTarget) {
-            throw new NotImplementedException();
-        }
+        protected override void WriteLabelTarget(LabelTarget labelTarget) => 
+            Out(
+                $".LabelTarget {GetLabelTargetName(labelTarget)}:"
+            );
 
         protected override void WriteDynamic(DynamicExpression node) {
             if (!FrameworkCompatible) {
