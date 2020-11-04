@@ -148,9 +148,14 @@ namespace _tests {
             //    )
             //);
 
-int i = 5;
-Expression<Func<string>> expr = () => i.ToString();
-Console.WriteLine(expr.ToString("Factory methods", "C#"));
+            //int i = 5;
+            //Expression<Func<string>> expr = () => i.ToString();
+            //Console.WriteLine(expr.ToString("Factory methods", "C#"));
+
+            int i = 5;
+            Expression<Func<long>> expr = () => (long)i;
+            Console.WriteLine(expr.ToString("Textual tree", "C#"));
+            Console.WriteLine(expr.ToString("C#"));
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);

@@ -157,12 +157,9 @@ namespace ExpressionTreeToString {
                 case ExpressionType.Convert:
                 case ConvertChecked:
                 case Unbox:
-                    bool renderConversion =
-                        expr.Type != expr.Operand.Type && !(
-                            expr.Type.IsAssignableFrom(expr.Operand.Type) ||
-                            (expr.Type.IsNullable() && expr.Type.UnderlyingIfNullable() == expr.Operand.Type) ||
-                            HasImplicitConversions(expr.Operand.Type, expr.Type)
-                        );
+                    bool renderConversion = 
+                        expr.Type != expr.Operand.Type && 
+                        !expr.Operand.Type.HasImplicitConversionTo(expr.Type);
                     if (renderConversion) { Write($"{TypeName(expr.Type)}("); }
                     WriteNode("Operand", expr.Operand);
                     if (renderConversion) { Write(")"); }

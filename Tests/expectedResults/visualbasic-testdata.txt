@@ -313,7 +313,7 @@ If(s1, s2)
 ---- FactoryMethods.ConstructConvert
 arr
 ---- FactoryMethods.ConstructConvertChecked
-CSng(5)
+5
 ---- FactoryMethods.ConstructConvertCheckedForReferenceType
 arr
 ---- FactoryMethods.ConstructDecrement

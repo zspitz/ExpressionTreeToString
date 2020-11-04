@@ -322,7 +322,7 @@ s1 ?? s2
 ---- FactoryMethods.ConstructConvert
 arr
 ---- FactoryMethods.ConstructConvertChecked
-(float)5
+5
 ---- FactoryMethods.ConstructConvertCheckedForReferenceType
 arr
 ---- FactoryMethods.ConstructDecrement

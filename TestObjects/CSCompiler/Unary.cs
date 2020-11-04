@@ -3,7 +3,6 @@ using System.Linq.Expressions;
 using static ExpressionTreeTestObjects.Categories;
 using static ExpressionTreeTestObjects.Functions;
 
-
 namespace ExpressionTreeTestObjects {
     partial class CSCompiler {
         [TestObject(Unary)]

@@ -146,7 +146,7 @@ namespace ExpressionTreeToString {
                 case ExpressionType.Convert:
                 case ConvertChecked:
                 case Unbox:
-                    if (type.IsAssignableFrom(operand.Type)) {
+                    if (operand.Type.HasImplicitConversionTo(type)) {
                         WriteNode(operandPath, operand);
                     } else if (conversionFunctions.TryGetValue(type, out var conversionFunction)) {
                         Write(conversionFunction);

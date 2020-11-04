@@ -100,7 +100,7 @@ namespace ExpressionTreeToString {
                 case ExpressionType.Convert:
                 case ConvertChecked:
                 case Unbox:
-                    if (!type.IsAssignableFrom(operand.Type)) {
+                    if (!operand.Type.HasImplicitConversionTo(type)) {
                         Write($"({type.FriendlyName(language)})");
                     }
                     Parens(nodeType, operandPath, operand);
@@ -762,7 +762,7 @@ namespace ExpressionTreeToString {
                 (nodeType, type) = node;
             }
 
-            var renderConversion = parentType is null || !parentType.IsAssignableFrom(type);
+            var renderConversion = parentType is null || !type.HasImplicitConversionTo(parentType);
             return nodeType switch
             {
                 Conditional when type != typeof(void) => 15,
