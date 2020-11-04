@@ -12,6 +12,18 @@
                                        End Function)
 
     <TestObject(Binary)>
+    Friend DivideIntegers As Expression = IIFE(Function()
+                                                   Dim x As Integer = 0, y As Integer = 0
+                                                   Return Expr(Function() x / y)
+                                               End Function)
+
+    <TestObject(Binary)>
+    Friend DivideIntegral As Expression = IIFE(Function()
+                                                   Dim x As Double = 0, y As Double = 0
+                                                   Return Expr(Function() x \ y)
+                                               End Function)
+
+    <TestObject(Binary)>
     Friend Modulo As Expression = IIFE(Function()
                                            Dim x As Double = 0, y As Double = 0
                                            Return Expr(Function() x Mod y)

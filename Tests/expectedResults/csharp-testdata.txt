@@ -1170,4 +1170,10 @@ x + y
 () => lst.ExtensionMethod1ArgumentEnumerable(1)
 ---- VBCompiler.ExtensionMethod2ArgumentsWithConversion
 () => lst.ExtensionMethod2ArgumentsEnumerable(5, 6)
+---- VBCompiler.DivideIntegers
+() => x / y
+---- VBCompiler.DivideIntegral
+() => (long)x / (long)y
+---- CSCompiler.DivideIntegral
+() => x / y
 ------

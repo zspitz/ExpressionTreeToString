@@ -21,7 +21,6 @@ namespace ExpressionTreeToString {
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
             [Add] = "+",
             [AddChecked] = "+",
-            [Divide] = "/",
             [Modulo] = "Mod",
             [Multiply] = "*",
             [MultiplyChecked] = "*",
@@ -95,6 +94,14 @@ namespace ExpressionTreeToString {
                     WriteNode(leftPath, left);
                     Write(" <> "); // reference comparisons are handled in the WriterBase.WriteBinary overload
                     WriteNode(rightPath, right);
+                    return;
+                case Divide:
+                    // assuming division is always between the same types
+                    // if the underlying types are integral or non-integral, they will be wrapped in a conversion to match the division -- integral or non-integral
+                    var op1 = left.Type.IsIntegral() ? " \\ " : " / ";
+                    WriteNode(leftPath, left.SansConvert());
+                    Write(op1);
+                    WriteNode(rightPath, right.SansConvert());
                     return;
             }
 
@@ -442,7 +449,7 @@ namespace ExpressionTreeToString {
                                 if (x is ConstantExpression cexpr) {
                                     object newValue = ((dynamic)cexpr.Value) - 1;
                                     newExpr = Expression.Constant(newValue);
-                                } else if (x.NodeType == AddChecked && x is BinaryExpression bexpr && bexpr.Right is ConstantExpression cexpr1 && Object.Equals(cexpr1.Value, 1))  {
+                                } else if (x.NodeType == AddChecked && x is BinaryExpression bexpr && bexpr.Right is ConstantExpression cexpr1 && Object.Equals(cexpr1.Value, 1)) {
                                     newExpr = ((BinaryExpression)x).Left;
                                 } else {
                                     newExpr = Expression.SubtractChecked(x, Expression.Constant(1));
@@ -670,7 +677,8 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteGoto(GotoExpression expr) {
-            var gotoKeyword = expr.Kind switch {
+            var gotoKeyword = expr.Kind switch
+            {
                 Break => "Exit",
                 Continue => "Continue",
                 GotoExpressionKind.Goto => "Goto",
@@ -701,7 +709,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) {
             Write("' Variables -- ");
-            WriteNodes("Variables", expr.Variables,", ", true);
+            WriteNodes("Variables", expr.Variables, ", ", true);
         }
 
         protected override void WriteDebugInfo(DebugInfoExpression expr) {
@@ -724,90 +732,90 @@ namespace ExpressionTreeToString {
         // use:
         //    precedence.GroupBy(kvp => kvp.Value, kvp => kvp.Key, (key, grp) => new {key, values = grp.OrderBy(x => x.ToString()).Joined(", ")}).OrderBy(x => x.key);
         private Dictionary<ExpressionType, int> precedence = new Dictionary<ExpressionType, int>() {
-            [Add] =6,
-            [AddAssign] =-1,
-            [AddAssignChecked] =-1,
-            [AddChecked] =6,
-            [And] =11,
-            [AndAlso] =11,
-            [AndAssign] =-1,
-            [ArrayIndex] =-1,
-            [ArrayLength] =-1, // member access in VB.NET
-            [Assign] =-1,
+            [Add] = 6,
+            [AddAssign] = -1,
+            [AddAssignChecked] = -1,
+            [AddChecked] = 6,
+            [And] = 11,
+            [AndAlso] = 11,
+            [AndAssign] = -1,
+            [ArrayIndex] = -1,
+            [ArrayLength] = -1, // member access in VB.NET
+            [Assign] = -1,
             [Block] = -1,
             [Call] = 0, // precedence of the . operator, not the arguments, which are in any case wrapped in parentheses
-            [Coalesce] =-1,
+            [Coalesce] = -1,
             [Conditional] = -1,
             [Constant] = -1,
-            [ExpressionType.Convert] =-1,
-            [ConvertChecked] =-1,
+            [ExpressionType.Convert] = -1,
+            [ConvertChecked] = -1,
             [DebugInfo] = -1,
-            [Decrement] =-1,
-            [Default] =-1,
-            [Divide] =3,
-            [DivideAssign] =-1,
+            [Decrement] = -1,
+            [Default] = -1,
+            [Divide] = 3,
+            [DivideAssign] = -1,
             [Dynamic] = -1,
-            [Equal] =9,
-            [ExclusiveOr] =13,
-            [ExclusiveOrAssign] =-1,
+            [Equal] = 9,
+            [ExclusiveOr] = 13,
+            [ExclusiveOrAssign] = -1,
             [Extension] = -1,
             [ExpressionType.Goto] = -1,
-            [GreaterThan] =9,
-            [GreaterThanOrEqual] =9,
-            [Increment] =-1,
-            [Index] =-1,
-            [Invoke] =-1,
-            [IsFalse] =-1,
+            [GreaterThan] = 9,
+            [GreaterThanOrEqual] = 9,
+            [Increment] = -1,
+            [Index] = -1,
+            [Invoke] = -1,
+            [IsFalse] = -1,
             [IsTrue] = -1,
             [Label] = -1,
-            [Lambda] =-1,
-            [LeftShift] =8,
-            [LeftShiftAssign] =-1,
-            [LessThan] =9,
-            [LessThanOrEqual] =9,
+            [Lambda] = -1,
+            [LeftShift] = 8,
+            [LeftShiftAssign] = -1,
+            [LessThan] = 9,
+            [LessThanOrEqual] = 9,
             [ListInit] = -1,
             [Loop] = -1,
-            [MemberAccess] =-1,
+            [MemberAccess] = -1,
             [MemberInit] = -1,
-            [Modulo] =5,
-            [ModuloAssign] =-1,
-            [Multiply] =3,
-            [MultiplyAssign] =-1,
-            [MultiplyAssignChecked] =-1,
-            [MultiplyChecked] =-1,
-            [Negate] =2,
-            [NegateChecked] =2,
-            [New] =-1,
-            [NewArrayBounds] =-1, // same as New
-            [NewArrayInit] =-1, // same as New
-            [Not] =10,
-            [NotEqual] =9,
-            [OnesComplement] =2,
-            [Or] =12,
-            [OrAssign] =-1,
-            [OrElse] =12,
+            [Modulo] = 5,
+            [ModuloAssign] = -1,
+            [Multiply] = 3,
+            [MultiplyAssign] = -1,
+            [MultiplyAssignChecked] = -1,
+            [MultiplyChecked] = -1,
+            [Negate] = 2,
+            [NegateChecked] = 2,
+            [New] = -1,
+            [NewArrayBounds] = -1, // same as New
+            [NewArrayInit] = -1, // same as New
+            [Not] = 10,
+            [NotEqual] = 9,
+            [OnesComplement] = 2,
+            [Or] = 12,
+            [OrAssign] = -1,
+            [OrElse] = 12,
             [Parameter] = -1,
-            [PostDecrementAssign] =-1,
-            [PostIncrementAssign] =-1,
-            [Power] =1, 
-            [PowerAssign] =-1,
-            [PreDecrementAssign] =-1,
-            [PreIncrementAssign] =-1,
+            [PostDecrementAssign] = -1,
+            [PostIncrementAssign] = -1,
+            [Power] = 1,
+            [PowerAssign] = -1,
+            [PreDecrementAssign] = -1,
+            [PreIncrementAssign] = -1,
             [Quote] = -1,
-            [RightShift] =8,
-            [RightShiftAssign] =-1,
+            [RightShift] = 8,
+            [RightShiftAssign] = -1,
             [RuntimeVariables] = -1,
-            [Subtract] =6,
-            [SubtractAssign] =-1,
-            [SubtractAssignChecked] =-1,
-            [SubtractChecked] =6,
+            [Subtract] = 6,
+            [SubtractAssign] = -1,
+            [SubtractAssignChecked] = -1,
+            [SubtractChecked] = 6,
             [Switch] = -1,
             [Throw] = -1,
             [Try] = -1,
-            [TypeAs] =-1,
+            [TypeAs] = -1,
             [TypeEqual] = 9, // like Equal
-            [TypeIs] =9,
-            [UnaryPlus] =2,
+            [TypeIs] = 9,
+            [UnaryPlus] = 2,
             [Unbox] = -1,
         };
 

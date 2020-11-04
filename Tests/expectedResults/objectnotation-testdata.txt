@@ -8177,4 +8177,100 @@ new Expression<Func<IEnumerable<string>>> {
     },
     ReturnType = typeof(IEnumerable<string>)
 }
+---- VBCompiler.DivideIntegers
+new Expression<Func<double>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<double>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.Divide,
+        Type = typeof(double),
+        Left = new UnaryExpression {
+            NodeType = ExpressionType.Convert,
+            Type = typeof(double),
+            Operand = new MemberExpression {
+                Type = typeof(int),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_x")
+            }
+        },
+        Right = new UnaryExpression {
+            NodeType = ExpressionType.Convert,
+            Type = typeof(double),
+            Operand = new MemberExpression {
+                Type = typeof(int),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_y")
+            }
+        }
+    },
+    ReturnType = typeof(double)
+}
+---- VBCompiler.DivideIntegral
+new Expression<Func<long>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<long>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.Divide,
+        Type = typeof(long),
+        Left = new UnaryExpression {
+            NodeType = ExpressionType.ConvertChecked,
+            Type = typeof(long),
+            Method = typeof(Convert).GetMethod("ToInt64", new[] { typeof(double) }),
+            Operand = new MemberExpression {
+                Type = typeof(double),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_x")
+            }
+        },
+        Right = new UnaryExpression {
+            NodeType = ExpressionType.ConvertChecked,
+            Type = typeof(long),
+            Method = typeof(Convert).GetMethod("ToInt64", new[] { typeof(double) }),
+            Operand = new MemberExpression {
+                Type = typeof(double),
+                Expression = new ConstantExpression {
+                    Type = typeof(<closure>),
+                    Value = #<closure>
+                },
+                Member = typeof(<closure>).GetField("$VB$Local_y")
+            }
+        }
+    },
+    ReturnType = typeof(long)
+}
+---- CSCompiler.DivideIntegral
+new Expression<Func<int>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<int>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.Divide,
+        Type = typeof(int),
+        Left = new MemberExpression {
+            Type = typeof(int),
+            Expression = new ConstantExpression {
+                Type = typeof(<closure>),
+                Value = #<closure>
+            },
+            Member = typeof(<closure>).GetField("x")
+        },
+        Right = new MemberExpression {
+            Type = typeof(int),
+            Expression = new ConstantExpression {
+                Type = typeof(<closure>),
+                Value = #<closure>
+            },
+            Member = typeof(<closure>).GetField("y")
+        }
+    },
+    ReturnType = typeof(int)
+}
 ------

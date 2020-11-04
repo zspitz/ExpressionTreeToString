@@ -3900,4 +3900,66 @@ Lambda(
         Constant(6)
     )
 )
+---- VBCompiler.DivideIntegers
+var x = Parameter(
+    typeof(int),
+    "x"
+);
+var y = Parameter(
+    typeof(int),
+    "y"
+);
+
+Lambda(
+    Divide(
+        Convert(
+            x,
+            typeof(double)
+        ),
+        Convert(
+            y,
+            typeof(double)
+        )
+    )
+)
+---- VBCompiler.DivideIntegral
+var x = Parameter(
+    typeof(double),
+    "x"
+);
+var y = Parameter(
+    typeof(double),
+    "y"
+);
+
+Lambda(
+    Divide(
+        ConvertChecked(
+            x,
+            typeof(long),
+            typeof(Convert).GetMethod("ToInt64", new[] { typeof(double) })
+        ),
+        ConvertChecked(
+            y,
+            typeof(long),
+            typeof(Convert).GetMethod("ToInt64", new[] { typeof(double) })
+        )
+    )
+)
+---- CSCompiler.DivideIntegral
+var x = Parameter(
+    typeof(int),
+    "x"
+);
+var y = Parameter(
+    typeof(int),
+    "y"
+);
+
+Lambda(
+    Divide(
+        x,
+        y
+    )
+)
 ------

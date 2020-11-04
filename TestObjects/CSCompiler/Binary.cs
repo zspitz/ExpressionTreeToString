@@ -17,6 +17,12 @@ namespace ExpressionTreeTestObjects {
         });
 
         [TestObject(Binary)]
+        internal static readonly Expression DivideIntegral = IIFE(() => {
+            int x = 0, y = 0;
+            return Expr(() => x / y);
+        });
+
+        [TestObject(Binary)]
         internal static readonly Expression Modulo = IIFE(() => {
             double x = 0, y = 0;
             return Expr(() => x % y);

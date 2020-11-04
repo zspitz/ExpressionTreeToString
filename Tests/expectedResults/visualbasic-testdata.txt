@@ -1134,4 +1134,10 @@ Function() New String(bound)() {}
 Function() lst.ExtensionMethod1ArgumentEnumerable(1)
 ---- VBCompiler.ExtensionMethod2ArgumentsWithConversion
 Function() lst.ExtensionMethod2ArgumentsEnumerable(5, 6)
+---- VBCompiler.DivideIntegers
+Function() x / y
+---- VBCompiler.DivideIntegral
+Function() x \ y
+---- CSCompiler.DivideIntegral
+Function() x \ y
 ------

@@ -2282,4 +2282,29 @@ Lambda (Func<IEnumerable<string>>)
                 · Expression - Constant (<closure>) = #<closure>
         · Arguments[1] - Constant (int) = 5
         · Arguments[2] - Constant (int) = 6
+---- VBCompiler.DivideIntegers
+Lambda (Func<double>)
+    · Body - Divide (double) = NaN
+        · Left - Convert (double) = 0
+            · Operand - MemberAccess (int) $VB$Local_x = 0
+                · Expression - Constant (<closure>) = #<closure>
+        · Right - Convert (double) = 0
+            · Operand - MemberAccess (int) $VB$Local_y = 0
+                · Expression - Constant (<closure>) = #<closure>
+---- VBCompiler.DivideIntegral
+Lambda (Func<long>)
+    · Body - Divide (long) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+        · Left - ConvertChecked (long) = 0
+            · Operand - MemberAccess (double) $VB$Local_x = 0
+                · Expression - Constant (<closure>) = #<closure>
+        · Right - ConvertChecked (long) = 0
+            · Operand - MemberAccess (double) $VB$Local_y = 0
+                · Expression - Constant (<closure>) = #<closure>
+---- CSCompiler.DivideIntegral
+Lambda (Func<int>)
+    · Body - Divide (int) = #TargetInvocationException:"Exception has been thrown by the target of an invocation."
+        · Left - MemberAccess (int) x = 0
+            · Expression - Constant (<closure>) = #<closure>
+        · Right - MemberAccess (int) y = 0
+            · Expression - Constant (<closure>) = #<closure>
 ------
