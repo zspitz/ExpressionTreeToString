@@ -82,4 +82,16 @@ LastName.ToString()
 Notify()
 ---- DynamicLinqTestObjects.NewNamed
 DateTime(2001, 1, 1, 0, 0, 0, DateTimeKind.Local)
+---- DynamicLinqTestObjects.LeftEnumNonConstant
+DOB.Value.DayOfWeek >= DayOfWeek.Tuesday
+---- DynamicLinqTestObjects.RightEnumNonConstant
+DayOfWeek.Tuesday >= DOB.Value.DayOfWeek
+---- DynamicLinqTestObjects.DualNonConstant
+int(DOB.Value.DayOfWeek) == int(DOB.Value.DayOfWeek)
+---- DynamicLinqTestObjects.InLeftEnumNonConstant
+DOB.Value.DayOfWeek in (DayOfWeek.Thursday, DayOfWeek.Monday)
+---- DynamicLinqTestObjects.InRightEnumNonConstant
+DayOfWeek.Tuesday in (DOB.Value.DayOfWeek, RegisteredOn.Value.DayOfWeek)
+---- DynamicLinqTestObjects.InConstantOrNonConstant
+DOB.Value.DayOfWeek in (RegisteredOn.Value.DayOfWeek, DayOfWeek.Thursday)
 ------

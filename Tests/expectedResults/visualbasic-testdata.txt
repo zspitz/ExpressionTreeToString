@@ -1140,4 +1140,6 @@ Function() x / y
 Function() x \ y
 ---- CSCompiler.DivideIntegral
 Function() x \ y
+---- FactoryMethods.MakeEqualsEnum
+DayOfWeek.Tuesday = DayOfWeek.Monday
 ------

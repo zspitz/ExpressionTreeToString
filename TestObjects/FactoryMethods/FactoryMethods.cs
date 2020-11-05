@@ -5,6 +5,7 @@ using static ExpressionTreeTestObjects.Globals;
 using System.Linq;
 using System.Collections;
 using TestObjects;
+using System;
 
 namespace ExpressionTreeTestObjects {
     [ObjectContainer]
@@ -85,5 +86,17 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject("")]
         internal static readonly Expression MakeExtensionExpression = new ExtensionExpression();
+
+        [TestObject(EnumComparison)]
+        internal static readonly Expression MakeEqualsEnum = Equal(
+            ConvertChecked(
+                Constant(DayOfWeek.Tuesday), 
+                typeof(int)
+            ),
+            ConvertChecked(
+                Constant(DayOfWeek.Monday),
+                typeof(int)
+            )
+        );
     }
 }

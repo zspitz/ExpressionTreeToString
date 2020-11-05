@@ -8273,4 +8273,25 @@ new Expression<Func<int>> {
     },
     ReturnType = typeof(int)
 }
+---- FactoryMethods.MakeEqualsEnum
+new BinaryExpression {
+    NodeType = ExpressionType.Equal,
+    Type = typeof(bool),
+    Left = new UnaryExpression {
+        NodeType = ExpressionType.ConvertChecked,
+        Type = typeof(int),
+        Operand = new ConstantExpression {
+            Type = typeof(DayOfWeek),
+            Value = DayOfWeek.Tuesday
+        }
+    },
+    Right = new UnaryExpression {
+        NodeType = ExpressionType.ConvertChecked,
+        Type = typeof(int),
+        Operand = new ConstantExpression {
+            Type = typeof(DayOfWeek),
+            Value = DayOfWeek.Monday
+        }
+    }
+}
 ------

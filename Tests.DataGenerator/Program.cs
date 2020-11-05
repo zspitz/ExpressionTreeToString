@@ -24,13 +24,13 @@ namespace Tests.DataGenerator {
                 var language = key == VisualBasic ? Language.VisualBasic : Language.CSharp;
 
                 const string dlinq = nameof(DynamicLinqTestObjects);
-                var objects = Objects.Get()
-                    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
-                    .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
-
                 //var objects = Objects.Get()
                 //    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
-                //    .OrderBy(x => ordering.TryGetValue($"{x.source}.{x.name}", out var order) ? order : -1);
+                //    .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
+
+                var objects = Objects.Get()
+                    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
+                    .OrderBy(x => ordering.TryGetValue($"{x.source}.{x.name}", out var order) ? order : -1);
 
                 foreach (var (category, source, name, o) in objects) {
                     var toWrite = o switch

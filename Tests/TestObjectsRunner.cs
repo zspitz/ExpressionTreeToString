@@ -86,7 +86,7 @@ namespace ExpressionTreeToString.Tests {
             Language? language = rendererKey switch
             {
                 ObjectNotation => Language.CSharp,
-                BuiltinRenderer.FactoryMethods => Language.CSharp,
+                FactoryMethods => Language.CSharp,
                 TextualTree => Language.CSharp,
                 _ => null
             };

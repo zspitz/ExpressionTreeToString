@@ -26,5 +26,6 @@ namespace ExpressionTreeToString.Tests {
         public List<Person> Relatives2 { get; } = new List<Person>();
         public Person? Father { get; }
         public bool Notify() => true;
+        public DateTime? RegisteredOn { get; set; }
     }
 }

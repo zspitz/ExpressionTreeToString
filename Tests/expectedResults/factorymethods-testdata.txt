@@ -3962,4 +3962,15 @@ Lambda(
         y
     )
 )
+---- FactoryMethods.MakeEqualsEnum
+Equal(
+    ConvertChecked(
+        Constant(DayOfWeek.Tuesday),
+        typeof(int)
+    ),
+    ConvertChecked(
+        Constant(DayOfWeek.Monday),
+        typeof(int)
+    )
+)
 ------

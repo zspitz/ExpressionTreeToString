@@ -10,6 +10,7 @@ using ZSpitz.Util;
 using static System.Linq.Expressions.ExpressionType;
 using static ZSpitz.Util.Functions;
 using static System.Linq.Enumerable;
+using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeToString {
     public class DynamicLinqWriterVisitor : BuiltinsWriterVisitor {
@@ -88,6 +89,8 @@ namespace ExpressionTreeToString {
                 return matched;
             });
 
+            (Expression left, string leftPath, Expression right, string rightPath) parts;
+
             if (grouped.Any(grp => grp.Key is { } && grp.Count()>1)) { // can any elements be written using `in`?
                 bool firstClause = true;
                 foreach (var grp in grouped) {
@@ -110,17 +113,35 @@ namespace ExpressionTreeToString {
                     bool firstElement = true;
                     foreach (var orClause in grp) {
                         var bexpr = (BinaryExpression)orClause.clause;
+                        var (left, leftPath, right, rightPath) = (
+                            bexpr.Left,
+                            "Left",
+                            bexpr.Right,
+                            "Right"
+                        );
+                        if (TryGetEnumComparison(orClause.clause, out parts)) {
+                            (left, leftPath, right, rightPath) = parts;
+                        }
+
                         if (firstElement) {
-                            WriteNode($"{orClause.path}.Left", bexpr.Left);
+                            WriteNode($"{orClause.path}.{leftPath}", left);
                             Write(" in (");
                             firstElement = false;
                         } else {
                             Write(", ");
                         }
-                        WriteNode($"{orClause.path}.Right", bexpr.Right);
+                        WriteNode($"{orClause.path}.{rightPath}", right);
                     }
                     Write(")");
                 }
+                return;
+            }
+
+            if (TryGetEnumComparison(expr, out parts)) {
+                var (left, leftPath, right, rightPath) = parts;
+                WriteNode(leftPath, left);
+                Write($" {simpleBinaryOperators[expr.NodeType]} ");
+                WriteNode(rightPath, right);
                 return;
             }
 
@@ -463,6 +484,8 @@ namespace ExpressionTreeToString {
         }
 
         private bool isMemberChainEqual(Expression x, Expression y) {
+            x = x.SansConvert();
+            y = y.SansConvert();
             if (!(x is MemberExpression mexpr1 && y is MemberExpression mexpr2)) {
                 return x == y;
             }

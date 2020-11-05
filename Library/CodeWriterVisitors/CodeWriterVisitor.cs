@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using static ExpressionTreeToString.Globals;
 using static System.Linq.Expressions.ExpressionType;
 using ZSpitz.Util;
 using OneOf;
@@ -26,47 +25,10 @@ namespace ExpressionTreeToString {
         protected abstract void WriteBinary(ExpressionType nodeType, string leftPath, Expression left, string rightPath, Expression right);
 
         protected override void WriteBinary(BinaryExpression expr) {
-            if (expr.NodeType.In(RelationalOperators)) {
-                // In compiler-generated expressions, a relational comparison used with an enum value:
-                //      x => x.DOB.DayOfWeek == DayOfWeek.Tuesday
-                // is represented as the comparison between an integer value and the enum converted to Int32:
-                //      x => (int)x.DOB.DayOfWeek == 2
-                // We check for this pattern in either direction of the BinaryExpression:
-                //      x => (int)x.DOB.DayOfWeek == 2
-                //      x => 2 == (int)x.DOB.DayOfWeek
-                // and if it matches, write the original comparison
-
-                (Expression?, string?) enumOperand(Expression operand, Expression other, string pathSegment) {
-                    (Expression?, string?) ret = (null, null);
-                    if (!(operand is UnaryExpression uexpr)) { return ret; }
-                    if (uexpr.NodeType.NotIn(ExpressionType.Convert, ConvertChecked)) { return ret; }
-                    var operandType = uexpr.Operand.Type;
-                    if (!operandType.IsEnum) { return ret; }
-                    if (operandType.GetEnumUnderlyingType() != other.Type) { return ret; }
-                    return (uexpr.Operand, $"{pathSegment}.Operand");
-                }
-
-                Expression? getEnumValue(Expression other, Type enumType) {
-                    if (!(other is ConstantExpression cexpr)) { return null; }
-                    if (!Enum.IsDefined(enumType, cexpr.Value)) { return null; }
-                    return Expression.Constant(Enum.Parse(enumType, cexpr.Value.ToString()));
-                }
-
-                var (leftOperand, leftPath) = enumOperand(expr.Left, expr.Right, "Left");
-                var (rightOperand, rightPath) = enumOperand(expr.Right, expr.Left, "Right");
-
-                if (leftOperand is { } && rightOperand is null) {
-                    rightOperand = getEnumValue(expr.Right, leftOperand.Type);
-                    rightPath = "Right";
-                } else if (leftOperand is null && rightOperand is { }) {
-                    leftOperand = getEnumValue(expr.Left, rightOperand.Type);
-                    leftPath = "Left";
-                }
-
-                if (leftOperand is { } && rightOperand is { }) {
-                    WriteBinary(expr.NodeType, leftPath!, leftOperand, rightPath!, rightOperand);
-                    return;
-                }
+            if (TryGetEnumComparison(expr, out var parts)) {
+                var (leftOperand, leftPath, rightOperand, rightPath) = parts;
+                WriteBinary(expr.NodeType, leftPath!, leftOperand, rightPath!, rightOperand);
+                return;
             }
 
             WriteBinary(expr.NodeType, "Left", expr.Left, "Right", expr.Right);

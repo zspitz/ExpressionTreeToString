@@ -2307,4 +2307,10 @@ Lambda (Func<int>)
             · Expression - Constant (<closure>) = #<closure>
         · Right - MemberAccess (int) y = 0
             · Expression - Constant (<closure>) = #<closure>
+---- FactoryMethods.MakeEqualsEnum
+Equal (bool) = false
+    · Left - ConvertChecked (int) = 2
+        · Operand - Constant (DayOfWeek) = DayOfWeek.Tuesday
+    · Right - ConvertChecked (int) = 1
+        · Operand - Constant (DayOfWeek) = DayOfWeek.Monday
 ------

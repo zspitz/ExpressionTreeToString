@@ -152,10 +152,27 @@ namespace _tests {
             //Expression<Func<string>> expr = () => i.ToString();
             //Console.WriteLine(expr.ToString("Factory methods", "C#"));
 
-            int i = 5;
-            Expression<Func<long>> expr = () => (long)i;
+            //int i = 5;
+            //Expression<Func<long>> expr = () => (long)i;
+            //Console.WriteLine(expr.ToString("Textual tree", "C#"));
+            //Console.WriteLine(expr.ToString("C#"));
+
+            //Expression expr = Equal(
+            //    ConvertChecked(
+            //        Constant(DayOfWeek.Tuesday),
+            //        typeof(int)
+            //    ),
+            //    ConvertChecked(
+            //        Constant(DayOfWeek.Monday),
+            //        typeof(int)
+            //    )
+            //);
+
+            Expression<Func<Person, bool>> expr = p => p.DOB!.DayOfWeek == DayOfWeek.Thursday || p.DOB!.DayOfWeek == DayOfWeek.Wednesday;
+
             Console.WriteLine(expr.ToString("Textual tree", "C#"));
             Console.WriteLine(expr.ToString("C#"));
+            Console.WriteLine(expr.ToString("Dynamic LINQ"));
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);
