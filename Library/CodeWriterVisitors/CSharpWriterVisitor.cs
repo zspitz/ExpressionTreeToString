@@ -188,7 +188,7 @@ namespace ExpressionTreeToString {
             WriteNodes("Parameters", expr.Parameters, false, ", ", true);
             Write(") => ");
 
-            if (CanInline(expr.Body)) {
+            if (canInline(expr.Body)) {
                 WriteNode("Body", expr.Body);
                 return;
             }
@@ -197,7 +197,7 @@ namespace ExpressionTreeToString {
             Indent();
             WriteEOL();
 
-            CSharpMultilineBlockTypes blockType = CSharpMultilineBlockTypes.Block;
+            var blockType = CSharpMultilineBlockTypes.Block;
             if (expr.Body.Type != typeof(void)) {
                 if (expr.Body is BlockExpression bexpr && bexpr.HasMultipleLines()) {
                     blockType = CSharpMultilineBlockTypes.Return;
@@ -206,14 +206,14 @@ namespace ExpressionTreeToString {
                 }
             }
             WriteNode("Body", expr.Body, CreateMetadata(blockType));
-            WriteStatementEnd(expr.Body);
+            writeStatementEnd(expr.Body);
             WriteEOL(true);
             Write("}");
         }
 
         protected override void WriteParameterDeclaration(ParameterExpression prm) {
             if (prm.IsByRef) { Write("ref "); }
-            Write($"{prm.Type.FriendlyName(language)} {GetVariableName(prm, ref ids)}");
+            Write($"{prm.Type.FriendlyName(language)} {GetVariableName(prm, ref IDs)}");
         }
 
         protected override void WriteNew(Type type, string argsPath, IList<Expression> args) {
@@ -259,7 +259,7 @@ namespace ExpressionTreeToString {
 
             Write("{");
 
-            (IEnumerable<object> items, string itemsPath) = binding switch
+            (var items, var itemsPath) = binding switch
             {
                 MemberListBinding listBinding => (listBinding.Initializers, "Initializers"),
                 MemberMemberBinding memberBinding => (memberBinding.Bindings, "Bindings"),
@@ -314,7 +314,7 @@ namespace ExpressionTreeToString {
                     Write(" }");
                     break;
                 case NewArrayBounds:
-                    (string left, string right) = ("[", "]");
+                    (var left, var right) = ("[", "]");
                     var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
                     Write($"new {nestedArrayTypes.Last().root!.FriendlyName(language)}");
                     nestedArrayTypes.ForEachT((current, _, index) => {
@@ -332,13 +332,13 @@ namespace ExpressionTreeToString {
             }
         }
 
-        private bool CanInline(Expression expr) {
+        private bool canInline(Expression expr) {
             switch (expr) {
                 case ConditionalExpression cexpr when cexpr.Type == typeof(void):
                 case BlockExpression bexpr when
                     bexpr.Expressions.Count > 1 ||
                     bexpr.Variables.Any() ||
-                    (bexpr.Expressions.Count == 1 && CanInline(bexpr.Expressions.First())):
+                    (bexpr.Expressions.Count == 1 && canInline(bexpr.Expressions.First())):
                 case SwitchExpression _:
                 case LambdaExpression _:
                 case TryExpression _:
@@ -366,7 +366,7 @@ namespace ExpressionTreeToString {
             Indent();
             WriteEOL();
             WriteNode("IfTrue", expr.IfTrue, CreateMetadata(CSharpMultilineBlockTypes.Block));
-            WriteStatementEnd(expr.IfTrue);
+            writeStatementEnd(expr.IfTrue);
             WriteEOL(true);
             Write("}");
             if (!expr.IfFalse.IsEmpty()) {
@@ -377,7 +377,7 @@ namespace ExpressionTreeToString {
                     WriteEOL();
                 }
                 WriteNode("IfFalse", expr.IfFalse, CreateMetadata(CSharpMultilineBlockTypes.Block));
-                WriteStatementEnd(expr.IfFalse);
+                writeStatementEnd(expr.IfFalse);
                 if (!(expr.IfFalse is ConditionalExpression)) {
                     WriteEOL(true);
                     Write("}");
@@ -434,7 +434,7 @@ namespace ExpressionTreeToString {
                     } else {
                         WriteNode($"Expressions[{index}]", subexpr, CreateMetadata(CSharpMultilineBlockTypes.Block, true));
                     }
-                    WriteStatementEnd(subexpr);
+                    writeStatementEnd(subexpr);
                 });
                 if (introduceNewBlock) {
                     WriteEOL(true);
@@ -468,7 +468,7 @@ namespace ExpressionTreeToString {
             return;
         }
 
-        private void WriteStatementEnd(Expression expr) {
+        private void writeStatementEnd(Expression expr) {
             switch (expr) {
                 case ConditionalExpression cexpr when cexpr.Type == typeof(void):
                 case BlockExpression _:
@@ -499,7 +499,7 @@ namespace ExpressionTreeToString {
             Indent();
             WriteEOL();
             WriteNode("Body", switchCase.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
-            WriteStatementEnd(switchCase.Body);
+            writeStatementEnd(switchCase.Body);
             WriteEOL();
             Write("break;");
         }
@@ -538,7 +538,7 @@ namespace ExpressionTreeToString {
                 Indent();
                 WriteEOL();
                 WriteNode("DefaultBody", expr.DefaultBody, CreateMetadata(CSharpMultilineBlockTypes.Block));
-                WriteStatementEnd(expr.DefaultBody);
+                writeStatementEnd(expr.DefaultBody);
                 WriteEOL();
                 Write("break;");
                 Dedent();
@@ -567,7 +567,7 @@ namespace ExpressionTreeToString {
             Indent();
             WriteEOL();
             WriteNode("Body", catchBlock.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
-            WriteStatementEnd(catchBlock.Body);
+            writeStatementEnd(catchBlock.Body);
             WriteEOL(true);
             Write("}");
         }
@@ -577,7 +577,7 @@ namespace ExpressionTreeToString {
             Indent();
             WriteEOL();
             WriteNode("Body", expr.Body);
-            WriteStatementEnd(expr.Body);
+            writeStatementEnd(expr.Body);
             WriteEOL(true);
             Write("}");
             expr.Handlers.ForEach((catchBlock, index) => {
@@ -589,7 +589,7 @@ namespace ExpressionTreeToString {
                 Indent();
                 WriteEOL();
                 WriteNode("Fault", expr.Fault);
-                WriteStatementEnd(expr.Fault);
+                writeStatementEnd(expr.Fault);
                 WriteEOL(true);
                 Write("}");
             }
@@ -598,7 +598,7 @@ namespace ExpressionTreeToString {
                 Indent();
                 WriteEOL();
                 WriteNode("Finally", expr.Finally);
-                WriteStatementEnd(expr.Finally);
+                writeStatementEnd(expr.Finally);
                 WriteEOL(true);
                 Write("}");
             }
@@ -636,7 +636,7 @@ namespace ExpressionTreeToString {
             Indent();
             WriteEOL();
             WriteNode("Body", expr.Body, CreateMetadata(CSharpMultilineBlockTypes.Block));
-            WriteStatementEnd(expr.Body);
+            writeStatementEnd(expr.Body);
             WriteEOL(true);
             Write("}");
         }
@@ -665,7 +665,7 @@ namespace ExpressionTreeToString {
         // to verify precendence levels by level against https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/#operator-precedence
         // use:
         //    precedence.GroupBy(kvp => kvp.Value, kvp => kvp.Key, (key, grp) => new {key, values = grp.OrderBy(x => x.ToString()).Joined(", ")}).OrderBy(x => x.key);
-        private Dictionary<ExpressionType, int> precedence = new Dictionary<ExpressionType, int>() {
+        private static readonly Dictionary<ExpressionType, int> precedence = new Dictionary<ExpressionType, int>() {
             [Add] = 5,
             [AddAssign] = 16,
             [AddAssignChecked] = 16,
@@ -753,7 +753,7 @@ namespace ExpressionTreeToString {
             [Unbox] = 1, // // conversion is rendered only if the types aren't assignable
         };
 
-        private int GetPrecedence(Expression node, Type? parentType = null) {
+        private int getPrecedence(Expression node, Type? parentType = null) {
             ExpressionType nodeType;
             Type type;
             if (node is DynamicExpression dexpr) {
@@ -772,7 +772,7 @@ namespace ExpressionTreeToString {
             };
         }
 
-        private HashSet<ExpressionType> rightAssociatives = new HashSet<ExpressionType> {
+        private static readonly HashSet<ExpressionType> rightAssociatives = new HashSet<ExpressionType> {
             Assign, AddAssign, AndAssign, DivideAssign, ExclusiveOrAssign, LeftShiftAssign, ModuloAssign, MultiplyAssign,
             OrAssign, PowerAssign, RightShiftAssign, SubtractAssign, AddAssignChecked, MultiplyAssignChecked, SubtractAssignChecked, PreIncrementAssign,
             PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,
@@ -781,13 +781,13 @@ namespace ExpressionTreeToString {
 
         protected override void Parens(OneOf<Expression, ExpressionType> arg, string path, Expression childNode) {
             var (parentPrecedence, parentNodeType, parentType) = arg.Match(
-                node => (GetPrecedence(node), node.NodeType, (Type?)node.Type),
+                node => (getPrecedence(node), node.NodeType, (Type?)node.Type),
                 nodeType => (precedence[nodeType], nodeType, null)
             );
             var leftAssociative = parentNodeType.NotIn(rightAssociatives);
-            var childPrecedence = GetPrecedence(childNode, parentType);
+            var childPrecedence = getPrecedence(childNode, parentType);
 
-            bool writeParens = false;
+            var writeParens = false;
             if (parentPrecedence != -1 && childPrecedence != -1) {
                 // higher precedence is expressed as a lower number
                 if (childPrecedence > parentPrecedence) {

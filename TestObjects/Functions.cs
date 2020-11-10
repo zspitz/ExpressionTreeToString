@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 
 namespace ExpressionTreeTestObjects {
-    static public class Functions {
+    public static class Functions {
         internal static MethodInfo GetMethod(Expression<Action> expr, params Type[] typeargs) {
             var ret = ((MethodCallExpression)expr.Body).Method;
             // TODO handle partially open generic methods

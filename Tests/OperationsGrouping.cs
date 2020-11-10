@@ -33,7 +33,7 @@ namespace ExpressionTreeToString.Tests {
         // no need to test VB because conversion operations include parentheses
         public void ConversionPrecedence(string language, string expected) {
             var expr = IIFE(() => {
-                double d = 5.2;
+                var d = 5.2;
                 return Expr(() => ((int)d).ToString());
             });
             Assert.Equal(expected, expr.ToString(language));
@@ -58,9 +58,9 @@ namespace ExpressionTreeToString.Tests {
         // the ones that are not, include parentheses as part of the syntax
         public void RightAssociativity(string language, string expected) {
             var expr = IIFE(() => {
-                bool b1 = false;
-                bool b2 = false;
-                bool b3 = false;
+                var b1 = false;
+                var b2 = false;
+                var b3 = false;
                 return Expr(() => (b2 ? b2 : b1) ? b1 : b3);
             });
             Assert.Equal(expected, expr.ToString(language));

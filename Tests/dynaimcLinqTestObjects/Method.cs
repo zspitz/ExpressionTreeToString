@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Expressions;
 
 namespace ExpressionTreeToString.Tests {
-    static public partial class DynamicLinqTestObjects {
+    public static partial class DynamicLinqTestObjects {
         [TestObject("Method")]
         internal static readonly Expression StringConcat = Expr(p => string.Concat(p.LastName, p.FirstName));
 

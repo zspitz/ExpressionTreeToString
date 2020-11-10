@@ -35,7 +35,7 @@ namespace ExpressionTreeToString.Tests {
                 Dynamic(addBinder, typeof(int), i, j), 
                 k
             );
-            string actual = node.ToString(language);
+            var actual = node.ToString(language);
             Assert.Equal(expected, actual);
         }
 

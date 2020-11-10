@@ -24,7 +24,7 @@ namespace ExpressionTreeToString {
                     WriteConditional(cexpr, metadata);
                     break;
                 case Expression expr:
-                    WriteExpression(expr);
+                    writeExpression(expr);
                     break;
                 case MemberBinding binding:
                     WriteBinding(binding);
@@ -47,14 +47,14 @@ namespace ExpressionTreeToString {
             }
         }
 
-        private void WriteExpression(Expression expr) {
+        private void writeExpression(Expression expr) {
             switch (expr.NodeType) {
 
-                case var nodeType when nodeType.In(binaryExpressionTypes):
+                case var nodeType when nodeType.In(BinaryExpressionTypes):
                     WriteBinary((BinaryExpression)expr);
                     break;
 
-                case var nodeType when nodeType.In(unaryExpressionTypes):
+                case var nodeType when nodeType.In(UnaryExpressionTypes):
                     WriteUnary((UnaryExpression)expr);
                     break;
 

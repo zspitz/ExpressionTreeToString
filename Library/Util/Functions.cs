@@ -17,7 +17,7 @@ namespace ExpressionTreeToString.Util {
                 ids = new Dictionary<T, int>();
             }
 
-            if (!ids.TryGetValue(e, out int id)) {
+            if (!ids.TryGetValue(e, out var id)) {
                 isNew = true;
                 id = ids.Count + offset;
                 ids.Add(e, id);
@@ -32,7 +32,7 @@ namespace ExpressionTreeToString.Util {
                 return $"${autonamedPrefix}{GetId(prm, ref ids)}";
             }
             if (name.ContainsWhitespace()) {
-                return $"${name.ReplaceWhitespace("_")}";
+                name = $"${name.ReplaceWhitespace("_")}";
             }
             return name;
         }
@@ -50,20 +50,22 @@ namespace ExpressionTreeToString.Util {
             results = default;
             if (!(expr.NodeType.In(RelationalOperators) && expr is BinaryExpression bexpr)) { return false; }
 
-            (Expression?, string?) enumOperand(Expression operand, Expression other, string pathSegment) {
+            static (Expression?, string?) enumOperand(Expression operand, Expression other, string pathSegment) {
                 (Expression?, string?) ret = (null, null);
                 if (!(operand is UnaryExpression uexpr)) { return ret; }
                 if (uexpr.NodeType.NotIn(ExpressionType.Convert, ConvertChecked)) { return ret; }
                 var operandType = uexpr.Operand.Type;
-                if (!operandType.IsEnum) { return ret; }
-                if (operandType.GetEnumUnderlyingType() != other.Type) { return ret; }
-                return (uexpr.Operand, $"{pathSegment}.Operand");
+                return
+                    operandType.IsEnum && operandType.GetEnumUnderlyingType() == other.Type ?
+                        (uexpr.Operand, $"{pathSegment}.Operand") :
+                        ret;
             }
 
-            Expression? getEnumValue(Expression other, Type enumType) {
-                if (!(other is ConstantExpression cexpr)) { return null; }
-                if (!Enum.IsDefined(enumType, cexpr.Value)) { return null; }
-                return Expression.Constant(Enum.Parse(enumType, cexpr.Value.ToString()));
+            static Expression? getEnumValue(Expression other, Type enumType) {
+                return
+                    other is ConstantExpression cexpr && Enum.IsDefined(enumType, cexpr.Value) ?
+                        Expression.Constant(Enum.Parse(enumType, cexpr.Value.ToString())) :
+                        null;
             }
 
             var (leftOperand, leftPath) = enumOperand(bexpr.Left, bexpr.Right, "Left");

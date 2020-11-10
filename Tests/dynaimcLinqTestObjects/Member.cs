@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 
 namespace ExpressionTreeToString.Tests {
-    static public partial class DynamicLinqTestObjects {
+    public static partial class DynamicLinqTestObjects {
         [TestObject("Member")]
         internal static readonly Expression StaticMember = Expr(p => string.Empty);
 

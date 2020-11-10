@@ -34,8 +34,8 @@ namespace ExpressionTreeToString.Tests {
             foreach (var key in BuiltinRenderers) {
                 if (key.In(DebugView, BuiltinRenderer.ToString)) { continue; }
                 var expectedDataPath = GetFullFilename($"{key.ToString().ToLower()}-testdata.txt");
-                string testName = "";
-                string expected = "";
+                var testName = "";
+                var expected = "";
                 foreach (var line in File.ReadLines(expectedDataPath)) {
                     if (!line.StartsWith("----")) {
                         expected += line + NewLine;
@@ -63,7 +63,7 @@ namespace ExpressionTreeToString.Tests {
                 .SelectT((category, source, name, o) => (key: $"{source}.{name}", o))
                 .Select(x => {
                     Dictionary<string, (int start, int length)> pathSpans;
-                    string ret = x.o switch
+                    var ret = x.o switch
                     {
                         Expression expr => expr.ToString(TextualTree, out pathSpans, "C#"),
                         MemberBinding mbind => mbind.ToString(TextualTree, out pathSpans, "C#"),
@@ -92,7 +92,7 @@ namespace ExpressionTreeToString.Tests {
             };
 
             Dictionary<string, (int start, int length)> pathSpans;
-            string ret = o switch
+            var ret = o switch
             {
                 Expression expr => expr.ToString(rendererKey, out pathSpans, language),
                 MemberBinding mbind => mbind.ToString(rendererKey, out pathSpans, language),

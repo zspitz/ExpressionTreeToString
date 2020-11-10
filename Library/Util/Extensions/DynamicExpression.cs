@@ -5,13 +5,12 @@ using static System.Linq.Expressions.ExpressionType;
 
 namespace ExpressionTreeToString.Util {
     internal static class DynamicExpressionExtensions {
-        internal static void Deconstruct(this DynamicExpression expr, out ExpressionType nodeType, out Type type, out BinderTypes binderType) {
+        internal static void Deconstruct(this DynamicExpression expr, out ExpressionType nodeType, out Type type, out BinderTypes binderType) => 
             (nodeType, type, binderType) = (
                 expr.VirtualNodeType(),
                 expr.Type,
                 expr.Binder.BinderType()
             );
-        }
 
         internal static ExpressionType VirtualNodeType(this DynamicExpression expr) => expr.Binder switch
         {

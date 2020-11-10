@@ -18,13 +18,13 @@ using ExpressionTreeToString.Util;
 
 namespace ExpressionTreeToString {
     public class FactoryMethodsWriterVisitor : BuiltinsWriterVisitor {
-        private static string[] insertionPointKeys = new[] { "usings", "declarations", "" };
+        private static readonly string[] insertionPointKeys = new[] { "usings", "declarations", "" };
 
-        private Dictionary<ParameterExpression, int>? _ids;
+        private Dictionary<ParameterExpression, int>? ids;
 
-        private void WriteUsings() {
+        private void writeUsings() {
             SetInsertionPoint("usings");
-            string @using = language switch
+            var @using = language switch
             {
                 CSharp => "// using static System.Linq.Expressions.Expression",
                 VisualBasic => "' Imports System.Linq.Expressions.Expression",
@@ -37,25 +37,25 @@ namespace ExpressionTreeToString {
 
         public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false)
             : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys, hasPathSpans) {
-            WriteUsings();
+            writeUsings();
         }
 
         /// <param name="args">The arguments to write. If a tuple of string and node type, will write as single node. If a tuple of string and property type, will write as multiple nodes.</param>
-        private void WriteMethodCall(string name, IEnumerable args) {
+        private void writeMethodCall(string name, IEnumerable args) {
             Write(name);
             Write("(");
 
-            bool wrapPreviousInNewline = false;
-            bool indented = false;
+            var wrapPreviousInNewline = false;
+            var indented = false;
 
             args.Cast<object>().ForEach((x, index) => {
                 var isTuple = TryTupleValues(x, out var values) && values.Length == 2;
-                (string path, object? arg) = isTuple ? ((string)values![0]!, values[1]) : ("", x);
+                (var path, var arg) = isTuple ? ((string)values![0]!, values[1]) : ("", x);
                 var parameterDeclaration = 
                     (name == "Lambda" && path.StartsWith("Parameters")) || 
                     (name == "Block" && path.StartsWith("Variables"));
 
-                bool writeNewline = false;
+                var writeNewline = false;
                 var argType = arg?.GetType();
                 if (wrapPreviousInNewline) {
                     writeNewline = true;
@@ -125,14 +125,16 @@ namespace ExpressionTreeToString {
             Write(")");
         }
 
-        private void WriteMethodCall(Expression<Action> expr) {
+        private void writeMethodCall(Expression<Action> expr) {
             if (!(expr.Body is MethodCallExpression callExpr)) { throw new ArgumentException("Not a MethodCallExpression"); }
 
-            var args = NewArrayInit(typeof(object), callExpr.Arguments.Select(x => {
-                var xType = x.Type;
-                if (!xType.IsValueType) { return x; }
-                return Convert(x, typeof(object));
-            })).ExtractValue() as object[];
+            var args = NewArrayInit(
+                typeof(object), 
+                callExpr.Arguments.Select(x => 
+                    !x.Type.IsValueType ? 
+                        x : 
+                        Convert(x, typeof(object)))
+                ).ExtractValue() as object[];
             var names = callExpr.Arguments.Select(x => {
                 if (x is MethodCallExpression callExpr1) {
                     if (callExpr1.Method.Name == "ToArray") {
@@ -155,7 +157,7 @@ namespace ExpressionTreeToString {
                 pairs.RemoveLast();
                 (lastPair.arg as IEnumerable).Cast<object>().Select((innerArg, index) => ($"{lastPair.name}[{index}]", innerArg)).AddRangeTo(pairs);
             }
-            WriteMethodCall(callExpr.Method.Name, pairs.ToList());
+            writeMethodCall(callExpr.Method.Name, pairs.ToList());
         }
 
         private static readonly MethodInfo powerMethod = typeof(Math).GetMethod("Pow");
@@ -173,7 +175,7 @@ namespace ExpressionTreeToString {
             // Method property is always filled for Power/PowerAssign, even if the expression is generated usnig Expression.MakeBinary
             // It could, however, be something other than Math.Pow; that's handled further on
             if (expr.NodeType.In(ExpressionType.Power, ExpressionType.PowerAssign) && expr.Method == powerMethod) {
-                WriteMethodCall(methodName, args);
+                writeMethodCall(methodName, args);
                 return;
             }
 
@@ -188,16 +190,16 @@ namespace ExpressionTreeToString {
 
             var mi = typeof(Expression).GetMethod(methodName, types.ToArray());
             if (mi is { }) {
-                WriteMethodCall(methodName, args);
+                writeMethodCall(methodName, args);
                 return;
             }
 
             if (expr.Conversion is { }) {
-                WriteMethodCall(() => MakeBinary(expr.NodeType, expr.Left, expr.Right, false, expr.Method, expr.Conversion));
+                writeMethodCall(() => MakeBinary(expr.NodeType, expr.Left, expr.Right, false, expr.Method, expr.Conversion));
             } else if (expr.Method is { }) {
-                WriteMethodCall(() => MakeBinary(expr.NodeType, expr.Left, expr.Right, false, expr.Method));
+                writeMethodCall(() => MakeBinary(expr.NodeType, expr.Left, expr.Right, false, expr.Method));
             } else {
-                WriteMethodCall(() => MakeBinary(expr.NodeType, expr.Left, expr.Right));
+                writeMethodCall(() => MakeBinary(expr.NodeType, expr.Left, expr.Right));
             }
         }
 
@@ -225,14 +227,14 @@ namespace ExpressionTreeToString {
 
             var mi = typeof(Expression).GetMethod(methodName, types.ToArray());
             if (mi is { }) {
-                WriteMethodCall(methodName, args);
+                writeMethodCall(methodName, args);
                 return;
             }
 
             if (expr.Method is { }) {
-                WriteMethodCall(() => MakeUnary(expr.NodeType, expr.Operand, expr.Type, expr.Method));
+                writeMethodCall(() => MakeUnary(expr.NodeType, expr.Operand, expr.Type, expr.Method));
             } else {
-                WriteMethodCall(() => MakeUnary(expr.NodeType, expr.Operand, expr.Type));
+                writeMethodCall(() => MakeUnary(expr.NodeType, expr.Operand, expr.Type));
             }
         }
 
@@ -249,21 +251,21 @@ namespace ExpressionTreeToString {
                 args.Add(expr.TailCall);
             }
             expr.Parameters.Select((x, index) => (object)($"Parameters[{index}]", x)).AddRangeTo(args);
-            WriteMethodCall("Lambda", args);
+            writeMethodCall("Lambda", args);
         }
 
         protected override void WriteParameter(ParameterExpression expr) => 
-            Write(GetVariableName(expr, ref _ids));
+            Write(GetVariableName(expr, ref ids));
 
         protected override void WriteConstant(ConstantExpression expr) {
             if (
                 (expr.Value == null && expr.Type != typeof(object)) ||
                 (expr.Value != null && expr.Value.GetType() != expr.Type)
             ) {
-                WriteMethodCall(() => Constant(expr.Value, expr.Type));
+                writeMethodCall(() => Constant(expr.Value, expr.Type));
                 return;
             }
-            WriteMethodCall(() => Constant(expr.Value));
+            writeMethodCall(() => Constant(expr.Value));
         }
 
         protected override void WriteMemberAccess(MemberExpression expr) {
@@ -279,41 +281,41 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            WriteMethodCall(() => MakeMemberAccess(expr.Expression, expr.Member));
+            writeMethodCall(() => MakeMemberAccess(expr.Expression, expr.Member));
         }
 
         protected override void WriteNew(NewExpression expr) =>
-            WriteMethodCall(() => New(expr.Constructor, expr.Arguments.ToArray()));
+            writeMethodCall(() => New(expr.Constructor, expr.Arguments.ToArray()));
 
         protected override void WriteCall(MethodCallExpression expr) {
             if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
-                WriteMethodCall(() => ArrayIndex(expr.Object, expr.Arguments.ToArray()));
+                writeMethodCall(() => ArrayIndex(expr.Object, expr.Arguments.ToArray()));
                 return;
             } else if (expr.Method.IsIndexerMethod(out var pi)) {
-                WriteMethodCall(() => Property(expr.Object, pi, expr.Arguments.ToArray()));
+                writeMethodCall(() => Property(expr.Object, pi, expr.Arguments.ToArray()));
                 return;
             }
 
             if (expr.Object == null) {
-                WriteMethodCall(() => Call(expr.Method, expr.Arguments.ToArray()));
+                writeMethodCall(() => Call(expr.Method, expr.Arguments.ToArray()));
             } else {
-                WriteMethodCall(() => Call(expr.Object, expr.Method, expr.Arguments.ToArray()));
+                writeMethodCall(() => Call(expr.Object, expr.Method, expr.Arguments.ToArray()));
             }
         }
 
         protected override void WriteMemberInit(MemberInitExpression expr) =>
-            WriteMethodCall(() => MemberInit(expr.NewExpression, expr.Bindings.ToArray()));
+            writeMethodCall(() => MemberInit(expr.NewExpression, expr.Bindings.ToArray()));
 
         protected override void WriteListInit(ListInitExpression expr) =>
-            WriteMethodCall(() => ListInit(expr.NewExpression, expr.Initializers.ToArray()));
+            writeMethodCall(() => ListInit(expr.NewExpression, expr.Initializers.ToArray()));
 
         protected override void WriteNewArray(NewArrayExpression expr) {
             switch (expr.NodeType) {
                 case ExpressionType.NewArrayInit:
-                    WriteMethodCall(() => NewArrayInit(expr.Type.GetElementType(), expr.Expressions.ToArray()));
+                    writeMethodCall(() => NewArrayInit(expr.Type.GetElementType(), expr.Expressions.ToArray()));
                     break;
                 case ExpressionType.NewArrayBounds:
-                    WriteMethodCall(() => NewArrayBounds(expr.Type.GetElementType(), expr.Expressions.ToArray()));
+                    writeMethodCall(() => NewArrayBounds(expr.Type.GetElementType(), expr.Expressions.ToArray()));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -322,29 +324,29 @@ namespace ExpressionTreeToString {
 
         protected override void WriteConditional(ConditionalExpression expr, object? metadata) {
             if (expr.Type != typeof(void)) {
-                WriteMethodCall(() => Condition(expr.Test, expr.IfTrue, expr.IfFalse));
+                writeMethodCall(() => Condition(expr.Test, expr.IfTrue, expr.IfFalse));
             } else if (expr.IfFalse.IsEmpty()) {
-                WriteMethodCall(() => IfThen(expr.Test, expr.IfTrue));
+                writeMethodCall(() => IfThen(expr.Test, expr.IfTrue));
             } else {
-                WriteMethodCall(() => IfThenElse(expr.Test, expr.IfTrue, expr.IfFalse));
+                writeMethodCall(() => IfThenElse(expr.Test, expr.IfTrue, expr.IfFalse));
             }
         }
 
         protected override void WriteDefault(DefaultExpression expr) {
             if (expr.Type == typeof(void)) {
-                WriteMethodCall(() => Empty());
+                writeMethodCall(() => Empty());
                 return;
             }
-            WriteMethodCall(() => Default(expr.Type));
+            writeMethodCall(() => Default(expr.Type));
         }
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
             switch (expr.NodeType) {
                 case ExpressionType.TypeIs:
-                    WriteMethodCall(() => TypeIs(expr.Expression, expr.TypeOperand));
+                    writeMethodCall(() => TypeIs(expr.Expression, expr.TypeOperand));
                     break;
                 case ExpressionType.TypeEqual:
-                    WriteMethodCall(() => TypeEqual(expr.Expression, expr.TypeOperand));
+                    writeMethodCall(() => TypeEqual(expr.Expression, expr.TypeOperand));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -352,63 +354,63 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteInvocation(InvocationExpression expr) =>
-            WriteMethodCall(() => Invoke(expr.Expression, expr.Arguments.ToArray()));
+            writeMethodCall(() => Invoke(expr.Expression, expr.Arguments.ToArray()));
 
         protected override void WriteIndex(IndexExpression expr) {
             if (expr.Indexer != null) {
-                WriteMethodCall(() => MakeIndex(expr.Object, expr.Indexer, expr.Arguments));
+                writeMethodCall(() => MakeIndex(expr.Object, expr.Indexer, expr.Arguments));
                 return;
             }
-            WriteMethodCall(() => ArrayAccess(expr.Object, expr.Arguments.ToArray()));
+            writeMethodCall(() => ArrayAccess(expr.Object, expr.Arguments.ToArray()));
         }
 
         protected override void WriteBlock(BlockExpression expr, object? metadata) {
             if (expr.Type != expr.Expressions.Last().Type) {
                 if (expr.Variables.Any()) {
-                    WriteMethodCall(() => Block(expr.Type, expr.Variables, expr.Expressions.ToArray()));
+                    writeMethodCall(() => Block(expr.Type, expr.Variables, expr.Expressions.ToArray()));
                 } else {
-                    WriteMethodCall(() => Block(expr.Type, expr.Expressions.ToArray()));
+                    writeMethodCall(() => Block(expr.Type, expr.Expressions.ToArray()));
                 }
             } else {
                 if (expr.Variables.Any()) {
-                    WriteMethodCall(() => Block(expr.Variables, expr.Expressions.ToArray()));
+                    writeMethodCall(() => Block(expr.Variables, expr.Expressions.ToArray()));
                 } else {
-                    WriteMethodCall(() => Block(expr.Expressions.ToArray()));
+                    writeMethodCall(() => Block(expr.Expressions.ToArray()));
                 }
             }
         }
 
         protected override void WriteSwitch(SwitchExpression expr) {
             if (expr.DefaultBody == null) {
-                WriteMethodCall(() => Switch(expr.SwitchValue, expr.Cases.ToArray()));
+                writeMethodCall(() => Switch(expr.SwitchValue, expr.Cases.ToArray()));
             } else {
-                WriteMethodCall(() => Switch(expr.SwitchValue, expr.DefaultBody, expr.Cases.ToArray()));
+                writeMethodCall(() => Switch(expr.SwitchValue, expr.DefaultBody, expr.Cases.ToArray()));
             }
         }
 
         protected override void WriteTry(TryExpression expr) {
             if (expr.Fault != null) {
                 if (expr.Finally != null || expr.Handlers.Any()) {
-                    WriteMethodCall(() => MakeTry(expr.Type, expr.Body, expr.Finally, expr.Fault, expr.Handlers));
+                    writeMethodCall(() => MakeTry(expr.Type, expr.Body, expr.Finally, expr.Fault, expr.Handlers));
                 } else {
-                    WriteMethodCall(() => TryFault(expr.Body, expr.Fault));
+                    writeMethodCall(() => TryFault(expr.Body, expr.Fault));
                 }
             } else if (expr.Finally != null) {
                 if (expr.Handlers.Any()) {
-                    WriteMethodCall(() => TryCatchFinally(expr.Body, expr.Finally, expr.Handlers.ToArray()));
+                    writeMethodCall(() => TryCatchFinally(expr.Body, expr.Finally, expr.Handlers.ToArray()));
                 } else {
-                    WriteMethodCall(() => TryFinally(expr.Body, expr.Finally));
+                    writeMethodCall(() => TryFinally(expr.Body, expr.Finally));
                 }
             } else {
-                WriteMethodCall(() => TryCatch(expr.Body, expr.Handlers.ToArray()));
+                writeMethodCall(() => TryCatch(expr.Body, expr.Handlers.ToArray()));
             }
         }
 
         protected override void WriteLabel(LabelExpression expr) {
             if (expr.DefaultValue.IsEmpty()) {
-                WriteMethodCall(() => Label(expr.Target));
+                writeMethodCall(() => Label(expr.Target));
             } else {
-                WriteMethodCall(() => Label(expr.Target, expr.DefaultValue));
+                writeMethodCall(() => Label(expr.Target, expr.DefaultValue));
             }
         }
 
@@ -423,63 +425,63 @@ namespace ExpressionTreeToString {
             };
             var args = new List<(string, object)> { ("Target", expr.Target) };
             if (expr.Value != null) { args.Add(("Value", expr.Value)); }
-            WriteMethodCall(methodName, args);
+            writeMethodCall(methodName, args);
         }
 
         protected override void WriteLoop(LoopExpression expr) {
             if (expr.BreakLabel != null && expr.ContinueLabel != null) {
-                WriteMethodCall(() => Loop(expr.Body, expr.BreakLabel, expr.ContinueLabel));
+                writeMethodCall(() => Loop(expr.Body, expr.BreakLabel, expr.ContinueLabel));
             } else if (expr.BreakLabel != null) {
-                WriteMethodCall(() => Loop(expr.Body, expr.BreakLabel));
+                writeMethodCall(() => Loop(expr.Body, expr.BreakLabel));
             } else {
-                WriteMethodCall(() => Loop(expr.Body));
+                writeMethodCall(() => Loop(expr.Body));
             }
         }
 
         protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) =>
-            WriteMethodCall(() => RuntimeVariables(expr.Variables.ToArray()));
+            writeMethodCall(() => RuntimeVariables(expr.Variables.ToArray()));
         protected override void WriteDebugInfo(DebugInfoExpression expr) {
             if (expr.IsClear) {
-                WriteMethodCall(() => ClearDebugInfo(expr.Document));
+                writeMethodCall(() => ClearDebugInfo(expr.Document));
             } else {
-                WriteMethodCall(() => DebugInfo(expr.Document, expr.StartLine, expr.StartColumn, expr.EndLine, expr.EndColumn));
+                writeMethodCall(() => DebugInfo(expr.Document, expr.StartLine, expr.StartColumn, expr.EndLine, expr.EndColumn));
             }
         }
 
         protected override void WriteElementInit(ElementInit elementInit) =>
-            WriteMethodCall(() => ElementInit(elementInit.AddMethod, elementInit.Arguments.ToArray()));
+            writeMethodCall(() => ElementInit(elementInit.AddMethod, elementInit.Arguments.ToArray()));
 
         protected override void WriteBinding(MemberBinding binding) {
             switch (binding) {
                 case MemberAssignment assignmentBinding:
-                    WriteMethodCall(() => Bind(assignmentBinding.Member, assignmentBinding.Expression));
+                    writeMethodCall(() => Bind(assignmentBinding.Member, assignmentBinding.Expression));
                     break;
                 case MemberListBinding listBinding:
-                    WriteMethodCall(() => ListBind(listBinding.Member, listBinding.Initializers.ToArray()));
+                    writeMethodCall(() => ListBind(listBinding.Member, listBinding.Initializers.ToArray()));
                     break;
                 case MemberMemberBinding memberMemberBinding:
-                    WriteMethodCall(() => MemberBind(memberMemberBinding.Member, memberMemberBinding.Bindings.ToArray()));
+                    writeMethodCall(() => MemberBind(memberMemberBinding.Member, memberMemberBinding.Bindings.ToArray()));
                     break;
             }
         }
 
         protected override void WriteSwitchCase(SwitchCase switchCase) =>
-            WriteMethodCall(() => SwitchCase(switchCase.Body, switchCase.TestValues.ToArray()));
+            writeMethodCall(() => SwitchCase(switchCase.Body, switchCase.TestValues.ToArray()));
 
         protected override void WriteCatchBlock(CatchBlock catchBlock) {
             if (catchBlock.Variable != null) {
                 if (catchBlock.Variable.Type != catchBlock.Test) {
-                    WriteMethodCall(() => MakeCatchBlock(catchBlock.Test, catchBlock.Variable, catchBlock.Body, catchBlock.Filter));
+                    writeMethodCall(() => MakeCatchBlock(catchBlock.Test, catchBlock.Variable, catchBlock.Body, catchBlock.Filter));
                 } else if (catchBlock.Filter != null) {
-                    WriteMethodCall(() => Catch(catchBlock.Variable, catchBlock.Body, catchBlock.Filter));
+                    writeMethodCall(() => Catch(catchBlock.Variable, catchBlock.Body, catchBlock.Filter));
                 } else {
-                    WriteMethodCall(() => Catch(catchBlock.Variable, catchBlock.Body));
+                    writeMethodCall(() => Catch(catchBlock.Variable, catchBlock.Body));
                 }
             } else {
                 if (catchBlock.Filter != null) {
-                    WriteMethodCall(() => Catch(catchBlock.Test, catchBlock.Body, catchBlock.Filter));
+                    writeMethodCall(() => Catch(catchBlock.Test, catchBlock.Body, catchBlock.Filter));
                 } else {
-                    WriteMethodCall(() => Catch(catchBlock.Test, catchBlock.Body));
+                    writeMethodCall(() => Catch(catchBlock.Test, catchBlock.Body));
                 }
             }
         }
@@ -487,15 +489,15 @@ namespace ExpressionTreeToString {
         protected override void WriteLabelTarget(LabelTarget labelTarget) {
             if (labelTarget.Type == typeof(void)) {
                 if (labelTarget.Name == null) {
-                    WriteMethodCall(() => Label());
+                    writeMethodCall(() => Label());
                 } else {
-                    WriteMethodCall(() => Label(labelTarget.Name));
+                    writeMethodCall(() => Label(labelTarget.Name));
                 }
             } else {
                 if (labelTarget.Name == null) {
-                    WriteMethodCall(() => Label(labelTarget.Type));
+                    writeMethodCall(() => Label(labelTarget.Type));
                 } else {
-                    WriteMethodCall(() => Label(labelTarget.Type, labelTarget.Name));
+                    writeMethodCall(() => Label(labelTarget.Type, labelTarget.Name));
                 }
             }
         }
@@ -509,7 +511,7 @@ namespace ExpressionTreeToString {
                 4 => () => Dynamic(expr.Binder, expr.Type, expr.Arguments[0], expr.Arguments[1], expr.Arguments[2], expr.Arguments[3]),
                 _ => () => Dynamic(expr.Binder, expr.Type, expr.Arguments)
             };
-            WriteMethodCall(callExpr);
+            writeMethodCall(callExpr);
         }
 
         protected override void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args) => throw new NotImplementedException();
@@ -528,21 +530,21 @@ namespace ExpressionTreeToString {
             SetInsertionPoint("declarations");
 
             if (language == CSharp) {
-                Write($"var {GetVariableName(prm, ref _ids)} = ");
+                Write($"var {GetVariableName(prm, ref ids)} = ");
             } else { // language == VisualBasic
-                Write($"Dim {GetVariableName(prm, ref _ids)} = ");
+                Write($"Dim {GetVariableName(prm, ref ids)} = ");
             }
             if (prm.IsByRef) {
                 var type = prm.Type.MakeByRefType();
-                (string, object)[] args = prm.Name.IsNullOrWhitespace() ?
+                var args = prm.Name.IsNullOrWhitespace() ?
                     new (string, object)[] { ("Type", type) } :
                     new (string, object)[] { ("Type", type), ("Name", prm.Name) };
-                WriteMethodCall("Parameter", args);
+                writeMethodCall("Parameter", args);
             } else {
                 if (prm.Name.IsNullOrWhitespace()) {
-                    WriteMethodCall(() => Parameter(prm.Type));
+                    writeMethodCall(() => Parameter(prm.Type));
                 } else {
-                    WriteMethodCall(() => Parameter(prm.Type, prm.Name));
+                    writeMethodCall(() => Parameter(prm.Type, prm.Name));
                 }
             }
             if (language == CSharp) { Write(";"); }
@@ -550,7 +552,7 @@ namespace ExpressionTreeToString {
 
             SetInsertionPoint("");
 
-            Write(GetVariableName(prm, ref _ids));
+            Write(GetVariableName(prm, ref ids));
         }
     }
 }

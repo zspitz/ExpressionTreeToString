@@ -29,7 +29,7 @@ namespace ExpressionTreeToString {
     }
 
     public static class Globals {
-        public readonly static List<Type> NodeTypes = new List<Type>() {
+        public static readonly List<Type> NodeTypes = new List<Type>() {
             typeof(Expression),
             typeof(MemberBinding),
             typeof(ElementInit),
@@ -38,9 +38,9 @@ namespace ExpressionTreeToString {
             typeof(LabelTarget)
         };
 
-        public readonly static List<Type> PropertyTypes = NodeTypes.Select(x => typeof(IEnumerable<>).MakeGenericType(x)).ToList();
+        public static readonly List<Type> PropertyTypes = NodeTypes.Select(x => typeof(IEnumerable<>).MakeGenericType(x)).ToList();
 
-        public readonly static Dictionary<ExpressionType, string> FactoryMethodNames = new Dictionary<ExpressionType, string>() {
+        public static readonly Dictionary<ExpressionType, string> FactoryMethodNames = new Dictionary<ExpressionType, string>() {
             { Add, "Add" },
             { AddAssign, "AddAssign" },
             { AddAssignChecked, "AddAssignChecked" },
@@ -128,7 +128,7 @@ namespace ExpressionTreeToString {
             { Unbox, "Unbox" },
         };
 
-        public readonly static List<(Type type, string[] propertyNames)> PreferredPropertyOrders = new List<(Type, string[])> {
+        public static readonly List<(Type type, string[] propertyNames)> PreferredPropertyOrders = new List<(Type, string[])> {
             (typeof(LambdaExpression), new [] {"Parameters", "Body" } ),
             (typeof(BinaryExpression), new [] {"Left", "Right", "Conversion"}),
             (typeof(BlockExpression), new [] { "Variables", "Expressions"}),
@@ -145,7 +145,7 @@ namespace ExpressionTreeToString {
             (typeof(DynamicExpression), new [] {"Binder", "Arguments"})
         };
 
-        public readonly static HashSet<ExpressionType> RelationalOperators = new HashSet<ExpressionType> {
+        public static readonly HashSet<ExpressionType> RelationalOperators = new HashSet<ExpressionType> {
             Equal,
             GreaterThan,
             GreaterThanOrEqual,
@@ -154,7 +154,7 @@ namespace ExpressionTreeToString {
             NotEqual
         };
 
-        public static readonly HashSet<ExpressionType> binaryExpressionTypes = new[] {
+        public static readonly HashSet<ExpressionType> BinaryExpressionTypes = new[] {
             Add, AddChecked, Divide, Modulo, Multiply, MultiplyChecked, Power, Subtract, SubtractChecked,   // mathematical operators
             And, Or, ExclusiveOr,   // bitwise / logical operations
             LeftShift, RightShift,     // shift operators
@@ -169,7 +169,7 @@ namespace ExpressionTreeToString {
             LeftShiftAssign,RightShiftAssign
         }.ToHashSet();
 
-        public static readonly HashSet<ExpressionType> unaryExpressionTypes = new[] {
+        public static readonly HashSet<ExpressionType> UnaryExpressionTypes = new[] {
             ArrayLength, ExpressionType.Convert, ConvertChecked, Unbox, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus, IsTrue, IsFalse,
             PreIncrementAssign, PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,
             Increment, Decrement,

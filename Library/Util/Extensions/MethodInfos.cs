@@ -5,8 +5,8 @@ using ZSpitz.Util;
 
 namespace ExpressionTreeToString.Util {
     internal static class MethodInfoExtensions {
-        internal readonly static HashSet<MethodInfo> stringConcats;
-        internal readonly static HashSet<MethodInfo> stringFormats;
+        internal static readonly HashSet<MethodInfo> StringConcats;
+        internal static readonly HashSet<MethodInfo> StringFormats;
 
         static MethodInfoExtensions() {
             var methods = typeof(string)
@@ -20,12 +20,12 @@ namespace ExpressionTreeToString.Util {
                 })
                 .ToLookup(x => x.Name);
 
-            stringConcats = methods["Concat"].ToHashSet();
-            stringFormats = methods["Format"].ToHashSet();
+            StringConcats = methods["Concat"].ToHashSet();
+            StringFormats = methods["Format"].ToHashSet();
         }
 
-        internal static bool IsStringConcat(this MethodInfo mthd) => mthd.In(stringConcats);
-        internal static bool IsStringFormat(this MethodInfo mthd) => mthd.In(stringFormats);
+        internal static bool IsStringConcat(this MethodInfo mthd) => mthd.In(StringConcats);
+        internal static bool IsStringFormat(this MethodInfo mthd) => mthd.In(StringFormats);
 
         // Microsoft.VisualBasic.CompilerServices is not available to .NET Standard, so we have to check by name
         internal static bool IsVBLike(this MethodInfo mthd) => 

@@ -15,7 +15,7 @@ using static ExpressionTreeToString.Util.Functions;
 namespace ExpressionTreeToString {
     public class DynamicLinqWriterVisitor : BuiltinsWriterVisitor {
         public static readonly HashSet<Type> CustomAccessibleTypes = new HashSet<Type>();
-        private static readonly HashSet<Type> PredefinedTypes = new HashSet<Type> {
+        private static readonly HashSet<Type> predefinedTypes = new HashSet<Type> {
             typeof(object),
             typeof(bool),
             typeof(char),
@@ -40,10 +40,10 @@ namespace ExpressionTreeToString {
             typeof(Uri)
         };
 
-        private static bool IsAccessibleType(Type t) {
-            if (t.IsNullable()) { return IsAccessibleType(t.UnderlyingSystemType); }
-            return t.In(PredefinedTypes) || t.In(CustomAccessibleTypes);
-        }
+        private static bool isAccessibleType(Type t) => 
+            t.IsNullable() ? 
+                isAccessibleType(t.UnderlyingSystemType) : 
+                t.In(predefinedTypes) || t.In(CustomAccessibleTypes);
 
         ParameterExpression? currentScoped;
 
@@ -92,7 +92,7 @@ namespace ExpressionTreeToString {
             (Expression left, string leftPath, Expression right, string rightPath) parts;
 
             if (grouped.Any(grp => grp.Key is { } && grp.Count()>1)) { // can any elements be written using `in`?
-                bool firstClause = true;
+                var firstClause = true;
                 foreach (var grp in grouped) {
                     if (firstClause) {
                         firstClause = false;
@@ -110,27 +110,27 @@ namespace ExpressionTreeToString {
                     }
 
                     // write value
-                    bool firstElement = true;
-                    foreach (var orClause in grp) {
-                        var bexpr = (BinaryExpression)orClause.clause;
+                    var firstElement = true;
+                    foreach (var (path, clause) in grp) {
+                        var bexpr = (BinaryExpression)clause;
                         var (left, leftPath, right, rightPath) = (
                             bexpr.Left,
                             "Left",
                             bexpr.Right,
                             "Right"
                         );
-                        if (TryGetEnumComparison(orClause.clause, out parts)) {
+                        if (TryGetEnumComparison(clause, out parts)) {
                             (left, leftPath, right, rightPath) = parts;
                         }
 
                         if (firstElement) {
-                            WriteNode($"{orClause.path}.{leftPath}", left);
+                            WriteNode($"{path}.{leftPath}", left);
                             Write(" in (");
                             firstElement = false;
                         } else {
                             Write(", ");
                         }
-                        WriteNode($"{orClause.path}.{rightPath}", right);
+                        WriteNode($"{path}.{rightPath}", right);
                     }
                     Write(")");
                 }
@@ -163,25 +163,15 @@ namespace ExpressionTreeToString {
             throw new NotImplementedException();
         }
 
-        private bool HasImplicitConversions(Type @base, Type target) {
-            bool hasConversion(Type type) =>
-                type
-                    .GetMethods(BindingFlags.Public | BindingFlags.Static)
-                    .Where(mi => mi.Name == "op_Implicit" && mi.ReturnType == target)
-                    .Any(mi => mi.GetParameters().FirstOrDefault()?.ParameterType == @base);
-
-            return hasConversion(@base) || hasConversion(target);
-        }
-
         protected override void WriteUnary(UnaryExpression expr) {
             switch (expr.NodeType) {
                 case ExpressionType.Convert:
                 case ConvertChecked:
                 case Unbox:
-                    bool renderConversion = 
+                    var renderConversion = 
                         expr.Type != expr.Operand.Type && 
                         !expr.Operand.Type.HasImplicitConversionTo(expr.Type);
-                    if (renderConversion) { Write($"{TypeName(expr.Type)}("); }
+                    if (renderConversion) { Write($"{typeName(expr.Type)}("); }
                     WriteNode("Operand", expr.Operand);
                     if (renderConversion) { Write(")"); }
                     break;
@@ -250,7 +240,7 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteMemberAccess(MemberExpression expr) =>
-            WriteMemberUse("Expression", expr.Expression, expr.Member);
+            writeMemberUse("Expression", expr.Expression, expr.Member);
 
         protected override void WriteNew(NewExpression expr) {
             if (expr.Type.IsAnonymous()) {
@@ -270,13 +260,13 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            Write(TypeName(expr.Type));
+            Write(typeName(expr.Type));
             Write("(");
             WriteNodes("Arguments", expr.Arguments);
             Write(")");
         }
 
-        private void WriteIndexerAccess(string instancePath, Expression instance, string argumentsPath, IEnumerable<Expression> arguments) {
+        private void writeIndexerAccess(string instancePath, Expression instance, string argumentsPath, IEnumerable<Expression> arguments) {
             var lst = arguments.ToList();
             if (instance.Type.IsArray && lst.Count > 1) {
                 throw new NotImplementedException("Multidimensional array access not supported.");
@@ -288,17 +278,17 @@ namespace ExpressionTreeToString {
             Write("]");
         }
 
-        private void WriteMemberUse(string instancePath, Expression? instance, MemberInfo mi) {
+        private void writeMemberUse(string instancePath, Expression? instance, MemberInfo mi) {
             var declaringType = mi.DeclaringType;
             if (instance is null) {
-                if (!IsAccessibleType(declaringType)) {
+                if (!isAccessibleType(declaringType)) {
                     throw new NotImplementedException($"Type '{declaringType.Name}' is not an accessible type; its' static methods cannot be used.");
                 }
-                Write(TypeName(declaringType) + ".");
+                Write(typeName(declaringType) + ".");
             } else {
                 if (instance.Type.IsClosureClass()) {
                     throw new NotImplementedException("No representation for closed-over variables.");
-                } else if (mi is MethodInfo mthd && !(IsAccessibleType(declaringType) || IsAccessibleType(mthd.ReturnType))) {
+                } else if (mi is MethodInfo mthd && !(isAccessibleType(declaringType) || isAccessibleType(mthd.ReturnType))) {
                     throw new NotImplementedException("Instance methods must either be on an accessible type, or return an instance of an accessible type.");
                 } else if (instance.SansConvert() != currentScoped) {
                     WriteNode(instancePath, instance);
@@ -310,7 +300,7 @@ namespace ExpressionTreeToString {
 
         private static readonly MethodInfo[] containsMethods = IIFE(() => {
             IEnumerable<char> e = "";
-            IQueryable<char> q = "".AsQueryable();
+            var q = "".AsQueryable();
 
             return new[] {
                 GetMethod(() => e.Contains('a')),
@@ -322,7 +312,7 @@ namespace ExpressionTreeToString {
             IEnumerable<char> e = "";
             var ordered = e.OrderBy(x => x);
 
-            IQueryable<char> q = "".AsQueryable();
+            var q = "".AsQueryable();
             var orderedQ = q.OrderBy(x => x);
 
             // TODO what about Max/Min/Sum without predicate?
@@ -420,7 +410,7 @@ namespace ExpressionTreeToString {
             if (expr.Method.IsStringConcat()) {
                 var firstArg = expr.Arguments[0];
                 IEnumerable<Expression>? argsToWrite = null;
-                string argsPath = "";
+                var argsPath = "";
                 if (firstArg is NewArrayExpression newArray && firstArg.NodeType == NewArrayInit) {
                     argsToWrite = newArray.Expressions;
                     argsPath = "Arguments[0].Expressions";
@@ -442,18 +432,15 @@ namespace ExpressionTreeToString {
             }
 
             var instance = expr.Object;
-            bool isIndexer = false;
-            if (instance is { } && instance.Type.IsArray && expr.Method.Name == "Get") {
-                isIndexer = true;
-            } else {
-                isIndexer = expr.Method.IsIndexerMethod();
-            }
+            var isIndexer = 
+                instance is { } && instance.Type.IsArray && expr.Method.Name == "Get" || 
+                expr.Method.IsIndexerMethod();
             if (isIndexer) {
-                WriteIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
+                writeIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
                 return;
             }
 
-            string path = "Object";
+            var path = "Object";
             var skip = 0;
 
             if (expr.Method.IsGenericMethod && expr.Method.GetGenericMethodDefinition().In(sequenceMethods)) {
@@ -465,7 +452,7 @@ namespace ExpressionTreeToString {
 
             var arguments = expr.Arguments.Skip(skip).Select((x, index) => ($"Arguments[{index + skip}]", x));
 
-            WriteMemberUse(path, instance, expr.Method);
+            writeMemberUse(path, instance, expr.Method);
             Write("(");
             WriteNodes(arguments);
             Write(")");
@@ -483,16 +470,10 @@ namespace ExpressionTreeToString {
             throw new NotImplementedException();
         }
 
-        private bool isMemberChainEqual(Expression x, Expression y) {
-            x = x.SansConvert();
-            y = y.SansConvert();
-            if (!(x is MemberExpression mexpr1 && y is MemberExpression mexpr2)) {
-                return x == y;
-            }
-            return
-                mexpr1.Member == mexpr2.Member &&
-                isMemberChainEqual(mexpr1.Expression, mexpr2.Expression);
-        }
+        private bool isMemberChainEqual(Expression x, Expression y) =>
+            x.SansConvert() is MemberExpression mexpr1 && y.SansConvert() is MemberExpression mexpr2 ?
+                    mexpr1.Member == mexpr2.Member && isMemberChainEqual(mexpr1.Expression, mexpr2.Expression) :
+                    x == y;
 
         private bool doesTestMatchMember(Expression valueClause, Expression testClause) {
             if (!(valueClause is MemberExpression mexpr && testClause is BinaryExpression bexpr)) { return false; }
@@ -504,9 +485,7 @@ namespace ExpressionTreeToString {
                 (Expression y, ConstantExpression x) when x.Value is null => (x, y),
                 _ => (null, null)
             };
-            if (testExpression is null) { return false; }
-
-            return isMemberChainEqual(mexpr.Expression, testExpression);
+            return !(testExpression is null) && isMemberChainEqual(mexpr.Expression, testExpression);
         }
 
         protected override void WriteConditional(ConditionalExpression expr, object? metadata) {
@@ -565,7 +544,7 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteIndex(IndexExpression expr) =>
-            WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
+            writeIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
         protected override void WriteBlock(BlockExpression expr, object? metadata) {
             throw new NotImplementedException();
@@ -681,10 +660,12 @@ namespace ExpressionTreeToString {
             {typeof(bool), "bool"},
             {typeof(float), "float"},
         };
-        private static string TypeName(Type t) {
-            if (t.IsNullable()) { return TypeName(t.UnderlyingIfNullable()) + "?"; }
-            if (typeAliases.TryGetValue(t, out var name)) { return name; }
-            return t.Name;
-        }
+
+        private static string typeName(Type t) =>
+            t.IsNullable() ?
+                typeName(t.UnderlyingIfNullable()) + "?" :
+                typeAliases.TryGetValue(t, out var name) ?
+                    name :
+                    t.Name;
     }
 }

@@ -7,7 +7,7 @@ namespace ExpressionTreeToString.Tests {
         public static string GetFullFilename(string filename) {
             var codeBase = Assembly.GetExecutingAssembly().CodeBase;
             if (codeBase == null) { throw new InvalidOperationException(); }
-            string executable = new Uri(codeBase).LocalPath;
+            var executable = new Uri(codeBase).LocalPath;
             return Path.GetFullPath(Path.Combine(Path.GetDirectoryName(executable)!, "expectedResults", filename));
         }
     }

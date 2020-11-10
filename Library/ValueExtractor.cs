@@ -4,8 +4,8 @@ using ZSpitz.Util;
 
 namespace ExpressionTreeToString {
     public class ValueExtractor : ExpressionVisitor {
-        private Stack<Expression> expressionStack = new Stack<Expression>();
-        private Dictionary<Expression, bool> evaluables = new Dictionary<Expression, bool>();
+        private readonly Stack<Expression> expressionStack = new Stack<Expression>();
+        private readonly Dictionary<Expression, bool> evaluables = new Dictionary<Expression, bool>();
 
         public override Expression Visit(Expression node) {
             expressionStack.Push(node);
@@ -44,10 +44,8 @@ namespace ExpressionTreeToString {
 
                         // LambdaExpression's value is the same as LambdaExpression.Body
                         // BlockExpression's value is the same as the last expression in the block
-                        evaluables[x] =
-                            x is LambdaExpression || x is BlockExpression ?
-                                false :
-                                true;
+                        // in either case we're presumably getting the value for the underlying expression; there's no need to do so again
+                        evaluables[x] = !(x is LambdaExpression) && !(x is BlockExpression);
                     }
                     break;
             }
@@ -62,7 +60,7 @@ namespace ExpressionTreeToString {
                 Visit(node);
                 canEvaluate = evaluables[node];
             }
-            (bool evaluated, object? value) = (false, null);
+            (var evaluated, object? value) = (false, null);
             if (canEvaluate) {
                 evaluated = node.TryExtractValue(out value);
             }

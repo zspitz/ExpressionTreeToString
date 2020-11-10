@@ -12,16 +12,16 @@ using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeToString {
     public class ObjectNotationWriterVisitor : WriterVisitorBase {
-        private static string[] insertionPointKeys = new[] { "declarations", "" };
+        private static readonly string[] insertionPointKeys = new[] { "declarations", "" };
 
         public ObjectNotationWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false)
             : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys, hasPathSpans) { }
 
-        private Dictionary<ParameterExpression, int>? _ids;
+        private Dictionary<ParameterExpression, int>? ids;
 
         protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {
             if (o is ParameterExpression pexpr) {
-                Write(GetVariableName(pexpr, ref _ids));
+                Write(GetVariableName(pexpr, ref ids));
 
                 if (!parameterDeclaration) { return; }
 
@@ -32,16 +32,15 @@ namespace ExpressionTreeToString {
                     VisualBasic => "Dim",
                     _ => throw new NotImplementedException("Invalid language.")
                 });
-                Write($" {GetVariableName(pexpr, ref _ids)} = ");
+                Write($" {GetVariableName(pexpr, ref ids)} = ");
             }
 
             var type = writeNew(o);
             var preferredOrder = PreferredPropertyOrders.FirstOrDefault(x => x.type.IsAssignableFrom(o.GetType())).propertyNames;
-            var properties = type.GetProperties().Where(x => {
-                if (x.Name.In("CanReduce", "TailCall", "CanReduce", "IsLifted", "IsLiftedToNull", "ArgumentCount")) { return false; }
-                if (x.Name == "NodeType" && type.In(hideNodeType)) { return false; }
-                return true;
-            }).ToList();
+            var properties = type.GetProperties().Where(x => 
+                x.Name.NotIn("CanReduce", "TailCall", "CanReduce", "IsLifted", "IsLiftedToNull", "ArgumentCount") &&
+                !(x.Name == "NodeType" && type.In(hideNodeType))
+            ).ToList();
 
             if (properties.None()) {
                 if (language == CSharp) { Write("()"); }
@@ -55,10 +54,11 @@ namespace ExpressionTreeToString {
 
             properties.OrderBy(x => {
                 if (x.Name.In("NodeType", "Type")) { return -2; }
-                if (preferredOrder == null) { return -1; }
+                if (preferredOrder is null) { return -1; }
                 var indexOf = Array.IndexOf(preferredOrder, x.Name);
-                if (indexOf == -1) { return 1000; }
-                return indexOf;
+                return indexOf == -1 ? 
+                    1000 : 
+                    indexOf;
             })
             .ThenBy(x => x.Name)
             .Select(x => {
@@ -70,11 +70,13 @@ namespace ExpressionTreeToString {
                 }
                 return (x, value);
             })
-            .WhereT((_, value) => {
-                if (value == null) { return false; }
-                if (value is IEnumerable seq && seq.None()) { return false; }
-                return true;
-            })
+            .WhereT((_, value) => 
+                value switch {
+                    null => false,
+                    IEnumerable seq when seq.None() => false,
+                    _ => true
+                }
+            )
             .ForEachT((x, value, index) => {
                 if (index > 0) {
                     Write(",");
@@ -88,7 +90,7 @@ namespace ExpressionTreeToString {
                     var parameterDeclaration =
                         (o is LambdaExpression && x.Name == "Parameters") ||
                         (o is BlockExpression && x.Name == "Variables");
-                    WriteCollection((IEnumerable)value, x.Name, parameterDeclaration);
+                    writeCollection((IEnumerable)value, x.Name, parameterDeclaration);
                 } else if (x.PropertyType.InheritsFromOrImplementsAny(NodeTypes)) {
                     WriteNode(x.Name, value);
                 } else {
@@ -129,7 +131,7 @@ namespace ExpressionTreeToString {
             typeof(TryExpression)
         };
 
-        private void WriteCollection(IEnumerable seq, string pathSegment, bool parameterDeclaration = false) {
+        private void writeCollection(IEnumerable seq, string pathSegment, bool parameterDeclaration = false) {
             writeNew(seq);
             var items = seq.Cast<object>().ToList();
             if (items.None()) {

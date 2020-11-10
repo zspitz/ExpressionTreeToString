@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 
 namespace ExpressionTreeToString.Tests {
-    static public partial class DynamicLinqTestObjects {
+    public static partial class DynamicLinqTestObjects {
         [TestObject("Unary")]
         internal static readonly Expression ImplicitConversion = Expr(p => (object)p);
 

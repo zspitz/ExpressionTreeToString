@@ -12,6 +12,7 @@ using static System.Linq.Expressions.GotoExpressionKind;
 using OneOf;
 using static ExpressionTreeToString.Util.Functions;
 
+#pragma warning disable IDE1006 // we want to imitate the original source as much as possible
 namespace ExpressionTreeToString {
     public class ToStringWriterVisitor : BuiltinsWriterVisitor {
         public static bool FrameworkCompatible = false;
@@ -94,7 +95,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteParameter(ParameterExpression expr) {
             if (expr.IsByRef) { Write("ref "); }
-            string? name = expr.Name;
+            var name = expr.Name;
             if (name.IsNullOrEmpty()) {
                 name = $"Param_{GetParamId(expr)}";
             }
@@ -205,7 +206,7 @@ namespace ExpressionTreeToString {
 
             Write('{');
 
-            (IEnumerable<object> items, string itemsPath) = binding switch
+            (var items, var itemsPath) = binding switch
             {
                 MemberListBinding listBinding => (listBinding.Initializers, "Initializers"),
                 MemberMemberBinding memberBinding => (memberBinding.Bindings, "Bindings"),
@@ -378,7 +379,7 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteGoto(GotoExpression expr) {
-            string op = expr.Kind switch
+            var op = expr.Kind switch
             {
                 GotoExpressionKind.Goto => "goto",
                 Break => "break",
@@ -509,3 +510,4 @@ namespace ExpressionTreeToString {
         #endregion
     }
 }
+#pragma warning restore IDE1006 // Naming Styles

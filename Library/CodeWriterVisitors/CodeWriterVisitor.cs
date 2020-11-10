@@ -17,7 +17,7 @@ namespace ExpressionTreeToString {
         protected CodeWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans)
             : base(o, languageArg, null, hasPathSpans) { }
 
-        protected Dictionary<ParameterExpression, int>? ids;
+        protected Dictionary<ParameterExpression, int>? IDs;
 
         protected override void WriteUnary(UnaryExpression expr) =>
             WriteUnary(expr.NodeType, "Operand", expr.Operand, expr.Type, expr.GetType().Name);
@@ -34,7 +34,7 @@ namespace ExpressionTreeToString {
             WriteBinary(expr.NodeType, "Left", expr.Left, "Right", expr.Right);
         }
 
-        protected override void WriteParameter(ParameterExpression expr) => Write(GetVariableName(expr, ref ids));
+        protected override void WriteParameter(ParameterExpression expr) => Write(GetVariableName(expr, ref IDs));
 
         protected override void WriteConstant(ConstantExpression expr) =>
             Write(RenderLiteral(expr.Value, language));
@@ -64,7 +64,7 @@ namespace ExpressionTreeToString {
             if (expr.Method.IsStringConcat()) {
                 var firstArg = expr.Arguments[0];
                 IEnumerable<Expression>? argsToWrite = null;
-                string argsPath = "";
+                var argsPath = "";
                 if (firstArg is NewArrayExpression newArray && firstArg.NodeType == NewArrayInit) {
                     argsToWrite = newArray.Expressions;
                     argsPath = "Arguments[0].Expressions";
@@ -78,15 +78,12 @@ namespace ExpressionTreeToString {
                 }
             }
 
-            bool isIndexer = false;
-            if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
-                isIndexer = true;
-            } else {
-                isIndexer = expr.Method.IsIndexerMethod();
-            }
+            var isIndexer = 
+                (expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get" || 
+                expr.Method.IsIndexerMethod();
             if (isIndexer) {
                 // no such thing as a static indexer; expr.Object will not be null
-                WriteIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
+                writeIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
                 return;
             }
 
@@ -123,7 +120,7 @@ namespace ExpressionTreeToString {
                 Parens(expr, path, o);
             }
 
-            string typeParameters = "";
+            var typeParameters = "";
             if (expr.Method.IsGenericMethod) {
                 var def = expr.Method.GetGenericMethodDefinition();
                 var args = def.GetGenericArguments();
@@ -149,11 +146,11 @@ namespace ExpressionTreeToString {
             WriteNodes(argBasePath, keys);
             Write(IndexerIndicators.suffix);
         }
-        private void WriteIndexerAccess(string instancePath, Expression instance, string argBasePath, IEnumerable<Expression> keys) =>
+        private void writeIndexerAccess(string instancePath, Expression instance, string argBasePath, IEnumerable<Expression> keys) =>
             WriteIndexerAccess(instancePath, instance, argBasePath, keys.ToArray());
 
         protected override void WriteIndex(IndexExpression expr) =>
-            WriteIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
+            writeIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
 
         protected override void WriteElementInit(ElementInit elementInit) {
             var args = elementInit.Arguments;

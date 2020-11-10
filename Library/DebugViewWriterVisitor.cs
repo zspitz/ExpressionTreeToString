@@ -8,6 +8,7 @@ using ZSpitz.Util;
 using static System.Linq.Expressions.ExpressionType;
 using static ExpressionTreeToString.Util.Functions;
 
+#pragma warning disable IDE1006 // we want to imitate the original source as much as possible
 namespace ExpressionTreeToString {
     public class DebugViewWriterVisitor : BuiltinsWriterVisitor {
         public static bool FrameworkCompatible = false;
@@ -23,7 +24,6 @@ namespace ExpressionTreeToString {
 
             Break = 0x8000      // newline if column > MaxColumn
         }
-
 
         private const int MaxColumn = 120;
 
@@ -46,7 +46,7 @@ namespace ExpressionTreeToString {
             }
 
             Flow GetFlow(Flow flow) {
-                Flow last = CheckBreak(_flow);
+                var last = CheckBreak(_flow);
                 flow = CheckBreak(flow);
                 return (Flow)Math.Max((int)last, (int)flow);
             }
@@ -79,11 +79,10 @@ namespace ExpressionTreeToString {
         private int GetParamId(ParameterExpression prm) => GetId(prm, ref _paramIds, out var _, 1);
         private int GetLabelTargetId(LabelTarget target) => GetId(target, ref _labelIds, out var _, 1);
 
-        private static string GetDisplayName(string name) {
-            return name.ContainsWhitespace() ?
+        private static string GetDisplayName(string name) =>
+            name.ContainsWhitespace() ?
                 $"'{name}'" :
                 name;
-        }
 
         bool isRootLambda = true;
         protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {
@@ -111,7 +110,7 @@ namespace ExpressionTreeToString {
                 Dedent();
             }
 
-            char close = open switch
+            var close = open switch
             {
                 '(' => ')',
                 '{' => '}',
@@ -139,11 +138,11 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            bool parenthesizeLeft = NeedsParentheses(node, node.Left);
-            bool parenthesizeRight = NeedsParentheses(node, node.Right);
+            var parenthesizeLeft = NeedsParentheses(node, node.Left);
+            var parenthesizeRight = NeedsParentheses(node, node.Right);
 
             string op;
-            Flow beforeOp = Flow.Space;
+            var beforeOp = Flow.Space;
             switch (node.NodeType) {
                 case Assign: op = "="; break;
                 case Equal: op = "=="; break;
@@ -306,7 +305,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteParameter(ParameterExpression expr) => Out(GetParameterName(expr));
 
-        private static Dictionary<Type, string> suffixes = new Dictionary<Type, string> {
+        private static readonly Dictionary<Type, string> suffixes = new Dictionary<Type, string> {
             [typeof(uint)] = "U",
             [typeof(long)] = "L",
             [typeof(ulong)] = "UL",
@@ -316,7 +315,7 @@ namespace ExpressionTreeToString {
         };
 
         protected override void WriteConstant(ConstantExpression expr) {
-            object? value = expr.Value;
+            var value = expr.Value;
 
             Out(
                 value switch
@@ -397,8 +396,8 @@ namespace ExpressionTreeToString {
                     return true;
             }
 
-            int childOpPrec = GetOperatorPrecedence(child);
-            int parentOpPrec = GetOperatorPrecedence(parent);
+            var childOpPrec = GetOperatorPrecedence(child);
+            var parentOpPrec = GetOperatorPrecedence(parent);
 
             if (childOpPrec == parentOpPrec) {
                 // When parent op and child op has the same precedence,
@@ -532,12 +531,9 @@ namespace ExpressionTreeToString {
             Dedent();
             Out(Flow.NewLine, "}");
 
-            static bool IsSimpleExpression(Expression node) {
-                if (node is BinaryExpression binary) {
-                    return !(binary.Left is BinaryExpression || binary.Right is BinaryExpression);
-                }
-                return false;
-            }
+            static bool IsSimpleExpression(Expression node) => 
+                node is BinaryExpression binary && 
+                !(binary.Left is BinaryExpression || binary.Right is BinaryExpression);
         }
 
         protected override void WriteDefault(DefaultExpression node) => 
@@ -801,3 +797,4 @@ namespace ExpressionTreeToString {
         }
     }
 }
+#pragma warning restore IDE1006 // Naming Styles

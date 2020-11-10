@@ -45,7 +45,7 @@ namespace ExpressionTreeToString {
                     break;
             }
 
-            string stringValue = "";
+            var stringValue = "";
             if (value != null) { stringValue = "= " + StringValue(value, language); }
 
             Write((nodeType, typename, name, stringValue).Where(x => !x.IsNullOrWhitespace()).Joined(" "));
@@ -57,25 +57,24 @@ namespace ExpressionTreeToString {
                     prp.PropertyType.InheritsFromOrImplementsAny(PropertyTypes) ||
                     prp.PropertyType.InheritsFromOrImplementsAny(NodeTypes)
                 )
-                .OrderBy(x => {
-                    if (preferredOrder == null) { return -1; }
-                    return Array.IndexOf(preferredOrder, x.Name);
-                })
+                .OrderBy(x => 
+                    preferredOrder is null ? 
+                        -1 : 
+                        Array.IndexOf(preferredOrder, x.Name)
+                )
                 .ThenBy(x => x.Name)
-                .SelectMany(prp => {
-                    if (prp.PropertyType.InheritsFromOrImplements<IEnumerable>()) {
-                        return (prp.GetValue(o) as IEnumerable).Cast<object>().Select((x, index) => (name: $"{prp.Name}[{index}]", value: x));
-                    } else {
-                        return new[] { (prp.Name, prp.GetValue(o)) };
-                    }
-                })
+                .SelectMany(prp => 
+                    prp.PropertyType.InheritsFromOrImplements<IEnumerable>() ?
+                        (prp.GetValue(o) as IEnumerable).Cast<object>().Select((x, index) => (name: $"{prp.Name}[{index}]", value: x)) :
+                        (new[] { (prp.Name, prp.GetValue(o)) })
+                )
                 .Where(x => x.value != null)
                 .ToList();
 
             static bool defaultReduceFilter(Expression expr2) => expr2.NodeType == ExpressionType.Extension;
 
             if (o is Expression expr1 && expr1.CanReduce && (ReducePredicate ?? defaultReduceFilter)(expr1)) {
-                Expression reduced = expr1;
+                var reduced = expr1;
                 while (reduced.CanReduce) {
                     reduced = reduced.Reduce();
                 }

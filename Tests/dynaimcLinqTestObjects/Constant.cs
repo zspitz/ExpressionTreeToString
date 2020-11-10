@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using static System.Linq.Expressions.Expression;
 
 namespace ExpressionTreeToString.Tests {
-    static public partial class DynamicLinqTestObjects {
+    public static partial class DynamicLinqTestObjects {
         [TestObject("Constants")]
         internal static readonly Expression DateTime1 = Constant(new DateTime(2001, 1, 1));
 

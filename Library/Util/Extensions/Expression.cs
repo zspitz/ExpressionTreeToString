@@ -10,7 +10,7 @@ namespace ExpressionTreeToString.Util {
         internal static void Deconstruct(this Expression expr, out ExpressionType nodeType, out Type type) =>
             (nodeType, type) = (expr.NodeType, expr.Type);
 
-        private static IEnumerable<(string path, Expression clause)> LogicalCombinedClauses(string path, Expression expr, params ExpressionType[] nodeTypes) {
+        private static IEnumerable<(string path, Expression clause)> logicalCombinedClauses(string path, Expression expr, params ExpressionType[] nodeTypes) {
             // The return type cannot be IEnumerable<BinaryExpression> because it might contain any bool-returning expression
             if (expr.NodeType.NotIn(nodeTypes) || expr.Type != typeof(bool)) {
                 yield return (path, expr);
@@ -25,13 +25,13 @@ namespace ExpressionTreeToString.Util {
                 (path + "Right", bexpr.Right)
             };
 
-            foreach (var (path1, expr1) in parts.SelectMany(x => LogicalCombinedClauses(x.path, x.expr, nodeTypes))) {
+            foreach (var (path1, expr1) in parts.SelectMany(x => logicalCombinedClauses(x.path, x.expr, nodeTypes))) {
                 yield return (path1, expr1);
             }
         }
 
-        internal static IEnumerable<Expression> AndClauses(this Expression expr) => LogicalCombinedClauses("", expr, And, AndAlso).Select(x => x.clause);
-        internal static IEnumerable<(string path, Expression clause)> OrClauses(this Expression expr) => LogicalCombinedClauses("", expr, Or, OrElse);
+        internal static IEnumerable<Expression> AndClauses(this Expression expr) => logicalCombinedClauses("", expr, And, AndAlso).Select(x => x.clause);
+        internal static IEnumerable<(string path, Expression clause)> OrClauses(this Expression expr) => logicalCombinedClauses("", expr, Or, OrElse);
 
         internal static IEnumerable<MemberExpression> MemberClauses(this Expression expr) {
             if (!(expr is MemberExpression mexpr)) {

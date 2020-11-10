@@ -266,7 +266,7 @@ namespace ExpressionTreeToString {
             });
             Write(")");
 
-            if (CanInline(expr.Body)) {
+            if (canInline(expr.Body)) {
                 Write(" ");
                 WriteNode("Body", expr.Body);
                 return;
@@ -275,7 +275,7 @@ namespace ExpressionTreeToString {
             Indent();
             WriteEOL();
 
-            bool returnBlock = false;
+            var returnBlock = false;
             if (expr.Body.Type != typeof(void)) {
                 if (expr.Body is BlockExpression bexpr && bexpr.HasMultipleLines()) {
                     returnBlock = true;
@@ -290,7 +290,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteParameterDeclaration(ParameterExpression prm) {
             if (prm.IsByRef) { Write("ByRef "); }
-            Write($"{GetVariableName(prm, ref ids)} As {prm.Type.FriendlyName(language)}");
+            Write($"{GetVariableName(prm, ref IDs)} As {prm.Type.FriendlyName(language)}");
         }
 
         protected override void WriteNew(Type type, string argsPath, IList<Expression> args) {
@@ -357,8 +357,8 @@ namespace ExpressionTreeToString {
             }
 
             IEnumerable<object>? items = null;
-            string initializerKeyword = "";
-            string itemsPath = "";
+            var initializerKeyword = "";
+            var itemsPath = "";
             switch (binding) {
                 case MemberListBinding listBinding when listBinding.Initializers.Count > 0:
                     items = listBinding.Initializers.Cast<object>();
@@ -443,17 +443,16 @@ namespace ExpressionTreeToString {
                                 //
                                 // In order to get back the corresponding VB code, if the bounds is a constant, we can replace the constant.
                                 // If the bounds is another expression, we can wrap in a subtraction expression.
-                                // See also https://github.com/zspitz/ExpressionTreeToString/issues/32
+                                // Except if the bounds is some expression + 1, in which case we can just remove the + 1 (https://github.com/zspitz/ExpressionTreeToString/issues/32)
 
-                                Expression newExpr;
-                                if (x is ConstantExpression cexpr) {
-                                    object newValue = ((dynamic)cexpr.Value) - 1;
-                                    newExpr = Expression.Constant(newValue);
-                                } else if (x.NodeType == AddChecked && x is BinaryExpression bexpr && bexpr.Right is ConstantExpression cexpr1 && Object.Equals(cexpr1.Value, 1)) {
-                                    newExpr = ((BinaryExpression)x).Left;
-                                } else {
-                                    newExpr = Expression.SubtractChecked(x, Expression.Constant(1));
-                                }
+                                Expression newExpr = x switch {
+                                    BinaryExpression bexpr when 
+                                        x.NodeType == AddChecked && 
+                                        bexpr.Right is ConstantExpression cexpr1 && 
+                                        Equals(cexpr1.Value, 1) => bexpr.Left,
+                                    ConstantExpression cexpr => Expression.Constant(((dynamic)cexpr.Value) - 1),
+                                    _ => Expression.SubtractChecked(x, Expression.Constant(1))
+                                };
 
                                 WriteNode($"Expressions[{index}]", newExpr);
                             });
@@ -485,7 +484,7 @@ namespace ExpressionTreeToString {
 
             var outgoingMetadata = CreateMetadata(true);
 
-            if (CanInline(expr.Test)) {
+            if (this.canInline(expr.Test)) {
                 Write("If ");
                 WriteNode("Test", expr.Test);
                 Write(" Then");
@@ -498,7 +497,7 @@ namespace ExpressionTreeToString {
                 Write("Then");
             }
 
-            var canInline = new[] { expr.IfTrue, expr.IfFalse }.All(x => CanInline(x)) && !parentIsConditional;
+            var canInline = (new[] { expr.IfTrue, expr.IfFalse }).All(x => this.canInline(x)) && !parentIsConditional;
             if (canInline) {
                 Write(" ");
                 WriteNode("IfTrue", expr.IfTrue);
@@ -582,13 +581,13 @@ namespace ExpressionTreeToString {
             }
         }
 
-        private bool CanInline(Expression expr) {
+        private bool canInline(Expression expr) {
             switch (expr) {
                 case ConditionalExpression cexpr when cexpr.Type == typeof(void):
                 case BlockExpression bexpr when
                     bexpr.Expressions.Count > 1 ||
                     bexpr.Variables.Any() ||
-                    (bexpr.Expressions.Count == 1 && CanInline(bexpr.Expressions.First())):
+                    (bexpr.Expressions.Count == 1 && canInline(bexpr.Expressions.First())):
                 case SwitchExpression _:
                 case LambdaExpression _:
                 case TryExpression _:
@@ -731,7 +730,7 @@ namespace ExpressionTreeToString {
         // to verify precendence levels by level against https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/operators/operator-precedence#precedence-order
         // use:
         //    precedence.GroupBy(kvp => kvp.Value, kvp => kvp.Key, (key, grp) => new {key, values = grp.OrderBy(x => x.ToString()).Joined(", ")}).OrderBy(x => x.key);
-        private Dictionary<ExpressionType, int> precedence = new Dictionary<ExpressionType, int>() {
+        private static readonly Dictionary<ExpressionType, int> precedence = new Dictionary<ExpressionType, int>() {
             [Add] = 6,
             [AddAssign] = -1,
             [AddAssignChecked] = -1,
@@ -819,8 +818,7 @@ namespace ExpressionTreeToString {
             [Unbox] = -1,
         };
 
-        private int GetPrecedence(Expression node) => node switch
-        {
+        private int getPrecedence(Expression node) => node switch {
             MethodCallExpression mexpr when mexpr.Method.IsStringConcat() => 7,
             MethodCallExpression mexpr when mexpr.Method.IsVBLike() => 9,
             DynamicExpression dexpr => precedence[dexpr.VirtualNodeType()],
@@ -829,15 +827,15 @@ namespace ExpressionTreeToString {
 
         protected override void Parens(OneOf<Expression, ExpressionType> arg, string path, Expression childNode) {
             var parentPrecedence = arg.Match(
-                node => GetPrecedence(node),
+                node => getPrecedence(node),
                 nodeType => precedence[nodeType]
             );
-            var childPrecedence = GetPrecedence(childNode);
+            var childPrecedence = getPrecedence(childNode);
 
             // Operators in VB are left-associative, except for assignment which cannot be nested
             // We thus consider everything left-associative
 
-            bool writeParens = false;
+            var writeParens = false;
             if (parentPrecedence != -1 && childPrecedence != -1) {
                 if (childPrecedence > parentPrecedence) {
                     writeParens = true;
@@ -846,7 +844,7 @@ namespace ExpressionTreeToString {
                     {
                         BinaryExpression _ => path == "Right",
                         DynamicExpression dexpr =>
-                            (dexpr.VirtualNodeType() == Conditional || dexpr.VirtualNodeType().In(binaryExpressionTypes)) &&
+                            (dexpr.VirtualNodeType() == Conditional || dexpr.VirtualNodeType().In(BinaryExpressionTypes)) &&
                             path == "Arguments[1]",
                         _ => false
                     };

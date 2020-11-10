@@ -4,9 +4,9 @@ using System.Linq.Expressions;
 
 namespace ExpressionTreeToString.Tests {
     [ObjectContainer]
-    static public partial class DynamicLinqTestObjects {
-        static internal Expression Expr<T>(Expression<Func<Person, T>> expr) => expr;
-        static internal Expression Expr(Expression<Action<Person>> expr) => expr;
+    public static partial class DynamicLinqTestObjects {
+        internal static Expression Expr<T>(Expression<Func<Person, T>> expr) => expr;
+        internal static Expression Expr(Expression<Action<Person>> expr) => expr;
 
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression Parameter = Expr(p => p);
