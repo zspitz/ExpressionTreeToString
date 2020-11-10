@@ -23,16 +23,16 @@ namespace ExpressionTreeTestObjects {
             }
         }
 
-        private static HashSet<(string category, string source, string name, object o)> _objects = new HashSet<(string category, string source, string name, object o)>();
-        private static readonly Dictionary<string, object> _byName = new Dictionary<string, object>();
+        private static readonly HashSet<(string category, string source, string name, object o)> objects = new HashSet<(string category, string source, string name, object o)>();
+        private static readonly Dictionary<string, object> byName = new Dictionary<string, object>();
 
-        public static (string category, string source, string name, object o)[] Get() => _objects.ToArray();
-        public static object ByName(string s) => _byName[s];
+        public static (string category, string source, string name, object o)[] Get() => objects.ToArray();
+        public static object ByName(string s) => byName[s];
 
         public static void LoadType(Type t) {
-            LoadType(t, _objects);
-            foreach (var x in _objects) {
-                _byName[$"{x.source}.{x.name}"] = x.o;
+            LoadType(t, objects);
+            foreach (var (_, source, name, o) in objects) {
+                byName[$"{source}.{name}"] = o;
             }
         }
 

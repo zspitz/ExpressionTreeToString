@@ -4,7 +4,7 @@ using static System.Linq.Expressions.Expression;
 
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
-        private static LabelTarget labelTarget = Label("target");
+        private static readonly LabelTarget labelTarget = Label("target");
 
         [TestObject(Gotos)]
         internal static readonly Expression MakeBreak = Break(labelTarget);

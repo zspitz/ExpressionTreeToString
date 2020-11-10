@@ -6,8 +6,8 @@ using static ExpressionTreeTestObjects.Globals;
 
 namespace ExpressionTreeTestObjects {
     partial class FactoryMethods {
-        static Type exceptionType = typeof(InvalidCastException);
-        static ParameterExpression ex = Parameter(typeof(Exception), "ex");
+        static readonly Type exceptionType = typeof(InvalidCastException);
+        static readonly ParameterExpression ex = Parameter(typeof(Exception), "ex");
 
         [TestObject(Try)]
         internal static readonly Expression ConstructTryFault = TryFault(writeLineTrue, writeLineTrue);

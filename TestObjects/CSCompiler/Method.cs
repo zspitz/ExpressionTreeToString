@@ -14,9 +14,7 @@ namespace ExpressionTreeTestObjects {
         public static IEnumerable<T> ExtensionMethod2ArgumentsEnumerable<T>(this IEnumerable<T> lst, int n1, int n2) => lst;
         public static void DummyMethodWithGenerics<T>() { }
         public static void DummyMethodWithRef(ref int i) { }
-        public static void DummyMethodWithOut(out int i) {
-            i = 5;
-        }
+        public static void DummyMethodWithOut(out int i) => i = 5;
     }
 
     partial class CSCompiler {

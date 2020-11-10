@@ -1,5 +1,6 @@
 root = true
 
+
 [*.{cs,vb}]
 indent_size = 4
 indent_style = space
@@ -40,6 +41,7 @@ dotnet_style_prefer_is_null_check_over_reference_equality_method = true:suggesti
 dotnet_style_prefer_simplified_boolean_expressions = true:suggestion
 dotnet_style_prefer_simplified_interpolation = true:suggestion
 
+
 # Naming rules
 
 dotnet_naming_rule.interface_should_be_begins_with_i.severity = suggestion
@@ -59,18 +61,6 @@ dotnet_naming_rule.private_members_should_be_pascal_case.symbols = private_membe
 dotnet_naming_rule.private_members_should_be_pascal_case.style = camel_case
 
 
-#dotnet_naming_rule.non_public_members_should_be_camel_case.severity = suggestion
-#dotnet_naming_rule.non_public_members_should_be_camel_case.symbols = property, method, field, event
-#
-#
-#dotnet_naming_rule.non_field_members_should_be_pascal_case.severity = suggestion
-#dotnet_naming_rule.non_field_members_should_be_pascal_case.symbols = non_field_members
-#dotnet_naming_rule.non_field_members_should_be_pascal_case.style = pascal_case
-#
-#dotnet_naming_rule.private_method_should_be_camel_case.severity = suggestion
-#dotnet_naming_rule.private_method_should_be_camel_case.symbols = method
-#dotnet_naming_rule.private_method_should_be_camel_case.style = camel_case
-
 # Symbols for use with naming rules
 
 dotnet_naming_symbols.interface.applicable_kinds = interface
@@ -81,17 +71,12 @@ dotnet_naming_symbols.types.applicable_kinds = class, struct, interface, enum, d
 dotnet_naming_symbols.types.applicable_accessibilities = public, internal, private, protected, protected_internal, private_protected
 dotnet_naming_symbols.types.required_modifiers = 
 
-#dotnet_naming_symbols.private_method_should_be_camel_case.applicable_kinds = method
-#dotnet_naming_symbols.private_method_should_be_camel_case.applicable_accessibilities = private
-#
-#dotnet_naming_symbols.non_field_members.applicable_kinds = property, event, method
-#dotnet_naming_symbols.non_field_members.applicable_accessibilities = public, internal, protected, protected_internal
-#
 dotnet_naming_symbols.non_private_members.applicable_kinds = property, method, field, event
 dotnet_naming_symbols.non_private_members.applicable_accessibilities = public, internal, protected, protected_internal, private_protected
 
 dotnet_naming_symbols.private_members.applicable_kinds = property, method, field, event
 dotnet_naming_symbols.private_members.applicable_accessibilities = private
+
 
 # Naming styles
 
@@ -109,6 +94,7 @@ dotnet_naming_style.camel_case.required_prefix =
 dotnet_naming_style.camel_case.required_suffix = 
 dotnet_naming_style.camel_case.word_separator = 
 dotnet_naming_style.camel_case.capitalization = camel_case
+
 
 [*.cs]
 csharp_new_line_before_catch = false
