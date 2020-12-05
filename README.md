@@ -66,7 +66,7 @@ Console.WriteLine(expr1.ToString("ToString"));
     () => IIF(value(_tests.Program+<>c__DisplayClass0_0).b, 1, 0)
 */
 
-Console.WriteLine(expr.ToString("DebugView"));
+Console.WriteLine(expr1.ToString("DebugView"));
 // prints:
 /*
     .Lambda #Lambda1<System.Func`1[System.Int32]>() {
@@ -81,7 +81,7 @@ Console.WriteLine(expr.ToString("DebugView"));
 */
 
 Expression<Func<Person, bool>> filter = p => p => p.LastName == "A" || p.FirstName == "B" || p.DOB == DateTime.MinValue || p.LastName == "C" || p.FirstName == "D";
-Console.WriteLine(expr.ToString("Dynamic LINQ"));
+Console.WriteLine(filter.ToString("Dynamic LINQ"));
 // prints:
 /*
     LastName in ("A", "C") || DOB == DateTime.MinValue || FirstName in ("B", "D")
