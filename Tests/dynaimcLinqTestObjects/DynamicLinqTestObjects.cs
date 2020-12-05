@@ -28,5 +28,19 @@ namespace ExpressionTreeToString.Tests {
         // pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/441
         //[TestObject("Invocation")]
         //internal static readonly Expression InvocationArguments = Expr(p => ((Func<Person, string>)(p1 => p1.LastName + p1.FirstName))(p));
+
+        [TestObject("Dynamic LINQ")]
+        internal static readonly Expression ParameterTypeAs = Expr(p => p as object);
+
+        // throws a NotImplemented exception; we currently have no way to check for this
+        //[TestObject("Dynamic LINQ")]
+        //internal static readonly Expression PropertyTypeAs = Expr(p => p.LastName as object);
+
+        [TestObject("Dynamic LINQ")]
+        internal static readonly Expression ParameterTypeIs = Expr(p => p is object);
+
+        // throws a NotImplemented exception; we currently have no way to check for this
+        //[TestObject("Dynamic LINQ")]
+        //internal static readonly Expression PropertyTypeIs = Expr(p => p.LastName is object);
     }
 }

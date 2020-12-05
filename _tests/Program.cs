@@ -168,17 +168,30 @@ namespace _tests {
             //    )
             //);
 
-            Expression<Func<Person, bool>> expr = p => p.DOB!.DayOfWeek == DayOfWeek.Thursday || p.DOB!.DayOfWeek == DayOfWeek.Wednesday;
+            //Expression<Func<Person, bool>> expr = p => p.DOB!.DayOfWeek == DayOfWeek.Thursday || p.DOB!.DayOfWeek == DayOfWeek.Wednesday;
 
-            Console.WriteLine(expr.ToString("Textual tree", "C#"));
-            Console.WriteLine(expr.ToString("C#"));
+            //IQueryable<Person> qry = new List<Person>().AsQueryable();
+            //qry = qry.Where(p => p.LastName.StartsWith("A") || p.LastName.EndsWith("Z"));
+            ////Console.WriteLine(qry.Expression.ToString("Factory methods", "C#"));
+            //Console.WriteLine(qry.Expression.ToString("Object notation", "C#"));
+
+
+
+            //    Console.WriteLine(expr.ToString("Textual tree", "C#"));
+            //    Console.WriteLine(expr.ToString("C#"));
+            //    Console.WriteLine(expr.ToString("Dynamic LINQ"));
+
+            Expression<Func<Person, bool>> expr = p => p.LastName.StartsWith("A");
             Console.WriteLine(expr.ToString("Dynamic LINQ"));
+            Console.WriteLine(expr.ToString("C#"));
+            Console.WriteLine(expr.ToString("Textual tree", "C#"));
+            Console.WriteLine(expr.ToString("Factory methods", "C#"));
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);
 
         static void availableRenderersSamples() {
-            void line() => Console.WriteLine(new string('=', 50));
+            static void line() => Console.WriteLine(new string('=', 50));
 
             Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
             Console.WriteLine(expr.ToString("C#"));

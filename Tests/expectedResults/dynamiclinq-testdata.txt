@@ -94,4 +94,8 @@ DOB.Value.DayOfWeek in (DayOfWeek.Thursday, DayOfWeek.Monday)
 DayOfWeek.Tuesday in (DOB.Value.DayOfWeek, RegisteredOn.Value.DayOfWeek)
 ---- DynamicLinqTestObjects.InConstantOrNonConstant
 DOB.Value.DayOfWeek in (RegisteredOn.Value.DayOfWeek, DayOfWeek.Thursday)
+---- DynamicLinqTestObjects.ParameterTypeAs
+as("System.Object")
+---- DynamicLinqTestObjects.ParameterTypeIs
+is("System.Boolean")
 ------

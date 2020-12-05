@@ -188,6 +188,12 @@ namespace ExpressionTreeToString {
                     }
                     WriteNode("Operand", expr.Operand);
                     break;
+                case TypeAs :
+                    if (expr.Operand != currentScoped) {
+                        throw new NotImplementedException("'as' only supported on ParameterExpression in current scope.");
+                    }
+                    Write($"as(\"{expr.Type.FullName}\")");
+                    break;
                 default:
                     throw new NotImplementedException();
             }
@@ -495,7 +501,6 @@ namespace ExpressionTreeToString {
 
             // TODO handle !(x.A == null) as well
             // TODO handle also !(x == null || x.A == null)
-            // TODO ignore member clause when the expression is of closure type
 
             // only check member expressions whose Expression.Type can take null (reference type or Nullable<T>)
             var memberClauses = expr.IfTrue.MemberClauses().Where(x => x.Expression.Type.IsNullable(true)).ToList();
@@ -531,7 +536,10 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
-            throw new NotImplementedException();
+            if (expr.Expression != currentScoped) {
+                throw new NotImplementedException("'is' only supported on ParameterExpression in current scope.");
+            }
+            Write($"is(\"{expr.Type.FullName}\")");
         }
 
         protected override void WriteInvocation(InvocationExpression expr) {
