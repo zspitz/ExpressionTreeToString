@@ -205,7 +205,7 @@ namespace ExpressionTreeToString {
             }
         }
 
-        protected virtual void WriteExtension(Expression expr) => throw new NotImplementedException("NodeType: Exension not implemented.");
+        protected virtual void WriteExtension(Expression expr) => throw new NotImplementedException("NodeType: Extension not implemented.");
 
         // .NET 3.5 expression types
         protected abstract void WriteBinary(BinaryExpression expr);

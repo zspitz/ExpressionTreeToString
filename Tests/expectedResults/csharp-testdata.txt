@@ -1125,7 +1125,7 @@ lstString.ExtensionMethod2Arguments(5, 17)
 () => lst.Count()
 ---- FactoryMethods.MakeExtensionExpression
 --
--- Not implemented - NodeType: Exension not implemented.
+-- Not implemented - NodeType: Extension not implemented.
 --
 ---- FactoryMethods.ConstructUnbox
 (int)obj
@@ -1178,4 +1178,8 @@ x + y
 () => x / y
 ---- FactoryMethods.MakeEqualsEnum
 DayOfWeek.Tuesday == DayOfWeek.Monday
+---- FactoryMethods.MakeNonreducibleExtensionExpression
+--
+-- Not implemented - NodeType: Extension not implemented.
+--
 ------

@@ -2313,4 +2313,6 @@ Equal (bool) = false
         · Operand - Constant (DayOfWeek) = DayOfWeek.Tuesday
     · Right - ConvertChecked (int) = 1
         · Operand - Constant (DayOfWeek) = DayOfWeek.Monday
+---- FactoryMethods.MakeNonreducibleExtensionExpression
+Extension (int)
 ------

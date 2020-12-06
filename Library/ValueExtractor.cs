@@ -7,7 +7,7 @@ namespace ExpressionTreeToString {
         private readonly Stack<Expression> expressionStack = new Stack<Expression>();
         private readonly Dictionary<Expression, bool> evaluables = new Dictionary<Expression, bool>();
 
-        public override Expression Visit(Expression node) {
+        public override Expression? Visit(Expression node) {
             expressionStack.Push(node);
 
             switch (node) {
@@ -26,11 +26,11 @@ namespace ExpressionTreeToString {
                 // LoopExpression because it might be a never-ending loop
                 case ParameterExpression _:
                 case LoopExpression _:
+                case Expression expr when expr.NodeType == ExpressionType.Extension && !expr.CanReduce:
                     foreach (var x in expressionStack) {
                         evaluables[x] = false;
                     }
                     break;
-
 
                 case DefaultExpression _:
                 case ConstantExpression _:
@@ -44,13 +44,17 @@ namespace ExpressionTreeToString {
 
                         // LambdaExpression's value is the same as LambdaExpression.Body
                         // BlockExpression's value is the same as the last expression in the block
-                        // in either case we're presumably getting the value for the underlying expression; there's no need to do so again
+                        // in either case we will have gotten the value for the underlying expression; there's no need to do so again
                         evaluables[x] = !(x is LambdaExpression) && !(x is BlockExpression);
                     }
                     break;
             }
 
-            var ret = base.Visit(node);
+            var ret = node switch {
+                null => null,
+                var _ when node.NodeType == ExpressionType.Extension && !node.CanReduce => node,
+                _ => base.Visit(node)
+            };
             expressionStack.Pop();
             return ret;
         }

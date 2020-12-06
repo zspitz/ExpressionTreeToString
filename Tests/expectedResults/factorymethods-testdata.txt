@@ -3712,7 +3712,7 @@ Lambda(
 )
 ---- FactoryMethods.MakeExtensionExpression
 --
--- Not implemented - NodeType: Exension not implemented.
+-- Not implemented - NodeType: Extension not implemented.
 --
 ---- FactoryMethods.ConstructUnbox
 Unbox(obj,
@@ -3973,4 +3973,8 @@ Equal(
         typeof(int)
     )
 )
+---- FactoryMethods.MakeNonreducibleExtensionExpression
+--
+-- Not implemented - NodeType: Extension not implemented.
+--
 ------

@@ -1076,7 +1076,7 @@ Function() lst.Count
 Function() lst.Count
 ---- FactoryMethods.MakeExtensionExpression
 --
--- Not implemented - NodeType: Exension not implemented.
+-- Not implemented - NodeType: Extension not implemented.
 --
 ---- FactoryMethods.ConstructUnbox
 CInt(obj)
@@ -1142,4 +1142,8 @@ Function() x \ y
 Function() x \ y
 ---- FactoryMethods.MakeEqualsEnum
 DayOfWeek.Tuesday = DayOfWeek.Monday
+---- FactoryMethods.MakeNonreducibleExtensionExpression
+--
+-- Not implemented - NodeType: Extension not implemented.
+--
 ------

@@ -8294,4 +8294,9 @@ new BinaryExpression {
         }
     }
 }
+---- FactoryMethods.MakeNonreducibleExtensionExpression
+new NonreducibleExtensionExpression {
+    NodeType = ExpressionType.Extension,
+    Type = typeof(int)
+}
 ------

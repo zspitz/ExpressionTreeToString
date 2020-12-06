@@ -84,8 +84,11 @@ namespace ExpressionTreeTestObjects {
             Lambda(Constant(5))
         );
 
-        [TestObject("")]
+        [TestObject(ExtensionExpressions)]
         internal static readonly Expression MakeExtensionExpression = new ExtensionExpression();
+
+        [TestObject(ExtensionExpressions)]
+        internal static readonly Expression MakeNonreducibleExtensionExpression = new NonreducibleExtensionExpression();
 
         [TestObject(EnumComparison)]
         internal static readonly Expression MakeEqualsEnum = Equal(
