@@ -13,7 +13,7 @@ Console.WriteLine(expr.ToString("C#"));
 Console.WriteLine(expr.ToString("Visual Basic"));
 // prints: Function() True
 
-Console.WriteLine(expr.ToString("Factory methods"));
+Console.WriteLine(expr.ToString("Factory methods", "C#"));
 // prints:
 /*
     // using static System.Linq.Expressions.Expression
@@ -23,7 +23,7 @@ Console.WriteLine(expr.ToString("Factory methods"));
     )
 */
 
-Console.WriteLine(expr.ToString("Object notation"));
+Console.WriteLine(expr.ToString("Object notation", "C#"));
 // prints:
 /*
     new Expression<Func<bool>> {
