@@ -95,11 +95,11 @@ Features:
 * Multiple writers:
 
   * Pseudo-code in C# or VB.NET
-  * Factory method calls which generate this expression
+  * [Factory method](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression) calls which generate this expression
   * Object notation, using object initializer and collection initializer syntax to describe objects
   * Textual tree, focusing on the properties related to the structure of the tree
-  * ToString and DebugView reimplementation
-  * Dynamic LINQ equivalent to the expression
+  * [ToString](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.tostring) and [DebugView](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/expression-trees/debugview-syntax) reimplementation
+  * [Dynamic LINQ](https://dynamic-linq.net/overview) equivalent to the expression
 
 * For C# and VB pseudo-code representations:
 
