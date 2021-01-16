@@ -2,6 +2,8 @@
 
 [![AppVeyor build status](https://img.shields.io/appveyor/ci/zspitz/expressiontreetostring?style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreetostring) [![Tests](https://img.shields.io/appveyor/tests/zspitz/expressiontreetostring?compact_message&style=flat&max-age=86400)](https://ci.appveyor.com/project/zspitz/expressiontreetostring) [![NuGet Status](https://img.shields.io/nuget/v/ExpressionTreeToString.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeToString/) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; [**Test objects:**](https://github.com/zspitz/ExpressionTreeToString/wiki/ExpressionTreeTestObjects) [![NuGet TestObjects Status](https://img.shields.io/nuget/v/ExpressionTreeTestObjects.svg?style=flat&max-age=86400)](https://www.nuget.org/packages/ExpressionTreeTestObjects/) 
 
+![Targets .NET Standard 2.0 and above / Framework 4.5.2 and above](https://img.shields.io/badge/targets%20.NET-Standard%202.0%20%7C%20Framework%204.5.2-informational "Targets .NET Standard 2.0 | Framework 4.5.2") 
+
 Provides a `ToString` extension method which returns a string representation of an expression tree (an object inheriting from `System.Linq.Expressions.Expression`).
 
 ```csharp
@@ -13,7 +15,7 @@ Console.WriteLine(expr.ToString("C#"));
 Console.WriteLine(expr.ToString("Visual Basic"));
 // prints: Function() True
 
-Console.WriteLine(expr.ToString("Factory methods"));
+Console.WriteLine(expr.ToString("Factory methods", "C#"));
 // prints:
 /*
     // using static System.Linq.Expressions.Expression
@@ -23,7 +25,7 @@ Console.WriteLine(expr.ToString("Factory methods"));
     )
 */
 
-Console.WriteLine(expr.ToString("Object notation"));
+Console.WriteLine(expr.ToString("Object notation", "C#"));
 // prints:
 /*
     new Expression<Func<bool>> {
@@ -93,11 +95,11 @@ Features:
 * Multiple writers:
 
   * Pseudo-code in C# or VB.NET
-  * Factory method calls which generate this expression
+  * [Factory method](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression) calls which generate this expression
   * Object notation, using object initializer and collection initializer syntax to describe objects
   * Textual tree, focusing on the properties related to the structure of the tree
-  * ToString and DebugView reimplementation
-  * Dynamic LINQ equivalent to the expression
+  * [ToString](https://docs.microsoft.com/en-us/dotnet/api/system.linq.expressions.expression.tostring) and [DebugView](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/expression-trees/debugview-syntax) reimplementation
+  * [Dynamic LINQ](https://dynamic-linq.net/overview) equivalent to the expression
 
 * For C# and VB pseudo-code representations:
 
