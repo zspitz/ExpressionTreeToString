@@ -42,7 +42,7 @@ namespace ExpressionTreeToString.Tests {
                         continue;
                     }
                     if (testName != "") {
-                        if (key == BuiltinRenderer.FactoryMethods) {
+                        if (key == FactoryMethods) {
                             expected = "// using static System.Linq.Expressions.Expression" + NewLines(2) + expected;
                         }
                         ret.Add((key, testName), expected.Trim());
