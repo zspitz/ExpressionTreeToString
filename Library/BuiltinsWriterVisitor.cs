@@ -12,7 +12,7 @@ namespace ExpressionTreeToString {
         protected BuiltinsWriterVisitor(object o, OneOf<string, Language?> languageArg, IEnumerable<string>? insertionPointKeys, bool hasPathSpans) 
             : base(o, languageArg, insertionPointKeys, hasPathSpans) { }
 
-        protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {
+        protected override void WriteNodeImpl(object? o, bool parameterDeclaration = false, object? metadata = null) {
             switch (o) {
                 case ParameterExpression pexpr when parameterDeclaration:
                     WriteParameterDeclaration(pexpr);
@@ -43,7 +43,11 @@ namespace ExpressionTreeToString {
                     break;
 
                 default:
-                    throw new NotImplementedException($"Code generation not implemented for type '{o.GetType().Name}'");
+                    throw new NotImplementedException(
+                        o is null ?
+                            "Attempted code generation on null" :
+                            $"Code generation not implemented for type '{o.GetType().Name}'"
+                    );
             }
         }
 
@@ -112,7 +116,7 @@ namespace ExpressionTreeToString {
                     WriteInvocation((InvocationExpression)expr);
                     break;
 
-                case Index:
+                case ExpressionType.Index:
                     WriteIndex((IndexExpression)expr);
                     break;
 

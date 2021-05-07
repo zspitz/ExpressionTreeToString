@@ -181,11 +181,14 @@ namespace _tests {
             //    Console.WriteLine(expr.ToString("C#"));
             //    Console.WriteLine(expr.ToString("Dynamic LINQ"));
 
-            Expression<Func<Person, bool>> expr = p => p.LastName.StartsWith("A");
-            Console.WriteLine(expr.ToString("Dynamic LINQ"));
-            Console.WriteLine(expr.ToString("C#"));
-            Console.WriteLine(expr.ToString("Textual tree", "C#"));
-            Console.WriteLine(expr.ToString("Factory methods", "C#"));
+            //Expression<Func<Person, bool>> expr = p => p.LastName.StartsWith("A");
+            //Console.WriteLine(expr.ToString("Dynamic LINQ"));
+            //Console.WriteLine(expr.ToString("C#"));
+            //Console.WriteLine(expr.ToString("Textual tree", "C#"));
+            //Console.WriteLine(expr.ToString("Factory methods", "C#"));
+
+            var qry = new List<User>().AsQueryable().Where(x => x.UserName == "Test").OrderBy(x => x.UserName);
+            Console.WriteLine(qry.Expression.ToString("Dynamic LINQ"));
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);
@@ -250,5 +253,9 @@ namespace _tests {
         public Foo? B { get; set; }
         public Foo? C { get; set; }
         public Foo? D { get; set; }
+    }
+
+    class User {
+        public string UserName { get; set; } = "";
     }
 }

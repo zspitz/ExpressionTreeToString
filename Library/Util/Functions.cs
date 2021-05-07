@@ -63,8 +63,8 @@ namespace ExpressionTreeToString.Util {
 
             static Expression? getEnumValue(Expression other, Type enumType) {
                 return
-                    other is ConstantExpression cexpr && Enum.IsDefined(enumType, cexpr.Value) ?
-                        Expression.Constant(Enum.Parse(enumType, cexpr.Value.ToString())) :
+                    other is ConstantExpression cexpr && Enum.IsDefined(enumType, cexpr.Value!) ?
+                        Expression.Constant(Enum.Parse(enumType, cexpr.Value!.ToString()!)) :
                         null;
             }
 

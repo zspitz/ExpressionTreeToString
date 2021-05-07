@@ -1146,4 +1146,14 @@ DayOfWeek.Tuesday = DayOfWeek.Monday
 --
 -- Not implemented - NodeType: Extension not implemented.
 --
+---- FactoryMethods.ConstructLabelWithValue
+Block
+    Dim i As Integer
+    Block
+        Dim j As Integer
+        True
+target:
+        True
+    End Block
+End Block
 ------

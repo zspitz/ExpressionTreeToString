@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using static ExpressionTreeTestObjects.Functions;
+﻿using System.Linq.Expressions;
 using static ExpressionTreeTestObjects.Categories;
 using static System.Linq.Expressions.Expression;
 using static ExpressionTreeTestObjects.Globals;
@@ -33,10 +30,26 @@ namespace ExpressionTreeTestObjects {
         );
 
         [TestObject(Labels)]
+        // we're using variables here to force explicit blocks, which have indentation
+        // in order to verify that the label is written without indentation
+        internal static readonly Expression ConstructLabelWithValue = Block(
+            new[] { i },
+            Block(
+                new[] { j },
+                Constant(true),
+                Label(
+                    Label("target"),
+                    Constant(5)
+                ),
+                Constant(true)
+            )
+        );
+
+
+        [TestObject(Labels)]
         internal static readonly LabelTarget ConstructLabelTarget = Label("target");
 
         [TestObject(Labels)]
         internal static readonly LabelTarget ConstructEmptyLabelTarget = Label("");
-
     }
 }

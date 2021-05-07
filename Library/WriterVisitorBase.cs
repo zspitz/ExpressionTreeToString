@@ -61,7 +61,7 @@ namespace ExpressionTreeToString {
             ip.sb.Append(new string(' ', ip.indentationLevel * 4));
         }
 
-        protected void Write(string s) => s.AppendTo(ip.sb);
+        protected void Write(string? s) => s.AppendTo(ip.sb);
         protected void Write(char c) => c.AppendTo(ip.sb);
 
         /// <summary>Write a string-rendering of an expression or other type used in expression trees</summary>
@@ -69,7 +69,7 @@ namespace ExpressionTreeToString {
         /// <param name="parameterDeclaration">For ParameterExpression, this is a parameter declaration</param>
         /// <param name="blockType">For BlockExpression, sets the preferred block type</param>
         /// 
-        protected void WriteNode(string pathSegment, object o, bool parameterDeclaration = false, object? metadata = null) {
+        protected void WriteNode(string pathSegment, object? o, bool parameterDeclaration = false, object? metadata = null) {
             if (!pathSegment.IsNullOrWhitespace()) { pathSegments.Add(pathSegment); }
             var start = ip.sb.Length;
             try {
@@ -91,7 +91,7 @@ namespace ExpressionTreeToString {
         protected void WriteNode((string pathSegment, object o) x) => WriteNode(x.pathSegment, x.o);
         protected void WriteNode(string pathSegment, object o, object blockMetadata) => WriteNode(pathSegment, o, false, blockMetadata);
 
-        protected abstract void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null);
+        protected abstract void WriteNodeImpl(object? o, bool parameterDeclaration = false, object? metadata = null);
 
         protected void WriteNodes<T>(IEnumerable<(string pathSegment, T o)> pathsItems, bool writeEOL, string delimiter = ", ", bool parameterDeclaration = false) {
             if (writeEOL) { delimiter = delimiter.TrimEnd(); }

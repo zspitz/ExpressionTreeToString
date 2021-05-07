@@ -8299,4 +8299,91 @@ new NonreducibleExtensionExpression {
     NodeType = ExpressionType.Extension,
     Type = typeof(int)
 }
+---- FactoryMethods.ConstructLabelWithValue
+var i = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "i"
+};
+var j = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "j"
+};
+var j = new ParameterExpression {
+    Type = typeof(int),
+    IsByRef = false,
+    Name = "j"
+};
+
+new BlockExpression {
+    Type = typeof(bool),
+    Variables = new ReadOnlyCollection<ParameterExpression> {
+        i
+    },
+    Expressions = new ReadOnlyCollection<Expression> {
+        new BlockExpression {
+            Type = typeof(bool),
+            Variables = new ReadOnlyCollection<ParameterExpression> {
+                j
+            },
+            Expressions = new ReadOnlyCollection<Expression> {
+                new ConstantExpression {
+                    Type = typeof(bool),
+                    Value = true
+                },
+                new LabelExpression {
+                    Type = typeof(void),
+                    DefaultValue = new ConstantExpression {
+                        Type = typeof(int),
+                        Value = 5
+                    },
+                    Target = new LabelTarget {
+                        Type = typeof(void),
+                        Name = "target"
+                    }
+                },
+                new ConstantExpression {
+                    Type = typeof(bool),
+                    Value = true
+                }
+            },
+            Result = new ConstantExpression {
+                Type = typeof(bool),
+                Value = true
+            }
+        }
+    },
+    Result = new BlockExpression {
+        Type = typeof(bool),
+        Variables = new ReadOnlyCollection<ParameterExpression> {
+            j
+        },
+        Expressions = new ReadOnlyCollection<Expression> {
+            new ConstantExpression {
+                Type = typeof(bool),
+                Value = true
+            },
+            new LabelExpression {
+                Type = typeof(void),
+                DefaultValue = new ConstantExpression {
+                    Type = typeof(int),
+                    Value = 5
+                },
+                Target = new LabelTarget {
+                    Type = typeof(void),
+                    Name = "target"
+                }
+            },
+            new ConstantExpression {
+                Type = typeof(bool),
+                Value = true
+            }
+        },
+        Result = new ConstantExpression {
+            Type = typeof(bool),
+            Value = true
+        }
+    }
+}
 ------

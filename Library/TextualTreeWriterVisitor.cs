@@ -18,7 +18,7 @@ namespace ExpressionTreeToString {
 
         private readonly ValueExtractor valueExtractor = new ValueExtractor();
 
-        protected override sealed void WriteNodeImpl(object o, bool _ = false, object? _1 = null) {
+        protected override sealed void WriteNodeImpl(object? o, bool _ = false, object? _1 = null) {
             var nodeType = "";
             var typename = "";
             var name = "";
@@ -40,6 +40,8 @@ namespace ExpressionTreeToString {
                 case CallSiteBinder binder:
                     nodeType = binder.BinderType().ToString();
                     break;
+                case null:
+                    throw new NotImplementedException("Attempted code generation on null");
                 default:
                     nodeType = o.GetType().FriendlyName(language);
                     break;
@@ -65,8 +67,8 @@ namespace ExpressionTreeToString {
                 .ThenBy(x => x.Name)
                 .SelectMany(prp => 
                     prp.PropertyType.InheritsFromOrImplements<IEnumerable>() ?
-                        (prp.GetValue(o) as IEnumerable).Cast<object>().Select((x, index) => (name: $"{prp.Name}[{index}]", value: x)) :
-                        (new[] { (prp.Name, prp.GetValue(o)) })
+                        (prp.GetValue(o) as IEnumerable)!.Cast<object>().Select((x, index) => (name: $"{prp.Name}[{index}]", value: x)) :
+                        (new[] { (prp.Name, prp.GetValue(o)) }!)
                 )
                 .Where(x => x.value != null)
                 .ToList();

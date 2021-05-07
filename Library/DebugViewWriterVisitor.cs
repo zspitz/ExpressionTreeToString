@@ -85,7 +85,7 @@ namespace ExpressionTreeToString {
                 name;
 
         bool isRootLambda = true;
-        protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {
+        protected override void WriteNodeImpl(object? o, bool parameterDeclaration = false, object? metadata = null) {
             if (!(o is LambdaExpression)) { isRootLambda = false; }
             base.WriteNodeImpl(o, parameterDeclaration, metadata);
         }
@@ -323,8 +323,8 @@ namespace ExpressionTreeToString {
                     null => "null",
                     string _ when expr.Type == typeof(string) => $"\"{value}\"",
                     char _ when expr.Type == typeof(char) => $"'{value}'",
-                    int _ when expr.Type == typeof(int) => value.ToString(),
-                    bool _ when expr.Type == typeof(bool) => value.ToString(),
+                    int i when expr.Type == typeof(int) => i.ToString(),
+                    bool b when expr.Type == typeof(bool) => b.ToString(),
                     var _ when suffixes.TryGetValue(expr.Type, out var suffix) => $"{value}{suffix}",
                     _ => $".Constant<{expr.Type}>({value})"
                 }
@@ -564,7 +564,7 @@ namespace ExpressionTreeToString {
             if (node.Indexer is { }) {
                 OutMember("Object",node, node.Object, node.Indexer);
             } else {
-                ParenthesizedVisit("Object", node, node.Object);
+                ParenthesizedVisit("Object", node, node.Object!);
             }
             VisitExpressions("Arguments", '[', node.Arguments);
         }
@@ -758,7 +758,7 @@ namespace ExpressionTreeToString {
                     CreateInstanceBinder _ => "Create",
                     UnaryOperationBinder unary => $"UnaryOperation {unary.Operation}",
                     BinaryOperationBinder binary => $"BinaryOperation {binary.Operation}",
-                    _ => node.Binder.ToString()
+                    _ => node.Binder.ToString()!
                 }
             );
             VisitExpressions("Arguments", '(', node.Arguments);

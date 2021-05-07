@@ -7,7 +7,9 @@ namespace ExpressionTreeToString {
         private readonly Stack<Expression> expressionStack = new Stack<Expression>();
         private readonly Dictionary<Expression, bool> evaluables = new Dictionary<Expression, bool>();
 
-        public override Expression? Visit(Expression node) {
+        public override Expression? Visit(Expression? node) {
+            if (node is null) { return null; }
+
             expressionStack.Push(node);
 
             switch (node) {
@@ -36,7 +38,7 @@ namespace ExpressionTreeToString {
                 case ConstantExpression _:
                 case MethodCallExpression mcexpr when mcexpr.Arguments.None() && mcexpr.Object is null:
                 case MemberExpression mexpr when mexpr.Expression is null:
-                case NewExpression nexpr when nexpr.Arguments.None() && nexpr.Members.None():
+                case NewExpression nexpr when nexpr.Arguments.None() && nexpr.Members!.None():
                 case DebugInfoExpression _:
                 case GotoExpression _:
                     foreach (var x in expressionStack) {

@@ -29,7 +29,7 @@ namespace ExpressionTreeToString.Util {
 
         // Microsoft.VisualBasic.CompilerServices is not available to .NET Standard, so we have to check by name
         internal static bool IsVBLike(this MethodInfo mthd) => 
-            mthd.DeclaringType.FullName == "Microsoft.VisualBasic.CompilerServices.LikeOperator" && 
+            mthd.DeclaringType?.FullName == "Microsoft.VisualBasic.CompilerServices.LikeOperator" && 
             mthd.Name.StartsWith("Like");
     }
 }

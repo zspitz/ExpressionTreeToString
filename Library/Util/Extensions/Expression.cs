@@ -33,7 +33,7 @@ namespace ExpressionTreeToString.Util {
         internal static IEnumerable<Expression> AndClauses(this Expression expr) => logicalCombinedClauses("", expr, And, AndAlso).Select(x => x.clause);
         internal static IEnumerable<(string path, Expression clause)> OrClauses(this Expression expr) => logicalCombinedClauses("", expr, Or, OrElse);
 
-        internal static IEnumerable<MemberExpression> MemberClauses(this Expression expr) {
+        internal static IEnumerable<MemberExpression> MemberClauses(this Expression? expr) {
             if (!(expr is MemberExpression mexpr)) {
                 yield break;
             }

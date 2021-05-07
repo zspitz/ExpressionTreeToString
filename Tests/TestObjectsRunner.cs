@@ -82,7 +82,7 @@ namespace ExpressionTreeToString.Tests {
             return ret;
         });
 
-        private (string toString, HashSet<string> paths) GetToString(BuiltinRenderer rendererKey, object o) {
+        private static (string toString, HashSet<string> paths) getToString(BuiltinRenderer rendererKey, object o) {
             Language? language = rendererKey switch
             {
                 ObjectNotation => Language.CSharp,
@@ -132,7 +132,7 @@ namespace ExpressionTreeToString.Tests {
                 DebugView => debugView.GetValue(o),
                 _ => ExpectedStrings[(rendererKey, objectName)]
             };
-            var (actual, paths) = GetToString(rendererKey, o);
+            var (actual, paths) = getToString(rendererKey, o);
 
             // test that the string result is correct
             Assert.Equal(expected, actual);

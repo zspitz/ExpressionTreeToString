@@ -1182,4 +1182,14 @@ DayOfWeek.Tuesday == DayOfWeek.Monday
 --
 -- Not implemented - NodeType: Extension not implemented.
 --
+---- FactoryMethods.ConstructLabelWithValue
+(
+    int i,
+    (
+        int j,
+        true,
+target:
+        true
+    )
+)
 ------

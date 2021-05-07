@@ -308,7 +308,7 @@ namespace ExpressionTreeToString {
                 Write("New With {");
                 Indent();
                 WriteEOL();
-                expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
+                expr.Constructor!.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
                     if (index > 0) {
                         Write(",");
                         WriteEOL();
@@ -327,7 +327,7 @@ namespace ExpressionTreeToString {
             WriteNew(expr.Type, "Arguments", expr.Arguments);
         }
 
-        static readonly MethodInfo power = typeof(Math).GetMethod("Pow");
+        static readonly MethodInfo power = typeof(Math).GetMethod("Pow")!;
 
         protected override void WriteCall(MethodCallExpression expr) {
             if (expr.Method.IsVBLike()) {
@@ -450,7 +450,7 @@ namespace ExpressionTreeToString {
                                         x.NodeType == AddChecked && 
                                         bexpr.Right is ConstantExpression cexpr1 && 
                                         Equals(cexpr1.Value, 1) => bexpr.Left,
-                                    ConstantExpression cexpr => Expression.Constant(((dynamic)cexpr.Value) - 1),
+                                    ConstantExpression cexpr => Expression.Constant(((dynamic)cexpr.Value!) - 1),
                                     _ => Expression.SubtractChecked(x, Expression.Constant(1))
                                 };
 
@@ -762,7 +762,7 @@ namespace ExpressionTreeToString {
             [GreaterThan] = 9,
             [GreaterThanOrEqual] = 9,
             [Increment] = -1,
-            [Index] = -1,
+            [ExpressionType.Index] = -1,
             [Invoke] = -1,
             [IsFalse] = -1,
             [IsTrue] = -1,
@@ -818,7 +818,7 @@ namespace ExpressionTreeToString {
             [Unbox] = -1,
         };
 
-        private int getPrecedence(Expression node) => node switch {
+        private static int getPrecedence(Expression node) => node switch {
             MethodCallExpression mexpr when mexpr.Method.IsStringConcat() => 7,
             MethodCallExpression mexpr when mexpr.Method.IsVBLike() => 9,
             DynamicExpression dexpr => precedence[dexpr.VirtualNodeType()],

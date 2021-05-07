@@ -72,7 +72,7 @@ namespace ExpressionTreeToString {
             { GreaterThan, "GreaterThan" },
             { GreaterThanOrEqual, "GreaterThanOrEqual" },
             { Increment, "Increment" },
-            { Index, "Index" },
+            { ExpressionType.Index, "Index" },
             { Invoke, "Invoke" },
             { IsFalse, "IsFalse" },
             { IsTrue, "IsTrue" },

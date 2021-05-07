@@ -48,7 +48,7 @@ namespace ExpressionTreeToString {
                     return;
                 case null:
                     // static member
-                    Write($"{expr.Member.DeclaringType.FriendlyName(language)}.{expr.Member.Name}");
+                    Write($"{expr.Member.DeclaringType?.FriendlyName(language)}.{expr.Member.Name}");
                     return;
                 default:
                     Parens(expr, "Expression", expr.Expression);
@@ -126,7 +126,7 @@ namespace ExpressionTreeToString {
                 var args = def.GetGenericArguments();
                 var parameterTypes = def.GetParameters().Select(x => x.ParameterType).ToArray();
                 if (args.Any(arg => parameterTypes.None(prm => prm.ContainsType(arg)))) {
-                    typeParameters = $"{GenericIndicators.prefix}{expr.Method.GetGenericArguments().Joined(", ", t => t.FriendlyName(language))}{GenericIndicators.suffix}";
+                    typeParameters = $"{GenericIndicators.prefix}{expr.Method.GetGenericArguments().Joined(", ", t => t.FriendlyName(language)!)}{GenericIndicators.suffix}";
                 }
             }
             Write($".{expr.Method.Name}{typeParameters}");
@@ -150,7 +150,7 @@ namespace ExpressionTreeToString {
             WriteIndexerAccess(instancePath, instance, argBasePath, keys.ToArray());
 
         protected override void WriteIndex(IndexExpression expr) =>
-            writeIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
+            writeIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments); // no indexers on static classes
 
         protected override void WriteElementInit(ElementInit elementInit) {
             var args = elementInit.Arguments;

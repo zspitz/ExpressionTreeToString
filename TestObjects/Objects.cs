@@ -23,8 +23,8 @@ namespace ExpressionTreeTestObjects {
             }
         }
 
-        private static readonly HashSet<(string category, string source, string name, object o)> objects = new HashSet<(string category, string source, string name, object o)>();
-        private static readonly Dictionary<string, object> byName = new Dictionary<string, object>();
+        private static readonly HashSet<(string category, string source, string name, object o)> objects = new();
+        private static readonly Dictionary<string, object> byName = new();
 
         public static (string category, string source, string name, object o)[] Get() => objects.ToArray();
         public static object ByName(string s) => byName[s];

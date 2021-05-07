@@ -17,7 +17,7 @@ namespace ExpressionTreeToString.Util {
             BinaryOperationBinder binder => binder.Operation,
             ConvertBinder _ => ExpressionType.Convert,
             CreateInstanceBinder _ => New,
-            GetIndexBinder _ => Index,
+            GetIndexBinder _ => ExpressionType.Index,
             GetMemberBinder _ => MemberAccess,
             InvokeBinder _ => Invoke,
             InvokeMemberBinder _ => Call,

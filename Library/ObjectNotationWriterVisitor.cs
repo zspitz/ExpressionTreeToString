@@ -19,7 +19,11 @@ namespace ExpressionTreeToString {
 
         private Dictionary<ParameterExpression, int>? ids;
 
-        protected override void WriteNodeImpl(object o, bool parameterDeclaration = false, object? metadata = null) {
+        protected override void WriteNodeImpl(object? o, bool parameterDeclaration = false, object? metadata = null) {
+            if (o is null) {
+                throw new NotImplementedException("Attempted code generation on null");
+            }
+
             if (o is ParameterExpression pexpr) {
                 Write(GetVariableName(pexpr, ref ids));
 
@@ -62,7 +66,7 @@ namespace ExpressionTreeToString {
             })
             .ThenBy(x => x.Name)
             .Select(x => {
-                object value;
+                object? value;
                 try {
                     value = x.GetValue(o);
                 } catch (Exception ex) {
@@ -90,7 +94,7 @@ namespace ExpressionTreeToString {
                     var parameterDeclaration =
                         (o is LambdaExpression && x.Name == "Parameters") ||
                         (o is BlockExpression && x.Name == "Variables");
-                    writeCollection((IEnumerable)value, x.Name, parameterDeclaration);
+                    writeCollection((IEnumerable)value!, x.Name, parameterDeclaration);
                 } else if (x.PropertyType.InheritsFromOrImplementsAny(NodeTypes)) {
                     WriteNode(x.Name, value);
                 } else {

@@ -251,7 +251,7 @@ namespace ExpressionTreeToString {
         protected override void WriteNew(NewExpression expr) {
             if (expr.Type.IsAnonymous()) {
                 Write("new(");
-                expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
+                expr.Constructor!.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
                     if (index > 0) { Write(", "); }
 
                     // if the expression being assigned from is a property access with the same name as the target property, 
@@ -285,7 +285,7 @@ namespace ExpressionTreeToString {
         }
 
         private void writeMemberUse(string instancePath, Expression? instance, MemberInfo mi) {
-            var declaringType = mi.DeclaringType;
+            var declaringType = mi.DeclaringType!;
             if (instance is null) {
                 if (!isAccessibleType(declaringType)) {
                     throw new NotImplementedException($"Type '{declaringType.Name}' is not an accessible type; its' static methods cannot be used.");
@@ -464,22 +464,21 @@ namespace ExpressionTreeToString {
             Write(")");
         }
 
-        protected override void WriteMemberInit(MemberInitExpression expr) {
+        protected override void WriteMemberInit(MemberInitExpression expr) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteListInit(ListInitExpression expr) {
+        protected override void WriteListInit(ListInitExpression expr) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteNewArray(NewArrayExpression expr) {
+        protected override void WriteNewArray(NewArrayExpression expr) => 
             throw new NotImplementedException();
-        }
 
-        private bool isMemberChainEqual(Expression x, Expression y) =>
+        private bool isMemberChainEqual(Expression? x, Expression? y) => 
+            x is null ? y is null :
+            y is null ? x is null :
             x.SansConvert() is MemberExpression mexpr1 && y.SansConvert() is MemberExpression mexpr2 ?
-                    mexpr1.Member == mexpr2.Member && isMemberChainEqual(mexpr1.Expression, mexpr2.Expression) :
-                    x == y;
+                mexpr1.Member == mexpr2.Member && isMemberChainEqual(mexpr1.Expression, mexpr2.Expression) :
+                x == y;
 
         private bool doesTestMatchMember(Expression valueClause, Expression testClause) {
             if (!(valueClause is MemberExpression mexpr && testClause is BinaryExpression bexpr)) { return false; }
@@ -503,7 +502,7 @@ namespace ExpressionTreeToString {
             // TODO handle also !(x == null || x.A == null)
 
             // only check member expressions whose Expression.Type can take null (reference type or Nullable<T>)
-            var memberClauses = expr.IfTrue.MemberClauses().Where(x => x.Expression.Type.IsNullable(true)).ToList();
+            var memberClauses = expr.IfTrue.MemberClauses().Where(x => x.Expression!.Type.IsNullable(true)).ToList();
 
             // we assume there are no test clauses for items in the member chain whose return value cannot be null
             var andClauses = expr.Test.AndClauses().ToList();
@@ -531,9 +530,8 @@ namespace ExpressionTreeToString {
             Write(")");
         }
 
-        protected override void WriteDefault(DefaultExpression expr) {
+        protected override void WriteDefault(DefaultExpression expr) => 
             throw new NotImplementedException();
-        }
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
             if (expr.Expression != currentScoped) {
@@ -552,111 +550,85 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteIndex(IndexExpression expr) =>
-            writeIndexerAccess("Object", expr.Object, "Arguments", expr.Arguments);
+            writeIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
 
-        protected override void WriteBlock(BlockExpression expr, object? metadata) {
+        protected override void WriteBlock(BlockExpression expr, object? metadata) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteSwitch(SwitchExpression expr) {
+        protected override void WriteSwitch(SwitchExpression expr) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteTry(TryExpression expr) {
+        protected override void WriteTry(TryExpression expr) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteLabel(LabelExpression expr) {
+        protected override void WriteLabel(LabelExpression expr) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteGoto(GotoExpression expr) {
+        protected override void WriteGoto(GotoExpression expr) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteLoop(LoopExpression expr) {
+        protected override void WriteLoop(LoopExpression expr) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) {
+        protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteDebugInfo(DebugInfoExpression expr) {
+        protected override void WriteDebugInfo(DebugInfoExpression expr) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteElementInit(ElementInit elementInit) {
+        protected override void WriteElementInit(ElementInit elementInit) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteBinding(MemberBinding binding) {
+        protected override void WriteBinding(MemberBinding binding) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteSwitchCase(SwitchCase switchCase) {
+        protected override void WriteSwitchCase(SwitchCase switchCase) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteCatchBlock(CatchBlock catchBlock) {
+        protected override void WriteCatchBlock(CatchBlock catchBlock) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteLabelTarget(LabelTarget labelTarget) {
+        protected override void WriteLabelTarget(LabelTarget labelTarget) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args) {
+        protected override void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteConvertBinder(ConvertBinder convertBinder, IList<Expression> args) {
+        protected override void WriteConvertBinder(ConvertBinder convertBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteCreateInstanceBinder(CreateInstanceBinder createInstanceBinder, IList<Expression> args) {
+        protected override void WriteCreateInstanceBinder(CreateInstanceBinder createInstanceBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteDeleteIndexBinder(DeleteIndexBinder deleteIndexBinder, IList<Expression> args) {
+        protected override void WriteDeleteIndexBinder(DeleteIndexBinder deleteIndexBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteDeleteMemberBinder(DeleteMemberBinder deleteMemberBinder, IList<Expression> args) {
+        protected override void WriteDeleteMemberBinder(DeleteMemberBinder deleteMemberBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteGetIndexBinder(GetIndexBinder getIndexBinder, IList<Expression> args) {
+        protected override void WriteGetIndexBinder(GetIndexBinder getIndexBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteGetMemberBinder(GetMemberBinder getMemberBinder, IList<Expression> args) {
+        protected override void WriteGetMemberBinder(GetMemberBinder getMemberBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteInvokeBinder(InvokeBinder invokeBinder, IList<Expression> args) {
+        protected override void WriteInvokeBinder(InvokeBinder invokeBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteInvokeMemberBinder(InvokeMemberBinder invokeMemberBinder, IList<Expression> args) {
+        protected override void WriteInvokeMemberBinder(InvokeMemberBinder invokeMemberBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteSetIndexBinder(SetIndexBinder setIndexBinder, IList<Expression> args) {
+        protected override void WriteSetIndexBinder(SetIndexBinder setIndexBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) {
+        protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) {
+        protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) => 
             throw new NotImplementedException();
-        }
 
-        protected override void WriteParameterDeclaration(ParameterExpression prm) {
+        protected override void WriteParameterDeclaration(ParameterExpression prm) => 
             throw new NotImplementedException();
-        }
 
         private static readonly Dictionary<Type, string> typeAliases = new Dictionary<Type, string> {
             {typeof(int), "int"},

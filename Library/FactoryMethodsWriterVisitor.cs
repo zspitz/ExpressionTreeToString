@@ -36,9 +36,8 @@ namespace ExpressionTreeToString {
         }
 
         public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false)
-            : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys, hasPathSpans) {
+                : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys, hasPathSpans) => 
             writeUsings();
-        }
 
         /// <param name="args">The arguments to write. If a tuple of string and node type, will write as single node. If a tuple of string and property type, will write as multiple nodes.</param>
         private void writeMethodCall(string name, IEnumerable args) {
@@ -151,16 +150,16 @@ namespace ExpressionTreeToString {
                 if (x is UnaryExpression unary && unary.NodeType == ExpressionType.Convert) { x = unary.Operand; }
                 return (x as MemberExpression)?.Member.Name ?? "";
             });
-            var pairs = names.Zip(args, (name, arg) => (name, arg)).ToList();
+            var pairs = names.Zip(args!, (name, arg) => (name, arg)).ToList();
             var lastPair = pairs.LastOrDefault();
             if ((lastPair.arg?.GetType().IsArray ?? false) && callExpr.Method.GetParameters().Last().HasAttribute<ParamArrayAttribute>()) {
                 pairs.RemoveLast();
-                (lastPair.arg as IEnumerable).Cast<object>().Select((innerArg, index) => ($"{lastPair.name}[{index}]", innerArg)).AddRangeTo(pairs);
+                (lastPair.arg as IEnumerable)!.Cast<object>().Select((innerArg, index) => ($"{lastPair.name}[{index}]", innerArg)).AddRangeTo(pairs);
             }
             writeMethodCall(callExpr.Method.Name, pairs.ToList());
         }
 
-        private static readonly MethodInfo powerMethod = typeof(Math).GetMethod("Pow");
+        private static readonly MethodInfo powerMethod = typeof(Math).GetMethod("Pow")!;
         protected override void WriteBinary(BinaryExpression expr) {
             var methodName = FactoryMethodNames[expr.NodeType];
             var args = new List<object?> {
@@ -285,7 +284,7 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteNew(NewExpression expr) =>
-            writeMethodCall(() => New(expr.Constructor, expr.Arguments.ToArray()));
+            writeMethodCall(() => New(expr.Constructor!, expr.Arguments.ToArray()));
 
         protected override void WriteCall(MethodCallExpression expr) {
             if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
@@ -310,12 +309,13 @@ namespace ExpressionTreeToString {
             writeMethodCall(() => ListInit(expr.NewExpression, expr.Initializers.ToArray()));
 
         protected override void WriteNewArray(NewArrayExpression expr) {
+            var elementType = expr.Type.GetElementType()!;
             switch (expr.NodeType) {
                 case ExpressionType.NewArrayInit:
-                    writeMethodCall(() => NewArrayInit(expr.Type.GetElementType(), expr.Expressions.ToArray()));
+                    writeMethodCall(() => NewArrayInit(elementType, expr.Expressions.ToArray()));
                     break;
                 case ExpressionType.NewArrayBounds:
-                    writeMethodCall(() => NewArrayBounds(expr.Type.GetElementType(), expr.Expressions.ToArray()));
+                    writeMethodCall(() => NewArrayBounds(elementType, expr.Expressions.ToArray()));
                     break;
                 default:
                     throw new NotImplementedException();
@@ -407,7 +407,7 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteLabel(LabelExpression expr) {
-            if (expr.DefaultValue.IsEmpty()) {
+            if (expr.DefaultValue?.IsEmpty() ?? true) {
                 writeMethodCall(() => Label(expr.Target));
             } else {
                 writeMethodCall(() => Label(expr.Target, expr.DefaultValue));

@@ -2,6 +2,6 @@
 
 namespace ExpressionTreeToString.Util {
     public static class LambdaExpressionExtensions {
-        public static object GetTarget(this LambdaExpression expr) => expr.Compile().Target;
+        public static object? GetTarget(this LambdaExpression expr) => expr.Compile().Target;
     }
 }

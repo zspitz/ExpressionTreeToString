@@ -1304,8 +1304,7 @@ Block(new[] { i },
     Block(new[] { j },
         Constant(true),
         Label(
-            Label("target"),
-            null
+            Label("target")
         ),
         Constant(true)
     )
@@ -1323,8 +1322,7 @@ var j = Parameter(
 Block(new[] { i },
     Block(new[] { j },
         Label(
-            Label("target"),
-            null
+            Label("target")
         ),
         Constant(true)
     )
@@ -3977,4 +3975,24 @@ Equal(
 --
 -- Not implemented - NodeType: Extension not implemented.
 --
+---- FactoryMethods.ConstructLabelWithValue
+var i = Parameter(
+    typeof(int),
+    "i"
+);
+var j = Parameter(
+    typeof(int),
+    "j"
+);
+
+Block(new[] { i },
+    Block(new[] { j },
+        Constant(true),
+        Label(
+            Label("target"),
+            Constant(5)
+        ),
+        Constant(true)
+    )
+)
 ------

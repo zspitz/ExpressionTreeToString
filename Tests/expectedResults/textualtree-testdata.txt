@@ -2315,4 +2315,23 @@ Equal (bool) = false
         · Operand - Constant (DayOfWeek) = DayOfWeek.Monday
 ---- FactoryMethods.MakeNonreducibleExtensionExpression
 Extension (int)
+---- FactoryMethods.ConstructLabelWithValue
+Block (bool)
+    · Result - Block (bool)
+        · Result - Constant (bool) = true
+        · Variables[0] - Parameter (int) j
+        · Expressions[0] - Constant (bool) = true
+        · Expressions[1] - Label (void)
+            · DefaultValue - Constant (int) = 5
+            · Target - LabelTarget
+        · Expressions[2] - Constant (bool) = true
+    · Variables[0] - Parameter (int) i
+    · Expressions[0] - Block (bool)
+        · Result - Constant (bool) = true
+        · Variables[0] - Parameter (int) j
+        · Expressions[0] - Constant (bool) = true
+        · Expressions[1] - Label (void)
+            · DefaultValue - Constant (int) = 5
+            · Target - LabelTarget
+        · Expressions[2] - Constant (bool) = true
 ------

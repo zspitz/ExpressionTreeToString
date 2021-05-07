@@ -415,10 +415,10 @@ namespace ExpressionTreeToString {
         protected override void WriteCatchBlock(CatchBlock catchBlock) {
             Write("catch (");
             Write(catchBlock.Test.Name);
-            var variable = catchBlock.Variable;
-            if (variable is { } && !variable.Name.IsNullOrEmpty()) {
+            var name = catchBlock.Variable?.Name;
+            if (!name.IsNullOrEmpty()) {
                 if (!FrameworkCompatible) { Write(' '); }
-                Write(catchBlock.Variable.Name);
+                Write(name);
             }
             Write(") { ... }");
         }
@@ -426,11 +426,14 @@ namespace ExpressionTreeToString {
         protected override void WriteTry(TryExpression expr) => Write("try { ... }");
 
         protected override void WriteIndex(IndexExpression expr) {
-            if (expr.Object is { }) {
-                WriteNode("Object", expr.Object);
-            } else {
-                Write(expr.Indexer.DeclaringType.Name);
+            if (expr.Object is null) {
+                // per https://stackoverflow.com/questions/401232/static-indexers#comment46687777_401381
+                // the CLR doesn't support static indexers; so this code should never be reached
+                //Write(expr.Indexer.DeclaringType.Name);
+                throw new NotImplementedException("Static indexeres are not allowed.");
             }
+
+            WriteNode("Object", expr.Object);
             if (expr.Indexer is { }) {
                 Write('.');
                 Write(expr.Indexer.Name);
@@ -441,7 +444,7 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteExtension(Expression expr) {
-            var toString = expr.GetType().GetMethod("ToString", Type.EmptyTypes);
+            var toString = expr.GetType().GetMethod("ToString", Type.EmptyTypes)!;
             if (toString.DeclaringType != typeof(Expression) && !toString.IsStatic) {
                 Write(expr.ToString());
                 return;

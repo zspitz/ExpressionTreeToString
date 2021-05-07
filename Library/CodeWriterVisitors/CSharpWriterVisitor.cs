@@ -229,7 +229,7 @@ namespace ExpressionTreeToString {
                 Write("new {");
                 Indent();
                 WriteEOL();
-                expr.Constructor.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
+                expr.Constructor!.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
                     if (index > 0) {
                         Write(",");
                         WriteEOL();
@@ -301,7 +301,7 @@ namespace ExpressionTreeToString {
         protected override void WriteNewArray(NewArrayExpression expr) {
             switch (expr.NodeType) {
                 case NewArrayInit:
-                    var elementType = expr.Type.GetElementType();
+                    var elementType = expr.Type.GetElementType()!;
                     Write("new");
                     if (elementType.IsArray || expr.Expressions.None() || expr.Expressions.Any(x => x.Type != elementType)) {
                         Write(" ");
@@ -697,7 +697,7 @@ namespace ExpressionTreeToString {
             [GreaterThan] = 7,
             [GreaterThanOrEqual] = 7,
             [Increment] = 16,
-            [Index] = 0,
+            [ExpressionType.Index] = 0,
             [Invoke] = 0,
             [IsFalse] = 1,
             [IsTrue] = -1,
@@ -753,7 +753,7 @@ namespace ExpressionTreeToString {
             [Unbox] = 1, // // conversion is rendered only if the types aren't assignable
         };
 
-        private int getPrecedence(Expression node, Type? parentType = null) {
+        private static int getPrecedence(Expression node, Type? parentType = null) {
             ExpressionType nodeType;
             Type type;
             if (node is DynamicExpression dexpr) {
