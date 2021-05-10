@@ -236,14 +236,14 @@ namespace ExpressionTreeToString {
                     break;
 
                 case Quote:
-                    TrimEnd(true);
-                    WriteEOL();
-                    Write("' --- Quoted - begin");
-                    Indent();
-                    WriteEOL();
+                    //TrimEnd(true);
+                    //WriteEOL();
+                    //Write("' --- Quoted - begin");
+                    //Indent();
+                    //WriteEOL();
                     WriteNode(operandPath, operand);
-                    WriteEOL(true);
-                    Write("' --- Quoted - end");
+                    //WriteEOL(true);
+                    //Write("' --- Quoted - end");
                     break;
 
                 case UnaryPlus:
@@ -583,15 +583,18 @@ namespace ExpressionTreeToString {
 
         private bool canInline(Expression expr) {
             switch (expr) {
+                case LambdaExpression lmbd:
+                    return canInline(lmbd.Body);
+                case UnaryExpression uexpr when uexpr.NodeType == Quote:
+                    return canInline(uexpr.Operand);
+
                 case ConditionalExpression cexpr when cexpr.Type == typeof(void):
                 case BlockExpression bexpr when
                     bexpr.Expressions.Count > 1 ||
                     bexpr.Variables.Any() ||
                     (bexpr.Expressions.Count == 1 && canInline(bexpr.Expressions.First())):
                 case SwitchExpression _:
-                case LambdaExpression _:
                 case TryExpression _:
-                case Expression _ when expr.NodeType == Quote:
                     return false;
                 case RuntimeVariablesExpression _:
                     throw new NotImplementedException();

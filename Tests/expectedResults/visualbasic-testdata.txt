@@ -575,17 +575,10 @@ Goto target 5
 ---- FactoryMethods.MakeQuoted
 Block
     Dim x As Double
-    ' --- Quoted - begin
-        Sub() Console.WriteLine(True)
-    ' --- Quoted - end
+    Sub() Console.WriteLine(True)
 End Block
 ---- FactoryMethods.MakeQuoted1
-Function()
-    Return
-    ' --- Quoted - begin
-        Sub() Console.WriteLine(True)
-    ' --- Quoted - end
-End Function
+Function() Sub() Console.WriteLine(True)
 ---- FactoryMethods.MakeReturn
 Return target
 ---- FactoryMethods.MakeReturnWithValue
@@ -713,9 +706,7 @@ Block
     True
 End Block
 ---- FactoryMethods.NestedLambda
-Function()
-    Return Function(s1 As String, s2 As String) s1 + s2
-End Function
+Function() Function(s1 As String, s2 As String) s1 + s2
 ---- FactoryMethods.NonVoidConditionalWithElse
 If(True, "true".Length, "false".Length)
 ---- FactoryMethods.NonVoidConditionalWithoutElse

@@ -188,7 +188,8 @@ namespace _tests {
             //Console.WriteLine(expr.ToString("Factory methods", "C#"));
 
             var qry = new List<User>().AsQueryable().Where(x => x.UserName == "Test").OrderBy(x => x.UserName);
-            Console.WriteLine(qry.Expression.ToString("Dynamic LINQ"));
+            Console.WriteLine(qry.Expression.ToString("C#"));
+            Console.WriteLine(qry.Expression.ToString("Visual Basic"));
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);

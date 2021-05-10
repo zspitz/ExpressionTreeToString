@@ -585,17 +585,10 @@ Data = {
 ---- FactoryMethods.MakeQuoted
 (
     double x,
-    // --- Quoted - begin
-        () => Console.WriteLine(true)
-    // --- Quoted - end
+    () => Console.WriteLine(true)
 )
 ---- FactoryMethods.MakeQuoted1
-() => {
-    return
-    // --- Quoted - begin
-        () => Console.WriteLine(true)
-    // --- Quoted - end
-}
+() => () => Console.WriteLine(true)
 ---- FactoryMethods.MakeReturn
 return target
 ---- FactoryMethods.MakeReturnWithValue
@@ -737,9 +730,7 @@ if (true) {
     true
 )
 ---- FactoryMethods.NestedLambda
-() => {
-    return (string s1, string s2) => s1 + s2;
-}
+() => (string s1, string s2) => s1 + s2
 ---- FactoryMethods.NonVoidConditionalWithElse
 true ? "true".Length : "false".Length
 ---- FactoryMethods.NonVoidConditionalWithoutElse
