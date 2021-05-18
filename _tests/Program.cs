@@ -187,9 +187,11 @@ namespace _tests {
             //Console.WriteLine(expr.ToString("Textual tree", "C#"));
             //Console.WriteLine(expr.ToString("Factory methods", "C#"));
 
-            var qry = new List<User>().AsQueryable().Where(x => x.UserName == "Test").OrderBy(x => x.UserName);
-            Console.WriteLine(qry.Expression.ToString("C#"));
-            Console.WriteLine(qry.Expression.ToString("Visual Basic"));
+            var qry = new List<User>().AsQueryable().Where(x => x.UserName.Where(c => c.ToString() == "a").Any()).OrderBy(x => x.UserName);
+            // #List.AsQueryable().Where("UserName.Where(ToString() = \"a\")")
+            //Console.WriteLine(qry.Expression.ToString("C#"));
+            //Console.WriteLine(qry.Expression.ToString("Visual Basic"));
+            Console.WriteLine(qry.Expression.ToString("Dynamic LINQ"));
         }
 
         static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);

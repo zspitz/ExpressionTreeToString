@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net452;net5.0</TargetFrameworks>
-    <LangVersion>8.0</LangVersion>
+    <LangVersion>9.0</LangVersion>
     <Nullable>enable</Nullable>
     
     <PackageId>ExpressionTreeToString</PackageId>
@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="ZSpitz.Util" Version="0.1.97" />
+    <PackageReference Include="ZSpitz.Util" Version="0.1.101" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 

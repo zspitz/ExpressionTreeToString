@@ -165,14 +165,7 @@ namespace ExpressionTreeToString {
                     }
                     break;
                 case Quote:
-                    //TrimEnd(true);
-                    //WriteEOL();
-                    //Write("// --- Quoted - begin");
-                    //Indent();
-                    //WriteEOL();
                     Parens(nodeType, operandPath, operand);
-                    //WriteEOL(true);
-                    //Write("// --- Quoted - end");
                     break;
                 case UnaryPlus:
                     Write("+");
@@ -229,7 +222,7 @@ namespace ExpressionTreeToString {
                 Write("new {");
                 Indent();
                 WriteEOL();
-                expr.Constructor!.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
+                expr.Constructor!.GetParameters().Select(x => x.Name).ZipT(expr.Arguments).ForEachT((name, arg, index) => {
                     if (index > 0) {
                         Write(",");
                         WriteEOL();

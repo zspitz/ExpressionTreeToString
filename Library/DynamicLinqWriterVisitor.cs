@@ -251,7 +251,7 @@ namespace ExpressionTreeToString {
         protected override void WriteNew(NewExpression expr) {
             if (expr.Type.IsAnonymous()) {
                 Write("new(");
-                expr.Constructor!.GetParameters().Select(x => x.Name).Zip(expr.Arguments).ForEachT((name, arg, index) => {
+                expr.Constructor!.GetParameters().Select(x => x.Name).ZipT(expr.Arguments).ForEachT((name, arg, index) => {
                     if (index > 0) { Write(", "); }
 
                     // if the expression being assigned from is a property access with the same name as the target property, 
@@ -295,7 +295,7 @@ namespace ExpressionTreeToString {
                 if (instance.Type.IsClosureClass()) {
                     throw new NotImplementedException("No representation for closed-over variables.");
                 } else if (mi is MethodInfo mthd && !(isAccessibleType(declaringType) || isAccessibleType(mthd.ReturnType))) {
-                    throw new NotImplementedException("Instance methods must either be on an accessible type, or return an instance of an accessible type.");
+                    throw new NotImplementedException($"{(mthd.IsStatic ? "Extension" : "Instance")} methods must either be on an accessible type, or return an instance of an accessible type.");
                 } else if (instance.SansConvert() != currentScoped) {
                     WriteNode(instancePath, instance);
                     Write(".");
@@ -509,7 +509,7 @@ namespace ExpressionTreeToString {
             if (
                 memberClauses.Count > 0 &&
                 memberClauses.Count == andClauses.Count &&
-                memberClauses.Zip(andClauses).All(x => doesTestMatchMember(x.Item1, x.Item2))
+                memberClauses.ZipT(andClauses).All(x => doesTestMatchMember(x.Item1, x.Item2))
             ) {
                 Write("np(");
                 WriteNode("IfTrue", expr.IfTrue);
