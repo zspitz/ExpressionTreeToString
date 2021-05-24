@@ -10,8 +10,7 @@ namespace ExpressionTreeToString.Tests {
         [TestObject("New")]
         internal static readonly Expression NewNamed = Expr(p => new DateTime(2001, 1, 1, 0,0,0, DateTimeKind.Local));
 
-        // pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/442
-        //[TestObject("New")]
-        //internal static readonly Expression NewNamed1 = Expr(p => new Uri("https://www.example.com/", UriKind.Absolute));
+        [TestObject("New")]
+        internal static readonly Expression NewNamed1 = Expr(p => new Uri("https://www.example.com/", UriKind.Absolute));
     }
 }
