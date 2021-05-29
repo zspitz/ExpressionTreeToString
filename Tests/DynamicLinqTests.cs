@@ -13,13 +13,18 @@ namespace ExpressionTreeToString.Tests {
         public static TheoryData<string, string, Expression> TestData =>
             Objects
                 .Where(x => x.source == nameof(DynamicLinqTestObjects) && x.o is Expression)
-                .SelectT((category, source, name, o) => (name, category, (Expression)o))
+                .SelectT((category, source, name, o) => (category, name, (Expression)o))
                 .ToTheoryData();
 
         [Theory]
         [MemberData(nameof(TestData))]
         public void TestMethod(string category, string name, Expression expr) {
             var selector = expr.ToString(DynamicLinq, "C#");
+            if (category == "_Unrepresentable") {
+                Assert.True(selector?.Contains("Not implemented"));
+                return;
+            }
+
             var prm = Parameter(typeof(Person));
             var parser = new ExpressionParser(new[] { prm }, selector, new object[] { }, ParsingConfig.Default);
 
