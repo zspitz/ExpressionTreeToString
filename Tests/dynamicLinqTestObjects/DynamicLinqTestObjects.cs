@@ -32,15 +32,7 @@ namespace ExpressionTreeToString.Tests {
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression ParameterTypeAs = Expr(p => p as object);
 
-        // throws a NotImplemented exception; we currently have no way to check for this
-        //[TestObject("Dynamic LINQ")]
-        //internal static readonly Expression PropertyTypeAs = Expr(p => p.LastName as object);
-
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression ParameterTypeIs = Expr(p => p is object);
-
-        // throws a NotImplemented exception; we currently have no way to check for this
-        //[TestObject("Dynamic LINQ")]
-        //internal static readonly Expression PropertyTypeIs = Expr(p => p.LastName is object);
     }
 }
