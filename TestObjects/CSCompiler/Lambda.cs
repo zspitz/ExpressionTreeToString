@@ -22,5 +22,17 @@ namespace ExpressionTreeTestObjects {
 
         [TestObject(Lambdas)]
         internal static readonly Expression TwoParametersNonVoidReturn = Expr((string s1, string s2) => s1 + s2);
+
+        [TestObject(Lambdas)]
+        internal static readonly Expression NestedLambda = Expr<Func<string>>(() => () => "");
+
+        [TestObject(Lambdas)]
+        internal static readonly Expression NestedLambdaExpression = Expr<Expression<Func<string>>>(() => () => "");
+
+        [TestObject(Lambdas)]
+        internal static readonly Expression TripleNestedLambda = Expr<Func<Func<string>>>(() => () => () => "");
+
+        [TestObject(Lambdas)]
+        internal static readonly Expression TripleNestedLambdaExpression = Expr<Expression<Func<Expression<Func<string>>>>>(() => () => () => "");
     }
 }

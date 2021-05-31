@@ -1147,4 +1147,20 @@ target:
         True
     End Block
 End Block
+---- CSCompiler.TripleNestedLambda
+Function() Function() Function() ""
+---- VBCompiler.NestedLambda
+Function() Function() ""
+---- VBCompiler.NestedLambdaExpression
+Function() Function() ""
+---- VBCompiler.TripleNestedLambda
+Function() Function() Function() ""
+---- VBCompiler.TripleNestedLambdaExpression
+Function() Function() Function() ""
+---- CSCompiler.NestedLambda
+Function() Function() ""
+---- CSCompiler.NestedLambdaExpression
+Function() Function() ""
+---- CSCompiler.TripleNestedLambdaExpression
+Function() Function() Function() ""
 ------

@@ -3995,4 +3995,75 @@ Block(new[] { i },
         Constant(true)
     )
 )
+---- CSCompiler.TripleNestedLambda
+Lambda(
+    Lambda(
+        Lambda(
+            Constant("")
+        )
+    )
+)
+---- VBCompiler.NestedLambda
+Lambda(
+    Lambda(
+        typeof(VB$AnonymousDelegate<string>),
+        Constant("")
+    )
+)
+---- VBCompiler.NestedLambdaExpression
+Lambda(
+    Quote(
+        Lambda(
+            Constant("")
+        )
+    )
+)
+---- VBCompiler.TripleNestedLambda
+Lambda(
+    Lambda(
+        typeof(VB$AnonymousDelegate<VB$AnonymousDelegate<string>>),
+        Lambda(
+            typeof(VB$AnonymousDelegate<string>),
+            Constant("")
+        )
+    )
+)
+---- VBCompiler.TripleNestedLambdaExpression
+Lambda(
+    Quote(
+        Lambda(
+            Quote(
+                Lambda(
+                    Constant("")
+                )
+            )
+        )
+    )
+)
+---- CSCompiler.NestedLambda
+Lambda(
+    Lambda(
+        Constant("")
+    )
+)
+---- CSCompiler.NestedLambdaExpression
+Lambda(
+    Quote(
+        Lambda(
+            Constant("")
+        )
+    )
+)
+---- CSCompiler.TripleNestedLambdaExpression
+Lambda(
+    Quote(
+        Lambda(
+            Quote(
+                Lambda(
+                    Constant("")
+                )
+            )
+        )
+    )
+)
 ------

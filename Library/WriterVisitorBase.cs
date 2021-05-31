@@ -9,33 +9,36 @@ using ExpressionTreeToString.Util;
 
 namespace ExpressionTreeToString {
     internal class InsertionPoint {
-        internal readonly StringBuilder sb = new StringBuilder();
+        internal readonly StringBuilder sb = new();
         internal readonly Dictionary<string, (int start, int length)>? pathSpans;
         internal int indentationLevel = 0;
-        internal InsertionPoint(bool hasPathSpans) {
-            if (hasPathSpans) { pathSpans = new Dictionary<string, (int start, int length)>(); }
+        internal string key;
+        internal InsertionPoint(string key, bool hasPathSpans) {
+            if (hasPathSpans) { pathSpans = new(); }
+            this.key = key;
         }
     }
 
     public abstract class WriterVisitorBase {
-        private readonly List<KeyValuePair<string, InsertionPoint>> insertionPoints;
+        private readonly List<InsertionPoint> insertionPoints;
         private InsertionPoint ip;
         protected readonly Language? language;
-        private readonly List<string> pathSegments = new List<string>();
+        private readonly List<string> pathSegments = new();
+        private readonly bool hasPathSpans;
 
         protected int CurrentIndentationLevel => ip.indentationLevel;
 
         public (string result, Dictionary<string, (int start, int length)>? pathSpans) GetResult() {
-            var result = insertionPoints.Values()
+            var result = insertionPoints
                 .Where(x => x.sb.Length > 0)
                 .Joined(Environment.NewLine, x => x.sb.ToString())
                 .Trim('\0');
 
             Dictionary<string, (int start, int length)>? pathSpans=null;
-            if (insertionPoints.Any(x => x.Value.pathSpans is { })) {
+            if (insertionPoints.Any(x => x.pathSpans is { })) {
                 pathSpans = new Dictionary<string, (int start, int length)>();
                 var offset = 0;
-                foreach (var ip in insertionPoints.Values().Where(ip => ip.sb.Length > 0)) {
+                foreach (var ip in insertionPoints.Where(ip => ip.sb.Length > 0)) {
                     ip.pathSpans!.SelectKVP((path, span) => KVP(path, (span.start + offset, span.length))).AddRangeTo(pathSpans);
                     offset += ip.sb.Length += Environment.NewLine.Length;
                 }
@@ -46,18 +49,19 @@ namespace ExpressionTreeToString {
 
         protected WriterVisitorBase(object o, OneOf<string, Language?> languageArg, IEnumerable<string>? insertionPointKeys, bool hasPathSpans) {
             language = languageArg.ResolveLanguage();
-            insertionPoints = (insertionPointKeys ?? new[] { "" }).Select(x => KVP(x, new InsertionPoint(hasPathSpans))).ToList();
+            this.hasPathSpans = hasPathSpans;
+            insertionPoints = (insertionPointKeys ?? new[] { "" }).Select(x => new InsertionPoint(x, hasPathSpans)).ToList();
             ip = insertionPoints.Get("");
 
             WriteNode("", o);
         }
 
         protected void Indent() => ip.indentationLevel += 1;
-        protected void Dedent() => ip.indentationLevel -= 1;
+        protected void Dedent() => ip.indentationLevel = Math.Max(ip.indentationLevel - 1, 0); // ensures the indentation level is never < 0
 
         protected void WriteEOL(bool dedent = false) {
             ip.sb.AppendLine();
-            if (dedent) { ip.indentationLevel = Math.Max(ip.indentationLevel - 1, 0); } // ensures the indentation level is never < 0
+            if (dedent) { Dedent(); }
             ip.sb.Append(new string(' ', ip.indentationLevel * 4));
         }
 
@@ -95,13 +99,13 @@ namespace ExpressionTreeToString {
 
         protected void WriteNodes<T>(IEnumerable<(string pathSegment, T o)> pathsItems, bool writeEOL, string delimiter = ", ", bool parameterDeclaration = false) {
             if (writeEOL) { delimiter = delimiter.TrimEnd(); }
-            pathsItems.ForEachT((pathSegment, arg, index) => {
+            foreach (var (pathSegment, arg, index) in pathsItems.WithIndex()) {
                 if (index > 0) {
                     delimiter.AppendTo(ip.sb);
                     if (writeEOL) { WriteEOL(); }
                 }
                 WriteNode(pathSegment, arg!, parameterDeclaration);
-            });
+            }
         }
         protected void WriteNodes<T>(IEnumerable<(string pathSegment, T o)> pathsItems, string delimiter = ", ") =>
             WriteNodes(pathsItems, false, delimiter);
@@ -114,10 +118,16 @@ namespace ExpressionTreeToString {
 
         protected void TrimEnd(bool trimEOL = false) => ip.sb.TrimEnd(trimEOL);
 
-        public override string ToString() => insertionPoints.Values()
+        public override string ToString() => insertionPoints
             .Where(x => x.sb.Length > 0)
             .Joined(Environment.NewLine, x => x.sb.ToString());
 
         protected void SetInsertionPoint(string key) => ip = insertionPoints.Get(key);
+        protected void AddInsertionPoint(string key) {
+            var ip = new InsertionPoint(key, hasPathSpans);
+            insertionPoints.Add(key, ip);
+            this.ip = ip;
+        }
+        protected string CurrentInsertionPoint => ip.key;
     }
 }

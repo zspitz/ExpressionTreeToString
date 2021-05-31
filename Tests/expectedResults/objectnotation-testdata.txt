@@ -8386,4 +8386,160 @@ new BlockExpression {
         }
     }
 }
+---- VBCompiler.NestedLambda
+new Expression<Func<VB$AnonymousDelegate<string>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<VB$AnonymousDelegate<string>>),
+    Body = new Expression<VB$AnonymousDelegate<string>> {
+        NodeType = ExpressionType.Lambda,
+        Type = typeof(VB$AnonymousDelegate<string>),
+        Body = new ConstantExpression {
+            Type = typeof(string)
+        },
+        ReturnType = typeof(string)
+    },
+    ReturnType = typeof(VB$AnonymousDelegate<string>)
+}
+---- VBCompiler.NestedLambdaExpression
+new Expression<Func<Expression<Func<string>>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<Expression<Func<string>>>),
+    Body = new UnaryExpression {
+        NodeType = ExpressionType.Quote,
+        Type = typeof(Expression<Func<string>>),
+        Operand = new Expression<Func<string>> {
+            NodeType = ExpressionType.Lambda,
+            Type = typeof(Func<string>),
+            Body = new ConstantExpression {
+                Type = typeof(string)
+            },
+            ReturnType = typeof(string)
+        }
+    },
+    ReturnType = typeof(Expression<Func<string>>)
+}
+---- VBCompiler.TripleNestedLambda
+new Expression<Func<VB$AnonymousDelegate<VB$AnonymousDelegate<string>>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<VB$AnonymousDelegate<VB$AnonymousDelegate<string>>>),
+    Body = new Expression<VB$AnonymousDelegate<VB$AnonymousDelegate<string>>> {
+        NodeType = ExpressionType.Lambda,
+        Type = typeof(VB$AnonymousDelegate<VB$AnonymousDelegate<string>>),
+        Body = new Expression<VB$AnonymousDelegate<string>> {
+            NodeType = ExpressionType.Lambda,
+            Type = typeof(VB$AnonymousDelegate<string>),
+            Body = new ConstantExpression {
+                Type = typeof(string)
+            },
+            ReturnType = typeof(string)
+        },
+        ReturnType = typeof(VB$AnonymousDelegate<string>)
+    },
+    ReturnType = typeof(VB$AnonymousDelegate<VB$AnonymousDelegate<string>>)
+}
+---- VBCompiler.TripleNestedLambdaExpression
+new Expression<Func<Expression<Func<Expression<Func<string>>>>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<Expression<Func<Expression<Func<string>>>>>),
+    Body = new UnaryExpression {
+        NodeType = ExpressionType.Quote,
+        Type = typeof(Expression<Func<Expression<Func<string>>>>),
+        Operand = new Expression<Func<Expression<Func<string>>>> {
+            NodeType = ExpressionType.Lambda,
+            Type = typeof(Func<Expression<Func<string>>>),
+            Body = new UnaryExpression {
+                NodeType = ExpressionType.Quote,
+                Type = typeof(Expression<Func<string>>),
+                Operand = new Expression<Func<string>> {
+                    NodeType = ExpressionType.Lambda,
+                    Type = typeof(Func<string>),
+                    Body = new ConstantExpression {
+                        Type = typeof(string)
+                    },
+                    ReturnType = typeof(string)
+                }
+            },
+            ReturnType = typeof(Expression<Func<string>>)
+        }
+    },
+    ReturnType = typeof(Expression<Func<Expression<Func<string>>>>)
+}
+---- CSCompiler.NestedLambda
+new Expression<Func<Func<string>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<Func<string>>),
+    Body = new Expression<Func<string>> {
+        NodeType = ExpressionType.Lambda,
+        Type = typeof(Func<string>),
+        Body = new ConstantExpression {
+            Type = typeof(string)
+        },
+        ReturnType = typeof(string)
+    },
+    ReturnType = typeof(Func<string>)
+}
+---- CSCompiler.NestedLambdaExpression
+new Expression<Func<Expression<Func<string>>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<Expression<Func<string>>>),
+    Body = new UnaryExpression {
+        NodeType = ExpressionType.Quote,
+        Type = typeof(Expression<Func<string>>),
+        Operand = new Expression<Func<string>> {
+            NodeType = ExpressionType.Lambda,
+            Type = typeof(Func<string>),
+            Body = new ConstantExpression {
+                Type = typeof(string)
+            },
+            ReturnType = typeof(string)
+        }
+    },
+    ReturnType = typeof(Expression<Func<string>>)
+}
+---- CSCompiler.TripleNestedLambdaExpression
+new Expression<Func<Expression<Func<Expression<Func<string>>>>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<Expression<Func<Expression<Func<string>>>>>),
+    Body = new UnaryExpression {
+        NodeType = ExpressionType.Quote,
+        Type = typeof(Expression<Func<Expression<Func<string>>>>),
+        Operand = new Expression<Func<Expression<Func<string>>>> {
+            NodeType = ExpressionType.Lambda,
+            Type = typeof(Func<Expression<Func<string>>>),
+            Body = new UnaryExpression {
+                NodeType = ExpressionType.Quote,
+                Type = typeof(Expression<Func<string>>),
+                Operand = new Expression<Func<string>> {
+                    NodeType = ExpressionType.Lambda,
+                    Type = typeof(Func<string>),
+                    Body = new ConstantExpression {
+                        Type = typeof(string)
+                    },
+                    ReturnType = typeof(string)
+                }
+            },
+            ReturnType = typeof(Expression<Func<string>>)
+        }
+    },
+    ReturnType = typeof(Expression<Func<Expression<Func<string>>>>)
+}
+---- CSCompiler.TripleNestedLambda
+new Expression<Func<Func<Func<string>>>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<Func<Func<string>>>),
+    Body = new Expression<Func<Func<string>>> {
+        NodeType = ExpressionType.Lambda,
+        Type = typeof(Func<Func<string>>),
+        Body = new Expression<Func<string>> {
+            NodeType = ExpressionType.Lambda,
+            Type = typeof(Func<string>),
+            Body = new ConstantExpression {
+                Type = typeof(string)
+            },
+            ReturnType = typeof(string)
+        },
+        ReturnType = typeof(Func<string>)
+    },
+    ReturnType = typeof(Func<Func<string>>)
+}
 ------

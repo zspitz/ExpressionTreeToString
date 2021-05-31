@@ -16,4 +16,16 @@
 
     <TestObject(Lambdas)>
     Friend TwoParametersNonVoidReturn As Expression = Expr(Function(s1 As String, s2 As String) s1 + s2)
+
+    <TestObject(Lambdas)>
+    Friend NestedLambda As Expression = Expr(Function() Function() "")
+
+    <TestObject(Lambdas)>
+    Friend NestedLambdaExpression As Expression = Expr(Of Expression(Of Func(Of String)))(Function() Function() "")
+
+    <TestObject(Lambdas)>
+    Friend TripleNestedLambda As Expression = Expr(Function() Function() Function() "")
+
+    <TestObject(Lambdas)>
+    Friend TripleNestedLambdaExpression As Expression = Expr(Of Expression(Of Func(Of Expression(Of Func(Of String)))))(Function() Function() Function() "")
 End Module

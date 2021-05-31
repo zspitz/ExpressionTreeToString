@@ -187,14 +187,33 @@ namespace _tests {
             //Console.WriteLine(expr.ToString("Textual tree", "C#"));
             //Console.WriteLine(expr.ToString("Factory methods", "C#"));
 
-            var qry = new List<User>().AsQueryable().Where(x => x.UserName.Where(c => c.ToString() == "a").Any()).OrderBy(x => x.UserName);
+            //var qry = new List<User>().AsQueryable().Where(x => x.UserName.Where(c => c.ToString() == "a").Any()).OrderBy(x => x.UserName);
             // #List.AsQueryable().Where("UserName.Where(ToString() = \"a\")")
             //Console.WriteLine(qry.Expression.ToString("C#"));
             //Console.WriteLine(qry.Expression.ToString("Visual Basic"));
-            Console.WriteLine(qry.Expression.ToString("Dynamic LINQ"));
+            //Console.WriteLine(qry.Expression.ToString("Dynamic LINQ"));
+
+            Expression<Func<string>> expr1 = () => "";
+            Console.WriteLine(debugView.GetValue(expr1));
+            Console.WriteLine(expr1.ToString("DebugView"));
+
+            Expression<Func<Expression<Func<string>>>> expr2 = () => () => "";
+            Console.WriteLine(debugView.GetValue(expr2));
+            Console.WriteLine(expr2.ToString("DebugView"));
+
+            Expression<Func<Expression<Func<Expression<Func<string>>>>>> expr3 = () => () => () => "";
+            Console.WriteLine(debugView.GetValue(expr3));
+            Console.WriteLine(expr3.ToString("DebugView"));
         }
 
-        static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance);
+        //class TestContainer { }
+        //class SomeType {
+        //    public object Array(double[] arr) => throw new NotImplementedException();
+        //    public object Max(TestContainer tc)
+
+        //}
+
+        static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
         static void availableRenderersSamples() {
             static void line() => Console.WriteLine(new string('=', 50));

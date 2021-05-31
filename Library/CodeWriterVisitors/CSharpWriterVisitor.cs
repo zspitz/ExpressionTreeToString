@@ -16,7 +16,7 @@ namespace ExpressionTreeToString {
     public class CSharpWriterVisitor : CodeWriterVisitor {
         public CSharpWriterVisitor(object o, bool hasPathSpans = false) : base(o, Language.CSharp, hasPathSpans) { }
 
-        private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
+        private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new() {
             [Add] = "+",
             [AddChecked] = "+",
             [Divide] = "/",
@@ -222,7 +222,7 @@ namespace ExpressionTreeToString {
                 Write("new {");
                 Indent();
                 WriteEOL();
-                expr.Constructor!.GetParameters().Select(x => x.Name).ZipT(expr.Arguments).ForEachT((name, arg, index) => {
+                foreach (var (name, arg, index) in expr.Constructor!.GetParameters().Zip(expr.Arguments, (prm, expr1) => (prm.Name, expr1)).WithIndex()) {
                     if (index > 0) {
                         Write(",");
                         WriteEOL();
@@ -234,7 +234,8 @@ namespace ExpressionTreeToString {
                         Write($"{name} = ");
                     }
                     WriteNode($"Arguments[{index}]", arg);
-                });
+                }
+
                 WriteEOL(true);
                 Write("}");
                 return;

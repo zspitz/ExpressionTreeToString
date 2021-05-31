@@ -98,4 +98,6 @@ DOB.Value.DayOfWeek in (RegisteredOn.Value.DayOfWeek, DayOfWeek.Thursday)
 as("System.Object")
 ---- DynamicLinqTestObjects.ParameterTypeIs
 is("System.Boolean")
+---- DynamicLinqTestObjects.NewNamed1
+Uri("https://www.example.com/", UriKind.Absolute)
 ------

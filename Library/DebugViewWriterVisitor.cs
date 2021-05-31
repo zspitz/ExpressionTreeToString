@@ -14,7 +14,7 @@ namespace ExpressionTreeToString {
         public static bool FrameworkCompatible = false;
 
         public DebugViewWriterVisitor(object o, bool hasPathSpans) :
-            base(o, (Language?)null, new[] { "", "lambdas" }, hasPathSpans) { }
+            base(o, (Language?)null, null, hasPathSpans) { }
 
         [Flags]
         private enum Flow {
@@ -258,27 +258,27 @@ namespace ExpressionTreeToString {
             }
         }
 
-        private void WriteLambdaName(LambdaExpression lmbd, out bool isNew) {
-            isNew = false;
+        private (bool isNew, string name) WriteLambdaName(LambdaExpression lmbd) {
+            var isNew = false;
             var name = lmbd.Name.IsNullOrEmpty() ?
                 "#Lambda" + GetLambdaId(lmbd, out isNew) :
                 lmbd.Name;
             Out(
                 $".Lambda {name}<{lmbd.Type}>"
             );
+            return (isNew, name);
         }
 
         private void WriteLambdaFull(LambdaExpression expr) {
-            WriteLambdaName(expr, out var _);
+            WriteLambdaName(expr);
             VisitExpressions("Parameters", '(', ',', expr.Parameters, true);
-            Indent();
             Out(Flow.Space, "{", Flow.NewLine);
+            Indent();
             WriteNode("Body", expr.Body);
             Dedent();
             Out(Flow.NewLine, "}");
         }
 
-        private bool isLambdasWritten = false;
         protected override void WriteLambda(LambdaExpression expr) {
             if (isRootLambda) {
                 isRootLambda = false;
@@ -286,15 +286,16 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            WriteLambdaName(expr, out var isNew);
+            var (isNew, name) = WriteLambdaName(expr);
             if (isNew) {
-                SetInsertionPoint("lambdas");
-                if (!isLambdasWritten) {
-                    WriteEOL();
-                    isLambdasWritten = true;
-                }
+                var oldInsertionPointKey = CurrentInsertionPoint;
+                AddInsertionPoint(name);
+                WriteEOL();
+                var oldColumn = _column;
+                _column = 0;
                 WriteLambdaFull(expr);
-                SetInsertionPoint("");
+                SetInsertionPoint(oldInsertionPointKey);
+                _column = oldColumn;
             }
         }
 

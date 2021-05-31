@@ -2334,4 +2334,46 @@ Block (bool)
             · DefaultValue - Constant (int) = 5
             · Target - LabelTarget
         · Expressions[2] - Constant (bool) = true
+---- VBCompiler.NestedLambda
+Lambda (Func<VB$AnonymousDelegate<string>>)
+    · Body - Lambda (VB$AnonymousDelegate<string>)
+        · Body - Constant (string) = ""
+---- VBCompiler.NestedLambdaExpression
+Lambda (Func<Expression<Func<string>>>)
+    · Body - Quote (Expression<Func<string>>) = () => ""
+        · Operand - Lambda (Func<string>)
+            · Body - Constant (string) = ""
+---- VBCompiler.TripleNestedLambda
+Lambda (Func<VB$AnonymousDelegate<VB$AnonymousDelegate<string>>>)
+    · Body - Lambda (VB$AnonymousDelegate<VB$AnonymousDelegate<string>>)
+        · Body - Lambda (VB$AnonymousDelegate<string>)
+            · Body - Constant (string) = ""
+---- VBCompiler.TripleNestedLambdaExpression
+Lambda (Func<Expression<Func<Expression<Func<string>>>>>)
+    · Body - Quote (Expression<Func<Expression<Func<string>>>>) = () => () => ""
+        · Operand - Lambda (Func<Expression<Func<string>>>)
+            · Body - Quote (Expression<Func<string>>) = () => ""
+                · Operand - Lambda (Func<string>)
+                    · Body - Constant (string) = ""
+---- CSCompiler.NestedLambda
+Lambda (Func<Func<string>>)
+    · Body - Lambda (Func<string>)
+        · Body - Constant (string) = ""
+---- CSCompiler.NestedLambdaExpression
+Lambda (Func<Expression<Func<string>>>)
+    · Body - Quote (Expression<Func<string>>) = () => ""
+        · Operand - Lambda (Func<string>)
+            · Body - Constant (string) = ""
+---- CSCompiler.TripleNestedLambdaExpression
+Lambda (Func<Expression<Func<Expression<Func<string>>>>>)
+    · Body - Quote (Expression<Func<Expression<Func<string>>>>) = () => () => ""
+        · Operand - Lambda (Func<Expression<Func<string>>>)
+            · Body - Quote (Expression<Func<string>>) = () => ""
+                · Operand - Lambda (Func<string>)
+                    · Body - Constant (string) = ""
+---- CSCompiler.TripleNestedLambda
+Lambda (Func<Func<Func<string>>>)
+    · Body - Lambda (Func<Func<string>>)
+        · Body - Lambda (Func<string>)
+            · Body - Constant (string) = ""
 ------
