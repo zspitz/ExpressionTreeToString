@@ -12,7 +12,7 @@ namespace ExpressionTreeToString {
 
     public static class Renderers {
         private static readonly Dictionary<string, Renderer> writers =
-            new Dictionary<string, Renderer>(StringComparer.InvariantCultureIgnoreCase) {
+            new(StringComparer.InvariantCultureIgnoreCase) {
                 {CSharp, (o, languageArg, usePathSpans) => new CSharpWriterVisitor(o, usePathSpans).GetResult() },
                 {VisualBasic, (o, languageArg, usePathSpans) => new VBWriterVisitor(o, usePathSpans).GetResult() },
                 {FactoryMethods, (o, languageArg, usePathSpans) => new FactoryMethodsWriterVisitor(o, languageArg, usePathSpans).GetResult() },

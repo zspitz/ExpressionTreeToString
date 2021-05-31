@@ -14,8 +14,8 @@ using static ExpressionTreeToString.Util.Functions;
 
 namespace ExpressionTreeToString {
     public class DynamicLinqWriterVisitor : BuiltinsWriterVisitor {
-        public static readonly HashSet<Type> CustomAccessibleTypes = new HashSet<Type>();
-        private static readonly HashSet<Type> predefinedTypes = new HashSet<Type> {
+        public static readonly HashSet<Type> CustomAccessibleTypes = new();
+        private static readonly HashSet<Type> predefinedTypes = new() {
             typeof(object),
             typeof(bool),
             typeof(char),
@@ -50,7 +50,7 @@ namespace ExpressionTreeToString {
         public DynamicLinqWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans) :
             base(o, languageArg, null, hasPathSpans) { }
 
-        private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
+        private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new() {
             [Add] = "+",
             [AddChecked] = "+",
             [Divide] = "/",
@@ -251,7 +251,7 @@ namespace ExpressionTreeToString {
         protected override void WriteNew(NewExpression expr) {
             if (expr.Type.IsAnonymous()) {
                 Write("new(");
-                expr.Constructor!.GetParameters().Select(x => x.Name).ZipT(expr.Arguments).ForEachT((name, arg, index) => {
+                foreach (var (name, arg, index) in expr.NamesArguments()) {
                     if (index > 0) { Write(", "); }
 
                     // if the expression being assigned from is a property access with the same name as the target property, 
@@ -261,7 +261,7 @@ namespace ExpressionTreeToString {
                         Write($"{name} = ");
                     }
                     WriteNode($"Arguments[{index}]", arg);
-                });
+                }
                 Write(")");
                 return;
             }
@@ -630,7 +630,7 @@ namespace ExpressionTreeToString {
         protected override void WriteParameterDeclaration(ParameterExpression prm) => 
             throw new NotImplementedException();
 
-        private static readonly Dictionary<Type, string> typeAliases = new Dictionary<Type, string> {
+        private static readonly Dictionary<Type, string> typeAliases = new() {
             {typeof(int), "int"},
             {typeof(uint), "uint"},
             {typeof(short), "short"},

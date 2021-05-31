@@ -18,7 +18,7 @@ namespace ExpressionTreeToString {
     public class VBWriterVisitor : CodeWriterVisitor {
         public VBWriterVisitor(object o, bool hasPathSpans = false) : base(o, Language.VisualBasic, hasPathSpans) { }
 
-        private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new Dictionary<ExpressionType, string>() {
+        private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new() {
             [Add] = "+",
             [AddChecked] = "+",
             [Modulo] = "Mod",
@@ -125,7 +125,7 @@ namespace ExpressionTreeToString {
             base.WriteBinary(expr);
         }
 
-        private static readonly Dictionary<Type, string> conversionFunctions = new Dictionary<Type, string>() {
+        private static readonly Dictionary<Type, string> conversionFunctions = new() {
             {typeof(bool), "CBool"},
             {typeof(byte), "CByte"},
             {typeof(char), "CChar"},
@@ -301,7 +301,7 @@ namespace ExpressionTreeToString {
                 Write("New With {");
                 Indent();
                 WriteEOL();
-                expr.Constructor!.GetParameters().Select(x => x.Name).ZipT(expr.Arguments).ForEachT((name, arg, index) => {
+                foreach (var (name, arg, index) in expr.NamesArguments()) {
                     if (index > 0) {
                         Write(",");
                         WriteEOL();
@@ -312,7 +312,7 @@ namespace ExpressionTreeToString {
                         Write($".{name} = ");
                     }
                     WriteNode($"Arguments[{index}]", arg);
-                });
+                }
                 WriteEOL(true);
                 Write("}");
                 return;
@@ -418,10 +418,10 @@ namespace ExpressionTreeToString {
                 case NewArrayBounds:
                     var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
                     Write($"New {nestedArrayTypes.Last().root!.FriendlyName(language)}");
-                    nestedArrayTypes.ForEachT((current, _, arrayTypeIndex) => {
+                    foreach (var (current, _, arrayTypeIndex) in nestedArrayTypes.WithIndex()) {
                         Write("(");
                         if (arrayTypeIndex == 0) {
-                            expr.Expressions.ForEach((x, index) => {
+                            foreach (var (x, index) in expr.Expressions.WithIndex()) {
                                 if (index > 0) { Write(", "); }
 
                                 // The value(s) for an array-bounds initialization expression refer to the number of elements in the array, for the specified dimension.
@@ -430,7 +430,7 @@ namespace ExpressionTreeToString {
                                 //
                                 //    Dim arr = New String(5) {}
                                 //
-                                // produces an array with 6 elements; and the expression tree will be as follows:
+                                // produces an array with 6 elements; and the expression tree will be equivalent to the following method calls:
                                 //
                                 //    NewArrayBounds(GetType(String), Constant(6))
                                 //
@@ -439,21 +439,21 @@ namespace ExpressionTreeToString {
                                 // Except if the bounds is some expression + 1, in which case we can just remove the + 1 (https://github.com/zspitz/ExpressionTreeToString/issues/32)
 
                                 Expression newExpr = x switch {
-                                    BinaryExpression bexpr when 
-                                        x.NodeType == AddChecked && 
-                                        bexpr.Right is ConstantExpression cexpr1 && 
+                                    BinaryExpression bexpr when
+                                        x.NodeType == AddChecked &&
+                                        bexpr.Right is ConstantExpression cexpr1 &&
                                         Equals(cexpr1.Value, 1) => bexpr.Left,
                                     ConstantExpression cexpr => Expression.Constant(((dynamic)cexpr.Value!) - 1),
                                     _ => Expression.SubtractChecked(x, Expression.Constant(1))
                                 };
 
                                 WriteNode($"Expressions[{index}]", newExpr);
-                            });
+                            }
                         } else {
                             Write(Repeat("", current.GetArrayRank()).Joined());
                         }
                         Write(")");
-                    });
+                    }
                     Write(" {}");
                     break;
                 default:
@@ -726,7 +726,7 @@ namespace ExpressionTreeToString {
         // to verify precendence levels by level against https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/operators/operator-precedence#precedence-order
         // use:
         //    precedence.GroupBy(kvp => kvp.Value, kvp => kvp.Key, (key, grp) => new {key, values = grp.OrderBy(x => x.ToString()).Joined(", ")}).OrderBy(x => x.key);
-        private static readonly Dictionary<ExpressionType, int> precedence = new Dictionary<ExpressionType, int>() {
+        private static readonly Dictionary<ExpressionType, int> precedence = new() {
             [Add] = 6,
             [AddAssign] = -1,
             [AddAssignChecked] = -1,

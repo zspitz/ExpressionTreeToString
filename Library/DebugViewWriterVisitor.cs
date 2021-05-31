@@ -306,7 +306,7 @@ namespace ExpressionTreeToString {
 
         protected override void WriteParameter(ParameterExpression expr) => Out(GetParameterName(expr));
 
-        private static readonly Dictionary<Type, string> suffixes = new Dictionary<Type, string> {
+        private static readonly Dictionary<Type, string> suffixes = new() {
             [typeof(uint)] = "U",
             [typeof(long)] = "L",
             [typeof(ulong)] = "UL",
@@ -412,28 +412,16 @@ namespace ExpressionTreeToString {
                 // In this case, if left and right operand are the same, we don't
                 // remove parenthesis, e.g. (x + y) - (x + y)
                 //
-                switch (parent.NodeType) {
-                    case AndAlso:
-                    case OrElse:
-                    case And:
-                    case Or:
-                    case ExclusiveOr:
-                        // Since these ops are the only ones on their precedence,
-                        // the child op must be the same.
-                        // We remove the parenthesis, e.g. x && y && z
-                        return false;
-                    case Add:
-                    case AddChecked:
-                    case Multiply:
-                    case MultiplyChecked:
-                        return false;
-                    case Subtract:
-                    case SubtractChecked:
-                    case Divide:
-                    case Modulo:
-                        return child == (parent as BinaryExpression)!.Right;
-                }
-                return true;
+                return parent.NodeType switch {
+                    // Since these ops are the only ones on their precedence,
+                    // the child op must be the same.
+                    // We remove the parenthesis, e.g. x && y && z
+                    AndAlso or OrElse or And or Or or ExclusiveOr => false,
+
+                    Add or AddChecked or Multiply or MultiplyChecked => false,
+                    Subtract or SubtractChecked or Divide or Modulo => child == (parent as BinaryExpression)!.Right,
+                    _ => true,
+                };
             }
 
             // Special case: negate of a constant needs parentheses, to

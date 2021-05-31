@@ -222,7 +222,7 @@ namespace ExpressionTreeToString {
                 Write("new {");
                 Indent();
                 WriteEOL();
-                foreach (var (name, arg, index) in expr.Constructor!.GetParameters().Zip(expr.Arguments, (prm, expr1) => (prm.Name, expr1)).WithIndex()) {
+                foreach (var (name, arg, index) in expr.NamesArguments()) {
                     if (index > 0) {
                         Write(",");
                         WriteEOL();
@@ -311,7 +311,7 @@ namespace ExpressionTreeToString {
                     (var left, var right) = ("[", "]");
                     var nestedArrayTypes = expr.Type.NestedArrayTypes().ToList();
                     Write($"new {nestedArrayTypes.Last().root!.FriendlyName(language)}");
-                    nestedArrayTypes.ForEachT((current, _, index) => {
+                    foreach (var (current, _, index) in nestedArrayTypes.WithIndex()) {
                         Write(left);
                         if (index == 0) {
                             WriteNodes("Expressions", expr.Expressions);
@@ -319,7 +319,7 @@ namespace ExpressionTreeToString {
                             Write(Repeat("", current.GetArrayRank()).Joined());
                         }
                         Write(right);
-                    });
+                    }
                     break;
                 default:
                     throw new NotImplementedException();
@@ -662,7 +662,7 @@ namespace ExpressionTreeToString {
         // to verify precendence levels by level against https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/#operator-precedence
         // use:
         //    precedence.GroupBy(kvp => kvp.Value, kvp => kvp.Key, (key, grp) => new {key, values = grp.OrderBy(x => x.ToString()).Joined(", ")}).OrderBy(x => x.key);
-        private static readonly Dictionary<ExpressionType, int> precedence = new Dictionary<ExpressionType, int>() {
+        private static readonly Dictionary<ExpressionType, int> precedence = new() {
             [Add] = 5,
             [AddAssign] = 16,
             [AddAssignChecked] = 16,
@@ -769,7 +769,7 @@ namespace ExpressionTreeToString {
             };
         }
 
-        private static readonly HashSet<ExpressionType> rightAssociatives = new HashSet<ExpressionType> {
+        private static readonly HashSet<ExpressionType> rightAssociatives = new() {
             Assign, AddAssign, AndAssign, DivideAssign, ExclusiveOrAssign, LeftShiftAssign, ModuloAssign, MultiplyAssign,
             OrAssign, PowerAssign, RightShiftAssign, SubtractAssign, AddAssignChecked, MultiplyAssignChecked, SubtractAssignChecked, PreIncrementAssign,
             PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,

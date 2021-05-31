@@ -125,7 +125,7 @@ namespace ExpressionTreeToString {
         }
 
         private void writeMethodCall(Expression<Action> expr) {
-            if (!(expr.Body is MethodCallExpression callExpr)) { throw new ArgumentException("Not a MethodCallExpression"); }
+            if (expr.Body is not MethodCallExpression callExpr) { throw new ArgumentException("Not a MethodCallExpression"); }
 
             var args = NewArrayInit(
                 typeof(object), 

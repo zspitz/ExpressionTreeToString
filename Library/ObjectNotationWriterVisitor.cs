@@ -56,32 +56,35 @@ namespace ExpressionTreeToString {
             Indent();
             WriteEOL();
 
-            properties.OrderBy(x => {
-                if (x.Name.In("NodeType", "Type")) { return -2; }
-                if (preferredOrder is null) { return -1; }
-                var indexOf = Array.IndexOf(preferredOrder, x.Name);
-                return indexOf == -1 ? 
-                    1000 : 
-                    indexOf;
-            })
-            .ThenBy(x => x.Name)
-            .Select(x => {
-                object? value;
-                try {
-                    value = x.GetValue(o);
-                } catch (Exception ex) {
-                    value = ex.Message;
-                }
-                return (x, value);
-            })
-            .WhereT((_, value) => 
-                value switch {
-                    null => false,
-                    IEnumerable seq when seq.None() => false,
-                    _ => true
-                }
-            )
-            .ForEachT((x, value, index) => {
+            var propertyValues =
+                properties.OrderBy(x => {
+                    if (x.Name.In("NodeType", "Type")) { return -2; }
+                    if (preferredOrder is null) { return -1; }
+                    var indexOf = Array.IndexOf(preferredOrder, x.Name);
+                    return indexOf == -1 ?
+                        1000 :
+                        indexOf;
+                })
+                .ThenBy(x => x.Name)
+                .Select(x => {
+                    object? value;
+                    try {
+                        value = x.GetValue(o);
+                    } catch (Exception ex) {
+                        value = ex.Message;
+                    }
+                    return (x, value);
+                })
+                .WhereT((_, value) =>
+                    value switch {
+                        null => false,
+                        IEnumerable seq when seq.None() => false,
+                        _ => true
+                    }
+                )
+                .WithIndex();
+
+            foreach (var (x,value,index) in propertyValues) {
                 if (index > 0) {
                     Write(",");
                     WriteEOL();
@@ -91,16 +94,16 @@ namespace ExpressionTreeToString {
                 Write(" = ");
 
                 if (x.PropertyType.InheritsFromOrImplementsAny(PropertyTypes)) {
-                    var parameterDeclaration =
+                    var parameterDeclaration1 =
                         (o is LambdaExpression && x.Name == "Parameters") ||
                         (o is BlockExpression && x.Name == "Variables");
-                    writeCollection((IEnumerable)value!, x.Name, parameterDeclaration);
+                    writeCollection((IEnumerable)value!, x.Name, parameterDeclaration1);
                 } else if (x.PropertyType.InheritsFromOrImplementsAny(NodeTypes)) {
                     WriteNode(x.Name, value);
                 } else {
                     Write(RenderLiteral(value, language));
                 }
-            });
+            }
 
             WriteEOL(true);
             Write("}");
@@ -112,7 +115,7 @@ namespace ExpressionTreeToString {
             }
         }
 
-        private static readonly HashSet<Type> hideNodeType = new HashSet<Type>() {
+        private static readonly HashSet<Type> hideNodeType = new() {
             typeof(BlockExpression),
             typeof(ConditionalExpression),
             typeof(ConstantExpression),
