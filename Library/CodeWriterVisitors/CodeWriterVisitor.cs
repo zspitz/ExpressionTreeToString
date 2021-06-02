@@ -25,7 +25,10 @@ namespace ExpressionTreeToString {
         protected abstract void WriteBinary(ExpressionType nodeType, string leftPath, Expression left, string rightPath, Expression right);
 
         protected override void WriteBinary(BinaryExpression expr) {
-            if (TryGetEnumComparison(expr, out var parts)) {
+            if (
+                TryGetEnumComparison(expr, out var parts) ||
+                TryGetCharComparison(expr, out parts)
+            ) {
                 var (leftOperand, leftPath, rightOperand, rightPath) = parts;
                 WriteBinary(expr.NodeType, leftPath!, leftOperand, rightPath!, rightOperand);
                 return;

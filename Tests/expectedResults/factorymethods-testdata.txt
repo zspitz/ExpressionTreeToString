@@ -4066,4 +4066,32 @@ Lambda(
         )
     )
 )
+---- CSCompiler.CharEquality
+Lambda(
+    Equal(
+        Convert(
+            Property(
+                Constant("abcd"),
+                typeof(string).GetProperty("Chars"),
+                Constant(0)
+            ),
+            typeof(int)
+        ),
+        Constant(99)
+    )
+)
+---- CSCompiler.CharEquality1
+Lambda(
+    Equal(
+        Constant(99),
+        Convert(
+            Property(
+                Constant("abcd"),
+                typeof(string).GetProperty("Chars"),
+                Constant(0)
+            ),
+            typeof(int)
+        )
+    )
+)
 ------

@@ -1199,4 +1199,8 @@ target:
 () => () => ""
 ---- CSCompiler.TripleNestedLambdaExpression
 () => () => () => ""
+---- CSCompiler.CharEquality
+() => "abcd"[0] == 'c'
+---- CSCompiler.CharEquality1
+() => 'c' == "abcd"[0]
 ------

@@ -8542,4 +8542,68 @@ new Expression<Func<Func<Func<string>>>> {
     },
     ReturnType = typeof(Func<Func<string>>)
 }
+---- CSCompiler.CharEquality
+new Expression<Func<bool>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<bool>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.Equal,
+        Type = typeof(bool),
+        Left = new UnaryExpression {
+            NodeType = ExpressionType.Convert,
+            Type = typeof(int),
+            Operand = new MethodCallExpression {
+                Type = typeof(char),
+                Object = new ConstantExpression {
+                    Type = typeof(string),
+                    Value = "abcd"
+                },
+                Arguments = new ReadOnlyCollection<Expression> {
+                    new ConstantExpression {
+                        Type = typeof(int),
+                        Value = 0
+                    }
+                },
+                Method = typeof(string).GetMethod("get_Chars")
+            }
+        },
+        Right = new ConstantExpression {
+            Type = typeof(int),
+            Value = 99
+        }
+    },
+    ReturnType = typeof(bool)
+}
+---- CSCompiler.CharEquality1
+new Expression<Func<bool>> {
+    NodeType = ExpressionType.Lambda,
+    Type = typeof(Func<bool>),
+    Body = new BinaryExpression {
+        NodeType = ExpressionType.Equal,
+        Type = typeof(bool),
+        Left = new ConstantExpression {
+            Type = typeof(int),
+            Value = 99
+        },
+        Right = new UnaryExpression {
+            NodeType = ExpressionType.Convert,
+            Type = typeof(int),
+            Operand = new MethodCallExpression {
+                Type = typeof(char),
+                Object = new ConstantExpression {
+                    Type = typeof(string),
+                    Value = "abcd"
+                },
+                Arguments = new ReadOnlyCollection<Expression> {
+                    new ConstantExpression {
+                        Type = typeof(int),
+                        Value = 0
+                    }
+                },
+                Method = typeof(string).GetMethod("get_Chars")
+            }
+        }
+    },
+    ReturnType = typeof(bool)
+}
 ------

@@ -1163,4 +1163,8 @@ Function() Function() ""
 Function() Function() ""
 ---- CSCompiler.TripleNestedLambdaExpression
 Function() Function() Function() ""
+---- CSCompiler.CharEquality
+Function() "abcd"(0) = "c"C
+---- CSCompiler.CharEquality1
+Function() "c"C = "abcd"(0)
 ------

@@ -155,4 +155,7 @@
                                           Dim x As Double = 0, y As Double = 0
                                           Return Expr(Function() x ^ y)
                                       End Function)
+
+    ' When comparing against a constant char, VB correctly produces an expression tree containing char
+    ' Unlike C#, which inserts a conversion to int and compares against the integer value of the constant char
 End Module

@@ -2376,4 +2376,20 @@ Lambda (Func<Func<Func<string>>>)
     · Body - Lambda (Func<Func<string>>)
         · Body - Lambda (Func<string>)
             · Body - Constant (string) = ""
+---- CSCompiler.CharEquality
+Lambda (Func<bool>)
+    · Body - Equal (bool) = false
+        · Left - Convert (int) = 97
+            · Operand - Call (char) get_Chars = 'a'
+                · Object - Constant (string) = "abcd"
+                · Arguments[0] - Constant (int) = 0
+        · Right - Constant (int) = 99
+---- CSCompiler.CharEquality1
+Lambda (Func<bool>)
+    · Body - Equal (bool) = false
+        · Left - Constant (int) = 99
+        · Right - Convert (int) = 97
+            · Operand - Call (char) get_Chars = 'a'
+                · Object - Constant (string) = "abcd"
+                · Arguments[0] - Constant (int) = 0
 ------
