@@ -213,7 +213,7 @@ namespace _tests {
 
         //}
 
-        static PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance)!;
+        static readonly PropertyInfo debugView = typeof(Expression).GetProperty("DebugView", BindingFlags.NonPublic | BindingFlags.Instance)!;
 
         static void availableRenderersSamples() {
             static void line() => Console.WriteLine(new string('=', 50));
@@ -263,7 +263,7 @@ namespace _tests {
 
     public class Post {
         public string Text { get; set; } = "";
-        public string[] Tags { get; set; }
+        public string[]? Tags { get; set; }
     }
 
     public static class Extension {

@@ -357,11 +357,13 @@ namespace ExpressionTreeToString {
             writeMethodCall(() => Invoke(expr.Expression, expr.Arguments.ToArray()));
 
         protected override void WriteIndex(IndexExpression expr) {
+            // no such thing as a static indexer, so expr.Object wll never be null
+
             if (expr.Indexer != null) {
-                writeMethodCall(() => MakeIndex(expr.Object, expr.Indexer, expr.Arguments));
+                writeMethodCall(() => MakeIndex(expr.Object!, expr.Indexer, expr.Arguments));
                 return;
             }
-            writeMethodCall(() => ArrayAccess(expr.Object, expr.Arguments.ToArray()));
+            writeMethodCall(() => ArrayAccess(expr.Object!, expr.Arguments.ToArray()));
         }
 
         protected override void WriteBlock(BlockExpression expr, object? metadata) {
