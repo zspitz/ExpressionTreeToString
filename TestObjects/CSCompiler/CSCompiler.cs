@@ -93,5 +93,11 @@ namespace ExpressionTreeTestObjects {
             var dow2 = DayOfWeek.Friday;
             return Expr(() => dow1 == dow2);
         });
+
+        [TestObject(CharComparison)]
+        internal static readonly Expression CharEquality = Expr(() => "abcd"[0] == 'c');
+
+        [TestObject(CharComparison)]
+        internal static readonly Expression CharEquality1 = Expr(() => 'c' == "abcd"[0]);
     }
 }

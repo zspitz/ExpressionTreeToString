@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ExpressionTreeTestObjects {
+﻿namespace ExpressionTreeTestObjects {
     public static class Categories {
         public const string Unary = "Unary";
         public const string NewArray = "New array";
@@ -34,5 +28,6 @@ namespace ExpressionTreeTestObjects {
         public const string EnumComparison = "Enum comparison";
         public const string RefOut = "Ref/out parameter declartion and passing";
         public const string ExtensionExpressions = "Extension expressions";
+        public const string CharComparison = "Comparison against char";
     }
 }

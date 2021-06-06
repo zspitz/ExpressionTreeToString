@@ -147,11 +147,5 @@ namespace ExpressionTreeTestObjects {
             var arr = new string[] { "a" };
             return Expr(() => arr[0]);
         });
-
-        [TestObject(Binary)]
-        internal static readonly Expression CharEquality = Expr(() => "abcd"[0] == 'c');
-
-        [TestObject(Binary)]
-        internal static readonly Expression CharEquality1 = Expr(() => 'c' == "abcd"[0]);
     }
 }
