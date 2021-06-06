@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Linq.Dynamic.Core;
+using System.Linq.Dynamic.Core.Parser;
 using System.Linq.Expressions;
 using System.Reflection;
 using ExpressionTreeTestObjects;
@@ -193,17 +196,53 @@ namespace _tests {
             //Console.WriteLine(qry.Expression.ToString("Visual Basic"));
             //Console.WriteLine(qry.Expression.ToString("Dynamic LINQ"));
 
-            Expression<Func<string>> expr1 = () => "";
-            Console.WriteLine(debugView.GetValue(expr1));
-            Console.WriteLine(expr1.ToString("DebugView"));
+            //Expression<Func<string>> expr1 = () => "";
+            //Console.WriteLine(debugView.GetValue(expr1));
+            //Console.WriteLine(expr1.ToString("DebugView"));
 
-            Expression<Func<Expression<Func<string>>>> expr2 = () => () => "";
-            Console.WriteLine(debugView.GetValue(expr2));
-            Console.WriteLine(expr2.ToString("DebugView"));
+            //Expression<Func<Expression<Func<string>>>> expr2 = () => () => "";
+            //Console.WriteLine(debugView.GetValue(expr2));
+            //Console.WriteLine(expr2.ToString("DebugView"));
 
-            Expression<Func<Expression<Func<Expression<Func<string>>>>>> expr3 = () => () => () => "";
-            Console.WriteLine(debugView.GetValue(expr3));
-            Console.WriteLine(expr3.ToString("DebugView"));
+            //Expression<Func<Expression<Func<Expression<Func<string>>>>>> expr3 = () => () => () => "";
+            //Console.WriteLine(debugView.GetValue(expr3));
+            //Console.WriteLine(expr3.ToString("DebugView"));
+
+            //Expression<Func<bool>> expr = () => "abcd"[0] > 'c';
+            //Console.WriteLine(expr.ToString("C#", out var pathSpans));
+            //Console.WriteLine(expr.ToString("Visual Basic"));
+            //Console.WriteLine(expr.ToString("Dynamic LINQ"));
+
+            //Expression expr1 = Lambda(
+            //        Equal(
+            //            Property(
+            //                Constant("abcd"),
+            //                typeof(string).GetProperty("Chars"),
+            //                Constant(0)
+            //            ),
+            //            Constant('c')
+            //        )
+            //    );
+            //Console.WriteLine(expr1.ToString("C#"));
+            //Console.WriteLine(expr1.ToString("Visual Basic"));
+            //Console.WriteLine(expr1.ToString("Dynamic LINQ"));
+            //Console.WriteLine(expr1.ToString("Factory methods", "C#"));
+
+            //Expression<Func<Person, bool>> expr = p => p.LastName![0] == 'c' || p.LastName[0] == 'd';
+            //Console.WriteLine(expr.ToString("Dynamic LINQ"));
+
+
+            IFormatProvider provider = CultureInfo.CurrentCulture;
+            //var selector = "ToString().ToString(@0).ToString(@0)[0] in ('c','d')";
+            var selector = "np(ToString().ToString(@0).ToString(@0))";
+            var prm = Parameter(typeof(Person));
+            var parser = new ExpressionParser(new[] { prm }, selector, new object[] { provider }, ParsingConfig.Default);
+            var expr1 = parser.Parse(null);
+
+            Console.WriteLine(expr1.ToString("Dynamic LINQ"));
+
+            //Expression<Func<Employee, string?>> firstNameExpression = e => e.FirstName;
+            //Console.WriteLine(firstNameExpression.ToString("Textual tree", "C#"));
         }
 
         //class TestContainer { }
@@ -259,6 +298,12 @@ namespace _tests {
         public string Name => LastName + ", " + FirstName;
         public DateTime DOB { get; set; }
         public Post[] Posts { get; set; } = new Post[] { };
+        public char GetChar() => LastName[0];
+    }
+
+    public class Employee {
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
     }
 
     public class Post {

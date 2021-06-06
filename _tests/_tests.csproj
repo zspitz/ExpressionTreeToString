@@ -13,6 +13,7 @@
     <ProjectReference Include="..\TestObjects\TestObjects.csproj" />
 
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.10" />
   </ItemGroup>
 
 </Project>

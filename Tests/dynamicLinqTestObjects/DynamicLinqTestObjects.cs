@@ -1,12 +1,23 @@
 ﻿using ExpressionTreeTestObjects;
 using System;
+using System.Linq.Dynamic.Core;
+using System.Linq.Dynamic.Core.Parser;
 using System.Linq.Expressions;
+using static System.Linq.Expressions.Expression;
 
 namespace ExpressionTreeToString.Tests {
     [ObjectContainer]
     public static partial class DynamicLinqTestObjects {
         internal static Expression Expr<T>(Expression<Func<Person, T>> expr) => expr;
         internal static Expression Expr(Expression<Action<Person>> expr) => expr;
+
+        internal static Expression Expr(string selector, params object[] constants) =>
+            new ExpressionParser(
+                new[] { Parameter(typeof(Person)) },
+                selector,
+                constants,
+                ParsingConfig.Default
+            ).Parse(null);
 
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression Parameter = Expr(p => p);

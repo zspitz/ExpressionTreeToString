@@ -1,7 +1,9 @@
-﻿using System;
+﻿using OneOf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 using ZSpitz.Util;
 using static System.Linq.Expressions.ExpressionType;
 
@@ -33,14 +35,32 @@ namespace ExpressionTreeToString.Util {
         internal static IEnumerable<Expression> AndClauses(this Expression expr) => logicalCombinedClauses("", expr, And, AndAlso).Select(x => x.clause);
         internal static IEnumerable<(string path, Expression clause)> OrClauses(this Expression expr) => logicalCombinedClauses("", expr, Or, OrElse);
 
-        internal static IEnumerable<MemberExpression> MemberClauses(this Expression? expr) {
-            if (!(expr is MemberExpression mexpr)) {
-                yield break;
-            }
-            foreach (var item in MemberClauses(mexpr.Expression)) {
+        internal static IEnumerable<OneOf<MemberExpression, MethodCallExpression>> ChainClauses(this Expression? expr) {
+            var (ret, subexpr) = expr switch {
+
+                // instance member
+                MemberExpression mexpr when mexpr.Expression is not null =>
+                    (mexpr, mexpr.Expression),
+
+                // instance method call
+                MethodCallExpression callExpr when callExpr.Object is not null =>
+                    (callExpr, callExpr.Object),
+
+                // include instance method calls, or static extension method calls
+                MethodCallExpression callExpr when
+                        callExpr.Method.HasAttribute<ExtensionAttribute>() &&
+                        callExpr.Arguments.FirstOrDefault() is not null =>
+                    (callExpr, callExpr.Arguments.First()),
+
+                _ => ((OneOf<MemberExpression, MethodCallExpression>?)null, (Expression?)null)
+            };
+
+            if (ret is null) { yield break; }
+
+            foreach (var item in ChainClauses(subexpr)) {
                 yield return item;
             }
-            yield return mexpr;
-        }
+            yield return ret.Value;
+        } 
     }
 }

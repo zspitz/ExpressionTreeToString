@@ -73,8 +73,20 @@ namespace ExpressionTreeToString {
         // TODO parentheses, for preferred order of operations
 
         private bool isEquivalent(Expression x, Expression y) {
-            // TODO we need to handle a lot more here -- e.g. method calls, constants
-            return isMemberChainEqual(x, y);
+            if (x is null) { return y is null; }
+            if (y is null) { return x is null; }
+            var (x1, y1) = (x.SansConvert(), y.SansConvert());
+            return
+                x1 is MemberExpression mexpr1 && y1 is MemberExpression mexpr2 ?
+                    mexpr1.Member == mexpr2.Member && 
+                    isEquivalent(mexpr1.Expression, mexpr2.Expression) :
+                x1 is MethodCallExpression call1 && y1 is MethodCallExpression call2 ? 
+                    call1.Method == call2.Method &&
+                    call1.Arguments.Count == call2.Arguments.Count &&
+                    call1.Arguments.ZipT(call2.Arguments).All(x => isEquivalent(x.Item1, x.Item2)) :
+                x1 is ConstantExpression cexpr1 && y1 is ConstantExpression cexpr2 ?
+                    Equals(cexpr1.Value, cexpr2.Value) :
+                x1 == y1;
         }
 
         protected override void WriteBinary(BinaryExpression expr) {
@@ -119,7 +131,10 @@ namespace ExpressionTreeToString {
                             bexpr.Right,
                             "Right"
                         );
-                        if (TryGetEnumComparison(clause, out parts)) {
+                        if (
+                            TryGetEnumComparison(clause, out parts) ||
+                            TryGetCharComparison(clause, out parts)
+                        ) {
                             (left, leftPath, right, rightPath) = parts;
                         }
 
@@ -137,7 +152,10 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            if (TryGetEnumComparison(expr, out parts)) {
+            if (
+                TryGetEnumComparison(expr, out parts) || 
+                TryGetCharComparison(expr, out parts)
+            ) {
                 var (left, leftPath, right, rightPath) = parts;
                 WriteNode(leftPath, left);
                 Write($" {simpleBinaryOperators[expr.NodeType]} ");
@@ -294,7 +312,7 @@ namespace ExpressionTreeToString {
             } else {
                 if (instance.Type.IsClosureClass()) {
                     throw new NotImplementedException("No representation for closed-over variables.");
-                } else if (mi is MethodInfo mthd && !(isAccessibleType(declaringType) || isAccessibleType(mthd.ReturnType))) {
+                } else if (mi is MethodInfo mthd && !isAccessibleType(declaringType) && !isAccessibleType(mthd.ReturnType)) {
                     throw new NotImplementedException($"{(mthd.IsStatic ? "Extension" : "Instance")} methods must either be on an accessible type, or return an instance of an accessible type.");
                 } else if (instance.SansConvert() != currentScoped) {
                     WriteNode(instancePath, instance);
@@ -480,9 +498,11 @@ namespace ExpressionTreeToString {
                 mexpr1.Member == mexpr2.Member && isMemberChainEqual(mexpr1.Expression, mexpr2.Expression) :
                 x == y;
 
-        private bool doesTestMatchMember(Expression valueClause, Expression testClause) {
-            if (!(valueClause is MemberExpression mexpr && testClause is BinaryExpression bexpr)) { return false; }
-            if (bexpr.NodeType != NotEqual) { return false; }
+        private bool doesTestMatchChain(Expression valueClause, Expression testClause) {
+            if (
+                testClause is not BinaryExpression bexpr ||
+                bexpr.NodeType != NotEqual
+            ) { return false; }
 
             var (_, testExpression) = (bexpr.Left, bexpr.Right) switch
             {
@@ -490,7 +510,7 @@ namespace ExpressionTreeToString {
                 (Expression y, ConstantExpression x) when x.Value is null => (x, y),
                 _ => (null, null)
             };
-            return !(testExpression is null) && isMemberChainEqual(mexpr.Expression, testExpression);
+            return testExpression is not null && isEquivalent(valueClause, testExpression);
         }
 
         protected override void WriteConditional(ConditionalExpression expr, object? metadata) {
@@ -502,18 +522,23 @@ namespace ExpressionTreeToString {
             // TODO handle also !(x == null || x.A == null)
 
             // only check member expressions whose Expression.Type can take null (reference type or Nullable<T>)
-            var memberClauses = expr.IfTrue.MemberClauses().Where(x => x.Expression!.Type.IsNullable(true)).ToList();
+            var chainClauses = expr.IfTrue.ChainClauses().Select(x =>
+                x.Match(
+                    mexpr => mexpr.Expression,
+                    callExpr => callExpr.Object ?? callExpr.Arguments.First()
+                )
+            ).Where(x => x.Type.IsNullable(true)).ToList();
 
             // we assume there are no test clauses for items in the member chain whose return value cannot be null
             var andClauses = expr.Test.AndClauses().ToList();
             if (
-                memberClauses.Count > 0 &&
-                memberClauses.Count == andClauses.Count &&
-                memberClauses.ZipT(andClauses).All(x => doesTestMatchMember(x.Item1, x.Item2))
+                chainClauses.Count > 0 &&
+                chainClauses.Count == andClauses.Count &&
+                chainClauses.ZipT(andClauses).All(x => doesTestMatchChain(x.Item1, x.Item2))
             ) {
                 Write("np(");
                 WriteNode("IfTrue", expr.IfTrue);
-                if (!(expr.IfFalse is ConstantExpression cexpr && cexpr.Value is null)) {
+                if (expr.IfFalse is not ConstantExpression cexpr || cexpr.Value is not null) {
                     Write(", ");
                     WriteNode("IfFalse", expr.IfFalse);
                 }
