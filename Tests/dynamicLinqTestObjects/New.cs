@@ -1,16 +1,17 @@
 ﻿using ExpressionTreeTestObjects;
 using System;
 using System.Linq.Expressions;
+using static ExpressionTreeTestObjects.Categories;
 
 namespace ExpressionTreeToString.Tests {
-    public static partial class DynamicLinqTestObjects {
-        [TestObject("New")]
+    partial class DynamicLinqTestObjects {
+        [TestObject(NewObject)]
         internal static readonly Expression NewAnonymous = Expr(p => new { p.LastName, p.FirstName, p.Age });
 
-        [TestObject("New")]
+        [TestObject(NewObject)]
         internal static readonly Expression NewNamed = Expr(p => new DateTime(2001, 1, 1, 0,0,0, DateTimeKind.Local));
 
-        [TestObject("New")]
+        [TestObject(NewObject)]
         internal static readonly Expression NewNamed1 = Expr(p => new Uri("https://www.example.com/", UriKind.Absolute));
     }
 }

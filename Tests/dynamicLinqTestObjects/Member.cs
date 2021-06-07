@@ -1,15 +1,16 @@
 ﻿using ExpressionTreeTestObjects;
 using System.Linq.Expressions;
+using static ExpressionTreeTestObjects.Categories;
 
 namespace ExpressionTreeToString.Tests {
-    public static partial class DynamicLinqTestObjects {
-        [TestObject("Member")]
+    partial class DynamicLinqTestObjects {
+        [TestObject(Member)]
         internal static readonly Expression StaticMember = Expr(p => string.Empty);
 
-        [TestObject("Member")]
+        [TestObject(Member)]
         internal static readonly Expression ParameterMember = Expr(p => p.LastName);
 
-        [TestObject("Member")]
+        [TestObject(Member)]
         internal static readonly Expression InstanceMember = Expr(p => p.LastName!.Length);
     }
 }

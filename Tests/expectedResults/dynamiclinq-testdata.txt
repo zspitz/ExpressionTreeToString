@@ -100,4 +100,21 @@ as("System.Object")
 is("System.Boolean")
 ---- DynamicLinqTestObjects.NewNamed1
 Uri("https://www.example.com/", UriKind.Absolute)
+---- DynamicLinqTestObjects.CharEquality
+LastName[0] == 'c'
+---- DynamicLinqTestObjects.CharEquality1
+'c' == LastName[0]
+---- DynamicLinqTestObjects.InLeftNonConstChar
+LastName[0] in ('c', 'd')
+---- DynamicLinqTestObjects.NpChainWithMethods
+np(it.LastName.ToString().ToString())
+---- DynamicLinqTestObjects.NpChainWithMethodsParameters
+// @0 = #CultureInfo { en-US }
+
+np(it.LastName.ToString(@0).ToString(@0))
+---- DynamicLinqTestObjects.NpChainWithMethodsParameters1
+// @0 = #CultureInfo { en-US }
+// @1 = #CultureInfo { he-IL }
+
+np(it.LastName.ToString(@0).ToString(@1))
 ------

@@ -7,6 +7,7 @@ using static ExpressionTreeToString.BuiltinRenderer;
 using static System.Linq.Expressions.Expression;
 using System.Linq.Dynamic.Core.Parser;
 using static ExpressionTreeToString.Tests.Globals;
+using System;
 
 namespace ExpressionTreeToString.Tests {
     public class DynamicLinqTests {
@@ -25,8 +26,15 @@ namespace ExpressionTreeToString.Tests {
                 return;
             }
 
+            var dynamicLinqParameters = Array.Empty<object>();
+            var parts = selector.Split(new[] { "\r\n\r\n" }, default);
+            if (parts.Length>1) {
+                selector = parts.Last();
+                dynamicLinqParameters = DynamicLinqTestObjects.Parameters[name];
+            }
+
             var prm = Parameter(typeof(Person));
-            var parser = new ExpressionParser(new[] { prm }, selector, new object[] { }, ParsingConfig.Default);
+            var parser = new ExpressionParser(new[] { prm }, selector, dynamicLinqParameters, ParsingConfig.Default);
 
             // test that the generated string can be parsed successfully
             var _ = parser.Parse(null);

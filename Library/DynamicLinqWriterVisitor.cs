@@ -40,15 +40,15 @@ namespace ExpressionTreeToString {
             typeof(Uri)
         };
 
-        private static bool isAccessibleType(Type t) => 
-            t.IsNullable() ? 
-                isAccessibleType(t.UnderlyingSystemType) : 
+        private static bool isAccessibleType(Type t) =>
+            t.IsNullable() ?
+                isAccessibleType(t.UnderlyingSystemType) :
                 t.In(predefinedTypes) || t.In(CustomAccessibleTypes);
 
         ParameterExpression? currentScoped;
 
         public DynamicLinqWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans) :
-            base(o, languageArg, null, hasPathSpans) { }
+            base(o, languageArg, new[] {"parameters", ""}, hasPathSpans) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new() {
             [Add] = "+",
@@ -72,7 +72,7 @@ namespace ExpressionTreeToString {
 
         // TODO parentheses, for preferred order of operations
 
-        private bool isEquivalent(Expression x, Expression y) {
+        private bool isEquivalent(Expression? x, Expression? y) {
             if (x is null) { return y is null; }
             if (y is null) { return x is null; }
             var (x1, y1) = (x.SansConvert(), y.SansConvert());
@@ -236,6 +236,9 @@ namespace ExpressionTreeToString {
             Write("it");
         }
 
+        private Dictionary<object, int>? _parameterIds;
+        private int GetParaneterId(object o, out bool isNew) => GetId(o, ref _parameterIds, out isNew);
+
         protected override void WriteConstant(ConstantExpression expr) {
             var value = expr.Value;
             var underlying = value?.GetType().UnderlyingIfNullable() ?? typeof(void);
@@ -260,7 +263,21 @@ namespace ExpressionTreeToString {
 
             // TODO handle DateTimeOffset and TimeSpan
 
-            throw new NotImplementedException();
+            var id = GetParaneterId(value, out var isNew);
+            if (isNew) {
+                SetInsertionPoint("parameters");
+                var (isLiteral, repr) = TryRenderLiteral(value, "C#");
+                if (!isLiteral) {
+                    var sv = StringValue(value, "C#");
+                    if (sv != repr) {
+                        repr = $"{repr} {{ {sv} }}";
+                    }
+                }
+                Write($"// @{id} = {repr}");
+                WriteEOL();
+                SetInsertionPoint("");
+            }
+            Write($"@{id}");
         }
 
         protected override void WriteMemberAccess(MemberExpression expr) =>
@@ -498,7 +515,7 @@ namespace ExpressionTreeToString {
                 mexpr1.Member == mexpr2.Member && isMemberChainEqual(mexpr1.Expression, mexpr2.Expression) :
                 x == y;
 
-        private bool doesTestMatchChain(Expression valueClause, Expression testClause) {
+        private bool doesTestMatchChain(Expression valueClause, Expression? testClause) {
             if (
                 testClause is not BinaryExpression bexpr ||
                 bexpr.NodeType != NotEqual
@@ -526,7 +543,7 @@ namespace ExpressionTreeToString {
                 x.Match(
                     mexpr => mexpr.Expression,
                     callExpr => callExpr.Object ?? callExpr.Arguments.First()
-                )
+                )!
             ).Where(x => x.Type.IsNullable(true)).ToList();
 
             // we assume there are no test clauses for items in the member chain whose return value cannot be null

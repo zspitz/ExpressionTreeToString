@@ -233,10 +233,11 @@ namespace _tests {
 
 
             IFormatProvider provider = CultureInfo.CurrentCulture;
+            IFormatProvider provider1 = CultureInfo.GetCultureInfo("he-IL");
             //var selector = "ToString().ToString(@0).ToString(@0)[0] in ('c','d')";
-            var selector = "np(ToString().ToString(@0).ToString(@0))";
+            var selector = "np(ToString().ToString(@0).ToString(@1))";
             var prm = Parameter(typeof(Person));
-            var parser = new ExpressionParser(new[] { prm }, selector, new object[] { provider }, ParsingConfig.Default);
+            var parser = new ExpressionParser(new[] { prm }, selector, new object[] { provider, provider1 }, ParsingConfig.Default);
             var expr1 = parser.Parse(null);
 
             Console.WriteLine(expr1.ToString("Dynamic LINQ"));

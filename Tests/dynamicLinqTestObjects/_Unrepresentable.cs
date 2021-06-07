@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 
 namespace ExpressionTreeToString.Tests {
-    public static partial class DynamicLinqTestObjects {
+    partial class DynamicLinqTestObjects {
         // the Dynamic LINQ `as` function can only be used with the ParameterExpression in scope
         // https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/457
         [TestObject("_Unrepresentable")]

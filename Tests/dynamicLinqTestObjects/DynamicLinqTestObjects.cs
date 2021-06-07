@@ -1,5 +1,7 @@
 ﻿using ExpressionTreeTestObjects;
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq.Dynamic.Core;
 using System.Linq.Dynamic.Core.Parser;
 using System.Linq.Expressions;
@@ -45,5 +47,16 @@ namespace ExpressionTreeToString.Tests {
 
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression ParameterTypeIs = Expr(p => p is object);
+
+        public static Dictionary<string, object[]> Parameters = new() {
+            { nameof(Random), new[] { new Random() } },
+            { nameof(NpChainWithMethodsParameters), new[] {
+                CultureInfo.GetCultureInfo("en-US")
+            }},
+            { nameof(NpChainWithMethodsParameters1), new[] {
+                CultureInfo.GetCultureInfo("en-US"),
+                CultureInfo.GetCultureInfo("he-IL")
+            }}
+        };
     }
 }

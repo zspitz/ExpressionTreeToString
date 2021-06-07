@@ -3,7 +3,7 @@ using System.Linq.Expressions;
 using static ExpressionTreeTestObjects.Categories;
 
 namespace ExpressionTreeToString.Tests {
-    public static partial class DynamicLinqTestObjects {
+    partial class DynamicLinqTestObjects {
         [TestObject(Binary)]
         internal static readonly Expression Add = Expr(p => p.Age + 100);
 

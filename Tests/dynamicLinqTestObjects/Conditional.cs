@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 using static ExpressionTreeTestObjects.Categories;
 
 namespace ExpressionTreeToString.Tests {
-    public static partial class DynamicLinqTestObjects {
+    partial class DynamicLinqTestObjects {
         [TestObject(Conditionals)]
         internal static readonly Expression Conditional = Expr(p => p.Age >= 13 ? "adult" : "child");
 
@@ -21,11 +21,17 @@ namespace ExpressionTreeToString.Tests {
         [TestObject(Conditionals)]
         internal static readonly Expression NpChainWithMethods = Expr("np(LastName.ToString().ToString())");
 
-        // pending https://github.com/zspitz/ExpressionTreeToString/issues/80
-        //[TestObject(Conditionals)]
-        //internal static readonly Expression NpChainWithMethodsParameters = Expr(
-        //    "np(p.LastName.ToString().ToString(@0))",
-        //    CultureInfo.GetCultureInfo("en-US")
-        //);
+        [TestObject(Conditionals)]
+        internal static readonly Expression NpChainWithMethodsParameters = Expr(
+            "np(LastName.ToString(@0).ToString(@0))",
+            CultureInfo.GetCultureInfo("en-US")
+        );
+
+        [TestObject(Conditionals)]
+        internal static readonly Expression NpChainWithMethodsParameters1 = Expr(
+            "np(LastName.ToString(@0).ToString(@1))",
+            CultureInfo.GetCultureInfo("en-US"),
+            CultureInfo.GetCultureInfo("he-IL")
+        );
     }
 }
