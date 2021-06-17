@@ -194,9 +194,6 @@ namespace ExpressionTreeToString {
                     if (renderConversion) { Write(")"); }
                     break;
                 case Not:
-                    Write("-");
-                    WriteNode("Operand", expr.Operand);
-                    break;
                 case Negate:
                 case NegateChecked:
                     if (expr.Type.UnderlyingIfNullable() == typeof(bool)) {
@@ -554,6 +551,11 @@ namespace ExpressionTreeToString {
                 )!
             ).Where(x => x.Type.IsNullable(true)).ToList();
 
+            var ifFalseIsNull = expr.IfFalse is ConstantExpression cexpr && cexpr.Value is null;
+            if (!ifFalseIsNull) {
+                chainClauses.Add(expr.IfTrue);
+            }
+
             // we assume there are no test clauses for items in the member chain whose return value cannot be null
             var andClauses = expr.Test.AndClauses().ToList();
             if (
@@ -563,7 +565,7 @@ namespace ExpressionTreeToString {
             ) {
                 Write("np(");
                 WriteNode("IfTrue", expr.IfTrue);
-                if (expr.IfFalse is not ConstantExpression cexpr || cexpr.Value is not null) {
+                if (!ifFalseIsNull) {
                     Write(", ");
                     WriteNode("IfFalse", expr.IfFalse);
                 }

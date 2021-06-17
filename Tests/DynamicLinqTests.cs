@@ -34,7 +34,7 @@ namespace ExpressionTreeToString.Tests {
             }
 
             if (selector.StartsWith("\"")) {
-                selector = selector[1..^1];
+                selector = selector[1..^1].Replace("\\\"", "\"").Replace("\\'","'").Replace("\\\\","\\");
             } else {
                 return;
             }

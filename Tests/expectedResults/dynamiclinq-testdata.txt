@@ -1,111 +1,129 @@
-﻿---- DynamicLinqTestObjects.Equal
-LastName == "A"
+﻿---- DynamicLinqTestObjects.PropertyTypeAs
+"--
+-- Not implemented - 'as' only supported on ParameterExpression in current scope.
+--"
+---- DynamicLinqTestObjects.PropertyTypeIs
+"--
+-- Not implemented - 'is' only supported on ParameterExpression in current scope.
+--"
+---- DynamicLinqTestObjects.Random
+// @0 = #Random
+
+@0
+---- DynamicLinqTestObjects.StringEscaping
+\"\\\"\"
+---- DynamicLinqTestObjects.CharEscaping
+\'\"\'
+---- DynamicLinqTestObjects.StringEscapingLambda
+"\"\\\"\""
+---- DynamicLinqTestObjects.CharEscapingLambda
+"\'\"\'"
+---- DynamicLinqTestObjects.Equal
+"LastName == \"A\""
 ---- DynamicLinqTestObjects.Add
-Age + 100
+"Age + 100"
 ---- DynamicLinqTestObjects.Divide
-Age / 2
+"Age / 2"
 ---- DynamicLinqTestObjects.Modulo
-Age % 10
+"Age % 10"
 ---- DynamicLinqTestObjects.Multiply
-Age * 10
+"Age * 10"
 ---- DynamicLinqTestObjects.Subtract
-Age - 10
+"Age - 10"
 ---- DynamicLinqTestObjects.AndAlso
-Age >= 20 && Age <= 60
+"Age >= 20 && Age <= 60"
 ---- DynamicLinqTestObjects.OrElse
-Age < 20 || Age > 60
+"Age < 20 || Age > 60"
 ---- DynamicLinqTestObjects.NotEqual
-LastName != "A"
+"LastName != \"A\""
 ---- DynamicLinqTestObjects.GreaterThanOrEqual
-Age >= 13
+"Age >= 13"
 ---- DynamicLinqTestObjects.GreaterThan
-Age > 65
+"Age > 65"
 ---- DynamicLinqTestObjects.LessThan
-Age < 20
+"Age < 20"
 ---- DynamicLinqTestObjects.LessThanOrEqual
-Age <= 20
+"Age <= 20"
 ---- DynamicLinqTestObjects.Coalesce
-LastName ?? ""
+"LastName ?? \"\""
 ---- DynamicLinqTestObjects.ArrayIndex
-Relatives[4]
+"Relatives[4]"
 ---- DynamicLinqTestObjects.ImplicitConversion
-it
+"it"
 ---- DynamicLinqTestObjects.ImplicitConversion1
-int(Age)
+"int(Age)"
 ---- DynamicLinqTestObjects.ExplicitConversion
-short(Age)
----- DynamicLinqTestObjects.NegateBoolean
--Age > 20
+"short(Age)"
 ---- DynamicLinqTestObjects.NegateNumeric
--Age
+"-Age"
 ---- DynamicLinqTestObjects.Np
-np(LastName)
+"np(LastName)"
 ---- DynamicLinqTestObjects.NpValue
-np(LastName, "(unknown)")
+np(it.LastName, \"(unknown)\")
 ---- DynamicLinqTestObjects.NpChain
-np(Father.LastName, "(unknown)")
+np(it.Father.LastName, \"(unknown)\")
 ---- DynamicLinqTestObjects.DateTime1
-Date(631139040000000000)
+DateTime(631139040000000000, DateTimeKind.Unspecified)
 ---- DynamicLinqTestObjects.DateTime2
-Date(631139040000000000, DateTimeKind.Utc)
+DateTime(631139040000000000, DateTimeKind.Utc)
 ---- DynamicLinqTestObjects.Parameter
-it
+"it"
 ---- DynamicLinqTestObjects.In
-LastName in ("A", "B")
+"LastName in (\"A\", \"B\")"
 ---- DynamicLinqTestObjects.MultipleFieldsIn
-LastName in ("A", "B") || FirstName in ("C", "D")
+"LastName in (\"A\", \"B\") || FirstName in (\"C\", \"D\")"
 ---- DynamicLinqTestObjects.MultipleFieldSingleValueIn
-LastName in ("A", "B") || DOB == DateTime.MinValue || FirstName in ("C", "D")
+"LastName in (\"A\", \"B\") || DOB == DateTime.MinValue || FirstName in (\"C\", \"D\")"
 ---- DynamicLinqTestObjects.StaticMember
-String.Empty
+"String.Empty"
 ---- DynamicLinqTestObjects.ParameterMember
-LastName
+"LastName"
 ---- DynamicLinqTestObjects.InstanceMember
-LastName.Length
+"LastName.Length"
 ---- DynamicLinqTestObjects.StringConcat
-LastName + FirstName
+"LastName + FirstName"
 ---- DynamicLinqTestObjects.Contains
-Relatives.Contains(it)
+"Relatives.Contains(it)"
 ---- DynamicLinqTestObjects.IndexerMethod
-Relatives2[4]
+"Relatives2[4]"
 ---- DynamicLinqTestObjects.StaticMethod
-String.IsInterned("abcd")
+"String.IsInterned(\"abcd\")"
 ---- DynamicLinqTestObjects.ParameterMethod
-ToString()
+"ToString()"
 ---- DynamicLinqTestObjects.NewAnonymous
-new(LastName, FirstName, Age)
+"new(LastName, FirstName, Age)"
 ---- DynamicLinqTestObjects.Conditional
-iif(Age >= 13, "adult", "child")
+"iif(Age >= 13, \"adult\", \"child\")"
 ---- DynamicLinqTestObjects.InstanceMethodAccessibleType
-LastName.ToString()
+"LastName.ToString()"
 ---- DynamicLinqTestObjects.InstanceMethodInaccessibleType
-Notify()
+"Notify()"
 ---- DynamicLinqTestObjects.NewNamed
-DateTime(2001, 1, 1, 0, 0, 0, DateTimeKind.Local)
+"DateTime(2001, 1, 1, 0, 0, 0, DateTimeKind.Local)"
 ---- DynamicLinqTestObjects.LeftEnumNonConstant
-DOB.Value.DayOfWeek >= DayOfWeek.Tuesday
+"DOB.Value.DayOfWeek >= DayOfWeek.Tuesday"
 ---- DynamicLinqTestObjects.RightEnumNonConstant
-DayOfWeek.Tuesday >= DOB.Value.DayOfWeek
+"DayOfWeek.Tuesday >= DOB.Value.DayOfWeek"
 ---- DynamicLinqTestObjects.DualNonConstant
-int(DOB.Value.DayOfWeek) == int(DOB.Value.DayOfWeek)
+"RegisteredOn.Value.DayOfWeek <= DOB.Value.DayOfWeek"
 ---- DynamicLinqTestObjects.InLeftEnumNonConstant
-DOB.Value.DayOfWeek in (DayOfWeek.Thursday, DayOfWeek.Monday)
+"DOB.Value.DayOfWeek in (DayOfWeek.Thursday, DayOfWeek.Monday)"
 ---- DynamicLinqTestObjects.InRightEnumNonConstant
-DayOfWeek.Tuesday in (DOB.Value.DayOfWeek, RegisteredOn.Value.DayOfWeek)
+"DayOfWeek.Tuesday in (DOB.Value.DayOfWeek, RegisteredOn.Value.DayOfWeek)"
 ---- DynamicLinqTestObjects.InConstantOrNonConstant
-DOB.Value.DayOfWeek in (RegisteredOn.Value.DayOfWeek, DayOfWeek.Thursday)
+"DOB.Value.DayOfWeek in (RegisteredOn.Value.DayOfWeek, DayOfWeek.Thursday)"
 ---- DynamicLinqTestObjects.ParameterTypeAs
-as("System.Object")
+"as("System.Object")"
 ---- DynamicLinqTestObjects.ParameterTypeIs
-is("System.Boolean")
+"is("System.Boolean")"
 ---- DynamicLinqTestObjects.NewNamed1
-Uri("https://www.example.com/", UriKind.Absolute)
+"Uri(\"https://www.example.com/\", UriKind.Absolute)"
 ---- DynamicLinqTestObjects.CharEquality
-LastName[0] == 'c'
+"LastName[0] == \'c\'"
 ---- DynamicLinqTestObjects.CharEquality1
-'c' == LastName[0]
+"\'c\' == LastName[0]"
 ---- DynamicLinqTestObjects.InLeftNonConstChar
-LastName[0] in ('c', 'd')
+"LastName[0] in (\'c\', \'d\')"
 ---- DynamicLinqTestObjects.NpChainWithMethods
 np(it.LastName.ToString().ToString())
 ---- DynamicLinqTestObjects.NpChainWithMethodsParameters

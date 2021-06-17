@@ -9,11 +9,13 @@ namespace ExpressionTreeToString.Tests {
         [TestObject(Conditionals)]
         internal static readonly Expression Conditional = Expr(p => p.Age >= 13 ? "adult" : "child");
 
-        [TestObject(Conditionals)]
-        internal static readonly Expression Np = Expr("np(LastName)");
+        [TestObject(Conditionals)] // pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/520
+        //internal static readonly Expression Np = Expr("np(LastName)");
+        internal static readonly Expression Np = Expr(p => p != null ? p.LastName : null);
 
-        [TestObject(Conditionals)]
+        [TestObject(Conditionals)] // pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/520
         internal static readonly Expression NpValue = Expr("np(LastName, \"(unknown)\")");
+        //internal static readonly Expression NpValue = Expr(p => p != null ? p.LastName : "(unknown)");
 
         [TestObject(Conditionals)]
         internal static readonly Expression NpChain = Expr("np(Father.LastName, \"(unknown)\")");
