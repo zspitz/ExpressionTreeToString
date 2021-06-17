@@ -48,6 +48,18 @@ namespace ExpressionTreeToString.Tests {
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression ParameterTypeIs = Expr(p => p is object);
 
+        [TestObject("Dynamic LINQ")]
+        internal static readonly Expression StringEscaping = Expr("\"\\\"\"");
+
+        [TestObject("Dynamic LINQ")]
+        internal static readonly Expression CharEscaping = Expr("'\"'");
+
+        [TestObject("Dynamic LINQ")]
+        internal static readonly Expression StringEscapingLambda = Expr(p => "\"");
+
+        [TestObject("Dynamic LINQ")]
+        internal static readonly Expression CharEscapingLambda = Expr(p => '"');
+
         public static Dictionary<string, object[]> Parameters = new() {
             { nameof(Random), new[] { new Random() } },
             { nameof(NpChainWithMethodsParameters), new[] {

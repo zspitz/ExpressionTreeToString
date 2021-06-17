@@ -24,13 +24,14 @@ namespace Tests.DataGenerator {
                 var language = key == VisualBasic ? Language.VisualBasic : Language.CSharp;
 
                 const string dlinq = nameof(DynamicLinqTestObjects);
-                var objects = Objects.Get()
-                    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
-                    .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
-
                 //var objects = Objects.Get()
                 //    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
-                //    .OrderBy(x => ordering.TryGetValue($"{x.source}.{x.name}", out var order) ? order : -1);
+                //    .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
+
+                var objects = Objects.Get()
+                    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
+                    .Where(x => key == DynamicLinq)
+                    .OrderBy(x => ordering.TryGetValue($"{x.source}.{x.name}", out var order) ? order : -1);
 
                 foreach (var (category, source, name, o) in objects) {
                     var toWrite = o switch
@@ -61,10 +62,10 @@ namespace Tests.DataGenerator {
         static Dictionary<string, int> parseFileOrder(string filepath) =>
             File.ReadLines(filepath)
                 .Where(line => line.StartsWith("---- "))
-                .Select((x, index) => (x.Substring(5), index))
+                .Select((x, index) => (x[5..], index))
                 .ToDictionary(x => x.Item1, x => x.index);
 
-        static Dictionary<BuiltinRenderer, string> rendererFileMapping = new Dictionary<BuiltinRenderer, string> {
+        static readonly Dictionary<BuiltinRenderer, string> rendererFileMapping = new Dictionary<BuiltinRenderer, string> {
             [CSharp] = "csharp",
             [VisualBasic] = "visualbasic",
             [FactoryMethods] = "factorymethods",

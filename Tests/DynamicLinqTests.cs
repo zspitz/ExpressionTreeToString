@@ -33,6 +33,12 @@ namespace ExpressionTreeToString.Tests {
                 dynamicLinqParameters = DynamicLinqTestObjects.Parameters[name];
             }
 
+            if (selector.StartsWith("\"")) {
+                selector = selector[1..^1];
+            } else {
+                return;
+            }
+
             var prm = Parameter(typeof(Person));
             var parser = new ExpressionParser(new[] { prm }, selector, dynamicLinqParameters, ParsingConfig.Default);
 

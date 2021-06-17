@@ -48,7 +48,7 @@ namespace ExpressionTreeToString {
         ParameterExpression? currentScoped;
 
         public DynamicLinqWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans) :
-            base(o, languageArg, new[] {"parameters", ""}, hasPathSpans) { }
+            base(o, languageArg, new[] { "parameters", "" }, hasPathSpans) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new() {
             [Add] = "+",
@@ -78,9 +78,9 @@ namespace ExpressionTreeToString {
             var (x1, y1) = (x.SansConvert(), y.SansConvert());
             return
                 x1 is MemberExpression mexpr1 && y1 is MemberExpression mexpr2 ?
-                    mexpr1.Member == mexpr2.Member && 
+                    mexpr1.Member == mexpr2.Member &&
                     isEquivalent(mexpr1.Expression, mexpr2.Expression) :
-                x1 is MethodCallExpression call1 && y1 is MethodCallExpression call2 ? 
+                x1 is MethodCallExpression call1 && y1 is MethodCallExpression call2 ?
                     call1.Method == call2.Method &&
                     call1.Arguments.Count == call2.Arguments.Count &&
                     call1.Arguments.ZipT(call2.Arguments).All(x => isEquivalent(x.Item1, x.Item2)) :
@@ -103,7 +103,7 @@ namespace ExpressionTreeToString {
 
             (Expression left, string leftPath, Expression right, string rightPath) parts;
 
-            if (grouped.Any(grp => grp.Key is { } && grp.Count()>1)) { // can any elements be written using `in`?
+            if (grouped.Any(grp => grp.Key is { } && grp.Count() > 1)) { // can any elements be written using `in`?
                 var firstClause = true;
                 foreach (var grp in grouped) {
                     if (firstClause) {
@@ -153,7 +153,7 @@ namespace ExpressionTreeToString {
             }
 
             if (
-                TryGetEnumComparison(expr, out parts) || 
+                TryGetEnumComparison(expr, out parts) ||
                 TryGetCharComparison(expr, out parts)
             ) {
                 var (left, leftPath, right, rightPath) = parts;
@@ -186,8 +186,8 @@ namespace ExpressionTreeToString {
                 case ExpressionType.Convert:
                 case ConvertChecked:
                 case Unbox:
-                    var renderConversion = 
-                        expr.Type != expr.Operand.Type && 
+                    var renderConversion =
+                        expr.Type != expr.Operand.Type &&
                         !expr.Operand.Type.HasImplicitConversionTo(expr.Type);
                     if (renderConversion) { Write($"{typeName(expr.Type)}("); }
                     WriteNode("Operand", expr.Operand);
@@ -206,7 +206,7 @@ namespace ExpressionTreeToString {
                     }
                     WriteNode("Operand", expr.Operand);
                     break;
-                case TypeAs :
+                case TypeAs:
                     if (expr.Operand != currentScoped) {
                         throw new NotImplementedException("'as' only supported on ParameterExpression in current scope.");
                     }
@@ -218,6 +218,7 @@ namespace ExpressionTreeToString {
         }
 
         protected override void WriteLambda(LambdaExpression expr) {
+            Write("\"");
             var count = expr.Parameters.Count;
             if (count > 1) {
                 throw new NotImplementedException("Multiple parameters in lambda expression.");
@@ -225,6 +226,7 @@ namespace ExpressionTreeToString {
                 currentScoped = expr.Parameters[0];
             }
             WriteNode("Body", expr.Body);
+            Write("\"");
         }
 
         protected override void WriteParameter(ParameterExpression expr) {
@@ -242,15 +244,22 @@ namespace ExpressionTreeToString {
         protected override void WriteConstant(ConstantExpression expr) {
             var value = expr.Value;
             var underlying = value?.GetType().UnderlyingIfNullable() ?? typeof(void);
+            var literal = RenderLiteral(value, "C#");
             if (
                 value is null ||
                 value is bool ||
-                value is string ||
-                value is char ||
                 underlying.IsEnum ||
                 underlying.IsNumeric()
             ) {
-                Write(RenderLiteral(value, "C#"));
+                Write(literal);
+                return;
+            }
+
+            if (
+                value is string ||
+                value is char
+            ) {
+                Write(RenderLiteral(literal, "C#")[1..^1]);
                 return;
             }
 
@@ -473,8 +482,8 @@ namespace ExpressionTreeToString {
             }
 
             var instance = expr.Object;
-            var isIndexer = 
-                instance is { } && instance.Type.IsArray && expr.Method.Name == "Get" || 
+            var isIndexer =
+                instance is { } && instance.Type.IsArray && expr.Method.Name == "Get" ||
                 expr.Method.IsIndexerMethod();
             if (isIndexer) {
                 writeIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
@@ -499,16 +508,16 @@ namespace ExpressionTreeToString {
             Write(")");
         }
 
-        protected override void WriteMemberInit(MemberInitExpression expr) => 
+        protected override void WriteMemberInit(MemberInitExpression expr) =>
             throw new NotImplementedException();
 
-        protected override void WriteListInit(ListInitExpression expr) => 
+        protected override void WriteListInit(ListInitExpression expr) =>
             throw new NotImplementedException();
 
-        protected override void WriteNewArray(NewArrayExpression expr) => 
+        protected override void WriteNewArray(NewArrayExpression expr) =>
             throw new NotImplementedException();
 
-        private bool isMemberChainEqual(Expression? x, Expression? y) => 
+        private bool isMemberChainEqual(Expression? x, Expression? y) =>
             x is null ? y is null :
             y is null ? x is null :
             x.SansConvert() is MemberExpression mexpr1 && y.SansConvert() is MemberExpression mexpr2 ?
@@ -521,8 +530,7 @@ namespace ExpressionTreeToString {
                 bexpr.NodeType != NotEqual
             ) { return false; }
 
-            var (_, testExpression) = (bexpr.Left, bexpr.Right) switch
-            {
+            var (_, testExpression) = (bexpr.Left, bexpr.Right) switch {
                 (ConstantExpression x, Expression y) when x.Value is null => (x, y),
                 (Expression y, ConstantExpression x) when x.Value is null => (x, y),
                 _ => (null, null)
@@ -572,7 +580,7 @@ namespace ExpressionTreeToString {
             Write(")");
         }
 
-        protected override void WriteDefault(DefaultExpression expr) => 
+        protected override void WriteDefault(DefaultExpression expr) =>
             throw new NotImplementedException();
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
@@ -594,93 +602,93 @@ namespace ExpressionTreeToString {
         protected override void WriteIndex(IndexExpression expr) =>
             writeIndexerAccess("Object", expr.Object!, "Arguments", expr.Arguments);
 
-        protected override void WriteBlock(BlockExpression expr, object? metadata) => 
+        protected override void WriteBlock(BlockExpression expr, object? metadata) =>
             throw new NotImplementedException();
 
-        protected override void WriteSwitch(SwitchExpression expr) => 
+        protected override void WriteSwitch(SwitchExpression expr) =>
             throw new NotImplementedException();
 
-        protected override void WriteTry(TryExpression expr) => 
+        protected override void WriteTry(TryExpression expr) =>
             throw new NotImplementedException();
 
-        protected override void WriteLabel(LabelExpression expr) => 
+        protected override void WriteLabel(LabelExpression expr) =>
             throw new NotImplementedException();
 
-        protected override void WriteGoto(GotoExpression expr) => 
+        protected override void WriteGoto(GotoExpression expr) =>
             throw new NotImplementedException();
 
-        protected override void WriteLoop(LoopExpression expr) => 
+        protected override void WriteLoop(LoopExpression expr) =>
             throw new NotImplementedException();
 
-        protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) => 
+        protected override void WriteRuntimeVariables(RuntimeVariablesExpression expr) =>
             throw new NotImplementedException();
 
-        protected override void WriteDebugInfo(DebugInfoExpression expr) => 
+        protected override void WriteDebugInfo(DebugInfoExpression expr) =>
             throw new NotImplementedException();
 
-        protected override void WriteElementInit(ElementInit elementInit) => 
+        protected override void WriteElementInit(ElementInit elementInit) =>
             throw new NotImplementedException();
 
-        protected override void WriteBinding(MemberBinding binding) => 
+        protected override void WriteBinding(MemberBinding binding) =>
             throw new NotImplementedException();
 
-        protected override void WriteSwitchCase(SwitchCase switchCase) => 
+        protected override void WriteSwitchCase(SwitchCase switchCase) =>
             throw new NotImplementedException();
 
-        protected override void WriteCatchBlock(CatchBlock catchBlock) => 
+        protected override void WriteCatchBlock(CatchBlock catchBlock) =>
             throw new NotImplementedException();
 
-        protected override void WriteLabelTarget(LabelTarget labelTarget) => 
+        protected override void WriteLabelTarget(LabelTarget labelTarget) =>
             throw new NotImplementedException();
 
-        protected override void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args) => 
+        protected override void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteConvertBinder(ConvertBinder convertBinder, IList<Expression> args) => 
+        protected override void WriteConvertBinder(ConvertBinder convertBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteCreateInstanceBinder(CreateInstanceBinder createInstanceBinder, IList<Expression> args) => 
+        protected override void WriteCreateInstanceBinder(CreateInstanceBinder createInstanceBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteDeleteIndexBinder(DeleteIndexBinder deleteIndexBinder, IList<Expression> args) => 
+        protected override void WriteDeleteIndexBinder(DeleteIndexBinder deleteIndexBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteDeleteMemberBinder(DeleteMemberBinder deleteMemberBinder, IList<Expression> args) => 
+        protected override void WriteDeleteMemberBinder(DeleteMemberBinder deleteMemberBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteGetIndexBinder(GetIndexBinder getIndexBinder, IList<Expression> args) => 
+        protected override void WriteGetIndexBinder(GetIndexBinder getIndexBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteGetMemberBinder(GetMemberBinder getMemberBinder, IList<Expression> args) => 
+        protected override void WriteGetMemberBinder(GetMemberBinder getMemberBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteInvokeBinder(InvokeBinder invokeBinder, IList<Expression> args) => 
+        protected override void WriteInvokeBinder(InvokeBinder invokeBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteInvokeMemberBinder(InvokeMemberBinder invokeMemberBinder, IList<Expression> args) => 
+        protected override void WriteInvokeMemberBinder(InvokeMemberBinder invokeMemberBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteSetIndexBinder(SetIndexBinder setIndexBinder, IList<Expression> args) => 
+        protected override void WriteSetIndexBinder(SetIndexBinder setIndexBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) => 
+        protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) => 
+        protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
-        protected override void WriteParameterDeclaration(ParameterExpression prm) => 
+        protected override void WriteParameterDeclaration(ParameterExpression prm) =>
             throw new NotImplementedException();
 
         private static readonly Dictionary<Type, string> typeAliases = new() {
-            {typeof(int), "int"},
-            {typeof(uint), "uint"},
-            {typeof(short), "short"},
-            {typeof(ushort), "ushort"},
-            {typeof(long), "long"},
-            {typeof(ulong), "ulong"},
-            {typeof(bool), "bool"},
-            {typeof(float), "float"},
+            { typeof(int), "int" },
+            { typeof(uint), "uint" },
+            { typeof(short), "short" },
+            { typeof(ushort), "ushort" },
+            { typeof(long), "long" },
+            { typeof(ulong), "ulong" },
+            { typeof(bool), "bool" },
+            { typeof(float), "float" },
         };
 
         private static string typeName(Type t) =>

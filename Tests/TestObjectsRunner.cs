@@ -20,7 +20,7 @@ namespace ExpressionTreeToString.Tests {
         public static readonly TheoryData<BuiltinRenderer, string, string, object> TestData =
             Objects
                 .SelectMany(x =>
-                    BuiltinRenderers.Cast<BuiltinRenderer>()
+                    BuiltinRenderers
                         .Select(key => (key, $"{x.source}.{x.name}", x.category, x.o))
                         .Where(x => x.key != DebugView || x.o is Expression)
                         .Where(x => x.key != DynamicLinq ^ x.Item2.StartsWith(nameof(DynamicLinqTestObjects)))
@@ -116,8 +116,6 @@ namespace ExpressionTreeToString.Tests {
         [Theory]
         [MemberData(nameof(TestData))]
         public void TestMethod(BuiltinRenderer rendererKey, string objectName, string category, object o) {
-            if (rendererKey == DynamicLinq) { return; }
-
 #if NET472
             ToStringWriterVisitor.FrameworkCompatible = true;
             DebugViewWriterVisitor.FrameworkCompatible = true;
