@@ -68,7 +68,8 @@ namespace ExpressionTreeToString.Tests {
             { nameof(NpChainWithMethodsParameters1), new[] {
                 CultureInfo.GetCultureInfo("en-US"),
                 CultureInfo.GetCultureInfo("he-IL")
-            }}
+            }},
+            { nameof(Contains1), new string[] { } }
         };
     }
 }

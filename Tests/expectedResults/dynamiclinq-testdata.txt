@@ -83,7 +83,7 @@ DateTime(631139040000000000, DateTimeKind.Utc)
 ---- DynamicLinqTestObjects.StringConcat
 "LastName + FirstName"
 ---- DynamicLinqTestObjects.Contains
-"Relatives.Contains(it)"
+"it in Relatives"
 ---- DynamicLinqTestObjects.IndexerMethod
 "Relatives2[4]"
 ---- DynamicLinqTestObjects.StaticMethod
@@ -135,4 +135,8 @@ np(it.LastName.ToString(@0).ToString(@0))
 // @1 = #CultureInfo { he-IL }
 
 np(it.LastName.ToString(@0).ToString(@1))
+---- DynamicLinqTestObjects.Contains1
+// @0 = new string[] { }
+
+\"\" in @0
 ------

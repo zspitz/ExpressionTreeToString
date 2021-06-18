@@ -70,7 +70,102 @@ namespace ExpressionTreeToString {
             [Coalesce] = "??",
         };
 
-        // TODO parentheses, for preferred order of operations
+        // TODO parentheses https://github.com/zspitz/ExpressionTreeToString/issues/81
+
+        // can be verified against https://dynamic-linq.net/expression-language#operators using:
+        // precedence.GroupBy(kvp => kvp.Value, kvp => kvp.Key, (key, grp) => new {key, values = grp.OrderBy(x => x.ToString()).Joined(", ")}).OrderBy(x => x.key);
+        private static readonly Dictionary<ExpressionType, int?> precedence = new() {
+            [Add] = 3,
+            [AddChecked] = 3,
+            [And] = 5,
+            [AndAlso] = 5,
+            [ArrayIndex] = 0,
+            [ArrayLength] = 0,
+            [Block] = null,
+            [Call] = 0,
+            [Coalesce] = 7,
+            [Conditional] = 0,
+            [Constant] = -1,
+            [ExpressionType.Convert] = 0,
+            [ConvertChecked] = 0,
+            [DebugInfo] = null,
+            [Decrement] = null,
+            [Default] = null,
+            [Divide] = 2,
+            [Dynamic] = null,
+            [Equal] = 4,
+            [ExclusiveOr] = null,
+            [Extension] = null,
+            [Goto] = null,
+            [GreaterThan] = 4,
+            [GreaterThanOrEqual] = 4,
+            [Increment] = null,
+            [ExpressionType.Index] = 0,
+            [Invoke] = null,
+            [IsFalse] = null,
+            [IsTrue] = null,
+            [Label] = null,
+            [Lambda] = null,
+            [LeftShift] = null,
+            [LessThan] = 4,
+            [LessThanOrEqual] = 4,
+            [ListInit] = null,
+            [Loop] = null,
+            [MemberAccess] = 0,
+            [MemberInit] = null,
+            [Modulo] = 2,
+            [Multiply] = 2,
+            [MultiplyChecked] = 2,
+            [Negate] = 1,
+            [NegateChecked] = 1,
+            [New] = 0,
+            [NewArrayBounds] = null,
+            [NewArrayInit] = null,
+            [Not] = 1,
+            [NotEqual] = 4,
+            [OnesComplement] = null,
+            [Or] = 6,
+            [OrElse] = 6,
+            [Parameter] = -1,
+            [Power] = null,
+            [Quote] = null,
+            [RightShift] = null,
+            [RuntimeVariables] = null,
+            [Subtract] = 3,
+            [SubtractChecked] = 3,
+            [Switch] = null,
+            [Throw] = null,
+            [Try] = null,
+            [TypeAs] = 0,
+            [TypeEqual] = null,
+            [TypeIs] = 0,
+            [UnaryPlus] = null,
+            [Unbox] = 0
+        };
+
+        private static int getPrecedence(Expression node) {
+            var (nodeType, type) = node;
+            return nodeType switch {
+                Call when node is MethodCallExpression mcexpr && mcexpr.Method.IsStringConcat() => 3,
+                And or AndAlso when node.Type == typeof(bool) => 5,
+                _ => precedence[node.NodeType] ?? -1
+            };
+        }
+
+        private void Parens(OneOf<Expression, int> outer, string path, Expression inner) {
+            var precedence = (
+                outer: outer.Match(
+                    expr => getPrecedence(expr),
+                    i => i
+                ),
+                inner: getPrecedence(inner)
+            );
+
+            var writeParens = precedence.inner > precedence.outer;
+            if (writeParens) { Write("("); }
+            WriteNode(path, inner);
+            if (writeParens) { Write(")"); }
+        }
 
         private bool isEquivalent(Expression? x, Expression? y) {
             if (x is null) { return y is null; }
@@ -139,7 +234,7 @@ namespace ExpressionTreeToString {
                         }
 
                         if (firstElement) {
-                            WriteNode($"{path}.{leftPath}", left);
+                            Parens(0, $"{path}.{leftPath}", left);
                             Write(" in (");
                             firstElement = false;
                         } else {
@@ -157,21 +252,21 @@ namespace ExpressionTreeToString {
                 TryGetCharComparison(expr, out parts)
             ) {
                 var (left, leftPath, right, rightPath) = parts;
-                WriteNode(leftPath, left);
+                Parens(expr, leftPath, left);
                 Write($" {simpleBinaryOperators[expr.NodeType]} ");
-                WriteNode(rightPath, right);
+                Parens(expr, rightPath, right);
                 return;
             }
 
             if (simpleBinaryOperators.TryGetValue(expr.NodeType, out var @operator)) {
-                WriteNode("Left", expr.Left);
+                Parens(expr, "Left", expr.Left);
                 Write($" {@operator} ");
-                WriteNode("Right", expr.Right);
+                Parens(expr, "Right", expr.Right);
                 return;
             }
 
             if (expr.NodeType == ArrayIndex) {
-                WriteNode("Left", expr.Left);
+                Parens(expr, "Left", expr.Left);
                 Write("[");
                 WriteNode("Right", expr.Right);
                 Write("]");
@@ -201,7 +296,7 @@ namespace ExpressionTreeToString {
                     } else {
                         Write("-");
                     }
-                    WriteNode("Operand", expr.Operand);
+                    Parens(expr, "Operand", expr.Operand);
                     break;
                 case TypeAs:
                     if (expr.Operand != currentScoped) {
@@ -319,7 +414,7 @@ namespace ExpressionTreeToString {
                 throw new NotImplementedException("Multidimensional array access not supported.");
             }
             // No such thing as a static indexer
-            WriteNode(instancePath, instance);
+            Parens(0, instancePath, instance);
             Write("[");
             WriteNodes(argumentsPath, lst);
             Write("]");
@@ -338,7 +433,7 @@ namespace ExpressionTreeToString {
                 } else if (mi is MethodInfo mthd && !isAccessibleType(declaringType) && !isAccessibleType(mthd.ReturnType)) {
                     throw new NotImplementedException($"{(mthd.IsStatic ? "Extension" : "Instance")} methods must either be on an accessible type, or return an instance of an accessible type.");
                 } else if (instance.SansConvert() != currentScoped) {
-                    WriteNode(instancePath, instance);
+                    Parens(0, instancePath, instance);
                     Write(".");
                 }
             }
@@ -350,8 +445,8 @@ namespace ExpressionTreeToString {
             var q = "".AsQueryable();
 
             return new[] {
-                GetMethod(() => e.Contains('a')),
-                GetMethod(() => q.Contains('a'))
+                GetMethod(() => e.Contains('a')).GetGenericMethodDefinition(),
+                GetMethod(() => q.Contains('a')).GetGenericMethodDefinition()
             };
         });
 
@@ -466,15 +561,16 @@ namespace ExpressionTreeToString {
                     argsPath = "Arguments";
                 }
                 if (argsToWrite != null) {
+                    // TODO insert parentheses for arguments that have lower precedence than string concatenation
                     WriteNodes(argsPath, argsToWrite, " + ");
                     return;
                 }
             }
 
-            if (expr.Method.In(containsMethods)) {
-                WriteNode("Arguments[0]", expr.Arguments[0]);
+            if (expr.Method.IsGenericMethod && expr.Method.GetGenericMethodDefinition().In(containsMethods)) {
+                Parens(expr, "Arguments[1]", expr.Arguments[1]);
                 Write(" in ");
-                WriteNode("Arguments[1]", expr.Arguments[1]);
+                Parens(expr, "Arguments[0]", expr.Arguments[0]);
                 return;
             }
 

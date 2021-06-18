@@ -790,10 +790,8 @@ namespace ExpressionTreeToString {
                 if (childPrecedence > parentPrecedence) {
                     writeParens = true;
                 } else if (parentPrecedence == childPrecedence) {
-                    // with C# 9 we can use a switch expression with the OR pattern
                     switch (childNode) {
-                        case BinaryExpression _:
-                        case ConditionalExpression _:
+                        case BinaryExpression or ConditionalExpression:
                             writeParens =
                                 (leftAssociative && path == "Right") ||
                                 (!leftAssociative && path.In("Left", "Test"));

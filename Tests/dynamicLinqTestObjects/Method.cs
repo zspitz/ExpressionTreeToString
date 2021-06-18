@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 using static ExpressionTreeTestObjects.Categories;
+using static ExpressionTreeTestObjects.Functions;
 
 namespace ExpressionTreeToString.Tests {
     partial class DynamicLinqTestObjects {
@@ -10,6 +11,9 @@ namespace ExpressionTreeToString.Tests {
 
         [TestObject(Method)]
         internal static readonly Expression Contains = Expr(p => p.Relatives.Contains(p));
+
+        [TestObject(Method)]
+        internal static readonly Expression Contains1 = Expr("@0.Contains(\"\")", new object[] { new string[] { } } );
 
         [TestObject(Method)]
         internal static readonly Expression IndexerMethod = Expr(p => p.Relatives2[4]);

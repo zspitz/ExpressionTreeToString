@@ -248,14 +248,7 @@ namespace _tests {
             var expr = 
                 Enumerable.Empty<Person>()
                     .AsQueryable()
-                    .Select("np(it.LastName)")
-                    .Expression;
-            Console.WriteLine(expr.ToString("DebugView"));
-
-            expr =
-                Enumerable.Empty<Person>()
-                    .AsQueryable()
-                    .Select("np(it.LastName.ToString())")
+                    .Where("!(Age > 20)")
                     .Expression;
             Console.WriteLine(expr.ToString("DebugView"));
         }
@@ -272,7 +265,7 @@ namespace _tests {
         static void availableRenderersSamples() {
             static void line() => Console.WriteLine(new string('=', 50));
 
-            Expression<Func<Person, bool>> expr = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday;
+            Expression<Func<Person, bool>> expr = p => p.DOB!.Value.DayOfWeek == DayOfWeek.Tuesday;
             Console.WriteLine(expr.ToString("C#"));
 
             line();
@@ -285,7 +278,7 @@ namespace _tests {
 
             line();
 
-            Expression<Func<Person, bool>> expr1 = p => p.DOB.DayOfWeek == DayOfWeek.Tuesday || p.DOB.DayOfWeek == DayOfWeek.Thursday;
+            Expression<Func<Person, bool>> expr1 = p => p.DOB!.Value.DayOfWeek == DayOfWeek.Tuesday || p.DOB!.Value.DayOfWeek == DayOfWeek.Thursday;
             Console.WriteLine(expr1.ToString("Dynamic LINQ"));
 
             line();
@@ -311,9 +304,19 @@ namespace _tests {
         public string LastName { get; set; } = "";
         public string FirstName { get; set; } = "";
         public string Name => LastName + ", " + FirstName;
-        public DateTime DOB { get; set; }
+        public DateTime? DOB { get; set; }
         public Post[] Posts { get; set; } = new Post[] { };
         public char GetChar() => LastName[0];
+        public int? Age {
+            get {
+                if (DOB is null) { return null; }
+                var dob = DOB.Value;
+                var today = DateTime.Today;
+                var age = today.Year - dob.Year;
+                if (dob.Date > today.AddYears(-age)) { age--; }
+                return age;
+            }
+        }
     }
 
     public class Employee {
