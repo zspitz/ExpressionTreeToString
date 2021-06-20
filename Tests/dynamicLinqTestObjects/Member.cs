@@ -1,6 +1,7 @@
 ﻿using ExpressionTreeTestObjects;
 using System.Linq.Expressions;
 using static ExpressionTreeTestObjects.Categories;
+using static ExpressionTreeTestObjects.Functions;
 
 namespace ExpressionTreeToString.Tests {
     partial class DynamicLinqTestObjects {
@@ -12,5 +13,11 @@ namespace ExpressionTreeToString.Tests {
 
         [TestObject(Member)]
         internal static readonly Expression InstanceMember = Expr(p => p.LastName!.Length);
+
+        [TestObject(Member)]
+        internal static readonly Expression ClosureValue = IIFE(() => {
+            var x = 5;
+            return Expr(p => x);
+        });
     }
 }

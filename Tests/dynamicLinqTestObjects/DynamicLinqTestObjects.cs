@@ -69,7 +69,8 @@ namespace ExpressionTreeToString.Tests {
                 CultureInfo.GetCultureInfo("en-US"),
                 CultureInfo.GetCultureInfo("he-IL")
             }},
-            { nameof(Contains1), new string[] { } }
+            { nameof(Contains1), new string[] { } },
+            { nameof(ClosureValue), new object [] {5}}
         };
     }
 }

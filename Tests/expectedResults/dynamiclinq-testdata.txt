@@ -143,4 +143,8 @@ np(it.LastName.ToString(@0).ToString(@1))
 (1 + 2) * 3
 ---- DynamicLinqTestObjects.BinaryPrecedence
 (1 + 2).ToString()
+---- DynamicLinqTestObjects.ClosureValue
+// @0 = x
+
+"@0"
 ------

@@ -364,9 +364,7 @@ namespace ExpressionTreeToString {
 
             // TODO handle DateTimeOffset and TimeSpan
 
-            var id = GetParaneterId(value, out var isNew);
-            if (isNew) {
-                SetInsertionPoint("parameters");
+            writeDynamicLinqParameter(value, () => {
                 var (isLiteral, repr) = TryRenderLiteral(value, "C#");
                 if (!isLiteral) {
                     var sv = StringValue(value, "C#");
@@ -374,15 +372,29 @@ namespace ExpressionTreeToString {
                         repr = $"{repr} {{ {sv} }}";
                     }
                 }
-                Write($"// @{id} = {repr}");
+                return repr;
+            });
+        }
+
+        protected override void WriteMemberAccess(MemberExpression expr) {
+            if (expr.Expression is { } && expr.Expression.Type.IsClosureClass() && expr.Expression is ConstantExpression cexpr) {
+                writeDynamicLinqParameter((cexpr.Value, expr.Member), () => expr.Member.Name);
+                return;
+            }
+
+            writeMemberUse("Expression", expr.Expression, expr.Member);
+        }
+
+        private void writeDynamicLinqParameter(object key, Func<string> value) {
+            var id = GetParaneterId(key, out var isNew);
+            if (isNew) {
+                SetInsertionPoint("parameters");
+                Write($"// @{id} = {value()}");
                 WriteEOL();
                 SetInsertionPoint("");
             }
             Write($"@{id}");
         }
-
-        protected override void WriteMemberAccess(MemberExpression expr) =>
-            writeMemberUse("Expression", expr.Expression, expr.Member);
 
         protected override void WriteNew(NewExpression expr) {
             if (expr.Type.IsAnonymous()) {
