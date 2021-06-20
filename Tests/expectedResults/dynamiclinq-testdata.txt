@@ -139,4 +139,8 @@ np(it.LastName.ToString(@0).ToString(@1))
 // @0 = new string[] { }
 
 \"\" in @0
+---- DynamicLinqTestObjects.HigherBinaryPrecedence
+(1 + 2) * 3
+---- DynamicLinqTestObjects.BinaryPrecedence
+(1 + 2).ToString()
 ------
