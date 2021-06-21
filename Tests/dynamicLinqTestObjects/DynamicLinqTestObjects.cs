@@ -60,7 +60,7 @@ namespace ExpressionTreeToString.Tests {
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression CharEscapingLambda = Expr(p => '"');
 
-        public static Dictionary<string, object[]> Parameters = new() {
+        public static readonly Dictionary<string, object[]> Parameters = new() {
             { nameof(Random), new[] { new Random() } },
             { nameof(NpChainWithMethodsParameters), new[] {
                 CultureInfo.GetCultureInfo("en-US")
@@ -69,7 +69,7 @@ namespace ExpressionTreeToString.Tests {
                 CultureInfo.GetCultureInfo("en-US"),
                 CultureInfo.GetCultureInfo("he-IL")
             }},
-            { nameof(Contains1), new string[] { } },
+            { nameof(Contains1), Array.Empty<string>() },
             { nameof(ClosureValue), new object [] {5}}
         };
     }

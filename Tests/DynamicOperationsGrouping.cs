@@ -22,7 +22,7 @@ namespace ExpressionTreeToString.Tests {
         private static readonly ParameterExpression k = Parameter(typeof(int), "k");
 
         private static readonly CallSiteBinder addBinder = BinaryOperation(flags, ExpressionType.Add, context, argInfos2);
-        private static readonly CallSiteBinder methodInvokeBinder = InvokeMember(flags, "Method", new Type[] { }, context, argInfos);
+        private static readonly CallSiteBinder methodInvokeBinder = InvokeMember(flags, "Method", Array.Empty<Type>(), context, argInfos);
 
         [Theory]
         [InlineData("C#", "(i + j) * k")]

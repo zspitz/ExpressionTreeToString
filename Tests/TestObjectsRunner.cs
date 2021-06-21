@@ -47,7 +47,7 @@ namespace ExpressionTreeToString.Tests {
                         }
                         ret.Add((key, testName), expected.Trim());
                     }
-                    testName = line.Substring(5); // ---- typename.testMethod
+                    testName = line[5..]; // ---- typename.testMethod
                     expected = "";
                 }
             }

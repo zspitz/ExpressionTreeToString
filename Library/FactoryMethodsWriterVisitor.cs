@@ -45,7 +45,10 @@ namespace ExpressionTreeToString {
 
         /// <param name="args">The arguments to write. If a tuple of string and node type, will write as single node. If a tuple of string and property type, will write as multiple nodes.</param>
         private void writeMethodCall(string name, IEnumerable args) {
+            var isVBKeyword = language == VisualBasic && VBKeywords.Contains(name);
+            if (isVBKeyword) {Write("[");}
             Write(name);
+            if (isVBKeyword) { Write("["); }
             Write("(");
 
             var wrapPreviousInNewline = false;

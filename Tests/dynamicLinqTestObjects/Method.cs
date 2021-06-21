@@ -1,4 +1,5 @@
 ﻿using ExpressionTreeTestObjects;
+using System;
 using System.Linq;
 using System.Linq.Expressions;
 using static ExpressionTreeTestObjects.Categories;
@@ -13,7 +14,7 @@ namespace ExpressionTreeToString.Tests {
         internal static readonly Expression Contains = Expr(p => p.Relatives.Contains(p));
 
         [TestObject(Method)]
-        internal static readonly Expression Contains1 = Expr("@0.Contains(\"\")", new object[] { new string[] { } } );
+        internal static readonly Expression Contains1 = Expr("@0.Contains(\"\")", new object[] { Array.Empty<string>() } );
 
         [TestObject(Method)]
         internal static readonly Expression IndexerMethod = Expr(p => p.Relatives2[4]);

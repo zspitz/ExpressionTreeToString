@@ -47,9 +47,15 @@ namespace Tests.DataGenerator {
                     };
                     lines.Add($"---- {source}.{name}");
                     if (key == FactoryMethods) {
-                        toWrite = toWrite.Replace(@"// using static System.Linq.Expressions.Expression
+                        var toReplace =
+                            language == Language.CSharp ?
+                                @"// using static System.Linq.Expressions.Expression
 
-", "");
+" :
+                                @"' Imports System.Linq.Expressions.Expression
+
+";
+                        toWrite = toWrite.Replace(toReplace, "");
                     }
                     lines.Add(toWrite);
                 }

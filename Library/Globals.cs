@@ -29,7 +29,7 @@ namespace ExpressionTreeToString {
     }
 
     public static class Globals {
-        public static readonly List<Type> NodeTypes = new List<Type>() {
+        public static readonly List<Type> NodeTypes = new() {
             typeof(Expression),
             typeof(MemberBinding),
             typeof(ElementInit),
@@ -40,7 +40,7 @@ namespace ExpressionTreeToString {
 
         public static readonly List<Type> PropertyTypes = NodeTypes.Select(x => typeof(IEnumerable<>).MakeGenericType(x)).ToList();
 
-        public static readonly Dictionary<ExpressionType, string> FactoryMethodNames = new Dictionary<ExpressionType, string>() {
+        public static readonly Dictionary<ExpressionType, string> FactoryMethodNames = new() {
             { Add, "Add" },
             { AddAssign, "AddAssign" },
             { AddAssignChecked, "AddAssignChecked" },
@@ -128,7 +128,7 @@ namespace ExpressionTreeToString {
             { Unbox, "Unbox" },
         };
 
-        public static readonly List<(Type type, string[] propertyNames)> PreferredPropertyOrders = new List<(Type, string[])> {
+        public static readonly List<(Type type, string[] propertyNames)> PreferredPropertyOrders = new() {
             (typeof(LambdaExpression), new [] {"Parameters", "Body" } ),
             (typeof(BinaryExpression), new [] {"Left", "Right", "Conversion"}),
             (typeof(BlockExpression), new [] { "Variables", "Expressions"}),
@@ -145,7 +145,7 @@ namespace ExpressionTreeToString {
             (typeof(DynamicExpression), new [] {"Binder", "Arguments"})
         };
 
-        public static readonly HashSet<ExpressionType> RelationalOperators = new HashSet<ExpressionType> {
+        public static readonly HashSet<ExpressionType> RelationalOperators = new() {
             Equal,
             GreaterThan,
             GreaterThanOrEqual,
@@ -154,7 +154,7 @@ namespace ExpressionTreeToString {
             NotEqual
         };
 
-        public static readonly HashSet<ExpressionType> BinaryExpressionTypes = new[] {
+        public static readonly HashSet<ExpressionType> BinaryExpressionTypes = new() {
             Add, AddChecked, Divide, Modulo, Multiply, MultiplyChecked, Power, Subtract, SubtractChecked,   // mathematical operators
             And, Or, ExclusiveOr,   // bitwise / logical operations
             LeftShift, RightShift,     // shift operators
@@ -167,13 +167,58 @@ namespace ExpressionTreeToString {
             AddAssign, AddAssignChecked,DivideAssign, ModuloAssign,MultiplyAssign, MultiplyAssignChecked, PowerAssign, SubtractAssign, SubtractAssignChecked,
             AndAssign, OrAssign, ExclusiveOrAssign,
             LeftShiftAssign,RightShiftAssign
-        }.ToHashSet();
+        };
 
-        public static readonly HashSet<ExpressionType> UnaryExpressionTypes = new[] {
+        public static readonly HashSet<ExpressionType> UnaryExpressionTypes = new() {
             ArrayLength, ExpressionType.Convert, ConvertChecked, Unbox, Negate, NegateChecked, Not, Quote, TypeAs, UnaryPlus, IsTrue, IsFalse,
             PreIncrementAssign, PreDecrementAssign, PostIncrementAssign, PostDecrementAssign,
             Increment, Decrement,
             Throw
-        }.ToHashSet();
+        };
+
+        public static readonly HashSet<string> VBKeywords = new(StringComparer.InvariantCultureIgnoreCase) {
+            "AddHandler", "AddressOf", "Alias", "And",
+            "AndAlso", "As", "Boolean", "ByRef",
+            "Byte", "ByVal", "Call", "Case",
+            "Catch", "CBool", "CByte", "CChar",
+            "CDate", "CDbl", "CDec", "Char",
+            "CInt", "Class", "CLng",
+            "CObj", "Const", "Continue", "CSByte",
+            "CShort", "CSng", "CStr", "CType",
+            "CUInt", "CULng", "CUShort", "Date",
+            "Decimal", "Declare", "Default", "Delegate",
+            "Dim", "DirectCast", "Do", "Double",
+            "Each", "Else", "ElseIf", "End",
+            "EndIf", "Enum", "Erase",
+            "Error", "Event", "Exit", "False",
+            "Finally", "For", "", "Friend",
+            "Function", "Get", "GetType", "GetXMLNamespace",
+            "Global", "GoSub", "GoTo", "Handles",
+            "If", "Implements",
+            "Imports", "In",
+            "Inherits", "Integer", "Interface", "Is",
+            "IsNot", "Let", "Lib", "Like",
+            "Long", "Loop", "Me", "Mod",
+            "Module", "Module Statement", "MustInherit", "MustOverride",
+            "MyBase", "MyClass", "NameOf", "Namespace",
+            "Narrowing", "New", "Next",
+            "Not", "Nothing", "NotInheritable",
+            "NotOverridable", "Object", "Of", "On",
+            "Operator", "Option", "Optional", "Or",
+            "OrElse", "Overloads", "Overridable",
+            "Overrides", "ParamArray", "Partial", "Private",
+            "Property", "Protected", "Public", "RaiseEvent",
+            "ReadOnly", "ReDim", "REM", "RemoveHandler",
+            "Resume", "Return", "SByte", "Select",
+            "Set", "Shadows", "Shared", "Short",
+            "Single", "Static", "Step", "Stop",
+            "String", "Structure", "Sub",
+            "SyncLock", "Then", "Throw", "To",
+            "True", "Try", "TryCast", "TypeOf",
+            "UInteger", "ULong", "UShort", "Using",
+            "Variant", "Wend", "When", "While",
+            "Widening", "With", "WithEvents", "WriteOnly",
+            "Xor"
+        };
     }
 }
