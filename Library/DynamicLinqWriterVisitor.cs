@@ -48,7 +48,12 @@ namespace ExpressionTreeToString {
         ParameterExpression? currentScoped;
 
         public DynamicLinqWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans) :
-            base(o, languageArg, new[] { "parameters", "" }, hasPathSpans) { }
+            base(
+                o,
+                languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), 
+                new[] { "parameters", "" }, 
+                hasPathSpans
+            ) { }
 
         private static readonly Dictionary<ExpressionType, string> simpleBinaryOperators = new() {
             [Add] = "+",
@@ -351,7 +356,7 @@ namespace ExpressionTreeToString {
                 value is string ||
                 value is char
             ) {
-                Write(RenderLiteral(literal, "C#")[1..^1]);
+                Write(RenderLiteral(literal, language)[1..^1]);
                 return;
             }
 

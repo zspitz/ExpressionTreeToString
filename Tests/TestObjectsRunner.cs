@@ -88,6 +88,7 @@ namespace ExpressionTreeToString.Tests {
                 ObjectNotation => Language.CSharp,
                 FactoryMethods => Language.CSharp,
                 TextualTree => Language.CSharp,
+                DynamicLinq => Language.CSharp,
                 _ => null
             };
 

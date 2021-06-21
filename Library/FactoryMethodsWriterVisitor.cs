@@ -35,9 +35,13 @@ namespace ExpressionTreeToString {
             SetInsertionPoint("");
         }
 
-        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false)
-                : base(o, languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), insertionPointKeys, hasPathSpans) => 
-            writeUsings();
+        public FactoryMethodsWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false) :
+            base(
+                o, 
+                languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), 
+                insertionPointKeys, 
+                hasPathSpans
+            ) => writeUsings();
 
         /// <param name="args">The arguments to write. If a tuple of string and node type, will write as single node. If a tuple of string and property type, will write as multiple nodes.</param>
         private void writeMethodCall(string name, IEnumerable args) {
