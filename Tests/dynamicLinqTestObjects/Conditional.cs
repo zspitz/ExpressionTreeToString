@@ -13,24 +13,23 @@ namespace ExpressionTreeToString.Tests {
         //internal static readonly Expression Np = Expr("np(LastName)");
         internal static readonly Expression Np = Expr(p => p != null ? p.LastName : null);
 
-        [TestObject(Conditionals)] // pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/520
-        internal static readonly Expression NpValue = Expr("np(LastName, \"(unknown)\")");
-        //internal static readonly Expression NpValue = Expr(p => p != null ? p.LastName : "(unknown)");
+        [TestObject(Conditionals)]
+        internal static readonly Expression NpValue = Lambda("np(LastName, \"(unknown)\")");
 
         [TestObject(Conditionals)]
-        internal static readonly Expression NpChain = Expr("np(Father.LastName, \"(unknown)\")");
+        internal static readonly Expression NpChain = Lambda("np(Father.LastName, \"(unknown)\")");
 
         [TestObject(Conditionals)]
-        internal static readonly Expression NpChainWithMethods = Expr("np(LastName.ToString().ToString())");
+        internal static readonly Expression NpChainWithMethods = Lambda("np(LastName.ToString().ToString())");
 
         [TestObject(Conditionals)]
-        internal static readonly Expression NpChainWithMethodsParameters = Expr(
+        internal static readonly Expression NpChainWithMethodsParameters = Lambda(
             "np(LastName.ToString(@0).ToString(@0))",
             CultureInfo.GetCultureInfo("en-US")
         );
 
         [TestObject(Conditionals)]
-        internal static readonly Expression NpChainWithMethodsParameters1 = Expr(
+        internal static readonly Expression NpChainWithMethodsParameters1 = Lambda(
             "np(LastName.ToString(@0).ToString(@1))",
             CultureInfo.GetCultureInfo("en-US"),
             CultureInfo.GetCultureInfo("he-IL")

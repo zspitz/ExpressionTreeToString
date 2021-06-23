@@ -248,9 +248,11 @@ namespace _tests {
             var expr = 
                 Enumerable.Empty<Person>()
                     .AsQueryable()
-                    .Where("!(Age > 20)")
+                    .Where(x => x.Age <= 20)
+                    .OrderBy(x => x.LastName[0])
+                    .ThenBy(x => x.FirstName[0])
                     .Expression;
-            Console.WriteLine(expr.ToString("DebugView"));
+            Console.WriteLine(expr.ToString("Dynamic LINQ", "C#"));
         }
 
         //class TestContainer { }

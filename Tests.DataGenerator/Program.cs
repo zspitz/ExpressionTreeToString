@@ -21,18 +21,19 @@ namespace Tests.DataGenerator {
             foreach (var (key, filename) in rendererFileMapping.SelectKVP((k,v) => (k,v))) {
                 var ordering = parseFileOrder(@$"C:\Users\Spitz\source\repos\zspitz\ExpressionTreeToString\Tests\expectedResults\{filename}-testdata.txt");
 
-                //var language = key == VisualBasic ? Language.VisualBasic : Language.CSharp;
-                var language = key == CSharp ? Language.CSharp : Language.VisualBasic;
+                var language = key == VisualBasic ? Language.VisualBasic : Language.CSharp;
+                //var language = key == CSharp ? Language.CSharp : Language.VisualBasic;
 
                 const string dlinq = nameof(DynamicLinqTestObjects);
-                //var objects = Objects.Get()
-                //    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
-                //    .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
-
                 var objects = Objects.Get()
                     .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
-                    //.Where(x => key == DynamicLinq)
-                    .OrderBy(x => ordering.TryGetValue($"{x.source}.{x.name}", out var order) ? order : -1);
+                    .Where(x => key == DynamicLinq)
+                    .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
+
+                //var objects = Objects.Get()
+                //    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
+                //    .Where(x => key == DynamicLinq)
+                //    .OrderBy(x => ordering.TryGetValue($"{x.source}.{x.name}", out var order) ? order : -1);
 
                 foreach (var (category, source, name, o) in objects) {
                     var toWrite = o switch

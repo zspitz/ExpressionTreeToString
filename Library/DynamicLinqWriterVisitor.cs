@@ -307,15 +307,25 @@ namespace ExpressionTreeToString {
                     if (expr.Operand != currentScoped) {
                         throw new NotImplementedException("'as' only supported on ParameterExpression in current scope.");
                     }
-                    Write($"as(\"{expr.Type.FullName}\")");
+                    Write($"as(\\\"{expr.Type.FullName}\\\")");
+                    break;
+                case Quote:
+                    WriteNode("Operand", expr.Operand);
                     break;
                 default:
                     throw new NotImplementedException();
             }
         }
 
+        private bool insideLambda = false;
         protected override void WriteLambda(LambdaExpression expr) {
-            Write("\"");
+            var exitLambda = false;
+            if (!insideLambda) {
+                Write("\"");
+                insideLambda = true;
+                exitLambda = true;
+            }
+            
             var count = expr.Parameters.Count;
             if (count > 1) {
                 throw new NotImplementedException("Multiple parameters in lambda expression.");
@@ -323,7 +333,11 @@ namespace ExpressionTreeToString {
                 currentScoped = expr.Parameters[0];
             }
             WriteNode("Body", expr.Body);
-            Write("\"");
+
+            if (exitLambda) {
+                Write("\"");
+                insideLambda = false;
+            }
         }
 
         protected override void WriteParameter(ParameterExpression expr) {
@@ -340,6 +354,11 @@ namespace ExpressionTreeToString {
 
         protected override void WriteConstant(ConstantExpression expr) {
             var value = expr.Value;
+            if (!insideLambda) {
+                Write(RenderLiteral(value, language));
+                return;
+            }
+
             var underlying = value?.GetType().UnderlyingIfNullable() ?? typeof(void);
             var literal = RenderLiteral(value, "C#");
             if (
@@ -447,7 +466,12 @@ namespace ExpressionTreeToString {
             } else {
                 if (instance.Type.IsClosureClass()) {
                     throw new NotImplementedException("No representation for closed-over variables.");
-                } else if (mi is MethodInfo mthd && !isAccessibleType(declaringType) && !isAccessibleType(mthd.ReturnType)) {
+                } else if (
+                    mi is MethodInfo mthd && 
+                    !isAccessibleType(declaringType) && 
+                    !isAccessibleType(mthd.ReturnType) && 
+                    insideLambda
+                ) {
                     throw new NotImplementedException($"{(mthd.IsStatic ? "Extension" : "Instance")} methods must either be on an accessible type, or return an instance of an accessible type.");
                 } else if (instance.SansConvert() != currentScoped) {
                     Parens(0, instancePath, instance);
@@ -702,7 +726,7 @@ namespace ExpressionTreeToString {
             if (expr.Expression != currentScoped) {
                 throw new NotImplementedException("'is' only supported on ParameterExpression in current scope.");
             }
-            Write($"is(\"{expr.Type.FullName}\")");
+            Write($"is(\\\"{expr.Type.FullName}\\\")");
         }
 
         protected override void WriteInvocation(InvocationExpression expr) {

@@ -33,11 +33,8 @@ namespace ExpressionTreeToString.Tests {
                 dynamicLinqParameters = DynamicLinqTestObjects.Parameters[name];
             }
 
-            if (selector.StartsWith("\"")) {
-                selector = selector[1..^1].Replace("\\\"", "\"").Replace("\\'","'").Replace("\\\\","\\");
-            } else {
-                return;
-            }
+            if (expr is not LambdaExpression) { return; }
+            selector = selector[1..^1].Replace("\\\"", "\"").Replace("\\'", "'").Replace("\\\\", "\\");
 
             var prm = Parameter(typeof(Person));
             var parser = new ExpressionParser(new[] { prm }, selector, dynamicLinqParameters, ParsingConfig.Default);

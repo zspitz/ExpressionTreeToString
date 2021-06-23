@@ -7,13 +7,11 @@
 -- Not implemented - 'is' only supported on ParameterExpression in current scope.
 --"
 ---- DynamicLinqTestObjects.Random
-// @0 = #Random
-
-@0
+#Random
 ---- DynamicLinqTestObjects.StringEscaping
-\"\\\"\"
+"\""
 ---- DynamicLinqTestObjects.CharEscaping
-\'\"\'
+'"'
 ---- DynamicLinqTestObjects.StringEscapingLambda
 "\"\\\"\""
 ---- DynamicLinqTestObjects.CharEscapingLambda
@@ -59,13 +57,13 @@
 ---- DynamicLinqTestObjects.Np
 "np(LastName)"
 ---- DynamicLinqTestObjects.NpValue
-np(it.LastName, \"(unknown)\")
+"np(LastName, \"(unknown)\")"
 ---- DynamicLinqTestObjects.NpChain
-np(it.Father.LastName, \"(unknown)\")
+"np(Father.LastName, \"(unknown)\")"
 ---- DynamicLinqTestObjects.DateTime1
-DateTime(631139040000000000, DateTimeKind.Unspecified)
+#DateTime
 ---- DynamicLinqTestObjects.DateTime2
-DateTime(631139040000000000, DateTimeKind.Utc)
+#DateTime
 ---- DynamicLinqTestObjects.Parameter
 "it"
 ---- DynamicLinqTestObjects.In
@@ -113,9 +111,9 @@ DateTime(631139040000000000, DateTimeKind.Utc)
 ---- DynamicLinqTestObjects.InConstantOrNonConstant
 "DOB.Value.DayOfWeek in (RegisteredOn.Value.DayOfWeek, DayOfWeek.Thursday)"
 ---- DynamicLinqTestObjects.ParameterTypeAs
-"as("System.Object")"
+"as(\"System.Object\")"
 ---- DynamicLinqTestObjects.ParameterTypeIs
-"is("System.Boolean")"
+"is(\"System.Boolean\")"
 ---- DynamicLinqTestObjects.NewNamed1
 "Uri(\"https://www.example.com/\", UriKind.Absolute)"
 ---- DynamicLinqTestObjects.CharEquality
@@ -125,26 +123,40 @@ DateTime(631139040000000000, DateTimeKind.Utc)
 ---- DynamicLinqTestObjects.InLeftNonConstChar
 "LastName[0] in (\'c\', \'d\')"
 ---- DynamicLinqTestObjects.NpChainWithMethods
-np(it.LastName.ToString().ToString())
+"np(LastName.ToString().ToString())"
 ---- DynamicLinqTestObjects.NpChainWithMethodsParameters
 // @0 = #CultureInfo { en-US }
 
-np(it.LastName.ToString(@0).ToString(@0))
+"np(LastName.ToString(@0).ToString(@0))"
 ---- DynamicLinqTestObjects.NpChainWithMethodsParameters1
 // @0 = #CultureInfo { en-US }
 // @1 = #CultureInfo { he-IL }
 
-np(it.LastName.ToString(@0).ToString(@1))
+"np(LastName.ToString(@0).ToString(@1))"
 ---- DynamicLinqTestObjects.Contains1
 // @0 = new string[] { }
 
-\"\" in @0
+"\"\" in @0"
 ---- DynamicLinqTestObjects.HigherBinaryPrecedence
-(1 + 2) * 3
+"(1 + 2) * 3"
 ---- DynamicLinqTestObjects.BinaryPrecedence
-(1 + 2).ToString()
+"(1 + 2).ToString()"
 ---- DynamicLinqTestObjects.ClosureValue
 // @0 = x
 
 "@0"
+---- DynamicLinqTestObjects.LambdaDateTime1
+"DateTime(631139040000000000, DateTimeKind.Unspecified)"
+---- DynamicLinqTestObjects.LambdaDateTime2
+"DateTime(631139040000000000, DateTimeKind.Utc)"
+---- DynamicLinqTestObjects.LambdaRandom
+// @0 = #Random
+
+"@0"
+---- DynamicLinqTestObjects.QueryableWhere
+#EnumerableQuery<Person>.Where("Age <= 20")
+---- DynamicLinqTestObjects.QueryableMultiple
+#EnumerableQuery<Person>.Where("Age <= 20").OrderBy("iif(LastName != null, LastName[0], \' \')").ThenBy("iif(LastName != null, LastName[0], \' \')")
+---- DynamicLinqTestObjects.QueryableTake
+#EnumerableQuery<Person>.Take(5)
 ------

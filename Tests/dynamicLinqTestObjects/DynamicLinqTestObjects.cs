@@ -6,6 +6,8 @@ using System.Linq.Dynamic.Core;
 using System.Linq.Dynamic.Core.Parser;
 using System.Linq.Expressions;
 using static System.Linq.Expressions.Expression;
+using static System.Linq.Dynamic.Core.DynamicExpressionParser;
+using System.Linq;
 
 namespace ExpressionTreeToString.Tests {
     [ObjectContainer]
@@ -20,6 +22,9 @@ namespace ExpressionTreeToString.Tests {
                 constants,
                 ParsingConfig.Default
             ).Parse(null);
+
+        internal static LambdaExpression Lambda(string selector, params object[] constants) =>
+            ParseLambda(new[] { Parameter(typeof(Person)) }, null, selector, constants);
 
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression Parameter = Expr(p => p);
@@ -60,6 +65,26 @@ namespace ExpressionTreeToString.Tests {
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression CharEscapingLambda = Expr(p => '"');
 
+        [TestObject("Dynamic LINQ")]
+        internal static readonly Expression QueryableWhere =
+            Enumerable.Empty<Person>()
+                .AsQueryable()
+                .Where(x => x.Age <= 20)
+                .Expression;
+
+        [TestObject("Dynamic LINQ")]
+        internal static readonly Expression QueryableMultiple =
+            Enumerable.Empty<Person>()
+                .AsQueryable()
+                .Where(x => x.Age <= 20)
+                .OrderBy(x => x.LastName != null ? x.LastName[0] : ' ')
+                .ThenBy(x => x.LastName != null ? x.LastName[0] : ' ')
+                .Expression;
+
+        [TestObject("Dynamic LINQ")]
+        internal static readonly Expression QueryableTake =
+            Enumerable.Empty<Person>().AsQueryable().Take(5).Expression;
+
         public static readonly Dictionary<string, object[]> Parameters = new() {
             { nameof(Random), new[] { new Random() } },
             { nameof(NpChainWithMethodsParameters), new[] {
@@ -69,8 +94,9 @@ namespace ExpressionTreeToString.Tests {
                 CultureInfo.GetCultureInfo("en-US"),
                 CultureInfo.GetCultureInfo("he-IL")
             }},
-            { nameof(Contains1), Array.Empty<string>() },
-            { nameof(ClosureValue), new object [] {5}}
+            { nameof(Contains1), new object[] { Array.Empty<string>() } },
+            { nameof(ClosureValue), new object [] {5}},
+            { nameof(LambdaRandom), new[] {new Random()}}
         };
     }
 }

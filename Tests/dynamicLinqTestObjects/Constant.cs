@@ -10,9 +10,19 @@ namespace ExpressionTreeToString.Tests {
         internal static readonly Expression DateTime1 = Constant(new DateTime(2001, 1, 1));
 
         [TestObject(Constants)]
+        internal static readonly Expression LambdaDateTime1 = Expression.Lambda(DateTime1);
+
+        [TestObject(Constants)]
         internal static readonly Expression DateTime2 = Constant(new DateTime(2001, 1, 1, 0, 0, 0, DateTimeKind.Utc));
 
         [TestObject(Constants)]
+        internal static readonly Expression LambdaDateTime2 = Expression.Lambda(DateTime2);
+
+        [TestObject(Constants)]
         internal static readonly Expression Random = Constant(new Random());
+
+        [TestObject(Constants)]
+        internal static readonly Expression LambdaRandom = Expression.Lambda(Random);
+
     }
 }
