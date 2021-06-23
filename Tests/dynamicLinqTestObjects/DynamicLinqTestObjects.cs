@@ -77,8 +77,8 @@ namespace ExpressionTreeToString.Tests {
             Enumerable.Empty<Person>()
                 .AsQueryable()
                 .Where(x => x.Age <= 20)
-                .OrderBy(x => x.LastName != null ? x.LastName[0] : ' ')
-                .ThenBy(x => x.LastName != null ? x.LastName[0] : ' ')
+                .OrderBy(x => x != null && x.LastName != null ? x.LastName[0] : ' ')
+                .ThenBy(x => x != null && x.FirstName != null ? x.FirstName[0] : ' ')
                 .Expression;
 
         [TestObject("Dynamic LINQ")]

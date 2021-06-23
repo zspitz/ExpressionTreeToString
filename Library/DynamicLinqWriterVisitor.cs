@@ -149,7 +149,7 @@ namespace ExpressionTreeToString {
         };
 
         private static int getPrecedence(Expression node) {
-            var (nodeType, type) = node;
+            var (nodeType, _) = node;
             return nodeType switch {
                 Call when node is MethodCallExpression mcexpr && mcexpr.Method.IsStringConcat() => 3,
                 And or AndAlso when node.Type == typeof(bool) => 5,
@@ -281,6 +281,8 @@ namespace ExpressionTreeToString {
             throw new NotImplementedException();
         }
 
+        private string escapedDoubleQuotes => language == Language.VisualBasic ? "\"\"" : "\\\"";
+
         protected override void WriteUnary(UnaryExpression expr) {
             switch (expr.NodeType) {
                 case ExpressionType.Convert:
@@ -307,7 +309,7 @@ namespace ExpressionTreeToString {
                     if (expr.Operand != currentScoped) {
                         throw new NotImplementedException("'as' only supported on ParameterExpression in current scope.");
                     }
-                    Write($"as(\\\"{expr.Type.FullName}\\\")");
+                    Write($"as({escapedDoubleQuotes}{expr.Type.FullName}{escapedDoubleQuotes})");
                     break;
                 case Quote:
                     WriteNode("Operand", expr.Operand);
@@ -389,9 +391,9 @@ namespace ExpressionTreeToString {
             // TODO handle DateTimeOffset and TimeSpan
 
             writeDynamicLinqParameter(value, () => {
-                var (isLiteral, repr) = TryRenderLiteral(value, "C#");
+                var (isLiteral, repr) = TryRenderLiteral(value, language);
                 if (!isLiteral) {
-                    var sv = StringValue(value, "C#");
+                    var sv = StringValue(value, language);
                     if (sv != repr) {
                         repr = $"{repr} {{ {sv} }}";
                     }
@@ -413,7 +415,12 @@ namespace ExpressionTreeToString {
             var id = GetParaneterId(key, out var isNew);
             if (isNew) {
                 SetInsertionPoint("parameters");
-                Write($"// @{id} = {value()}");
+                if (language==Language.VisualBasic) {
+                    Write("' ");
+                } else {
+                    Write("// ");
+                }
+                Write($"@{id} = {value()}");
                 WriteEOL();
                 SetInsertionPoint("");
             }
@@ -689,7 +696,7 @@ namespace ExpressionTreeToString {
             ).Where(x => x.Type.IsNullable(true)).ToList();
 
             var ifFalseIsNull = expr.IfFalse is ConstantExpression cexpr && cexpr.Value is null;
-            if (!ifFalseIsNull) {
+            if (!ifFalseIsNull && expr.IfTrue.Type.IsNullable(true)) {
                 chainClauses.Add(expr.IfTrue);
             }
 
@@ -726,7 +733,7 @@ namespace ExpressionTreeToString {
             if (expr.Expression != currentScoped) {
                 throw new NotImplementedException("'is' only supported on ParameterExpression in current scope.");
             }
-            Write($"is(\\\"{expr.Type.FullName}\\\")");
+            Write($"is({escapedDoubleQuotes}{expr.Type.FullName}{escapedDoubleQuotes})");
         }
 
         protected override void WriteInvocation(InvocationExpression expr) {

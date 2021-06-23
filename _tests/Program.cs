@@ -245,14 +245,14 @@ namespace _tests {
             //Expression<Func<Employee, string?>> firstNameExpression = e => e.FirstName;
             //Console.WriteLine(firstNameExpression.ToString("Textual tree", "C#"));
 
-            var expr = 
+            var expr =
                 Enumerable.Empty<Person>()
                     .AsQueryable()
                     .Where(x => x.Age <= 20)
-                    .OrderBy(x => x.LastName[0])
-                    .ThenBy(x => x.FirstName[0])
+                    .OrderBy(x => x != null && x.LastName != null ? x.LastName[0] : ' ')
+                    .ThenBy(x => x != null && x.FirstName != null ? x.FirstName[0] : ' ')
                     .Expression;
-            Console.WriteLine(expr.ToString("Dynamic LINQ", "C#"));
+            Console.WriteLine(expr.ToString("Dynamic LINQ", "Visual Basic"));
         }
 
         //class TestContainer { }
