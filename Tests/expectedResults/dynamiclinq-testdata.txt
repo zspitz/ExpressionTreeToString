@@ -156,7 +156,9 @@
 ---- DynamicLinqTestObjects.QueryableWhere
 #EnumerableQuery<Person>.Where("Age <= 20")
 ---- DynamicLinqTestObjects.QueryableMultiple
-#EnumerableQuery<Person>.Where("Age <= 20").OrderBy("iif(LastName != null, LastName[0], \' \')").ThenBy("iif(LastName != null, LastName[0], \' \')")
+#EnumerableQuery<Person>.Where("Age <= 20").OrderBy("np(LastName[0], \' \')").ThenBy("np(FirstName[0], \' \')")
 ---- DynamicLinqTestObjects.QueryableTake
 #EnumerableQuery<Person>.Take(5)
+---- DynamicLinqTestObjects.NegateBoolean
+"!(Age > 20)"
 ------

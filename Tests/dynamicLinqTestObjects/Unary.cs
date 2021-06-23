@@ -13,9 +13,8 @@ namespace ExpressionTreeToString.Tests {
         [TestObject(Unary)]
         internal static readonly Expression ExplicitConversion = Expr(p => (short)p.Age!);
 
-        // TODO pending https://github.com/zspitz/ExpressionTreeToString/issues/81
-        //[TestObject(Unary)]
-        //internal static readonly Expression NegateBoolean = Expr(p => !(p.Age > 20));
+        [TestObject(Unary)]
+        internal static readonly Expression NegateBoolean = Expr(p => !(p.Age > 20));
 
         [TestObject(Unary)]
         internal static readonly Expression NegateNumeric = Expr(p => ~p.Age);

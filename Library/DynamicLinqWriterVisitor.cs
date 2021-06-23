@@ -75,8 +75,6 @@ namespace ExpressionTreeToString {
             [Coalesce] = "??",
         };
 
-        // TODO parentheses https://github.com/zspitz/ExpressionTreeToString/issues/81
-
         // can be verified against https://dynamic-linq.net/expression-language#operators using:
         // precedence.GroupBy(kvp => kvp.Value, kvp => kvp.Key, (key, grp) => new {key, values = grp.OrderBy(x => x.ToString()).Joined(", ")}).OrderBy(x => x.key);
         private static readonly Dictionary<ExpressionType, int?> precedence = new() {
@@ -479,7 +477,7 @@ namespace ExpressionTreeToString {
                     !isAccessibleType(mthd.ReturnType) && 
                     insideLambda
                 ) {
-                    throw new NotImplementedException($"{(mthd.IsStatic ? "Extension" : "Instance")} methods must either be on an accessible type, or return an instance of an accessible type.");
+                    throw new NotImplementedException($"Within a quoted lambda, {(mthd.IsStatic ? "extension" : "instance")} methods must either be on an accessible type, or return an instance of an accessible type.");
                 } else if (instance.SansConvert() != currentScoped) {
                     Parens(0, instancePath, instance);
                     Write(".");
