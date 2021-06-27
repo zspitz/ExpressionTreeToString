@@ -117,13 +117,17 @@ namespace ExpressionTreeToString.Tests {
         [Theory]
         [MemberData(nameof(TestData))]
         public void TestMethod(BuiltinRenderer rendererKey, string objectName, string category, object o) {
-#if NET472
+#if NET472 || NET452
             ToStringWriterVisitor.FrameworkCompatible = true;
             DebugViewWriterVisitor.FrameworkCompatible = true;
 #endif
             TextualTreeWriterVisitor.ReducePredicate = null;
 
+#if NET452
+            System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo("en-IL");
+#else
             CurrentCulture = new CultureInfo("en-IL");
+#endif 
 
             var expected = rendererKey switch
             {

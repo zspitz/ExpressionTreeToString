@@ -8,6 +8,7 @@ using static System.Linq.Expressions.Expression;
 using System.Linq.Dynamic.Core.Parser;
 using static ExpressionTreeToString.Tests.Globals;
 using System;
+using static ZSpitz.Util.Functions;
 
 namespace ExpressionTreeToString.Tests {
     public class DynamicLinqTests {
@@ -26,7 +27,7 @@ namespace ExpressionTreeToString.Tests {
                 return;
             }
 
-            var dynamicLinqParameters = Array.Empty<object>();
+            var dynamicLinqParameters = EmptyArray<object>();
             var parts = selector.Split(new[] { "\r\n\r\n" }, default);
             if (parts.Length>1) {
                 selector = parts.Last();

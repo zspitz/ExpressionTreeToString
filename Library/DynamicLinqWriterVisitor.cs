@@ -155,7 +155,7 @@ namespace ExpressionTreeToString {
             };
         }
 
-        private void Parens(OneOf<Expression, int> outer, string path, Expression inner) {
+        private void parens(OneOf<Expression, int> outer, string path, Expression inner) {
             var precedence = (
                 outer: outer.Match(
                     expr => getPrecedence(expr),
@@ -237,7 +237,7 @@ namespace ExpressionTreeToString {
                         }
 
                         if (firstElement) {
-                            Parens(0, $"{path}.{leftPath}", left);
+                            parens(0, $"{path}.{leftPath}", left);
                             Write(" in (");
                             firstElement = false;
                         } else {
@@ -255,21 +255,21 @@ namespace ExpressionTreeToString {
                 TryGetCharComparison(expr, out parts)
             ) {
                 var (left, leftPath, right, rightPath) = parts;
-                Parens(expr, leftPath, left);
+                parens(expr, leftPath, left);
                 Write($" {simpleBinaryOperators[expr.NodeType]} ");
-                Parens(expr, rightPath, right);
+                parens(expr, rightPath, right);
                 return;
             }
 
             if (simpleBinaryOperators.TryGetValue(expr.NodeType, out var @operator)) {
-                Parens(expr, "Left", expr.Left);
+                parens(expr, "Left", expr.Left);
                 Write($" {@operator} ");
-                Parens(expr, "Right", expr.Right);
+                parens(expr, "Right", expr.Right);
                 return;
             }
 
             if (expr.NodeType == ArrayIndex) {
-                Parens(expr, "Left", expr.Left);
+                parens(expr, "Left", expr.Left);
                 Write("[");
                 WriteNode("Right", expr.Right);
                 Write("]");
@@ -301,7 +301,7 @@ namespace ExpressionTreeToString {
                     } else {
                         Write("-");
                     }
-                    Parens(expr, "Operand", expr.Operand);
+                    parens(expr, "Operand", expr.Operand);
                     break;
                 case TypeAs:
                     if (expr.Operand != currentScoped) {
@@ -349,8 +349,8 @@ namespace ExpressionTreeToString {
             Write("it");
         }
 
-        private Dictionary<object, int>? _parameterIds;
-        private int GetParaneterId(object o, out bool isNew) => GetId(o, ref _parameterIds, out isNew);
+        private Dictionary<object, int>? parameterIds;
+        private int getParaneterId(object o, out bool isNew) => GetId(o, ref parameterIds, out isNew);
 
         protected override void WriteConstant(ConstantExpression expr) {
             var value = expr.Value;
@@ -410,7 +410,7 @@ namespace ExpressionTreeToString {
         }
 
         private void writeDynamicLinqParameter(object key, Func<string> value) {
-            var id = GetParaneterId(key, out var isNew);
+            var id = getParaneterId(key, out var isNew);
             if (isNew) {
                 SetInsertionPoint("parameters");
                 if (language==Language.VisualBasic) {
@@ -455,7 +455,7 @@ namespace ExpressionTreeToString {
                 throw new NotImplementedException("Multidimensional array access not supported.");
             }
             // No such thing as a static indexer
-            Parens(0, instancePath, instance);
+            parens(0, instancePath, instance);
             Write("[");
             WriteNodes(argumentsPath, lst);
             Write("]");
@@ -479,7 +479,7 @@ namespace ExpressionTreeToString {
                 ) {
                     throw new NotImplementedException($"Within a quoted lambda, {(mthd.IsStatic ? "extension" : "instance")} methods must either be on an accessible type, or return an instance of an accessible type.");
                 } else if (instance.SansConvert() != currentScoped) {
-                    Parens(0, instancePath, instance);
+                    parens(0, instancePath, instance);
                     Write(".");
                 }
             }
@@ -614,9 +614,9 @@ namespace ExpressionTreeToString {
             }
 
             if (expr.Method.IsGenericMethod && expr.Method.GetGenericMethodDefinition().In(containsMethods)) {
-                Parens(expr, "Arguments[1]", expr.Arguments[1]);
+                parens(expr, "Arguments[1]", expr.Arguments[1]);
                 Write(" in ");
-                Parens(expr, "Arguments[0]", expr.Arguments[0]);
+                parens(expr, "Arguments[0]", expr.Arguments[0]);
                 return;
             }
 

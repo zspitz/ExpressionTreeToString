@@ -6,6 +6,7 @@ using Microsoft.CSharp.RuntimeBinder;
 using static Microsoft.CSharp.RuntimeBinder.Binder;
 using static ExpressionTreeTestObjects.Globals;
 using System.Runtime.CompilerServices;
+using static ZSpitz.Util.Functions;
 
 namespace ExpressionTreeToString.Tests {
     public class DynamicOperationsGrouping {
@@ -22,7 +23,7 @@ namespace ExpressionTreeToString.Tests {
         private static readonly ParameterExpression k = Parameter(typeof(int), "k");
 
         private static readonly CallSiteBinder addBinder = BinaryOperation(flags, ExpressionType.Add, context, argInfos2);
-        private static readonly CallSiteBinder methodInvokeBinder = InvokeMember(flags, "Method", Array.Empty<Type>(), context, argInfos);
+        private static readonly CallSiteBinder methodInvokeBinder = InvokeMember(flags, "Method", EmptyArray<Type>(), context, argInfos);
 
         [Theory]
         [InlineData("C#", "(i + j) * k")]

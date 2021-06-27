@@ -8,6 +8,7 @@ using System.Linq.Expressions;
 using static System.Linq.Expressions.Expression;
 using static System.Linq.Dynamic.Core.DynamicExpressionParser;
 using System.Linq;
+using static ZSpitz.Util.Functions;
 
 namespace ExpressionTreeToString.Tests {
     [ObjectContainer]
@@ -94,7 +95,7 @@ namespace ExpressionTreeToString.Tests {
                 CultureInfo.GetCultureInfo("en-US"),
                 CultureInfo.GetCultureInfo("he-IL")
             }},
-            { nameof(Contains1), new object[] { Array.Empty<string>() } },
+            { nameof(Contains1), new object[] { EmptyArray<string>() } },
             { nameof(ClosureValue), new object [] {5}},
             { nameof(LambdaRandom), new[] {new Random()}}
         };
