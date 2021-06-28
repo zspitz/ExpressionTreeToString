@@ -83,7 +83,7 @@ Console.WriteLine(expr1.ToString("DebugView"));
 */
 
 Expression<Func<Person, bool>> filter = p => p => p.LastName == "A" || p.FirstName == "B" || p.DOB == DateTime.MinValue || p.LastName == "C" || p.FirstName == "D";
-Console.WriteLine(filter.ToString("Dynamic LINQ"));
+Console.WriteLine(filter.ToString("Dynamic LINQ", "C#"));
 // prints:
 /*
     LastName in ("A", "C") || DOB == DateTime.MinValue || FirstName in ("B", "D")
@@ -137,7 +137,7 @@ Features:
       // prints: () => "abcd"
       ```
   
-  * Comparisons against an enum are rendered properly, not as comparison to `int`-converted value:
+  * Comparisons against an enum or `char` are rendered properly, not as comparison to `int`-converted value:
   
       ```csharp
       var dow = DayOfWeek.Sunday;
