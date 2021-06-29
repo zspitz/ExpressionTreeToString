@@ -129,7 +129,12 @@ namespace ExpressionTreeToString {
         protected string CurrentInsertionPoint => ip.key;
 
         protected void WriteNotImplemented(string message) {
-            if (!message.IsNullOrEmpty()) { message = $" - {message}"; }
+            if (message == "The method or operation is not implemented.") {
+                message = "";
+            }
+            if (!message.IsNullOrEmpty()) { 
+                message = $" - {message}";
+            }
             $@"--
 -- Not implemented{message}
 --".AppendTo(ip.sb);

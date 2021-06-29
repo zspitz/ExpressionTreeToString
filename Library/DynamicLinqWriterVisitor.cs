@@ -275,12 +275,20 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            if (expr.NodeType == ArrayIndex) {
-                parens(expr, "Left", expr.Left);
-                Write("[");
-                WriteNode("Right", expr.Right);
-                Write("]");
-                return;
+            switch (expr.NodeType) {
+                case ArrayIndex:
+                    parens(expr, "Left", expr.Left);
+                    Write("[");
+                    WriteNode("Right", expr.Right);
+                    Write("]");
+                    return;
+                case Power:
+                    Write("Math.Pow(");
+                    WriteNode("Left", expr.Left);
+                    Write(", ");
+                    WriteNode("Right", expr.Right);
+                    Write(")");
+                    return;
             }
 
             WriteNodeTypeNotImplemented(expr.NodeType);
@@ -299,7 +307,7 @@ namespace ExpressionTreeToString {
                     if (renderConversion) { Write($"{typeName(expr.Type)}("); }
                     WriteNode("Operand", expr.Operand);
                     if (renderConversion) { Write(")"); }
-                    break;
+                    return;
                 case Not:
                 case Negate:
                 case NegateChecked:
@@ -309,21 +317,20 @@ namespace ExpressionTreeToString {
                         Write("-");
                     }
                     parens(expr, "Operand", expr.Operand);
-                    break;
+                    return;
                 case TypeAs:
                     if (expr.Operand != currentScoped) {
                         WriteNotImplemented("'as(...)' only supported on ParameterExpression in current scope.");
                     } else {
                         Write($"as({escapedDoubleQuotes}{expr.Type.FullName}{escapedDoubleQuotes})");
                     }
-                    break;
+                    return;
                 case Quote:
                     WriteNode("Operand", expr.Operand);
-                    break;
-                default:
-                    WriteNodeTypeNotImplemented(expr.NodeType);
-                    break;
+                    return;
             }
+
+            WriteNodeTypeNotImplemented(expr.NodeType);
         }
 
         private bool insideLambda = false;

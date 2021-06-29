@@ -54,5 +54,13 @@ namespace ExpressionTreeToString.Tests {
 
         [TestObject(Binary)]
         internal static readonly Expression LogicalOr = Expr(p => p.Age >= 20 | p.Age <= 60);
+
+        [TestObject(Binary)]
+        internal static readonly Expression Power = Expression.Lambda(
+            Expression.Power(
+                Expression.Constant(1.0),
+                Expression.Constant(2.0)
+            )
+        );
     }
 }
