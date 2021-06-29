@@ -261,7 +261,14 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            if (simpleBinaryOperators.TryGetValue(expr.NodeType, out var @operator)) {
+            simpleBinaryOperators.TryGetValue(expr.NodeType, out var @operator);
+            @operator ??= expr.NodeType switch {
+                And => "&&",
+                Or => "||",
+                _ => null
+            };
+
+            if (@operator is not null) {
                 parens(expr, "Left", expr.Left);
                 Write($" {@operator} ");
                 parens(expr, "Right", expr.Right);

@@ -26,9 +26,12 @@ namespace Tests.DataGenerator {
 
                 const string dlinq = nameof(DynamicLinqTestObjects);
                 var objects = Objects.Get()
-                    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
+                    //.Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)
                     .Where(x => key == DynamicLinq)
                     .Where(x => !ordering.ContainsKey($"{x.source}.{x.name}"));
+
+                DynamicLinqWriterVisitor.CustomAccessibleTypes.Add(typeof(Console));
+                DynamicLinqWriterVisitor.CustomAccessibleTypes.Add(typeof(Dummy));
 
                 //var objects = Objects.Get()
                 //    .Where(x => key == DynamicLinq ? x.source == dlinq : x.source != dlinq)

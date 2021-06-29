@@ -48,5 +48,11 @@ namespace ExpressionTreeToString.Tests {
 
         [TestObject(Binary)]
         internal static readonly Expression ArrayIndex= Expr(p => p.Relatives[4]);
+
+        [TestObject(Binary)]
+        internal static readonly Expression LogicalAnd = Expr(p => p.Age >= 20 & p.Age <= 60);
+
+        [TestObject(Binary)]
+        internal static readonly Expression LogicalOr = Expr(p => p.Age >= 20 | p.Age <= 60);
     }
 }
