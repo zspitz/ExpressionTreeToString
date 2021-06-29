@@ -276,7 +276,7 @@ namespace ExpressionTreeToString {
                 return;
             }
 
-            throw new NotImplementedException();
+            WriteNodeTypeNotImplemented(expr.NodeType);
         }
 
         private string escapedDoubleQuotes => language == Language.VisualBasic ? "\"\"" : "\\\"";
@@ -305,15 +305,17 @@ namespace ExpressionTreeToString {
                     break;
                 case TypeAs:
                     if (expr.Operand != currentScoped) {
-                        throw new NotImplementedException("'as' only supported on ParameterExpression in current scope.");
+                        WriteNotImplemented("'as(...)' only supported on ParameterExpression in current scope.");
+                    } else {
+                        Write($"as({escapedDoubleQuotes}{expr.Type.FullName}{escapedDoubleQuotes})");
                     }
-                    Write($"as({escapedDoubleQuotes}{expr.Type.FullName}{escapedDoubleQuotes})");
                     break;
                 case Quote:
                     WriteNode("Operand", expr.Operand);
                     break;
                 default:
-                    throw new NotImplementedException();
+                    WriteNodeTypeNotImplemented(expr.NodeType);
+                    break;
             }
         }
 
@@ -328,7 +330,8 @@ namespace ExpressionTreeToString {
             
             var count = expr.Parameters.Count;
             if (count > 1) {
-                throw new NotImplementedException("Multiple parameters in lambda expression.");
+                WriteNotImplemented("Multiple parameters in lambda expression.");
+                return;
             } else if (count == 1) {
                 currentScoped = expr.Parameters[0];
             }
@@ -342,7 +345,8 @@ namespace ExpressionTreeToString {
 
         protected override void WriteParameter(ParameterExpression expr) {
             if (currentScoped is { } && expr != currentScoped) {
-                throw new NotImplementedException("Multiple ParameterExpression in current scope.");
+                WriteNotImplemented("Multiple ParameterExpression in current scope.");
+                return;
             }
 
             // if we got here, that means we need to write out the ParameterExpression
@@ -452,7 +456,8 @@ namespace ExpressionTreeToString {
         private void writeIndexerAccess(string instancePath, Expression instance, string argumentsPath, IEnumerable<Expression> arguments) {
             var lst = arguments.ToList();
             if (instance.Type.IsArray && lst.Count > 1) {
-                throw new NotImplementedException("Multidimensional array access not supported.");
+                WriteNotImplemented("Multidimensional array access not supported.");
+                return;
             }
             // No such thing as a static indexer
             parens(0, instancePath, instance);
@@ -465,19 +470,22 @@ namespace ExpressionTreeToString {
             var declaringType = mi.DeclaringType!;
             if (instance is null) {
                 if (!isAccessibleType(declaringType)) {
-                    throw new NotImplementedException($"Type '{declaringType.Name}' is not an accessible type; its' static methods cannot be used.");
+                    WriteNotImplemented($"Type '{declaringType.Name}' is not an accessible type; its' static methods cannot be used.");
+                    return;
                 }
                 Write(typeName(declaringType) + ".");
             } else {
                 if (instance.Type.IsClosureClass()) {
-                    throw new NotImplementedException("No representation for closed-over variables.");
+                    WriteNotImplemented("No representation for closed-over variables.");
+                    return;
                 } else if (
                     mi is MethodInfo mthd && 
                     !isAccessibleType(declaringType) && 
                     !isAccessibleType(mthd.ReturnType) && 
                     insideLambda
                 ) {
-                    throw new NotImplementedException($"Within a quoted lambda, {(mthd.IsStatic ? "extension" : "instance")} methods must either be on an accessible type, or return an instance of an accessible type.");
+                    WriteNotImplemented($"Within a quoted lambda, {(mthd.IsStatic ? "extension" : "instance")} methods must either be on an accessible type, or return an instance of an accessible type.");
+                    return;
                 } else if (instance.SansConvert() != currentScoped) {
                     parens(0, instancePath, instance);
                     Write(".");
@@ -679,7 +687,8 @@ namespace ExpressionTreeToString {
 
         protected override void WriteConditional(ConditionalExpression expr, object? metadata) {
             if (expr.Type == typeof(void)) {
-                throw new NotImplementedException("Cannot represent void-returning conditionals.");
+                WriteNotImplemented("Cannot represent void-returning conditionals.");
+                return;
             };
 
             // TODO handle !(x.A == null) as well
@@ -729,13 +738,14 @@ namespace ExpressionTreeToString {
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
             if (expr.Expression != currentScoped) {
-                throw new NotImplementedException("'is' only supported on ParameterExpression in current scope.");
+                WriteNotImplemented("'is(...)' only supported on ParameterExpression in current scope.");
+                return;
             }
             Write($"is({escapedDoubleQuotes}{expr.Type.FullName}{escapedDoubleQuotes})");
         }
 
         protected override void WriteInvocation(InvocationExpression expr) {
-            throw new NotImplementedException("Pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/441");
+            WriteNotImplemented("Pending https://github.com/zzzprojects/System.Linq.Dynamic.Core/issues/441");
             //Write("(");
             //WriteNode("Expression", expr.Expression);
             //Write(")(");
@@ -783,42 +793,6 @@ namespace ExpressionTreeToString {
             throw new NotImplementedException();
 
         protected override void WriteLabelTarget(LabelTarget labelTarget) =>
-            throw new NotImplementedException();
-
-        protected override void WriteBinaryOperationBinder(BinaryOperationBinder binaryOperationBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteConvertBinder(ConvertBinder convertBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteCreateInstanceBinder(CreateInstanceBinder createInstanceBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteDeleteIndexBinder(DeleteIndexBinder deleteIndexBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteDeleteMemberBinder(DeleteMemberBinder deleteMemberBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteGetIndexBinder(GetIndexBinder getIndexBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteGetMemberBinder(GetMemberBinder getMemberBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteInvokeBinder(InvokeBinder invokeBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteInvokeMemberBinder(InvokeMemberBinder invokeMemberBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteSetIndexBinder(SetIndexBinder setIndexBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteSetMemberBinder(SetMemberBinder setMemberBinder, IList<Expression> args) =>
-            throw new NotImplementedException();
-
-        protected override void WriteUnaryOperationBinder(UnaryOperationBinder unaryOperationBinder, IList<Expression> args) =>
             throw new NotImplementedException();
 
         protected override void WriteParameterDeclaration(ParameterExpression prm) =>

@@ -185,10 +185,10 @@ namespace ExpressionTreeToString {
             Write(")");
         }
 
-        protected override void WriteDeleteIndexBinder(DeleteIndexBinder binder, IList<Expression> args) =>
-            throw new NotImplementedException();
-        protected override void WriteDeleteMemberBinder(DeleteMemberBinder binder, IList<Expression> args) =>
-            throw new NotImplementedException();
+        protected override void WriteDeleteIndexBinder(DeleteIndexBinder binder, IList<Expression> args) => 
+            WriteNotImplemented("No C#/VB syntax for deleting an index.");
+        protected override void WriteDeleteMemberBinder(DeleteMemberBinder binder, IList<Expression> args) => 
+            WriteNotImplemented("No C#/VB syntax for deleting a mamber.");
 
         protected override void WriteBinaryOperationBinder(BinaryOperationBinder binder, IList<Expression> args) {
             VerifyCount(args, 2);

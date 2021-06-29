@@ -1,10 +1,10 @@
 ﻿---- DynamicLinqTestObjects.PropertyTypeAs
 "--
--- Not implemented - 'as' only supported on ParameterExpression in current scope.
+-- Not implemented - 'as(...)' only supported on ParameterExpression in current scope.
 --"
 ---- DynamicLinqTestObjects.PropertyTypeIs
 "--
--- Not implemented - 'is' only supported on ParameterExpression in current scope.
+-- Not implemented - 'is(...)' only supported on ParameterExpression in current scope.
 --"
 ---- DynamicLinqTestObjects.Random
 #Random

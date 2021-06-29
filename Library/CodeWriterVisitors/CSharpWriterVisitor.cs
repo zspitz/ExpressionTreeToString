@@ -88,7 +88,7 @@ namespace ExpressionTreeToString {
                     return;
             }
 
-            throw new NotImplementedException();
+            WriteNodeTypeNotImplemented(nodeType);
         }
 
         protected override void WriteUnary(ExpressionType nodeType, string operandPath, Expression operand, Type type, string expressionTypename) {
@@ -172,7 +172,8 @@ namespace ExpressionTreeToString {
                     Parens(nodeType, operandPath, operand);
                     break;
                 default:
-                    throw new NotImplementedException($"NodeType: {nodeType}, Expression object type: {expressionTypename}");
+                    WriteNotImplemented($"No implementation for NodeType: {nodeType}, Expression object type: {expressionTypename}");
+                    break;
             }
         }
 
@@ -322,7 +323,8 @@ namespace ExpressionTreeToString {
                     }
                     break;
                 default:
-                    throw new NotImplementedException();
+                    WriteNodeTypeNotImplemented(expr.NodeType);
+                    break;
             }
         }
 
@@ -613,7 +615,7 @@ namespace ExpressionTreeToString {
                 Continue => "continue",
                 GotoExpressionKind.Goto => "goto",
                 GotoExpressionKind.Return => "return",
-                _ => throw new NotImplementedException(),
+                _ => throw new NotImplementedException($"Unrecognized GoToExpression.Kind '{expr.Kind}'")
             };
             Write(gotoKeyword);
             if (!(expr.Target?.Name).IsNullOrWhitespace()) {

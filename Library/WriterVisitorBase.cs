@@ -79,9 +79,7 @@ namespace ExpressionTreeToString {
             try {
                 WriteNodeImpl(o, parameterDeclaration, metadata);
             } catch (NotImplementedException ex) {
-                $@"--
--- Not implemented - {ex.Message}
---".AppendTo(ip.sb);
+                WriteNotImplemented(ex.Message);
             }
 
             if (ip.pathSpans is { }) {
@@ -129,5 +127,12 @@ namespace ExpressionTreeToString {
             this.ip = ip;
         }
         protected string CurrentInsertionPoint => ip.key;
+
+        protected void WriteNotImplemented(string message) {
+            if (!message.IsNullOrEmpty()) { message = $" - {message}"; }
+            $@"--
+-- Not implemented{message}
+--".AppendTo(ip.sb);
+        }
     }
 }
