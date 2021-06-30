@@ -161,4 +161,10 @@
 #EnumerableQuery<Person>.Take(5)
 ---- DynamicLinqTestObjects.NegateBoolean
 "!(Age > 20)"
+---- DynamicLinqTestObjects.LogicalAnd
+"Age >= 20 && Age <= 60"
+---- DynamicLinqTestObjects.LogicalOr
+"Age >= 20 || Age <= 60"
+---- DynamicLinqTestObjects.Power
+"Math.Pow(1, 2)"
 ------
