@@ -16,7 +16,7 @@ namespace ExpressionTreeToString {
         public TextualTreeWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans = false) 
             : base(o, languageArg, null, hasPathSpans) { }
 
-        private readonly ValueExtractor valueExtractor = new ValueExtractor();
+        private readonly ValueExtractor valueExtractor = new();
 
         protected override sealed void WriteNodeImpl(object? o, bool _ = false, object? _1 = null) {
             var nodeType = "";
