@@ -290,13 +290,8 @@ namespace ExpressionTreeToString {
             writeMethodCall(() => MakeMemberAccess(expr.Expression, expr.Member));
         }
 
-        protected override void WriteNew(NewExpression expr) {
-            if (expr.Members?.Any() ?? false) {
-                writeMethodCall(() => New(expr.Constructor!, expr.Arguments, expr.Members.ToArray()));
-            } else {
-                writeMethodCall(() => New(expr.Constructor!, expr.Arguments.ToArray()));
-            }
-        }
+        protected override void WriteNew(NewExpression expr) => 
+            writeMethodCall(() => New(expr.Constructor!, expr.Arguments.ToArray()));
 
         protected override void WriteCall(MethodCallExpression expr) {
             if ((expr.Object?.Type.IsArray ?? false) && expr.Method.Name == "Get") {
