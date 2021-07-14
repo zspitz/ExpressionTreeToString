@@ -4,8 +4,8 @@ using ZSpitz.Util;
 
 namespace ExpressionTreeToString {
     public class ValueExtractor : ExpressionVisitor {
-        private readonly Stack<Expression> expressionStack = new Stack<Expression>();
-        private readonly Dictionary<Expression, bool> evaluables = new Dictionary<Expression, bool>();
+        private readonly Stack<Expression> expressionStack = new();
+        private readonly Dictionary<Expression, bool> evaluables = new();
 
         public override Expression? Visit(Expression? node) {
             if (node is null) { return null; }
@@ -64,7 +64,7 @@ namespace ExpressionTreeToString {
         public (bool evaluated, object? value) GetValue(Expression node) {
             if (!evaluables.TryGetValue(node, out var canEvaluate)) {
                 Visit(node);
-                canEvaluate = evaluables[node];
+                evaluables.TryGetValue(node, out canEvaluate);
             }
             (var evaluated, object? value) = (false, null);
             if (canEvaluate) {
