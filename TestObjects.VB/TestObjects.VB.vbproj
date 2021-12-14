@@ -32,7 +32,7 @@
     <Import Include="ExpressionTreeTestObjects.Functions" />
     <Import Include="System.Linq.Expressions" />
     <ProjectReference Include="..\TestObjects\TestObjects.csproj" PrivateAssets="All" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
