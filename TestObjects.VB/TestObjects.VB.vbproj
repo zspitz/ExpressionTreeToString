@@ -19,7 +19,7 @@
     <PackageTags>expression-tree code-generation visual-basic.net vb.net csharp test-data tostring</PackageTags>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <Version>1.0.23</Version>
-    <PackageReadmeFile>README_TestObjects.md</PackageReadmeFile>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
     
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
@@ -44,7 +44,7 @@
     <ItemGroup>
       <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
 
-      <None Include="..\README_TestObjects.md" Pack="true" PackagePath="\"/>
+      <None Include="README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
   </Target>
 </Project>
