@@ -54,9 +54,7 @@ and `category` is one of [these](https://github.com/zspitz/ExpressionTreeToStrin
 
 The static constructor automatically loads types in assemblies that start with `ExpressionTreeTestObjects` -- ExpressionTreeTestObjects.CSharp.dll, and ExpressionTreeTestObjects.VB.dll.
 
-To add fields from additional types:
 
-1. Decorate the fields with the `TestObject` attribute
 2. Call the static `LoadType` method on the containing type:
 
         Objects.LoadType(typeof(MyCustomType));
