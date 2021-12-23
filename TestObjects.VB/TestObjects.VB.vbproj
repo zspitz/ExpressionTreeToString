@@ -18,12 +18,17 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>expression-tree code-generation visual-basic.net vb.net csharp test-data tostring</PackageTags>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
-    <Version>1.0.22</Version>
+    <Version>1.0.23</Version>
+    <PackageReadmeFile>README_TestObjects.md</PackageReadmeFile>
     
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(CI)' == 'true'">
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -38,6 +43,8 @@
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
     <ItemGroup>
       <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+
+      <None Include="..\README_TestObjects.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
   </Target>
 </Project>
