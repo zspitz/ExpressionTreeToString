@@ -19,8 +19,8 @@
     <PackageTags>expression-tree code-generation visual-basic.net vb.net csharp test-data tostring</PackageTags>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
     <Version>1.0.23</Version>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
-    
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
@@ -38,13 +38,13 @@
     <Import Include="System.Linq.Expressions" />
     <ProjectReference Include="..\TestObjects\TestObjects.csproj" PrivateAssets="All" />
     <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+
+    <None Include="readme.md" Pack="true" PackagePath="\"/>
   </ItemGroup>
 
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
     <ItemGroup>
       <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
-
-      <None Include="README.md" Pack="true" PackagePath="\"/>
     </ItemGroup>
   </Target>
 </Project>
