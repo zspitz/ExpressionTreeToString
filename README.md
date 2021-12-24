@@ -86,7 +86,7 @@ Expression<Func<Person, bool>> filter = p => p => p.LastName == "A" || p.FirstNa
 Console.WriteLine(filter.ToString("Dynamic LINQ", "C#"));
 // prints:
 /*
-    LastName in ("A", "C") || DOB == DateTime.MinValue || FirstName in ("B", "D")
+    "LastName in (\"A\", \"C\") || FirstName in (\"B\", \"D\") || DOB == DateTime.MinValue"
 */
 ```
 

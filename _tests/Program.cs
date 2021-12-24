@@ -254,12 +254,22 @@ namespace _tests {
             //        .Expression;
             //Console.WriteLine(expr.ToString("Dynamic LINQ", "C#"));
 
-            var prm = Parameter(typeof(string));
-            var expr = Lambda(
-                Equal(prm, prm),
-                prm
-            );
-            Console.WriteLine(expr.ToString("Factory methods", "C#"));
+            //var prm = Parameter(typeof(string));
+            //var expr = Lambda(
+            //    Equal(prm, prm),
+            //    prm
+            //);
+            //Console.WriteLine(expr.ToString("Factory methods", "C#"));
+
+            Expression<Func<Person, bool>> filter = p => p.LastName == "A" || p.FirstName == "B" || p.DOB == DateTime.MinValue || p.LastName == "C" || p.FirstName == "D";
+            Console.WriteLine(filter.ToString("Dynamic LINQ", "C#"));
+
+            //IQueryable<Person> query = new List<Person>()
+            //    .AsQueryable()
+            //    .Where(p => p.LastName == "A" || p.FirstName == "B" || p.DOB == DateTime.MinValue || p.LastName == "C" || p.FirstName == "D");
+            //Console.WriteLine(query.Expression.ToString("Dynamic LINQ", "C#"));
+
+            //Console.WriteLine(filter.Body.ToString("Dynamic LINQ", "C#"));
         }
 
         //class TestContainer { }
