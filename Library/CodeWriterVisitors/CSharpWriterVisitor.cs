@@ -370,14 +370,14 @@ namespace ExpressionTreeToString {
             Write("}");
             if (!expr.IfFalse.IsEmpty()) {
                 Write(" else ");
-                if (!(expr.IfFalse is ConditionalExpression)) {
+                if (expr.IfFalse is not ConditionalExpression) {
                     Write("{");
                     Indent();
                     WriteEOL();
                 }
                 WriteNode("IfFalse", expr.IfFalse, CreateMetadata(CSharpMultilineBlockTypes.Block));
                 writeStatementEnd(expr.IfFalse);
-                if (!(expr.IfFalse is ConditionalExpression)) {
+                if (expr.IfFalse is not ConditionalExpression) {
                     WriteEOL(true);
                     Write("}");
                 }

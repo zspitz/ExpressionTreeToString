@@ -1,11 +1,11 @@
-﻿---- DynamicLinqTestObjects.PropertyTypeAs
-"--
--- Not implemented - 'as(...)' only supported on ParameterExpression in current scope.
---"
----- DynamicLinqTestObjects.PropertyTypeIs
-"--
--- Not implemented - 'is(...)' only supported on ParameterExpression in current scope.
---"
+﻿---- DynamicLinqTestObjects.PropertyTypeAsBase
+"as(LastName, \"System.Object\")"
+---- DynamicLinqTestObjects.PropertyTypeAsDerived
+"as(Property, \"System.String\")"
+---- DynamicLinqTestObjects.PropertyTypeIsBase
+"is(LastName, \"System.Object\")"
+---- DynamicLinqTestObjects.PropertyTypeIsDerived
+"is(Property, \"System.String\")"
 ---- DynamicLinqTestObjects.Random
 #Random
 ---- DynamicLinqTestObjects.StringEscaping
@@ -113,7 +113,7 @@
 ---- DynamicLinqTestObjects.ParameterTypeAs
 "as(\"System.Object\")"
 ---- DynamicLinqTestObjects.ParameterTypeIs
-"is(\"System.Boolean\")"
+"is(\"System.Object\")"
 ---- DynamicLinqTestObjects.NewNamed1
 "Uri(\"https://www.example.com/\", UriKind.Absolute)"
 ---- DynamicLinqTestObjects.CharEquality

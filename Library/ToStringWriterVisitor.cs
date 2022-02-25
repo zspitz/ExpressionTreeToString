@@ -7,7 +7,6 @@ using ZSpitz.Util;
 using static System.Linq.Expressions.ExpressionType;
 using static System.Linq.Enumerable;
 using System.Runtime.CompilerServices;
-using ExpressionTreeToString.Util;
 using static System.Linq.Expressions.GotoExpressionKind;
 using OneOf;
 using static ExpressionTreeToString.Util.Functions;

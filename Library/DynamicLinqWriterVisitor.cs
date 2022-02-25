@@ -49,8 +49,8 @@ namespace ExpressionTreeToString {
         public DynamicLinqWriterVisitor(object o, OneOf<string, Language?> languageArg, bool hasPathSpans) :
             base(
                 o,
-                languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"), 
-                new[] { "parameters", "" }, 
+                languageArg.ResolveLanguage() ?? throw new ArgumentException("Invalid language"),
+                new[] { "parameters", "" },
                 hasPathSpans
             ) { }
 
@@ -318,11 +318,15 @@ namespace ExpressionTreeToString {
                     parens(expr, "Operand", expr.Operand);
                     return;
                 case TypeAs:
+                    // TODO under what circumstances can we elide the cast?
+                    // We elide the cast in the code visitors, when the base instance is assignable to the cast target
+                    // Is that safe?
+                    Write("as(");
                     if (expr.Operand != currentScoped) {
-                        WriteNotImplemented("'as(...)' only supported on ParameterExpression in current scope.");
-                    } else {
-                        Write($"as({escapedDoubleQuotes}{expr.Type.FullName}{escapedDoubleQuotes})");
+                        WriteNode("Operand", expr.Operand);
+                        Write(", ");
                     }
+                    Write($"{escapedDoubleQuotes}{expr.Type.FullName}{escapedDoubleQuotes})");
                     return;
                 case Quote:
                     WriteNode("Operand", expr.Operand);
@@ -344,7 +348,7 @@ namespace ExpressionTreeToString {
                 insideLambda = true;
                 exitLambda = true;
             }
-            
+
             var count = expr.Parameters.Count;
             if (count > 1) {
                 WriteNotImplemented("Multiple parameters in lambda expression.");
@@ -434,7 +438,7 @@ namespace ExpressionTreeToString {
             var id = getParaneterId(key, out var isNew);
             if (isNew) {
                 SetInsertionPoint("parameters");
-                if (language==Language.VisualBasic) {
+                if (language == Language.VisualBasic) {
                     Write("' ");
                 } else {
                     Write("// ");
@@ -496,9 +500,9 @@ namespace ExpressionTreeToString {
                     WriteNotImplemented("No representation for closed-over variables.");
                     return;
                 } else if (
-                    mi is MethodInfo mthd && 
-                    !isAccessibleType(declaringType) && 
-                    !isAccessibleType(mthd.ReturnType) && 
+                    mi is MethodInfo mthd &&
+                    !isAccessibleType(declaringType) &&
+                    !isAccessibleType(mthd.ReturnType) &&
                     insideLambda
                 ) {
                     WriteNotImplemented($"Within a quoted lambda, {(mthd.IsStatic ? "extension" : "instance")} methods must either be on an accessible type, or return an instance of an accessible type.");
@@ -754,11 +758,12 @@ namespace ExpressionTreeToString {
             throw new NotImplementedException();
 
         protected override void WriteTypeBinary(TypeBinaryExpression expr) {
+            Write("is(");
             if (expr.Expression != currentScoped) {
-                WriteNotImplemented("'is(...)' only supported on ParameterExpression in current scope.");
-                return;
+                WriteNode("Expression", expr.Expression);
+                Write(", ");
             }
-            Write($"is({escapedDoubleQuotes}{expr.Type.FullName}{escapedDoubleQuotes})");
+            Write($"{escapedDoubleQuotes}{expr.TypeOperand.FullName}{escapedDoubleQuotes})");
         }
 
         protected override void WriteInvocation(InvocationExpression expr) {

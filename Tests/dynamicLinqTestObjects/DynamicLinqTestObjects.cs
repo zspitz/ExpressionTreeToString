@@ -9,6 +9,7 @@ using static System.Linq.Expressions.Expression;
 using static System.Linq.Dynamic.Core.DynamicExpressionParser;
 using System.Linq;
 using static ZSpitz.Util.Functions;
+using static ExpressionTreeTestObjects.Categories;
 
 namespace ExpressionTreeToString.Tests {
     [ObjectContainer]
@@ -85,6 +86,12 @@ namespace ExpressionTreeToString.Tests {
         [TestObject("Dynamic LINQ")]
         internal static readonly Expression QueryableTake =
             Enumerable.Empty<Person>().AsQueryable().Take(5).Expression;
+
+        [TestObject(TypeChecks)]
+        internal static readonly Expression PropertyTypeIsDerived = Expr(p => p.Property is string);
+
+        [TestObject(TypeChecks)]
+        internal static readonly Expression PropertyTypeIsBase = Expr(p => p.LastName is object);
 
         public static readonly Dictionary<string, object[]> Parameters = new() {
             { nameof(Random), new[] { new Random() } },

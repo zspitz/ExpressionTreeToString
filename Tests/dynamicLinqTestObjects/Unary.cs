@@ -18,5 +18,11 @@ namespace ExpressionTreeToString.Tests {
 
         [TestObject(Unary)]
         internal static readonly Expression NegateNumeric = Expr(p => ~p.Age);
+
+        [TestObject(Unary)]
+        internal static readonly Expression PropertyTypeAsDerived = Expr(p => p.Property as string);
+
+        [TestObject(Unary)]
+        internal static readonly Expression PropertyTypeAsBase = Expr(p => p.LastName as object);
     }
 }
